@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "npx convex dev --until-success && next dev",
-    "build": "npx convex deploy --cmd \"next build\"",
+    "build": "next build",
+    "build:convex": "npx convex deploy --cmd \"next build\"",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",

@@ -30,3 +30,4 @@ pnpm-debug.log*
 build-output.txt
 clerk-nextjs/
 convex/_generated/
+.vercel

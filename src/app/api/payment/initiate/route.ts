@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - PayU Payment Initiation API Route
+// ASCENDIFY - PayU Payment Initiation API Route
 // Creates a PayU payment and returns the payment form data
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -38,8 +38,8 @@ const PLAN_PRICES = {
 };
 
 const PLAN_NAMES = {
-  pro: 'ASCEND Pro - Monthly',
-  lifetime: 'ASCEND Lifetime Access',
+  pro: 'Ascendify Pro - Monthly',
+  lifetime: 'Ascendify Lifetime Access',
 };
 
 // Generate PayU hash

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND — Contribution Heatmap
+// Ascendify — Contribution Heatmap
 // GitHub-style activity grid showing daily habit/task completion history
 // "Don't break the chain" visual motivation
 // ═══════════════════════════════════════════════════════════════════════════════

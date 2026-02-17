@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND — 404 Not Found Page
+// AscendifyIFY — 404 Not Found Page
 // App Router not-found handler (also resolves /_error build issue in Next.js 14)
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -50,7 +50,7 @@ export default function NotFound() {
             textDecoration: 'none',
           }}
         >
-          Back to ASCEND
+          Back to Ascendify
         </Link>
       </div>
     </div>

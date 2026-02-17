@@ -1,7 +1,7 @@
 'use client';
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Kai AI Chatbot Component
+// AscendifyIFY - Kai AI Chatbot Component
 // Intelligent help assistant with sales skills
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -57,7 +57,7 @@ export function KaiChatbot({
       setMessages([{
         id: 'welcome',
         role: 'assistant',
-        content: `Hey! I'm Kai, your ASCEND assistant 🚀\n\nI can help you with:\n• Setting up habits and goals\n• Understanding features\n• Troubleshooting issues\n• Habit advice (using Atomic Habits principles!)\n\nWhat can I help you with today?`,
+        content: `Hey! I'm Kai, your Ascendify assistant 🚀\n\nI can help you with:\n• Setting up habits and goals\n• Understanding features\n• Troubleshooting issues\n• Habit advice (using Atomic Habits principles!)\n\nWhat can I help you with today?`,
         timestamp: new Date(),
       }]);
     }
@@ -176,7 +176,7 @@ export function KaiChatbot({
                 </div>
                 <div>
                   <h3 className="font-semibold text-[var(--text-primary)]">Kai</h3>
-                  <p className="text-xs text-[var(--text-secondary)]">ASCEND AI Assistant</p>
+                  <p className="text-xs text-[var(--text-secondary)]">Ascendify AI Assistant</p>
                 </div>
               </div>
               <button
@@ -297,7 +297,7 @@ export function KaiChatbot({
             </div>
             <h4 className="font-medium text-[var(--text-primary)] mb-2">How can I help?</h4>
             <p className="text-sm text-[var(--text-secondary)] mb-4">
-              Ask me anything about ASCEND, habits, or goals!
+              Ask me anything about Ascendify, habits, or goals!
             </p>
             <div className="flex flex-wrap justify-center gap-2">
               {suggestions.map((s, i) => (

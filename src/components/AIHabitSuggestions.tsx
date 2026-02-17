@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - AI Habit Suggestions Component
+// AscendifyIFY - AI Habit Suggestions Component
 // Smart habit recommendations based on user's goals
 // ═══════════════════════════════════════════════════════════════════════════════
 

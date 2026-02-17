@@ -1,7 +1,7 @@
 'use client';
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// VANTAGE — ProGate Component
+// AscendifyIFY — ProGate Component
 // Shows an upgrade prompt when a free-tier user tries to use a paid feature
 // ═══════════════════════════════════════════════════════════════════════════════
 

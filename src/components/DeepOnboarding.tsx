@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Deep Onboarding Wizard
+// AscendifyIFY - Deep Onboarding Wizard
 // Comprehensive user profiling for personalized goal achievement
 // ═══════════════════════════════════════════════════════════════════════════════
 

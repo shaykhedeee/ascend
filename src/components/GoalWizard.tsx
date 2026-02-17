@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Goal Creation Wizard with AI Decomposition
+// AscendifyIFY - Goal Creation Wizard with AI Decomposition
 // ═══════════════════════════════════════════════════════════════════════════════
 
 'use client';

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Authentication Screens
+// AscendifyIFY - Authentication Screens
 // Login, Signup, and Password Recovery
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -148,7 +148,7 @@ export function AuthScreens({ onClose, onSuccess, initialView = 'login' }: AuthS
                               flex items-center justify-center">
                   <Mountain className="w-4 h-4 text-white" />
                 </div>
-                <span className="font-bold text-white">ASCEND</span>
+                <span className="font-bold text-white">ASCENDIFY</span>
               </div>
               <div className="w-9" /> {/* Spacer for alignment */}
             </div>

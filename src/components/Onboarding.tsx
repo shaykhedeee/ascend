@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - User Onboarding Flow with Goal Setup
+// AscendifyIFY - User Onboarding Flow with Goal Setup
 // ═══════════════════════════════════════════════════════════════════════════════
 
 'use client';
@@ -218,7 +218,7 @@ export function Onboarding() {
   const handleFinish = () => {
     addToast({
       type: 'success',
-      title: `Welcome to ASCEND, ${name}! 🚀`,
+      title: `Welcome to Ascendify, ${name}! 🚀`,
       message: 'Your personalized journey begins now',
       xpGained: 100,
     });
@@ -241,7 +241,7 @@ export function Onboarding() {
             <Mountain className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-themed">ASCEND</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-themed">ASCENDIFY</h1>
             <p className="text-[10px] sm:text-xs text-themed-muted">Rise to your potential</p>
           </div>
         </div>
@@ -271,7 +271,7 @@ export function Onboarding() {
                             flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-glow-md">
                 <Sparkles className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
               </div>
-              <h2 className="text-xl sm:text-2xl font-bold text-themed mb-2">Welcome to ASCEND</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-themed mb-2">Welcome to Ascendify</h2>
               <p className="text-ascend-500 font-medium mb-2 sm:mb-3 text-sm sm:text-base">Become Your Ideal Self</p>
               <p className="text-themed-secondary leading-relaxed mb-6 sm:mb-8 text-sm sm:text-base">
                 Tell us who you want to become, and AI creates your personalized
@@ -693,7 +693,7 @@ export function Onboarding() {
                 <div className="text-center mb-4 pt-2">
                   <div className="flex items-center justify-center gap-2 mb-1">
                     <Crown className="w-5 h-5 text-gold-400" />
-                    <span className="font-bold text-lg">ASCEND Pro</span>
+                    <span className="font-bold text-lg">Ascendify Pro</span>
                   </div>
                   <div className="flex items-center justify-center gap-2">
                     <span className="text-2xl font-bold text-themed">$4</span>

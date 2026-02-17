@@ -1,11 +1,118 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// VANTAGE — Habits Engine (Convex)
+// ASCENDIFY — Habits Engine (Convex)
 // Create, track, complete habits with streak management & plan enforcement
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
 import { internal } from './_generated/api';
+
+// Reusable habit document validator
+const habitDoc = v.object({
+  _id: v.id('habits'),
+  _creationTime: v.number(),
+  userId: v.id('users'),
+  goalId: v.optional(v.id('goals')),
+  title: v.string(),
+  description: v.optional(v.string()),
+  category: v.string(),
+  frequency: v.union(
+    v.literal('daily'),
+    v.literal('weekdays'),
+    v.literal('weekends'),
+    v.literal('3x_week'),
+    v.literal('weekly'),
+    v.literal('custom')
+  ),
+  customDays: v.optional(v.array(v.number())),
+  timeOfDay: v.union(
+    v.literal('morning'),
+    v.literal('afternoon'),
+    v.literal('evening'),
+    v.literal('anytime')
+  ),
+  identityLabel: v.optional(v.string()),
+  isActive: v.boolean(),
+  streakCurrent: v.number(),
+  streakLongest: v.number(),
+  color: v.optional(v.string()),
+  icon: v.optional(v.string()),
+  estimatedMinutes: v.optional(v.number()),
+  order: v.optional(v.number()),
+  // Enhanced habit type system
+  habitType: v.optional(v.union(
+    v.literal('yes_no'),
+    v.literal('quantity'),
+    v.literal('duration'),
+    v.literal('negative'),
+    v.literal('range'),
+    v.literal('checklist')
+  )),
+  targetValue: v.optional(v.number()),
+  targetUnit: v.optional(v.string()),
+  checklistItems: v.optional(v.array(v.string())),
+  // Habit stacking cue
+  cueType: v.optional(v.union(
+    v.literal('time'),
+    v.literal('location'),
+    v.literal('action'),
+    v.literal('emotion'),
+    v.literal('none')
+  )),
+  cueDescription: v.optional(v.string()),
+  afterHabitId: v.optional(v.id('habits')),
+  // Progression system
+  difficultyLevel: v.optional(v.number()),
+  autoProgressionEnabled: v.optional(v.boolean()),
+  progressionIntervalDays: v.optional(v.number()),
+  progressionIncreaseAmount: v.optional(v.number()),
+  // Stats
+  totalCompletions: v.optional(v.number()),
+  completionRate7Day: v.optional(v.number()),
+  completionRate30Day: v.optional(v.number()),
+  lastCompletedAt: v.optional(v.number()),
+  // Motivation
+  whyImportant: v.optional(v.string()),
+  immediateReward: v.optional(v.string()),
+  // Specific time
+  specificTime: v.optional(v.string()),
+  reminderEnabled: v.optional(v.boolean()),
+  createdAt: v.number(),
+  updatedAt: v.number(),
+});
+
+const habitLogDoc = v.object({
+  _id: v.id('habitLogs'),
+  _creationTime: v.number(),
+  habitId: v.id('habits'),
+  userId: v.id('users'),
+  date: v.string(),
+  status: v.union(
+    v.literal('completed'),
+    v.literal('skipped'),
+    v.literal('failed')
+  ),
+  mood: v.optional(v.number()),
+  note: v.optional(v.string()),
+  completedAt: v.optional(v.number()),
+  // Enhanced tracking
+  value: v.optional(v.number()),
+  energyLevel: v.optional(v.union(
+    v.literal('high'),
+    v.literal('medium'),
+    v.literal('low')
+  )),
+  difficulty: v.optional(v.union(
+    v.literal('easy'),
+    v.literal('medium'),
+    v.literal('hard')
+  )),
+  loggedVia: v.optional(v.union(
+    v.literal('manual'),
+    v.literal('auto'),
+    v.literal('reminder')
+  )),
+});
 
 // Plan limits
 const PLAN_LIMITS = {
@@ -57,7 +164,37 @@ export const create = mutation({
     color: v.optional(v.string()),
     icon: v.optional(v.string()),
     estimatedMinutes: v.optional(v.number()),
+    // Enhanced fields
+    habitType: v.optional(v.union(
+      v.literal('yes_no'),
+      v.literal('quantity'),
+      v.literal('duration'),
+      v.literal('negative'),
+      v.literal('range'),
+      v.literal('checklist')
+    )),
+    targetValue: v.optional(v.number()),
+    targetUnit: v.optional(v.string()),
+    checklistItems: v.optional(v.array(v.string())),
+    cueType: v.optional(v.union(
+      v.literal('time'),
+      v.literal('location'),
+      v.literal('action'),
+      v.literal('emotion'),
+      v.literal('none')
+    )),
+    cueDescription: v.optional(v.string()),
+    afterHabitId: v.optional(v.id('habits')),
+    difficultyLevel: v.optional(v.number()),
+    autoProgressionEnabled: v.optional(v.boolean()),
+    progressionIntervalDays: v.optional(v.number()),
+    progressionIncreaseAmount: v.optional(v.number()),
+    whyImportant: v.optional(v.string()),
+    immediateReward: v.optional(v.string()),
+    specificTime: v.optional(v.string()),
+    reminderEnabled: v.optional(v.boolean()),
   },
+  returns: v.id('habits'),
   handler: async (ctx, args) => {
     const user = await getAuthUser(ctx);
 
@@ -94,6 +231,22 @@ export const create = mutation({
       icon: args.icon,
       estimatedMinutes: args.estimatedMinutes,
       order: activeHabits.length,
+      habitType: args.habitType ?? 'yes_no',
+      targetValue: args.targetValue,
+      targetUnit: args.targetUnit,
+      checklistItems: args.checklistItems,
+      cueType: args.cueType,
+      cueDescription: args.cueDescription,
+      afterHabitId: args.afterHabitId,
+      difficultyLevel: args.difficultyLevel ?? 1,
+      autoProgressionEnabled: args.autoProgressionEnabled,
+      progressionIntervalDays: args.progressionIntervalDays,
+      progressionIncreaseAmount: args.progressionIncreaseAmount,
+      whyImportant: args.whyImportant,
+      immediateReward: args.immediateReward,
+      specificTime: args.specificTime,
+      reminderEnabled: args.reminderEnabled,
+      totalCompletions: 0,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     });
@@ -105,6 +258,7 @@ export const create = mutation({
 // ─────────────────────────────────────────────────────────────────────────────
 export const listActive = query({
   args: {},
+  returns: v.array(habitDoc),
   handler: async (ctx) => {
     const user = await getAuthUser(ctx);
 
@@ -122,6 +276,7 @@ export const listActive = query({
 // ─────────────────────────────────────────────────────────────────────────────
 export const listAll = query({
   args: {},
+  returns: v.array(habitDoc),
   handler: async (ctx) => {
     const user = await getAuthUser(ctx);
 
@@ -141,8 +296,20 @@ export const toggleComplete = mutation({
     date: v.string(), // YYYY-MM-DD
     mood: v.optional(v.number()),
     note: v.optional(v.string()),
+    value: v.optional(v.number()),
+    energyLevel: v.optional(v.union(
+      v.literal('high'), v.literal('medium'), v.literal('low')
+    )),
+    difficulty: v.optional(v.union(
+      v.literal('easy'), v.literal('medium'), v.literal('hard')
+    )),
   },
-  handler: async (ctx, { habitId, date, mood, note }) => {
+  returns: v.object({
+    action: v.string(),
+    xpChange: v.number(),
+    streak: v.optional(v.number()),
+  }),
+  handler: async (ctx, { habitId, date, mood, note, value, energyLevel, difficulty }) => {
     const user = await getAuthUser(ctx);
     const habit = await ctx.db.get(habitId);
     if (!habit || habit.userId !== user._id) throw new Error('Habit not found');
@@ -185,16 +352,23 @@ export const toggleComplete = mutation({
         status: 'completed',
         mood,
         note,
+        value,
+        energyLevel,
+        difficulty,
+        loggedVia: 'manual',
         completedAt: Date.now(),
       });
     }
 
-    // Update streak
+    // Update streak + stats
     const newStreak = habit.streakCurrent + 1;
     const newLongest = Math.max(habit.streakLongest, newStreak);
+    const newTotalCompletions = (habit.totalCompletions ?? 0) + 1;
     await ctx.db.patch(habitId, {
       streakCurrent: newStreak,
       streakLongest: newLongest,
+      totalCompletions: newTotalCompletions,
+      lastCompletedAt: Date.now(),
       updatedAt: Date.now(),
     });
 
@@ -230,6 +404,9 @@ export const skip = mutation({
     habitId: v.id('habits'),
     date: v.string(),
   },
+  returns: v.object({
+    action: v.string(),
+  }),
   handler: async (ctx, { habitId, date }) => {
     const user = await getAuthUser(ctx);
     const habit = await ctx.db.get(habitId);
@@ -289,7 +466,37 @@ export const update = mutation({
     isActive: v.optional(v.boolean()),
     color: v.optional(v.string()),
     icon: v.optional(v.string()),
+    // Enhanced fields
+    habitType: v.optional(v.union(
+      v.literal('yes_no'),
+      v.literal('quantity'),
+      v.literal('duration'),
+      v.literal('negative'),
+      v.literal('range'),
+      v.literal('checklist')
+    )),
+    targetValue: v.optional(v.number()),
+    targetUnit: v.optional(v.string()),
+    checklistItems: v.optional(v.array(v.string())),
+    cueType: v.optional(v.union(
+      v.literal('time'),
+      v.literal('location'),
+      v.literal('action'),
+      v.literal('emotion'),
+      v.literal('none')
+    )),
+    cueDescription: v.optional(v.string()),
+    afterHabitId: v.optional(v.id('habits')),
+    difficultyLevel: v.optional(v.number()),
+    autoProgressionEnabled: v.optional(v.boolean()),
+    progressionIntervalDays: v.optional(v.number()),
+    progressionIncreaseAmount: v.optional(v.number()),
+    whyImportant: v.optional(v.string()),
+    immediateReward: v.optional(v.string()),
+    specificTime: v.optional(v.string()),
+    reminderEnabled: v.optional(v.boolean()),
   },
+  returns: v.null(),
   handler: async (ctx, { habitId, ...updates }) => {
     const user = await getAuthUser(ctx);
     const habit = await ctx.db.get(habitId);
@@ -307,6 +514,7 @@ export const update = mutation({
 // ─────────────────────────────────────────────────────────────────────────────
 export const remove = mutation({
   args: { habitId: v.id('habits') },
+  returns: v.null(),
   handler: async (ctx, { habitId }) => {
     const user = await getAuthUser(ctx);
     const habit = await ctx.db.get(habitId);
@@ -334,6 +542,7 @@ export const getLogsForDateRange = query({
     startDate: v.string(),
     endDate: v.string(),
   },
+  returns: v.array(habitLogDoc),
   handler: async (ctx, { startDate, endDate }) => {
     const user = await getAuthUser(ctx);
 
@@ -351,6 +560,15 @@ export const getLogsForDateRange = query({
 // ─────────────────────────────────────────────────────────────────────────────
 export const getStats = query({
   args: { habitId: v.id('habits') },
+  returns: v.object({
+    totalLogs: v.number(),
+    completed: v.number(),
+    completionRate: v.number(),
+    streakCurrent: v.number(),
+    streakLongest: v.number(),
+    bestDay: v.string(),
+    worstDay: v.string(),
+  }),
   handler: async (ctx, { habitId }) => {
     const user = await getAuthUser(ctx);
     const habit = await ctx.db.get(habitId);

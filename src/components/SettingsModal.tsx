@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Settings Modal Component
+// AscendifyIFY - Settings Modal Component
 // App settings, data export, and profile management
 // ═══════════════════════════════════════════════════════════════════════════════
 

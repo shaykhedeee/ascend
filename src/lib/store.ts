@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Global State Store (Zustand)
+// AscendifyIFY - Global State Store (Zustand)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { create } from 'zustand';

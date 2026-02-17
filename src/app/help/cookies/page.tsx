@@ -6,11 +6,11 @@ import Link from 'next/link';
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const metadata: Metadata = {
-  title: 'Cookie Policy - ASCEND',
-  description: 'ASCEND cookie policy. Learn about the cookies we use to improve your experience and how to manage them.',
+  title: 'Cookie Policy - Ascendify',
+  description: 'Ascendify cookie policy. Learn about the cookies we use to improve your experience and how to manage them.',
   openGraph: {
-    title: 'Cookie Policy - ASCEND',
-    description: 'Information about cookies used on ASCEND.',
+    title: 'Cookie Policy - Ascendify',
+    description: 'Information about cookies used on Ascendify.',
   },
 };
 
@@ -113,7 +113,7 @@ export default function CookiePolicyPage() {
             <div className="glass-card p-6">
               <p className="text-[var(--text-secondary)]">
                 Cookies are small text files stored on your device when you visit a website. 
-                They help us remember your preferences, understand how you use ASCEND, and 
+                They help us remember your preferences, understand how you use Ascendify, and 
                 improve your experience. Some cookies are essential for the app to function, 
                 while others help us optimize our service.
               </p>
@@ -126,7 +126,7 @@ export default function CookiePolicyPage() {
               <span className="text-xl">🔒</span> Essential Cookies
             </h2>
             <p className="text-[var(--text-secondary)] mb-4">
-              These cookies are necessary for ASCEND to work. You cannot opt out of these.
+              These cookies are necessary for Ascendify to work. You cannot opt out of these.
             </p>
             <div className="glass-card overflow-hidden">
               <table className="w-full">
@@ -186,7 +186,7 @@ export default function CookiePolicyPage() {
               <span className="text-xl">📊</span> Analytics Cookies
             </h2>
             <p className="text-[var(--text-secondary)] mb-4">
-              These cookies help us understand how users interact with ASCEND so we can improve.
+              These cookies help us understand how users interact with Ascendify so we can improve.
             </p>
             <div className="glass-card overflow-hidden">
               <table className="w-full">
@@ -255,7 +255,7 @@ export default function CookiePolicyPage() {
                   <h4 className="font-semibold text-[var(--text-primary)] mb-2">Browser Settings</h4>
                   <p className="text-sm text-[var(--text-secondary)]">
                     Most browsers allow you to block or delete cookies through settings. 
-                    Note that blocking essential cookies may prevent ASCEND from working properly.
+                    Note that blocking essential cookies may prevent Ascendify from working properly.
                   </p>
                 </div>
                 

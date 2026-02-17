@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Mobile Bottom Navigation
+// AscendifyIFY - Mobile Bottom Navigation
 // Simplified 3-tab navigation: Today | Progress | Profile
 // ═══════════════════════════════════════════════════════════════════════════════
 

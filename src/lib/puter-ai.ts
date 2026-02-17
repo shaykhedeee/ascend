@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Puter.js AI Integration
+// ASCENDIFY - Puter.js AI Integration
 // Free AI service using Puter.js - users pay their own usage, we pay nothing!
 // Docs: https://docs.puter.com/AI/
 // ═══════════════════════════════════════════════════════════════════════════════

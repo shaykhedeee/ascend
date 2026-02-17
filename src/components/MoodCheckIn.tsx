@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Mood Check-In Component
+// AscendifyIFY - Mood Check-In Component
 // Quick and gentle mood logging with factors and notes
 // Designed for anxiety-friendly, low-pressure tracking
 // ═══════════════════════════════════════════════════════════════════════════════

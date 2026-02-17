@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Push Notification Service
+// AscendifyIFY - Push Notification Service
 // Web Push Notifications for reminders and motivation
 // ═══════════════════════════════════════════════════════════════════════════════
 

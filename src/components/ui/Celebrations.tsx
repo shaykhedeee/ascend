@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Celebration Components
+// AscendifyIFY - Celebration Components
 // Beautiful animations for achievements, level ups, and milestones
 // ═══════════════════════════════════════════════════════════════════════════════
 

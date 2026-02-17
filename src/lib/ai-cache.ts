@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - AI Response Caching & Rate Limiting
+// ASCENDIFY - AI Response Caching & Rate Limiting
 // Reduces API calls and prevents abuse
 // ═══════════════════════════════════════════════════════════════════════════════
 

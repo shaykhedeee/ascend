@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Notification Settings Component
+// AscendifyIFY - Notification Settings Component
 // Configure push notifications and reminders
 // ═══════════════════════════════════════════════════════════════════════════════
 

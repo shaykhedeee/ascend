@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Pull to Refresh Hook
+// ASCENDIFY - Pull to Refresh Hook
 // Touch gesture handling for pull-to-refresh functionality
 // ═══════════════════════════════════════════════════════════════════════════════
 

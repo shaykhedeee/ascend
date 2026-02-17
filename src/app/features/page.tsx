@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Features Page (SEO-Optimized)
+// AscendifyIFY - Features Page (SEO-Optimized)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { Metadata } from 'next';
@@ -13,14 +13,14 @@ import {
 export const metadata: Metadata = {
   title: 'Features — AI Habit Tracker with Goal Decomposition',
   description:
-    'Explore ASCEND features: AI goal decomposition, streak tracking, gamified XP system, smart analytics, habit stacking, weekly reviews, contribution heatmap, and more.',
+    'Explore Ascendify features: AI goal decomposition, streak tracking, gamified XP system, smart analytics, habit stacking, weekly reviews, contribution heatmap, and more.',
   keywords: [
     'habit tracker features', 'AI goal decomposition', 'habit streak tracker',
     'gamified productivity app', 'habit analytics', 'habit stacking app',
     'goal tracker with milestones', 'best habit tracking features',
   ],
   openGraph: {
-    title: 'ASCEND Features — Everything You Need to Build Better Habits',
+    title: 'Ascendify Features — Everything You Need to Build Better Habits',
     description: 'AI-powered goal decomposition, streak tracking, gamification, and more.',
     url: '/features',
   },
@@ -137,7 +137,7 @@ const featureCategories = [
       {
         icon: Wifi,
         name: 'Works Offline (PWA)',
-        description: 'Install ASCEND on any device. Full functionality even without internet. Syncs when you reconnect.',
+        description: 'Install Ascendify on any device. Full functionality even without internet. Syncs when you reconnect.',
         badge: null,
       },
       {
@@ -160,11 +160,11 @@ const featureCategories = [
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'ASCEND Features',
-  description: 'Complete feature list for the ASCEND AI-powered habit tracker.',
+  name: 'Ascendify Features',
+  description: 'Complete feature list for the Ascendify AI-powered habit tracker.',
   mainEntity: {
     '@type': 'SoftwareApplication',
-    name: 'ASCEND',
+    name: 'Ascendify',
     applicationCategory: 'LifestyleApplication',
     featureList: featureCategories.flatMap((cat) =>
       cat.features.map((f) => f.name)
@@ -187,7 +187,7 @@ export default function FeaturesPage() {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-ascend-500 to-ascend-600 flex items-center justify-center">
               <Mountain className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-lg">ASCEND</span>
+            <span className="font-bold text-lg">ASCENDIFY</span>
             <span className="text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors flex items-center gap-1">
               <ArrowLeft className="w-4 h-4" /> Back
             </span>
@@ -247,14 +247,14 @@ export default function FeaturesPage() {
         {/* VS Competitors */}
         <section className="mb-20">
           <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8">
-            ASCEND vs. Other Habit Trackers
+            Ascendify vs. Other Habit Trackers
           </h2>
           <div className="overflow-x-auto rounded-xl border border-[var(--border)]">
             <table className="w-full text-sm" role="table">
               <thead>
                 <tr className="border-b border-[var(--border)] bg-[var(--surface)]">
                   <th className="text-left py-4 px-5 font-semibold">Feature</th>
-                  <th className="text-center py-4 px-5 font-semibold text-ascend-400">ASCEND</th>
+                  <th className="text-center py-4 px-5 font-semibold text-ascend-400">ASCENDIFY</th>
                   <th className="text-center py-4 px-5 font-semibold text-[var(--text-muted)]">Habitica</th>
                   <th className="text-center py-4 px-5 font-semibold text-[var(--text-muted)]">Streaks</th>
                   <th className="text-center py-4 px-5 font-semibold text-[var(--text-muted)]">Todoist</th>

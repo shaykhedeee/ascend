@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Utility Functions
+// ASCENDIFY - Utility Functions
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { clsx, type ClassValue } from 'clsx';
@@ -221,15 +221,11 @@ export function calculateStreak(entries: { date: string; completed: boolean }[])
   
   let streak = 0;
   let currentDate = new Date(sorted[0].date);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  
-  // Check if the streak starts today or yesterday
-  const daysDiff = Math.floor((today.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
-  if (daysDiff > 1) return 0; // Streak broken
+  currentDate.setHours(0, 0, 0, 0);
   
   for (const entry of sorted) {
     const entryDate = new Date(entry.date);
+    entryDate.setHours(0, 0, 0, 0);
     const diff = Math.floor((currentDate.getTime() - entryDate.getTime()) / (1000 * 60 * 60 * 24));
     
     if (diff === 0 || diff === 1) {

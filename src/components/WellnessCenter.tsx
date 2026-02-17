@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Wellness Center Component
+// AscendifyIFY - Wellness Center Component
 // Comprehensive mental health support hub
 // Features: Mood tracking, breathing exercises, gratitude, self-compassion
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -990,7 +990,7 @@ function ResourcesTab() {
         style={{ backgroundColor: 'var(--background-secondary)', borderColor: 'var(--border)' }}
       >
         <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-          <strong>Important:</strong> ASCEND is not a substitute for professional mental health care. 
+          <strong>Important:</strong> Ascendify is not a substitute for professional mental health care. 
           If you&apos;re struggling with your mental health, please reach out to a qualified healthcare provider. 
           The tools and features in this app are designed to support wellbeing, not diagnose or treat mental health conditions.
         </p>

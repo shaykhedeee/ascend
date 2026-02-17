@@ -1,9 +1,10 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Advanced AI Chatbot API Route
+// AscendifyIFY - Advanced AI Chatbot API Route
 // Multi-provider intelligent chatbot with sales skills and app expertise
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 import { 
   buildChatbotSystemPrompt, 
   detectIntent, 
@@ -182,8 +183,8 @@ async function callOpenRouter(
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-      'HTTP-Referer': 'https://ascend.app',
-      'X-Title': 'ASCEND Chatbot',
+      'HTTP-Referer': 'https://ascendify.app',
+      'X-Title': 'Ascendify Chatbot',
     },
     body: JSON.stringify({
       model: 'google/gemma-2-9b-it:free',
@@ -241,6 +242,17 @@ function findFAQAnswer(message: string): string | null {
 
 export async function POST(request: NextRequest): Promise<NextResponse<ChatResponse>> {
   try {
+    // ────────────────────────────────────────────────────────────────────────
+    // 1) Verify authentication - prevent unauthorized API abuse
+    // ────────────────────────────────────────────────────────────────────────
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json() as ChatRequest;
     const { message, history = [], userContext, isPremium = false } = body;
 

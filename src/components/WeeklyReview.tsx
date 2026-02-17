@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Weekly Review System
+// ASCENDIFY - Weekly Review System
 // Structured weekly check-in for reflection, planning, and goal adjustment
 // ═══════════════════════════════════════════════════════════════════════════════
 

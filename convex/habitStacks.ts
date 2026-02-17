@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// VANTAGE — Habit Stacks (Convex)
+// ASCENDIFY — Habit Stacks (Convex)
 // "After I [cue habit], I will [new habit]" — Atomic Habits stacking
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -26,6 +26,7 @@ export const create = mutation({
     name: v.string(),
     habitIds: v.array(v.id('habits')),
   },
+  returns: v.id('habitStacks'),
   handler: async (ctx, args) => {
     const user = await getAuthUser(ctx);
 
@@ -43,6 +44,16 @@ export const create = mutation({
 // ─────────────────────────────────────────────────────────────────────────────
 export const list = query({
   args: {},
+  returns: v.array(
+    v.object({
+      _id: v.id('habitStacks'),
+      _creationTime: v.number(),
+      userId: v.id('users'),
+      name: v.string(),
+      habitIds: v.array(v.id('habits')),
+      createdAt: v.number(),
+    })
+  ),
   handler: async (ctx) => {
     const user = await getAuthUser(ctx);
 
@@ -62,6 +73,7 @@ export const update = mutation({
     name: v.optional(v.string()),
     habitIds: v.optional(v.array(v.id('habits'))),
   },
+  returns: v.null(),
   handler: async (ctx, { stackId, ...updates }) => {
     const user = await getAuthUser(ctx);
     const stack = await ctx.db.get(stackId);
@@ -76,6 +88,7 @@ export const update = mutation({
 // ─────────────────────────────────────────────────────────────────────────────
 export const remove = mutation({
   args: { stackId: v.id('habitStacks') },
+  returns: v.null(),
   handler: async (ctx, { stackId }) => {
     const user = await getAuthUser(ctx);
     const stack = await ctx.db.get(stackId);

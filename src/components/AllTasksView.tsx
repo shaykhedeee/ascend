@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - All Tasks View with Filtering
+// AscendifyIFY - All Tasks View with Filtering
 // Complete task management with filters, sorting, and multiple views
 // ═══════════════════════════════════════════════════════════════════════════════
 

@@ -1,14 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Link from 'next/link';
-import {
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { GoogleAnalytics } from '@/lib/analytics';
 import { CustomCursor } from '@/components/Cursor';
@@ -18,7 +10,7 @@ import ConvexClientProvider from '@/components/ConvexClientProvider';
 import ClerkProviderWrapper from '@/components/ClerkProviderWrapper';
 
 // Base URL for the application (update for production)
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ascend-ashen-seven.vercel.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
 // Optimized font loading via next/font (eliminates render-blocking Google Fonts link)
 const inter = Inter({
@@ -32,8 +24,8 @@ export const metadata: Metadata = {
   // PRIMARY SEO METADATA
   // ═══════════════════════════════════════════════════════════════════════════
   title: {
-    default: 'ASCEND | AI-Powered Habit Tracker & Goal Achievement App',
-    template: '%s | ASCEND - Smart Habit Tracker',
+    default: 'Ascendify | AI-Powered Habit Tracker & Goal Achievement App',
+    template: '%s | Ascendify - Smart Habit Tracker',
   },
   description: 'Build better habits with AI-powered goal decomposition. Track habits, achieve goals, and level up your life with gamified progress tracking. Free habit tracker app with smart analytics.',
   keywords: [
@@ -42,7 +34,8 @@ export const metadata: Metadata = {
     // Long-tail Keywords  
     'AI habit tracker', 'smart goal setting app', 'gamified habit tracker',
     'daily habit tracker free', 'best habit tracking app 2026',
-    'habit tracker with streaks', 'goal decomposition tool',
+    'habit tracker with streaks', 'goal decomposition tool', 'ascendify',
+    'life operating system', 'goal decomposition engine',
     // Related Terms
     'productivity app', 'self improvement app', 'personal development',
     'routine builder', 'streak tracker', 'daily planner',
@@ -50,9 +43,9 @@ export const metadata: Metadata = {
     'how to build good habits', 'track my daily habits',
     'app to help achieve goals', 'free habit tracker',
   ],
-  authors: [{ name: 'ASCEND Team', url: siteUrl }],
-  creator: 'ASCEND',
-  publisher: 'ASCEND',
+  authors: [{ name: 'Ascendify Team', url: siteUrl }],
+  creator: 'Ascendify',
+  publisher: 'Ascendify',
   
   // ═══════════════════════════════════════════════════════════════════════════
   // CANONICAL & ALTERNATE URLs
@@ -72,7 +65,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'ASCEND',
+    title: 'Ascendify',
     startupImage: [
       {
         url: '/icons/splash-1170x2532.png',
@@ -80,7 +73,7 @@ export const metadata: Metadata = {
       },
     ],
   },
-  applicationName: 'ASCEND',
+  applicationName: 'Ascendify',
   
   // ═══════════════════════════════════════════════════════════════════════════
   // OPEN GRAPH (FACEBOOK, LINKEDIN, ETC.)
@@ -89,22 +82,22 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: siteUrl,
-    siteName: 'ASCEND',
-    title: 'ASCEND | AI-Powered Habit Tracker & Goal Achievement',
+    siteName: 'Ascendify',
+    title: 'Ascendify | AI-Powered Habit Tracker & Goal Achievement',
     description: 'Build lasting habits with AI goal decomposition. Track progress, earn XP, and level up your life. Join 50K+ users achieving their goals.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'ASCEND - AI-Powered Habit Tracker with gamified progress tracking',
+        alt: 'Ascendify - AI-Powered Habit Tracker with gamified progress tracking',
         type: 'image/png',
       },
       {
         url: '/og-image-square.png',
         width: 1200,
         height: 1200,
-        alt: 'ASCEND Habit Tracker App',
+        alt: 'Ascendify Habit Tracker App',
         type: 'image/png',
       },
     ],
@@ -115,13 +108,13 @@ export const metadata: Metadata = {
   // ═══════════════════════════════════════════════════════════════════════════
   twitter: {
     card: 'summary_large_image',
-    site: '@ascendapp',
-    creator: '@ascendapp',
-    title: 'ASCEND | AI Habit Tracker That Makes Goals Achievable',
+    site: '@ascendifyapp',
+    creator: '@ascendifyapp',
+    title: 'Ascendify | AI Habit Tracker That Makes Goals Achievable',
     description: 'Transform big goals into daily wins. AI-powered decomposition + gamified tracking = unstoppable progress. Try free!',
     images: {
       url: '/twitter-image.png',
-      alt: 'ASCEND - Build Better Habits with AI',
+      alt: 'Ascendify - Build Better Habits with AI',
     },
   },
   
@@ -190,7 +183,7 @@ const jsonLd = {
     // Software Application Schema
     {
       '@type': 'SoftwareApplication',
-      'name': 'ASCEND',
+      'name': 'Ascendify',
       'applicationCategory': 'LifestyleApplication',
       'applicationSubCategory': 'Productivity',
       'operatingSystem': 'Web, iOS, Android',
@@ -235,34 +228,34 @@ const jsonLd = {
         'Data Export',
         'Dark/Light Theme',
       ],
-      'screenshot': 'https://ascend.app/screenshots/dashboard.png',
+      'screenshot': `${siteUrl}/screenshots/dashboard.png`,
       'softwareVersion': '2.0',
     },
     // Organization Schema
     {
       '@type': 'Organization',
-      'name': 'ASCEND',
-      'url': 'https://ascend.app',
-      'logo': 'https://ascend.app/icons/icon.svg',
+      'name': 'Ascendify',
+      'url': siteUrl,
+      'logo': `${siteUrl}/icons/icon.svg`,
       'sameAs': [
-        'https://twitter.com/ascendapp',
-        'https://linkedin.com/company/ascendapp',
-        'https://instagram.com/ascendapp',
+        'https://twitter.com/ascendifyapp',
+        'https://linkedin.com/company/ascendifyapp',
+        'https://instagram.com/ascendifyapp',
       ],
       'contactPoint': {
         '@type': 'ContactPoint',
         'contactType': 'customer support',
-        'email': 'support@ascend.app',
+        'email': 'support@ascendify.app',
       },
     },
     // WebSite Schema for Sitelinks Search Box
     {
       '@type': 'WebSite',
-      'name': 'ASCEND',
-      'url': 'https://ascend.app',
+      'name': 'Ascendify',
+      'url': siteUrl,
       'potentialAction': {
         '@type': 'SearchAction',
-        'target': 'https://ascend.app/search?q={search_term_string}',
+        'target': `${siteUrl}/search?q={search_term_string}`,
         'query-input': 'required name=search_term_string',
       },
     },
@@ -272,18 +265,18 @@ const jsonLd = {
       'mainEntity': [
         {
           '@type': 'Question',
-          'name': 'What is ASCEND?',
+          'name': 'What is Ascendify?',
           'acceptedAnswer': {
             '@type': 'Answer',
-            'text': 'ASCEND is an AI-powered habit tracking app that helps you break down big goals into achievable daily tasks. It features gamified progress tracking with XP and levels, detailed analytics, and privacy-first design.',
+            'text': 'Ascendify is an AI-powered habit tracking app that helps you break down big goals into achievable daily tasks. It features gamified progress tracking with XP and levels, detailed analytics, and privacy-first design.',
           },
         },
         {
           '@type': 'Question',
-          'name': 'Is ASCEND free to use?',
+          'name': 'Is Ascendify free to use?',
           'acceptedAnswer': {
             '@type': 'Answer',
-            'text': 'Yes! ASCEND offers a free plan with up to 3 habits and basic analytics. Pro plans start at $9/month for unlimited features, and lifetime access is available for a one-time payment of $149.',
+            'text': 'Yes! Ascendify offers a free plan with up to 3 habits and basic analytics. Pro plans start at $9/month for unlimited features, and lifetime access is available for a one-time payment of $149.',
           },
         },
         {
@@ -342,31 +335,6 @@ export default function RootLayout({
           {/* Custom Cursor - Desktop Only */}
           <CustomCursor />
 
-          {/* Auth Controls */}
-          <header className="fixed top-4 right-4 z-[60] flex items-center gap-2">
-            <SignedOut>
-              <SignInButton>
-                <button className="px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] text-sm font-medium hover:bg-[var(--surface-hover)] transition-colors cursor-pointer">
-                  Sign in
-                </button>
-              </SignInButton>
-              <SignUpButton>
-                <button className="px-3 py-1.5 rounded-full bg-gradient-to-r from-ascend-500 to-gold-400 text-white text-sm font-semibold hover:opacity-90 transition-opacity cursor-pointer">
-                  Get started
-                </button>
-              </SignUpButton>
-            </SignedOut>
-            <SignedIn>
-              <Link
-                href="/billing"
-                className="px-3 py-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] text-sm font-medium hover:bg-[var(--surface-hover)] transition-colors"
-              >
-                Billing
-              </Link>
-              <UserButton afterSignOutUrl="/" />
-            </SignedIn>
-          </header>
-          
           <ThemeProvider>
             <AccessibilityProvider>
               <ConvexClientProvider>

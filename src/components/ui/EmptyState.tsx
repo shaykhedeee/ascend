@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Empty State Components
+// AscendifyIFY - Empty State Components
 // Beautiful empty state illustrations and messaging
 // ═══════════════════════════════════════════════════════════════════════════════
 

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Landing Page V2
+// AscendifyIFY - Landing Page V2
 // World-class mobile-first landing page with animations & trust signals
 // Inspired by Linear, Vercel, Notion - proven high-converting structures
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -367,7 +367,7 @@ export function LandingPageV2({ onGetStarted, onLogin }: LandingPageProps) {
       role: 'Entrepreneur',
       company: 'TechStart Inc.',
       avatar: 'S',
-      content: 'ASCEND transformed how I approach goals. The AI broke down "launch my startup" into daily wins. I went from overwhelmed to unstoppable.',
+      content: 'Ascendify transformed how I approach goals. The AI broke down "launch my startup" into daily wins. I went from overwhelmed to unstoppable.',
       rating: 5,
       metric: 'Launched in 90 days',
     },
@@ -376,7 +376,7 @@ export function LandingPageV2({ onGetStarted, onLogin }: LandingPageProps) {
       role: 'Fitness Coach',
       company: 'FitLife Pro',
       avatar: 'M',
-      content: 'The gamification is genius. My clients love earning XP for completing workouts. Retention is up 40% since we started recommending ASCEND.',
+      content: 'The gamification is genius. My clients love earning XP for completing workouts. Retention is up 40% since we started recommending Ascendify.',
       rating: 5,
       metric: '40% better retention',
     },
@@ -385,7 +385,7 @@ export function LandingPageV2({ onGetStarted, onLogin }: LandingPageProps) {
       role: 'Medical Student',
       company: 'Stanford Medicine',
       avatar: 'E',
-      content: 'As someone with ADHD, traditional planners never worked. ASCEND\'s micro-task breakdown and dopamine-friendly rewards finally clicked for me.',
+      content: 'As someone with ADHD, traditional planners never worked. Ascendify\'s micro-task breakdown and dopamine-friendly rewards finally clicked for me.',
       rating: 5,
       metric: '3.9 → 4.0 GPA',
     },
@@ -394,7 +394,7 @@ export function LandingPageV2({ onGetStarted, onLogin }: LandingPageProps) {
       role: 'Software Engineer',
       company: 'Meta',
       avatar: 'D',
-      content: 'I\'ve tried every productivity app. ASCEND is the only one that stuck. The streak protection feature saved me during crunch time.',
+      content: 'I\'ve tried every productivity app. Ascendify is the only one that stuck. The streak protection feature saved me during crunch time.',
       rating: 5,
       metric: '180-day streak',
     },
@@ -403,7 +403,7 @@ export function LandingPageV2({ onGetStarted, onLogin }: LandingPageProps) {
       role: 'Author',
       company: 'Best-selling Author',
       avatar: 'L',
-      content: 'Wrote my entire book using ASCEND\'s goal decomposition. 80,000 words felt manageable when broken into daily writing habits.',
+      content: 'Wrote my entire book using Ascendify\'s goal decomposition. 80,000 words felt manageable when broken into daily writing habits.',
       rating: 5,
       metric: 'Finished novel in 6 months',
     },
@@ -476,24 +476,24 @@ export function LandingPageV2({ onGetStarted, onLogin }: LandingPageProps) {
 
   const faqs = [
     {
-      question: 'What is ASCEND and how does it work?',
-      answer: 'ASCEND is an AI-powered habit tracking app that transforms ambitious goals into achievable daily tasks. Simply enter your goal, and our AI creates a complete roadmap with milestones, weekly objectives, and daily habits. Track your progress, earn XP, level up, and watch your life transform through consistent action.',
+      question: 'What is Ascendify and how does it work?',
+      answer: 'Ascendify is an AI-powered habit tracking app that transforms ambitious goals into achievable daily tasks. Simply enter your goal, and our AI creates a complete roadmap with milestones, weekly objectives, and daily habits. Track your progress, earn XP, level up, and watch your life transform through consistent action.',
     },
     {
-      question: 'Is ASCEND really free?',
+      question: 'Is Ascendify really free?',
       answer: 'Yes! Our free plan includes up to 5 habits, 1 active goal, basic analytics, and 7-day history. For unlimited habits, AI goal decomposition, and advanced features, upgrade to Pro at $5/month or get lifetime access for a one-time payment of $99.',
     },
     {
-      question: 'How is ASCEND different from other habit apps?',
-      answer: 'Unlike basic habit trackers, ASCEND offers AI-powered goal decomposition, gamified progress with XP and levels, streak protection, built-in Pomodoro timer, and ADHD-friendly design. We\'re built for people who think big and need smart systems to execute.',
+      question: 'How is Ascendify different from other habit apps?',
+      answer: 'Unlike basic habit trackers, Ascendify offers AI-powered goal decomposition, gamified progress with XP and levels, streak protection, built-in Pomodoro timer, and ADHD-friendly design. We\'re built for people who think big and need smart systems to execute.',
     },
     {
       question: 'Is my data private and secure?',
-      answer: 'Absolutely. ASCEND is privacy-first: your data stays on your device by default. We don\'t track you or sell your data. The app works offline as a PWA, and you can export your data anytime. Pro users get optional encrypted cloud sync.',
+      answer: 'Absolutely. Ascendify is privacy-first: your data stays on your device by default. We don\'t track you or sell your data. The app works offline as a PWA, and you can export your data anytime. Pro users get optional encrypted cloud sync.',
     },
     {
-      question: 'Can I use ASCEND on multiple devices?',
-      answer: 'Yes! ASCEND is a Progressive Web App (PWA) that works on any device with a modern browser—iPhone, Android, Mac, Windows, or Linux. Install it on your home screen for a native app experience.',
+      question: 'Can I use Ascendify on multiple devices?',
+      answer: 'Yes! Ascendify is a Progressive Web App (PWA) that works on any device with a modern browser—iPhone, Android, Mac, Windows, or Linux. Install it on your home screen for a native app experience.',
     },
     {
       question: 'What if I miss a day and lose my streak?',
@@ -539,7 +539,7 @@ export function LandingPageV2({ onGetStarted, onLogin }: LandingPageProps) {
             <div className="flex items-center gap-2 md:gap-3">
               <Logo size="md" />
               <div className="flex flex-col">
-                <span className="text-lg md:text-xl font-bold tracking-tight">ASCEND</span>
+                <span className="text-lg md:text-xl font-bold tracking-tight">ASCENDIFY</span>
                 <span className="hidden sm:block text-[8px] md:text-[9px] text-[var(--text-muted)] tracking-[0.2em] uppercase">
                   by WEBNESS
                 </span>
@@ -690,7 +690,7 @@ export function LandingPageV2({ onGetStarted, onLogin }: LandingPageProps) {
             {/* Subheadline */}
             <AnimatedSection delay={200}>
               <p className="text-base sm:text-lg md:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed">
-                ASCEND uses AI to break down your ambitious goals into achievable daily tasks. 
+                Ascendify uses AI to break down your ambitious goals into achievable daily tasks. 
                 Build habits that stick. Track progress that compounds. <span className="text-[var(--text-primary)] font-medium">Achieve what matters.</span>
               </p>
             </AnimatedSection>
@@ -794,7 +794,7 @@ export function LandingPageV2({ onGetStarted, onLogin }: LandingPageProps) {
                   </div>
                   <div className="flex-1 flex justify-center">
                     <div className="px-4 py-1 rounded-lg bg-[var(--background)] text-xs text-[var(--text-muted)]">
-                      app.ascend.ai
+                      app.ascendify.ai
                     </div>
                   </div>
                 </div>
@@ -932,7 +932,7 @@ export function LandingPageV2({ onGetStarted, onLogin }: LandingPageProps) {
         <div className="max-w-7xl mx-auto">
           <AnimatedSection className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-              How <span className="text-gold-400">ASCEND</span> Works
+              How <span className="text-gold-400">ASCENDIFY</span> Works
             </h2>
             <p className="text-base sm:text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
               Three simple steps to transform your life
@@ -996,7 +996,7 @@ export function LandingPageV2({ onGetStarted, onLogin }: LandingPageProps) {
         <div className="max-w-6xl mx-auto">
           <AnimatedSection className="text-center mb-12 md:mb-16">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-              Why Choose <span className="text-ascend-400">ASCEND</span>?
+              Why Choose <span className="text-ascend-400">ASCENDIFY</span>?
             </h2>
             <p className="text-base sm:text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
               See how we compare to other popular habit tracking apps
@@ -1014,7 +1014,7 @@ export function LandingPageV2({ onGetStarted, onLogin }: LandingPageProps) {
                                     bg-gradient-to-r from-ascend-500/20 to-gold-400/20 
                                     border border-ascend-500/30">
                         <span className="w-4 h-4 text-ascend-400"><Icons.Mountain /></span>
-                        <span className="font-bold text-ascend-400">ASCEND</span>
+                        <span className="font-bold text-ascend-400">ASCENDIFY</span>
                       </div>
                     </th>
                     <th className="p-4 text-center text-[var(--text-muted)] text-sm">Habitica</th>
@@ -1156,7 +1156,7 @@ export function LandingPageV2({ onGetStarted, onLogin }: LandingPageProps) {
               Loved by <span className="text-gold-400">Thousands</span>
             </h2>
             <p className="text-base sm:text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
-              Join achievers who have transformed their lives with ASCEND
+              Join achievers who have transformed their lives with Ascendify
             </p>
           </AnimatedSection>
 
@@ -1263,7 +1263,7 @@ export function LandingPageV2({ onGetStarted, onLogin }: LandingPageProps) {
               Frequently Asked <span className="text-ascend-400">Questions</span>
             </h2>
             <p className="text-base sm:text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
-              Everything you need to know about ASCEND
+              Everything you need to know about Ascendify
             </p>
           </AnimatedSection>
 
@@ -1327,7 +1327,7 @@ export function LandingPageV2({ onGetStarted, onLogin }: LandingPageProps) {
           
           <AnimatedSection delay={100}>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">
-              Ready to <span className="text-ascend-400">ASCEND</span>?
+              Ready to <span className="text-ascend-400">ASCENDIFY</span>?
             </h2>
           </AnimatedSection>
           
@@ -1399,7 +1399,7 @@ export function LandingPageV2({ onGetStarted, onLogin }: LandingPageProps) {
                               flex items-center justify-center">
                   <span className="w-4 h-4 text-white"><Icons.Mountain /></span>
                 </div>
-                <span className="font-bold">ASCEND</span>
+                <span className="font-bold">ASCENDIFY</span>
               </div>
               <p className="text-sm text-[var(--text-muted)] mb-4">
                 Transform your goals into daily victories with AI-powered planning.
@@ -1447,7 +1447,7 @@ export function LandingPageV2({ onGetStarted, onLogin }: LandingPageProps) {
 
           <div className="pt-8 border-t border-[var(--border)] flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-sm text-[var(--text-muted)]">
-              © 2026 ASCEND by WEBNESS. All rights reserved.
+              © 2026 Ascendify by WEBNESS. All rights reserved.
             </p>
             <div className="flex items-center gap-2 text-sm text-[var(--text-muted)]">
               Made with <span className="w-4 h-4 text-red-400 inline-block"><Icons.Heart /></span> for achievers everywhere

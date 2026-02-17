@@ -6,10 +6,10 @@ import Link from 'next/link';
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const metadata: Metadata = {
-  title: 'Refund Policy - ASCEND',
-  description: 'ASCEND refund policy. We offer a 14-day money-back guarantee for Pro subscriptions and 30-day guarantee for Lifetime purchases.',
+  title: 'Refund Policy - Ascendify',
+  description: 'Ascendify refund policy. We offer a 14-day money-back guarantee for Pro subscriptions and 30-day guarantee for Lifetime purchases.',
   openGraph: {
-    title: 'Refund Policy - ASCEND',
+    title: 'Refund Policy - Ascendify',
     description: 'Our hassle-free refund policy for Pro and Lifetime plans.',
   },
 };
@@ -51,7 +51,7 @@ export default function RefundPolicyPage() {
                   Our Promise
                 </h2>
                 <p className="text-[var(--text-secondary)] mb-0">
-                  We want you to be 100% satisfied with ASCEND. If it&apos;s not working for you, 
+                  We want you to be 100% satisfied with Ascendify. If it&apos;s not working for you, 
                   we&apos;ll give you a full refund - no questions asked.
                 </p>
               </div>
@@ -99,7 +99,7 @@ export default function RefundPolicyPage() {
               </h3>
               <p className="text-[var(--text-secondary)] mb-4">
                 Lifetime purchases come with an extended 30-day refund window to give you 
-                plenty of time to evaluate the full ASCEND experience.
+                plenty of time to evaluate the full Ascendify experience.
               </p>
               <ul className="space-y-2 text-[var(--text-secondary)]">
                 <li className="flex items-center gap-2">
@@ -126,7 +126,7 @@ export default function RefundPolicyPage() {
                   <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[var(--accent)]/20 flex items-center justify-center text-[var(--accent)] font-semibold">1</span>
                   <div>
                     <strong className="text-[var(--text-primary)]">Contact Support</strong>
-                    <p>Email us at <a href="mailto:support@ascend.app" className="text-[var(--accent)]">support@ascend.app</a> with your account email</p>
+                    <p>Email us at <a href="mailto:support@ascendify.app" className="text-[var(--accent)]">support@ascendify.app</a> with your account email</p>
                   </div>
                 </li>
                 <li className="flex gap-4">

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Design System Button Components
+// AscendifyIFY - Design System Button Components
 // Standardized button styles with consistent interactions
 // ═══════════════════════════════════════════════════════════════════════════════
 

@@ -1,13 +1,13 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Terms of Service Page
+// AscendifyIFY - Terms of Service Page
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { Mountain, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Terms of Service | ASCEND',
-  description: 'ASCEND Terms of Service - Rules and guidelines for using our app.',
+  title: 'Terms of Service | Ascendify',
+  description: 'Ascendify Terms of Service - Rules and guidelines for using our app.',
 };
 
 export default function TermsOfService() {
@@ -21,7 +21,7 @@ export default function TermsOfService() {
                           flex items-center justify-center">
               <Mountain className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-lg">ASCEND</span>
+            <span className="font-bold text-lg">ASCENDIFY</span>
             <span className="text-white/50 group-hover:text-white transition-colors flex items-center gap-1">
               <ArrowLeft className="w-4 h-4" />
               Back
@@ -39,7 +39,7 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-xl font-semibold text-ascend-400 mb-4">1. Acceptance of Terms</h2>
             <p className="text-white/70 leading-relaxed">
-              By accessing and using ASCEND (&quot;the App&quot;), you accept and agree to be bound by these 
+              By accessing and using Ascendify (&quot;the App&quot;), you accept and agree to be bound by these 
               Terms of Service. If you do not agree to these terms, please do not use the App.
             </p>
           </section>
@@ -47,7 +47,7 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-xl font-semibold text-ascend-400 mb-4">2. Description of Service</h2>
             <p className="text-white/70 leading-relaxed">
-              ASCEND is a habit tracking and goal achievement application that helps users build 
+              Ascendify is a habit tracking and goal achievement application that helps users build 
               better habits through AI-powered goal decomposition, gamification, and progress tracking. 
               The App is provided on a freemium basis with optional paid features.
             </p>
@@ -90,7 +90,7 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-xl font-semibold text-ascend-400 mb-4">6. Intellectual Property</h2>
             <p className="text-white/70 leading-relaxed">
-              ASCEND, including its logo, design, features, and content, is protected by copyright, 
+              Ascendify, including its logo, design, features, and content, is protected by copyright, 
               trademark, and other intellectual property laws. You may not copy, modify, distribute, 
               or create derivative works without our written permission.
             </p>
@@ -108,7 +108,7 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-xl font-semibold text-ascend-400 mb-4">8. Disclaimer of Warranties</h2>
             <p className="text-white/70 leading-relaxed">
-              ASCEND is provided &quot;as is&quot; without warranties of any kind. We do not guarantee that 
+              Ascendify is provided &quot;as is&quot; without warranties of any kind. We do not guarantee that 
               the App will be error-free, uninterrupted, or meet your specific requirements. Use of 
               the App is at your own risk.
             </p>
@@ -117,7 +117,7 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-xl font-semibold text-ascend-400 mb-4">9. Limitation of Liability</h2>
             <p className="text-white/70 leading-relaxed">
-              To the maximum extent permitted by law, ASCEND shall not be liable for any indirect, 
+              To the maximum extent permitted by law, Ascendify shall not be liable for any indirect, 
               incidental, special, consequential, or punitive damages arising from your use of the App.
             </p>
           </section>
@@ -143,8 +143,8 @@ export default function TermsOfService() {
             <p className="text-white/70 leading-relaxed">
               For questions about these Terms, contact us at:
               <br />
-              <a href="mailto:legal@ascend.app" className="text-ascend-400 hover:underline">
-                legal@ascend.app
+              <a href="mailto:legal@ascendify.app" className="text-ascend-400 hover:underline">
+                legal@ascendify.app
               </a>
             </p>
           </section>
@@ -154,7 +154,7 @@ export default function TermsOfService() {
       {/* Footer */}
       <footer className="border-t border-white/5 py-8 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center text-white/40 text-sm">
-          © 2026 ASCEND. All rights reserved.
+          © 2026 Ascendify. All rights reserved.
         </div>
       </footer>
     </div>

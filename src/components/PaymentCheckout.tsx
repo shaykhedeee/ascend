@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Payment Checkout Component
+// ASCENDIFY - Payment Checkout Component
 // Beautiful checkout modal with plan selection and PayU integration
 // ═══════════════════════════════════════════════════════════════════════════════
 

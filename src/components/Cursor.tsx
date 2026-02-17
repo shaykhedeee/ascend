@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Premium Custom Cursor Component
+// ASCENDIFY - Premium Custom Cursor Component
 // Elegant, smooth cursor with subtle animations
 // ═══════════════════════════════════════════════════════════════════════════════
 

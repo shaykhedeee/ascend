@@ -1,9 +1,10 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - AI Chat API Route (Cost-Optimized)
+// ASCENDIFY - AI Chat API Route (Cost-Optimized)
 // Server-side AI endpoint using cheapest models with Atomic Habits knowledge
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 import { buildAtomicHabitsSystemPrompt } from '@/lib/atomic-habits-knowledge';
 
 // ─────────────────────────────────────────────────────────────────────────────────
@@ -173,8 +174,8 @@ async function callOpenRouter(messages: ChatMessage[], isPremium: boolean): Prom
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-      'HTTP-Referer': 'https://ascend.app',
-      'X-Title': 'ASCEND AI Coach',
+      'HTTP-Referer': 'https://ascendify.app',
+      'X-Title': 'Ascendify AI Coach',
     },
     body: JSON.stringify({
       model,
@@ -202,6 +203,17 @@ async function callOpenRouter(messages: ChatMessage[], isPremium: boolean): Prom
 
 export async function POST(request: NextRequest): Promise<NextResponse<AIResponse>> {
   try {
+    // ────────────────────────────────────────────────────────────────────────
+    // 1) Verify authentication - prevent unauthorized API abuse
+    // ────────────────────────────────────────────────────────────────────────
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
     // Get client IP for rate limiting
     const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
     

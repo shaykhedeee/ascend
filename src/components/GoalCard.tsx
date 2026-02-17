@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Goal Card Component with Edit/Delete Actions
+// AscendifyIFY - Goal Card Component with Edit/Delete Actions
 // ═══════════════════════════════════════════════════════════════════════════════
 
 'use client';

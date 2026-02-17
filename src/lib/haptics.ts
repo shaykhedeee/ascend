@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Haptic Feedback Utilities
+// ASCENDIFY - Haptic Feedback Utilities
 // Vibration API wrapper for mobile haptic feedback
 // ═══════════════════════════════════════════════════════════════════════════════
 

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Tutorial/Walkthrough Component
+// AscendifyIFY - Tutorial/Walkthrough Component
 // First-time user guidance with step-by-step feature introduction
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -28,7 +28,7 @@ import {
 const TUTORIAL_STEPS = [
   {
     id: 'welcome',
-    title: 'Welcome to ASCEND! 🎉',
+    title: 'Welcome to Ascendify! 🎉',
     description: 'Your AI-powered companion for achieving goals and building habits. Let us show you around!',
     icon: Sparkles,
     highlight: null,

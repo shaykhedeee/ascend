@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - AI Coach Component
+// AscendifyIFY - AI Coach Component
 // Real-time AI coaching messages using secure server-side API routes
 // ═══════════════════════════════════════════════════════════════════════════════
 

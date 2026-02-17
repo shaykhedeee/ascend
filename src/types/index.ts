@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - AI-Powered Life Transformation System
+// ASCENDIFY - AI-Powered Life Transformation System
 // Core Type Definitions
 // ═══════════════════════════════════════════════════════════════════════════════
 

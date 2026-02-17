@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - PWA Install Prompt
+// AscendifyIFY - PWA Install Prompt
 // Smart install prompt for Progressive Web App
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -100,7 +100,7 @@ export function PWAInstallPrompt() {
               <Smartphone className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h3 className="font-bold text-themed">Install ASCEND</h3>
+              <h3 className="font-bold text-themed">Install Ascendify</h3>
               <p className="text-sm text-themed-muted">Get the full app experience</p>
             </div>
           </div>

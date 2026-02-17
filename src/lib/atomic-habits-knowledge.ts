@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Atomic Habits Knowledge Base
+// AscendifyIFY - Atomic Habits Knowledge Base
 // Comprehensive teachings from James Clear's Atomic Habits
 // For AI coaching and user guidance
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -781,7 +781,7 @@ export function getStrategies(category: string): PracticalStrategy | undefined {
  * Build AI system prompt with Atomic Habits knowledge
  */
 export function buildAtomicHabitsSystemPrompt(): string {
-  return `You are ASCEND AI Coach, an expert in habit formation based on James Clear's "Atomic Habits."
+  return `You are Ascendify AI Coach, an expert in habit formation based on James Clear's "Atomic Habits."
 
 CORE PRINCIPLES YOU TEACH:
 1. MAKE IT OBVIOUS (Cue): Use implementation intentions, habit stacking, environment design

@@ -1,11 +1,11 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Robots.txt Configuration
+// AscendifyIFY - Robots.txt Configuration
 // SEO-optimized robots configuration for Next.js
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { MetadataRoute } from 'next';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ascend.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
 export default function robots(): MetadataRoute.Robots {
   return {

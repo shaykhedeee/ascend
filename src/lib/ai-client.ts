@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Secure AI Client
+// AscendifyIFY - Secure AI Client
 // Client-side AI service that calls server-side API routes (no exposed API keys)
 // With caching and rate limiting for efficient API usage
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -189,7 +189,7 @@ class SecureAIClient {
         'coaching',
         cacheKey,
         async () => {
-          const systemPrompt = `You are ASCEND AI, a friendly and encouraging habit coach.
+          const systemPrompt = `You are Ascendify AI, a friendly and encouraging habit coach.
 Generate a SHORT, personalized coaching message (1-2 sentences max).
 Be warm but not cheesy. Be specific to their situation.
 Respond with JSON: {"message": "Your message here", "type": "motivation|warning|celebration|tip"}`;
@@ -391,7 +391,7 @@ Generate an appropriate coaching message.`;
    * Generate identity statement
    */
   async generateIdentityStatement(goal: string, habits: string[]): Promise<string> {
-    const systemPrompt = `You are ASCEND AI, inspired by James Clear's Atomic Habits.
+    const systemPrompt = `You are Ascendify AI, inspired by James Clear's Atomic Habits.
 Create a powerful identity statement that starts with "I am becoming someone who..."
 Make it personal, aspirational, and connected to their habits.
 Respond with just the statement, no JSON.`;

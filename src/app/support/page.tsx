@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Support & FAQ Page
+// AscendifyIFY - Support & FAQ Page
 // ═══════════════════════════════════════════════════════════════════════════════
 
 'use client';
@@ -19,11 +19,11 @@ const faqs = [
       },
       {
         q: 'Is my data stored online or locally?',
-        a: 'ASCEND uses a local-first approach. All your habits, goals, and progress data are stored locally on your device. This means your data never leaves your device unless you explicitly choose to export it.',
+        a: 'Ascendify uses a local-first approach. All your habits, goals, and progress data are stored locally on your device. This means your data never leaves your device unless you explicitly choose to export it.',
       },
       {
-        q: 'Can I use ASCEND offline?',
-        a: 'Yes! ASCEND is a Progressive Web App (PWA) that works offline. Install it to your home screen for the best experience. Your progress will sync when you come back online.',
+        q: 'Can I use Ascendify offline?',
+        a: 'Yes! Ascendify is a Progressive Web App (PWA) that works offline. Install it to your home screen for the best experience. Your progress will sync when you come back online.',
       },
     ],
   },
@@ -44,7 +44,7 @@ const faqs = [
       },
       {
         q: 'Can I import data from other apps?',
-        a: 'Currently, ASCEND supports importing data in JSON format. If you have exported data from another habit tracker, contact us and we may be able to help with conversion.',
+        a: 'Currently, Ascendify supports importing data in JSON format. If you have exported data from another habit tracker, contact us and we may be able to help with conversion.',
       },
     ],
   },
@@ -74,7 +74,7 @@ const faqs = [
     questions: [
       {
         q: 'My data disappeared. How do I recover it?',
-        a: 'ASCEND stores data in your browser\'s local storage. If you cleared your browser data, the information may be lost. We recommend regularly exporting your data as a backup. Check if you\'re logged into the same browser/device.',
+        a: 'Ascendify stores data in your browser\'s local storage. If you cleared your browser data, the information may be lost. We recommend regularly exporting your data as a backup. Check if you\'re logged into the same browser/device.',
       },
       {
         q: 'The app isn\'t loading properly.',
@@ -127,7 +127,7 @@ export default function SupportPage() {
                           flex items-center justify-center">
               <Mountain className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-lg">ASCEND</span>
+            <span className="font-bold text-lg">ASCENDIFY</span>
             <span className="text-white/50 group-hover:text-white transition-colors flex items-center gap-1">
               <ArrowLeft className="w-4 h-4" />
               Back
@@ -151,7 +151,7 @@ export default function SupportPage() {
         <div className="max-w-4xl mx-auto">
           <div className="grid sm:grid-cols-3 gap-4">
             <a 
-              href="mailto:support@ascend.app"
+              href="mailto:support@ascendify.app"
               className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 hover:bg-white/[0.04] transition-all"
             >
               <div className="w-10 h-10 rounded-lg bg-ascend-500/20 flex items-center justify-center">
@@ -159,7 +159,7 @@ export default function SupportPage() {
               </div>
               <div>
                 <p className="font-medium">Email Support</p>
-                <p className="text-sm text-white/50">support@ascend.app</p>
+                <p className="text-sm text-white/50">support@ascendify.app</p>
               </div>
             </a>
             
@@ -223,7 +223,7 @@ export default function SupportPage() {
             Our support team typically responds within 24 hours.
           </p>
           <a 
-            href="mailto:support@ascend.app"
+            href="mailto:support@ascendify.app"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold
                      bg-gradient-to-r from-ascend-500 to-ascend-600 hover:from-ascend-400 hover:to-ascend-500
                      transition-all"
@@ -237,7 +237,7 @@ export default function SupportPage() {
       {/* Footer */}
       <footer className="border-t border-white/5 py-8 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center text-white/40 text-sm">
-          © 2026 ASCEND. All rights reserved.
+          © 2026 Ascendify. All rights reserved.
         </div>
       </footer>
     </div>

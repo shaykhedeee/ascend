@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Payment Failed Page
+// AscendifyIFY - Payment Failed Page
 // Shows error message and retry options after failed payment
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -99,8 +99,8 @@ function PaymentFailedContent() {
         {/* Help Text */}
         <p className="text-xs text-themed-muted mt-8">
           If you continue to face issues, please contact us at{' '}
-          <a href="mailto:support@ascend.app" className="text-ascend-400 hover:underline">
-            support@ascend.app
+          <a href="mailto:support@ascendify.app" className="text-ascend-400 hover:underline">
+            support@ascendify.app
           </a>
         </p>
       </div>

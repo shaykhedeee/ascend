@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Keyboard Shortcuts System
+// AscendifyIFY - Keyboard Shortcuts System
 // Professional keyboard navigation like Notion/Linear
 // ═══════════════════════════════════════════════════════════════════════════════
 

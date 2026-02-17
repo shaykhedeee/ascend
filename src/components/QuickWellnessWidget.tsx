@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Quick Wellness Widget
+// AscendifyIFY - Quick Wellness Widget
 // Small sidebar widget for quick access to wellness features
 // ═══════════════════════════════════════════════════════════════════════════════
 

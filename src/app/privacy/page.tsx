@@ -1,13 +1,13 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Privacy Policy Page
+// AscendifyIFY - Privacy Policy Page
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { Mountain, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Privacy Policy | ASCEND',
-  description: 'ASCEND Privacy Policy - How we protect your data and respect your privacy.',
+  title: 'Privacy Policy | Ascendify',
+  description: 'Ascendify Privacy Policy - How we protect your data and respect your privacy.',
 };
 
 export default function PrivacyPolicy() {
@@ -21,7 +21,7 @@ export default function PrivacyPolicy() {
                           flex items-center justify-center">
               <Mountain className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-lg">ASCEND</span>
+            <span className="font-bold text-lg">ASCENDIFY</span>
             <span className="text-white/50 group-hover:text-white transition-colors flex items-center gap-1">
               <ArrowLeft className="w-4 h-4" />
               Back
@@ -39,7 +39,7 @@ export default function PrivacyPolicy() {
           <section>
             <h2 className="text-xl font-semibold text-ascend-400 mb-4">1. Our Commitment to Privacy</h2>
             <p className="text-white/70 leading-relaxed">
-              ASCEND is designed with your privacy as a core principle. We believe your personal data 
+              Ascendify is designed with your privacy as a core principle. We believe your personal data 
               belongs to you, and we&apos;ve built our app to minimize data collection while maximizing 
               your ability to achieve your goals.
             </p>
@@ -48,7 +48,7 @@ export default function PrivacyPolicy() {
           <section>
             <h2 className="text-xl font-semibold text-ascend-400 mb-4">2. Data Storage</h2>
             <p className="text-white/70 leading-relaxed mb-4">
-              <strong className="text-white">Local-First Approach:</strong> ASCEND stores your data 
+              <strong className="text-white">Local-First Approach:</strong> Ascendify stores your data 
               locally on your device using browser storage technology. This means:
             </p>
             <ul className="list-disc list-inside text-white/70 space-y-2 ml-4">
@@ -102,7 +102,7 @@ export default function PrivacyPolicy() {
           <section>
             <h2 className="text-xl font-semibold text-ascend-400 mb-4">7. Cookies</h2>
             <p className="text-white/70 leading-relaxed">
-              ASCEND uses essential cookies only for maintaining your session and preferences. 
+              Ascendify uses essential cookies only for maintaining your session and preferences. 
               We do not use tracking cookies or third-party advertising cookies.
             </p>
           </section>
@@ -119,7 +119,7 @@ export default function PrivacyPolicy() {
           <section>
             <h2 className="text-xl font-semibold text-ascend-400 mb-4">9. Children&apos;s Privacy</h2>
             <p className="text-white/70 leading-relaxed">
-              ASCEND is not intended for children under 13 years of age. We do not knowingly 
+              Ascendify is not intended for children under 13 years of age. We do not knowingly 
               collect personal information from children under 13.
             </p>
           </section>
@@ -129,8 +129,8 @@ export default function PrivacyPolicy() {
             <p className="text-white/70 leading-relaxed">
               If you have any questions about this Privacy Policy, please contact us at:
               <br />
-              <a href="mailto:privacy@ascend.app" className="text-ascend-400 hover:underline">
-                privacy@ascend.app
+              <a href="mailto:privacy@ascendify.app" className="text-ascend-400 hover:underline">
+                privacy@ascendify.app
               </a>
             </p>
           </section>
@@ -140,7 +140,7 @@ export default function PrivacyPolicy() {
       {/* Footer */}
       <footer className="border-t border-white/5 py-8 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center text-white/40 text-sm">
-          © 2026 ASCEND. All rights reserved.
+          © 2026 Ascendify. All rights reserved.
         </div>
       </footer>
     </div>

@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Complete Knowledge Base for AI Chatbot
-// Everything the AI needs to know about ASCEND to help users and convert sales
+// AscendifyIFY - Complete Knowledge Base for AI Chatbot
+// Everything the AI needs to know about Ascendify to help users and convert sales
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // ─────────────────────────────────────────────────────────────────────────────────
@@ -8,7 +8,7 @@
 // ─────────────────────────────────────────────────────────────────────────────────
 
 export const PRODUCT_INFO = {
-  name: 'ASCEND',
+  name: 'Ascendify',
   tagline: 'AI-Powered Habit Tracker & Goal Achievement App',
   description: 'Transform your goals into daily wins with AI-powered decomposition, gamified tracking, and Atomic Habits principles.',
   mission: 'Help people build lasting habits and achieve their biggest goals through science-backed methods and intelligent automation.',
@@ -165,7 +165,7 @@ export const FAQ = {
     },
     {
       q: 'What is the Two-Minute Rule?',
-      a: 'James Clear\'s Two-Minute Rule states: "When you start a new habit, it should take less than two minutes to do." ASCEND applies this by giving you "gateway" versions of tasks. Want to read more? Start with "read one page." Want to exercise? Start with "put on workout clothes."',
+      a: 'James Clear\'s Two-Minute Rule states: "When you start a new habit, it should take less than two minutes to do." Ascendify applies this by giving you "gateway" versions of tasks. Want to read more? Start with "read one page." Want to exercise? Start with "put on workout clothes."',
     },
   ],
   
@@ -176,7 +176,7 @@ export const FAQ = {
     },
     {
       q: 'What is the Identity System?',
-      a: 'Instead of focusing on goals, ASCEND helps you focus on identity - who you want to become. Each habit completion is a vote for your new identity. "I want to lose weight" becomes "I am becoming a healthy person." This subtle shift dramatically improves long-term success.',
+      a: 'Instead of focusing on goals, Ascendify helps you focus on identity - who you want to become. Each habit completion is a vote for your new identity. "I want to lose weight" becomes "I am becoming a healthy person." This subtle shift dramatically improves long-term success.',
     },
     {
       q: 'How does XP and leveling work?',
@@ -199,15 +199,15 @@ export const FAQ = {
     },
     {
       q: 'Is there a refund policy?',
-      a: 'Yes! We offer a 14-day money-back guarantee for Pro subscriptions. If ASCEND isn\'t working for you, contact support@ascend.app within 14 days for a full refund. Lifetime purchases have a 30-day guarantee.',
+      a: 'Yes! We offer a 14-day money-back guarantee for Pro subscriptions. If Ascendify isn\'t working for you, contact support@ascendify.app within 14 days for a full refund. Lifetime purchases have a 30-day guarantee.',
     },
     {
       q: 'How is my data protected?',
       a: 'Your data is encrypted at rest and in transit. We never sell your data to third parties. You can export or delete all your data at any time. We\'re GDPR compliant and take privacy seriously.',
     },
     {
-      q: 'Can I use ASCEND offline?',
-      a: 'Yes! ASCEND is a Progressive Web App (PWA). Install it on your home screen and use it offline. Your data syncs automatically when you\'re back online.',
+      q: 'Can I use Ascendify offline?',
+      a: 'Yes! Ascendify is a Progressive Web App (PWA). Install it on your home screen and use it offline. Your data syncs automatically when you\'re back online.',
     },
   ],
   
@@ -226,7 +226,7 @@ export const FAQ = {
     },
     {
       q: 'Notifications aren\'t working',
-      a: 'Make sure notifications are enabled in Settings > Notifications AND in your device/browser settings. For iOS, you may need to add ASCEND to your home screen first.',
+      a: 'Make sure notifications are enabled in Settings > Notifications AND in your device/browser settings. For iOS, you may need to add Ascendify to your home screen first.',
     },
   ],
 };
@@ -271,7 +271,7 @@ export const SALES_TRIGGERS = {
 
 export const CHATBOT_PERSONA = {
   name: 'Kai',
-  fullName: 'Kai, ASCEND AI Assistant',
+  fullName: 'Kai, Ascendify AI Assistant',
   personality: 'Friendly, knowledgeable, supportive, and gently motivating. Uses casual but professional tone. Celebrates wins, shows empathy for struggles, and gives actionable advice.',
   
   principles: [
@@ -285,9 +285,9 @@ export const CHATBOT_PERSONA = {
   ],
   
   greetings: [
-    'Hey! I\'m Kai, your ASCEND assistant. How can I help you today?',
-    'Hi there! I\'m Kai. Whether you need help with habits, goals, or anything ASCEND-related, I\'m here for you.',
-    'Welcome! I\'m Kai, and I\'m here to help you make the most of ASCEND. What\'s on your mind?',
+    'Hey! I\'m Kai, your Ascendify assistant. How can I help you today?',
+    'Hi there! I\'m Kai. Whether you need help with habits, goals, or anything Ascendify-related, I\'m here for you.',
+    'Welcome! I\'m Kai, and I\'m here to help you make the most of Ascendify. What\'s on your mind?',
   ],
   
   encouragements: [
@@ -352,7 +352,7 @@ export function buildChatbotSystemPrompt(userContext?: {
 }): string {
   const ctx = userContext || {};
   
-  return `You are ${CHATBOT_PERSONA.name}, the AI assistant for ASCEND - an AI-powered habit tracker and goal achievement app.
+  return `You are ${CHATBOT_PERSONA.name}, the AI assistant for Ascendify - an AI-powered habit tracker and goal achievement app.
 
 PERSONALITY: ${CHATBOT_PERSONA.personality}
 
@@ -360,7 +360,7 @@ YOUR CORE PRINCIPLES:
 ${CHATBOT_PERSONA.principles.map((p, i) => `${i + 1}. ${p}`).join('\n')}
 
 PRODUCT KNOWLEDGE:
-- ASCEND uses Atomic Habits principles by James Clear
+- Ascendify uses Atomic Habits principles by James Clear
 - Key features: ${PRODUCT_INFO.keyFeatures.slice(0, 5).map(f => f.name).join(', ')}
 - Free plan: ${PRICING.free.limits.habits} habits, ${PRICING.free.limits.goals} goal, ${PRICING.free.limits.aiRequests} AI messages/month
 - Pro plan: $${PRICING.pro.price}/month - unlimited everything + advanced analytics + priority AI

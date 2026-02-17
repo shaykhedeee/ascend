@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - AI Service Provider
+// AscendifyIFY - AI Service Provider
 // Multi-provider AI service using FREE/cheap APIs (Groq, Gemini, OpenAI fallback)
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -307,7 +307,7 @@ export class AscendAIService {
     const totalDays = Math.ceil((targetDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
     const totalWeeks = Math.ceil(totalDays / 7);
 
-    const systemPrompt = `You are ASCEND AI, an expert life coach and goal-setting strategist. 
+    const systemPrompt = `You are Ascendify AI, an expert life coach and goal-setting strategist. 
 You break down ambitious goals into achievable milestones, weekly objectives, and daily tasks.
 You are encouraging but realistic. You adapt difficulty based on user's skill level.
 Always respond with valid JSON matching the required schema.`;
@@ -393,7 +393,7 @@ Respond with JSON in this EXACT format:
       timeOfDay: 'morning' | 'afternoon' | 'evening' | 'night';
     }
   ): Promise<{ message: string; type: 'motivation' | 'warning' | 'celebration' | 'tip' }> {
-    const systemPrompt = `You are ASCEND AI, a friendly and encouraging habit coach.
+    const systemPrompt = `You are Ascendify AI, a friendly and encouraging habit coach.
 Generate a SHORT, personalized coaching message (1-2 sentences max).
 Be warm but not cheesy. Be specific to their situation.
 Respond with JSON: {"message": "Your message here", "type": "motivation|warning|celebration|tip"}`;
@@ -438,7 +438,7 @@ Generate an appropriate coaching message.`;
     estimatedMinutes: number;
     whyItHelps: string;
   }>> {
-    const systemPrompt = `You are ASCEND AI, an expert in habit formation and behavior science.
+    const systemPrompt = `You are Ascendify AI, an expert in habit formation and behavior science.
 Suggest 3-5 highly specific, actionable habits based on user's goals.
 Each habit should be small enough to do daily but meaningful enough to create change.
 Respond with JSON array only.`;
@@ -491,7 +491,7 @@ Respond with JSON array:
     recommendations: string[];
     predictedStruggle: string | null;
   }> {
-    const systemPrompt = `You are ASCEND AI, an expert in behavioral analytics.
+    const systemPrompt = `You are Ascendify AI, an expert in behavioral analytics.
 Analyze habit patterns and provide actionable insights.
 Be specific and data-driven. Identify patterns the user might not notice.
 Respond with JSON only.`;
@@ -530,7 +530,7 @@ Respond with JSON:
     goal: string,
     habits: string[]
   ): Promise<string> {
-    const systemPrompt = `You are ASCEND AI, inspired by James Clear's Atomic Habits.
+    const systemPrompt = `You are Ascendify AI, inspired by James Clear's Atomic Habits.
 Create a powerful identity statement that starts with "I am becoming someone who..."
 Make it personal, aspirational, and connected to their habits.
 Respond with just the statement, no JSON.`;

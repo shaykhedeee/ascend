@@ -1,7 +1,7 @@
 'use client';
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND — ConvexClientProvider
+// Ascendify — ConvexClientProvider
 // Wraps the app with Convex + Clerk auth integration
 // Must be nested INSIDE <ClerkProvider> in layout.tsx
 // ═══════════════════════════════════════════════════════════════════════════════

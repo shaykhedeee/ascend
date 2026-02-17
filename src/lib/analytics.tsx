@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Analytics & Tracking
+// ASCENDIFY - Analytics & Tracking
 // Google Analytics 4, Plausible, and custom event tracking
 // ═══════════════════════════════════════════════════════════════════════════════
 

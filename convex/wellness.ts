@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// VANTAGE — Wellness (Convex)
+// ASCENDIFY — Wellness (Convex)
 // Mood tracking, journal entries
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -28,6 +28,7 @@ export const logMood = mutation({
     notes: v.optional(v.string()),
     tags: v.optional(v.array(v.string())),
   },
+  returns: v.id('moodEntries'),
   handler: async (ctx, args) => {
     const user = await getAuthUser(ctx);
 
@@ -64,6 +65,18 @@ export const logMood = mutation({
 // ─────────────────────────────────────────────────────────────────────────────
 export const getMoodHistory = query({
   args: { days: v.optional(v.number()) },
+  returns: v.array(
+    v.object({
+      _id: v.id('moodEntries'),
+      _creationTime: v.number(),
+      userId: v.id('users'),
+      date: v.string(),
+      score: v.number(),
+      notes: v.optional(v.string()),
+      tags: v.optional(v.array(v.string())),
+      createdAt: v.number(),
+    })
+  ),
   handler: async (ctx, { days }) => {
     const user = await getAuthUser(ctx);
 
@@ -88,7 +101,15 @@ export const createJournalEntry = mutation({
     date: v.string(),
     content: v.string(),
     habitLogId: v.optional(v.id('habitLogs')),
+    type: v.optional(v.union(
+      v.literal('reflection'),
+      v.literal('gratitude'),
+      v.literal('goal_note'),
+      v.literal('freeform')
+    )),
+    goalId: v.optional(v.id('goals')),
   },
+  returns: v.id('journal'),
   handler: async (ctx, args) => {
     const user = await getAuthUser(ctx);
 
@@ -97,6 +118,8 @@ export const createJournalEntry = mutation({
       date: args.date,
       content: args.content,
       habitLogId: args.habitLogId,
+      type: args.type ?? 'freeform',
+      goalId: args.goalId,
       createdAt: Date.now(),
     });
   },
@@ -107,6 +130,24 @@ export const createJournalEntry = mutation({
 // ─────────────────────────────────────────────────────────────────────────────
 export const getJournalEntries = query({
   args: { limit: v.optional(v.number()) },
+  returns: v.array(
+    v.object({
+      _id: v.id('journal'),
+      _creationTime: v.number(),
+      userId: v.id('users'),
+      habitLogId: v.optional(v.id('habitLogs')),
+      date: v.string(),
+      content: v.string(),
+      type: v.optional(v.union(
+        v.literal('reflection'),
+        v.literal('gratitude'),
+        v.literal('goal_note'),
+        v.literal('freeform')
+      )),
+      goalId: v.optional(v.id('goals')),
+      createdAt: v.number(),
+    })
+  ),
   handler: async (ctx, { limit }) => {
     const user = await getAuthUser(ctx);
 

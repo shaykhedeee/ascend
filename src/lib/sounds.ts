@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Sound Effects System
+// AscendifyIFY - Sound Effects System
 // Premium audio feedback for task completion and achievements
 // ═══════════════════════════════════════════════════════════════════════════════
 

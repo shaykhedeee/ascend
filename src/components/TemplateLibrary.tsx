@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Template Library
+// AscendifyIFY - Template Library
 // Pre-built habit and goal templates for quick start
 // ═══════════════════════════════════════════════════════════════════════════════
 

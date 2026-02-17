@@ -7,14 +7,14 @@ import { KaiChatbot } from '@/components/KaiChatbot';
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const metadata: Metadata = {
-  title: 'Help Center - Get Support & Learn ASCEND',
-  description: 'Find answers to all your questions about ASCEND habit tracker. Browse tutorials, FAQs, troubleshooting guides, and get instant AI support from Kai.',
+  title: 'Help Center - Get Support & Learn Ascendify',
+  description: 'Find answers to all your questions about Ascendify habit tracker. Browse tutorials, FAQs, troubleshooting guides, and get instant AI support from Kai.',
   keywords: [
-    'ASCEND help', 'habit tracker help', 'ASCEND support', 'ASCEND FAQ',
-    'how to use habit tracker', 'ASCEND tutorials', 'goal tracker help',
+    'Ascendify help', 'habit tracker help', 'Ascendify support', 'Ascendify FAQ',
+    'how to use habit tracker', 'Ascendify tutorials', 'goal tracker help',
   ],
   openGraph: {
-    title: 'ASCEND Help Center - Get Support & Learn',
+    title: 'Ascendify Help Center - Get Support & Learn',
     description: 'Find answers to all your questions. Browse tutorials, FAQs, and get instant AI support.',
     type: 'website',
   },
@@ -28,7 +28,7 @@ const helpCategories = [
   {
     id: 'getting-started',
     title: 'Getting Started',
-    description: 'New to ASCEND? Start here to learn the basics',
+    description: 'New to Ascendify? Start here to learn the basics',
     icon: '🚀',
     articleCount: 8,
     articles: [
@@ -42,7 +42,7 @@ const helpCategories = [
   {
     id: 'features',
     title: 'Features Guide',
-    description: 'Learn how to use every ASCEND feature',
+    description: 'Learn how to use every Ascendify feature',
     icon: '✨',
     articleCount: 12,
     articles: [
@@ -98,7 +98,7 @@ const helpCategories = [
   {
     id: 'api-integrations',
     title: 'Integrations',
-    description: 'Connect ASCEND with other apps and services',
+    description: 'Connect Ascendify with other apps and services',
     icon: '🔗',
     articleCount: 5,
     articles: [
@@ -153,7 +153,7 @@ export default function HelpCenterPage() {
             How can we help you?
           </h1>
           <p className="text-lg text-[var(--text-secondary)] mb-8 max-w-2xl mx-auto">
-            Find answers, tutorials, and guides to make the most of ASCEND. 
+            Find answers, tutorials, and guides to make the most of Ascendify. 
             Or ask Kai, our AI assistant, for instant help.
           </p>
           
@@ -320,7 +320,7 @@ export default function HelpCenterPage() {
               Ask Kai - Your AI Assistant
             </h2>
             <p className="text-[var(--text-secondary)]">
-              Get instant answers to your questions about ASCEND
+              Get instant answers to your questions about Ascendify
             </p>
           </div>
           <div className="max-w-3xl mx-auto">

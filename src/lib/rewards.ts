@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Reward System
+// ASCENDIFY - Reward System
 // Heartwarming messages, badges, and meaningful recognition
 // Focus on genuine self-satisfaction, not fake dopamine
 // ═══════════════════════════════════════════════════════════════════════════════

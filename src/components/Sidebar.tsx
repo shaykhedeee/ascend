@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Sidebar Navigation Component
+// AscendifyIFY - Sidebar Navigation Component
 // Modern sidebar navigation inspired by professional SaaS apps
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -120,7 +120,7 @@ export function Sidebar({
           <Logo size="md" />
           {!collapsed && (
             <div className="text-center">
-              <h1 className="text-lg font-bold text-themed tracking-tight">ASCEND</h1>
+              <h1 className="text-lg font-bold text-themed tracking-tight">Ascendify</h1>
               <p className="text-[9px] text-themed-muted tracking-[0.2em] uppercase">by WEBNESS</p>
             </div>
           )}

@@ -169,7 +169,7 @@ export function DemoPlanGenerator({
             Ready to Begin Your Journey?
           </h2>
           <p className="mb-6 text-sm text-themed-secondary">
-            Create your first goal and ASCEND will generate a personalized,
+            Create your first goal and Ascendify will generate a personalized,
             AI-powered plan tailored just for you.
           </p>
 
@@ -219,7 +219,7 @@ export function DemoPlanGenerator({
               </div>
 
               <h1 className="mb-1 text-2xl font-bold text-themed sm:text-3xl">
-                Your ASCEND Journey Begins!
+                Your Ascendify Journey Begins!
               </h1>
 
               {user?.name && (

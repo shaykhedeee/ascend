@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Error Page
+// AscendifyIFY - Error Page
 // Handles runtime errors gracefully with error tracking
 // ═══════════════════════════════════════════════════════════════════════════════
 

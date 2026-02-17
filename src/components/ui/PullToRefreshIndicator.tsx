@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Pull to Refresh Indicator Component
+// ASCENDIFY - Pull to Refresh Indicator Component
 // Visual indicator for pull-to-refresh gesture
 // ═══════════════════════════════════════════════════════════════════════════════
 

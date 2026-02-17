@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Smart AI Coach Component
+// AscendifyIFY - Smart AI Coach Component
 // Displays contextual Atomic Habits wisdom and coaching
 // ═══════════════════════════════════════════════════════════════════════════════
 

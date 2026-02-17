@@ -349,7 +349,19 @@ export const updatePlanFromWebhook = mutation({
       throw new Error('BILLING_WEBHOOK_SYNC_SECRET is not configured');
     }
 
-    if (webhookSecret !== expected) {
+    // Use timing-safe comparison to prevent timing attacks
+    const expectedBuffer = Buffer.from(expected);
+    const receivedBuffer = Buffer.from(webhookSecret);
+    
+    try {
+      const crypto = require('crypto');
+      if (expectedBuffer.length !== receivedBuffer.length || 
+          !crypto.timingSafeEqual(expectedBuffer, receivedBuffer)) {
+        throw new Error('Unauthorized webhook plan update');
+      }
+    } catch (err: any) {
+      // timingSafeEqual throws if lengths don't match
+      if (err.message === 'Unauthorized webhook plan update') throw err;
       throw new Error('Unauthorized webhook plan update');
     }
 

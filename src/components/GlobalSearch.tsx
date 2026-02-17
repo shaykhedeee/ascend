@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Global Search (Command Palette)
+// AscendifyIFY - Global Search (Command Palette)
 // Notion-style Cmd+K search across all habits, goals, tasks, and commands
 // Enhanced with Fuse.js for fuzzy search
 // ═══════════════════════════════════════════════════════════════════════════════

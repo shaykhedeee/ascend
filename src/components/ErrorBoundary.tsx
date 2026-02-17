@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Enhanced Error Boundary Component
+// AscendifyIFY - Enhanced Error Boundary Component
 // Catches and reports React component errors gracefully
 // ═══════════════════════════════════════════════════════════════════════════════
 

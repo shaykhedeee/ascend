@@ -1,9 +1,10 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - AI Suggestions API Route (Cost-Optimized)
+// ASCENDIFY - AI Suggestions API Route (Cost-Optimized)
 // Server-side AI endpoint for habit suggestions and insights using Atomic Habits
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 import { 
   FOUR_LAWS, 
   COACHING_MESSAGES,
@@ -204,6 +205,17 @@ function getRelevantLaw(context: { habits?: { streak: number; completionRate: nu
 
 export async function POST(request: NextRequest): Promise<NextResponse<SuggestionsResponse>> {
   try {
+    // ────────────────────────────────────────────────────────────────────────
+    // 1) Verify authentication - prevent unauthorized API abuse
+    // ────────────────────────────────────────────────────────────────────────
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json() as SuggestionsRequest;
     const { type, context, isPremium = false } = body;
 

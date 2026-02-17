@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Data Backup Reminder Component
+// AscendifyIFY - Data Backup Reminder Component
 // Prompts users to export their data periodically
 // ═══════════════════════════════════════════════════════════════════════════════
 

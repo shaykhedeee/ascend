@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Template Library Data
+// AscendifyIFY - Template Library Data
 // Pre-built habit and goal templates for quick start
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -981,7 +981,7 @@ export const TEMPLATE_BUNDLES: TemplateBundle[] = [
     ),
     goalTemplates: [],
     tags: ['morning', 'routine', 'productivity'],
-    author: 'ASCEND Team',
+    author: 'Ascendify Team',
     createdAt: new Date().toISOString(),
   },
   {
@@ -994,7 +994,7 @@ export const TEMPLATE_BUNDLES: TemplateBundle[] = [
     ),
     goalTemplates: GOAL_TEMPLATES.filter(g => g.id === 'g-get-promoted'),
     tags: ['productivity', 'focus', 'career'],
-    author: 'ASCEND Team',
+    author: 'Ascendify Team',
     createdAt: new Date().toISOString(),
   },
   {
@@ -1007,7 +1007,7 @@ export const TEMPLATE_BUNDLES: TemplateBundle[] = [
     ),
     goalTemplates: GOAL_TEMPLATES.filter(g => g.id === 'g-run-5k'),
     tags: ['fitness', 'beginner', 'health'],
-    author: 'ASCEND Team',
+    author: 'Ascendify Team',
     createdAt: new Date().toISOString(),
   },
   {
@@ -1020,7 +1020,7 @@ export const TEMPLATE_BUNDLES: TemplateBundle[] = [
     ),
     goalTemplates: GOAL_TEMPLATES.filter(g => g.id === 'g-meditation-365'),
     tags: ['mindfulness', 'wellness', 'peace'],
-    author: 'ASCEND Team',
+    author: 'Ascendify Team',
     createdAt: new Date().toISOString(),
   },
   {
@@ -1033,7 +1033,7 @@ export const TEMPLATE_BUNDLES: TemplateBundle[] = [
     ),
     goalTemplates: GOAL_TEMPLATES.filter(g => ['g-read-50-books', 'g-learn-language'].includes(g.id)),
     tags: ['learning', 'reading', 'growth'],
-    author: 'ASCEND Team',
+    author: 'Ascendify Team',
     createdAt: new Date().toISOString(),
   },
 ];

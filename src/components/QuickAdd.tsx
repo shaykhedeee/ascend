@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Quick Add Component
+// AscendifyIFY - Quick Add Component
 // Natural language task input with AI-powered parsing
 // Examples: "call mom tomorrow at 3pm", "gym every monday", "finish report by friday"
 // ═══════════════════════════════════════════════════════════════════════════════

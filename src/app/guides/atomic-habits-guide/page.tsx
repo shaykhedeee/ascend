@@ -7,7 +7,7 @@ import Link from 'next/link';
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const metadata: Metadata = {
-  title: 'The Complete Atomic Habits Guide (2026) | ASCEND',
+  title: 'The Complete Atomic Habits Guide (2026) | Ascendify',
   description: 'Master Atomic Habits by James Clear. Learn the Four Laws of Behavior Change, habit stacking, the Two-Minute Rule, identity-based habits, and how to break bad habits. Free comprehensive guide.',
   keywords: [
     'atomic habits', 'atomic habits summary', 'atomic habits guide',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     type: 'article',
     publishedTime: '2026-01-01T00:00:00Z',
     modifiedTime: '2026-02-01T00:00:00Z',
-    authors: ['ASCEND Team'],
+    authors: ['Ascendify Team'],
   },
   alternates: {
     canonical: '/guides/atomic-habits-guide',
@@ -40,21 +40,21 @@ const jsonLd = {
   'description': 'Master Atomic Habits by James Clear. Learn the Four Laws of Behavior Change and how to build habits that stick.',
   'author': {
     '@type': 'Organization',
-    'name': 'ASCEND',
+    'name': 'Ascendify',
   },
   'publisher': {
     '@type': 'Organization',
-    'name': 'ASCEND',
+    'name': 'Ascendify',
     'logo': {
       '@type': 'ImageObject',
-      'url': 'https://ascend.app/icons/icon.svg',
+      'url': 'https://ascendify.app/icons/icon.svg',
     },
   },
   'datePublished': '2026-01-01',
   'dateModified': '2026-02-01',
   'mainEntityOfPage': {
     '@type': 'WebPage',
-    '@id': 'https://ascend.app/guides/atomic-habits-guide',
+    '@id': 'https://ascendify.app/guides/atomic-habits-guide',
   },
 };
 
@@ -423,7 +423,7 @@ export default function AtomicHabitsGuidePage() {
                 </p>
               </div>
               <p className="text-[var(--text-secondary)]">
-                Habit stacking takes advantage of the momentum you already have. By linking a new 
+                Habit stacking takes adASCENDIFY of the momentum you already have. By linking a new 
                 behavior to an old one, you don&apos;t need to find a new trigger—you use your existing 
                 routines.
               </p>
@@ -522,7 +522,7 @@ export default function AtomicHabitsGuidePage() {
                   🚀 Ready to Apply Atomic Habits?
                 </h3>
                 <p className="text-[var(--text-secondary)] mb-4">
-                  ASCEND uses these principles to help you build habits that stick. Our AI 
+                  Ascendify uses these principles to help you build habits that stick. Our AI 
                   automatically applies habit stacking, the Two-Minute Rule, and identity-based 
                   habits to your goals.
                 </p>
@@ -530,7 +530,7 @@ export default function AtomicHabitsGuidePage() {
                   href="/"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-medium transition-colors"
                 >
-                  Try ASCEND Free
+                  Try Ascendify Free
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>

@@ -1,11 +1,11 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Sitemap Configuration
+// AscendifyIFY - Sitemap Configuration
 // Dynamic sitemap for SEO optimization
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { MetadataRoute } from 'next';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ascend.app';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const currentDate = new Date().toISOString();

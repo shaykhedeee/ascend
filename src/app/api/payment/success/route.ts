@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - PayU Payment Success Callback
+// ASCENDIFY - PayU Payment Success Callback
 // Handles successful payment confirmation from PayU
 // ═══════════════════════════════════════════════════════════════════════════════
 

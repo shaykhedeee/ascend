@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Streak Freeze Component
+// ASCENDIFY - Streak Freeze Component
 // Shows and allows users to use streak freezes
 // ═══════════════════════════════════════════════════════════════════════════════
 

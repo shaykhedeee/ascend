@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Smart Purchase Prompt Component
+// AscendifyIFY - Smart Purchase Prompt Component
 // Non-intrusive upgrade prompts that appear at strategic moments
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -104,7 +104,7 @@ const PROMPT_CONTENT: Record<PromptTrigger, {
   },
   gentle_reminder: {
     icon: Sparkles,
-    title: "Enjoying ASCEND?",
+    title: "Enjoying Ascendify?",
     message: "Upgrade to Pro for the full transformation experience. Support the app and unlock everything.",
     highlight: "Starting at $5/month",
     cta: "See Pro Features",

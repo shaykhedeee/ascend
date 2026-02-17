@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Swipe Gesture Hook
+// ASCENDIFY - Swipe Gesture Hook
 // Touch gesture handling for mobile experience
 // ═══════════════════════════════════════════════════════════════════════════════
 

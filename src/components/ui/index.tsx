@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Design System UI Components
+// ASCENDIFY - Design System UI Components
 // Export all reusable UI components
 // ═══════════════════════════════════════════════════════════════════════════════
 

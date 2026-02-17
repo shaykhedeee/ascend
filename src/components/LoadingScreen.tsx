@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Loading Screen Component
+// AscendifyIFY - Loading Screen Component
 // Modern, minimalist loading screen with brand identity
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -106,7 +106,7 @@ export function LoadingScreen() {
 
         {/* Brand text */}
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-white tracking-wider mb-1">ASCEND</h1>
+          <h1 className="text-3xl font-bold text-white tracking-wider mb-1">ASCENDIFY</h1>
           <p className="text-sm text-white/50 tracking-widest uppercase">Rise to Your Potential</p>
         </div>
 

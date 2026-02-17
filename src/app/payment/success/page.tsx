@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Payment Success Page
+// ASCENDIFY - Payment Success Page
 // Shows confirmation after successful payment
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -29,7 +29,7 @@ function PaymentSuccessContent() {
       addToast({
         type: 'success',
         title: '🎉 Payment Successful!',
-        message: `Welcome to ASCEND ${plan === 'lifetime' ? 'Lifetime' : 'Pro'}!`,
+        message: `Welcome to Ascendify ${plan === 'lifetime' ? 'Lifetime' : 'Pro'}!`,
         duration: 5000,
       });
     }
@@ -59,7 +59,7 @@ function PaymentSuccessContent() {
         {/* Success Message */}
         <h1 className="text-3xl font-bold text-themed mb-3">Payment Successful!</h1>
         <p className="text-themed-muted mb-8">
-          Welcome to ASCEND {plan === 'lifetime' ? 'Lifetime' : 'Pro'}! You now have access to all premium features.
+          Welcome to Ascendify {plan === 'lifetime' ? 'Lifetime' : 'Pro'}! You now have access to all premium features.
         </p>
 
         {/* Plan Card */}

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Skeleton Loader Components
+// AscendifyIFY - Skeleton Loader Components
 // Beautiful loading states for a polished UX
 // ═══════════════════════════════════════════════════════════════════════════════
 

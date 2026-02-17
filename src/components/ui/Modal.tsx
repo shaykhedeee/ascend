@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Design System Modal Component
+// AscendifyIFY - Design System Modal Component
 // Accessible, animated modals with consistent styling
 // ═══════════════════════════════════════════════════════════════════════════════
 

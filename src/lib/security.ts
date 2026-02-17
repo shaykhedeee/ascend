@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Security Middleware & Utilities
+// ASCENDIFY - Security Middleware & Utilities
 // Rate limiting, input sanitization, CSRF protection
 // ═══════════════════════════════════════════════════════════════════════════════
 

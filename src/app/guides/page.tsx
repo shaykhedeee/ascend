@@ -6,7 +6,7 @@ import Link from 'next/link';
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const metadata: Metadata = {
-  title: 'Habit Building Guides & Resources | ASCEND',
+  title: 'Habit Building Guides & Resources | Ascendify',
   description: 'Free guides on building habits, achieving goals, and personal development. Learn Atomic Habits principles, goal-setting frameworks, and productivity techniques.',
   keywords: [
     'habit building guide', 'how to build habits', 'atomic habits summary',
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     'how to stick to habits', 'build better habits', 'personal development',
   ],
   openGraph: {
-    title: 'Free Habit Building Guides & Resources | ASCEND',
+    title: 'Free Habit Building Guides & Resources | Ascendify',
     description: 'Master habit building with our comprehensive guides based on Atomic Habits principles.',
     type: 'website',
   },
@@ -103,10 +103,10 @@ const jsonLd = {
   'description': 'Free guides on building habits, achieving goals, and personal development.',
   'publisher': {
     '@type': 'Organization',
-    'name': 'ASCEND',
+    'name': 'Ascendify',
     'logo': {
       '@type': 'ImageObject',
-      'url': 'https://ascend.app/icons/icon.svg',
+      'url': 'https://ascendify.app/icons/icon.svg',
     },
   },
   'mainEntity': {
@@ -114,7 +114,7 @@ const jsonLd = {
     'itemListElement': pillarPages.map((page, index) => ({
       '@type': 'ListItem',
       'position': index + 1,
-      'url': `https://ascend.app/guides/${page.slug}`,
+      'url': `https://ascendify.app/guides/${page.slug}`,
       'name': page.title,
     })),
   },
@@ -280,13 +280,13 @@ export default function GuidesPage() {
                 Ready to start tracking?
               </h3>
               <p className="text-sm text-[var(--text-secondary)] mb-4">
-                Put these guides into practice with ASCEND&apos;s AI-powered habit tracker.
+                Put these guides into practice with Ascendify&apos;s AI-powered habit tracker.
               </p>
               <Link
                 href="/"
                 className="block text-center py-2 rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-medium transition-colors"
               >
-                Try ASCEND Free
+                Try Ascendify Free
               </Link>
             </div>
           </aside>

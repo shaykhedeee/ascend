@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Landing Page Component
+// AscendifyIFY - Landing Page Component
 // Premium SaaS landing page with features, pricing, testimonials
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -121,7 +121,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
       name: 'Sarah Chen',
       role: 'Entrepreneur',
       avatar: 'S',
-      content: 'ASCEND helped me break down my goal of launching a startup into daily actionable tasks. I went from overwhelmed to organized in days.',
+      content: 'Ascendify helped me break down my goal of launching a startup into daily actionable tasks. I went from overwhelmed to organized in days.',
       rating: 5,
     },
     {
@@ -135,7 +135,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
       name: 'Emily Rodriguez',
       role: 'Medical Student',
       avatar: 'E',
-      content: 'I use ASCEND to manage my study goals and self-care habits. The AI decomposition feature is a game-changer for complex goals.',
+      content: 'I use Ascendify to manage my study goals and self-care habits. The AI decomposition feature is a game-changer for complex goals.',
       rating: 5,
     },
   ];
@@ -222,7 +222,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
             <div className="flex items-center gap-3">
               <Logo size="md" />
               <div className="flex flex-col">
-                <span className="text-xl font-bold tracking-tight">ASCEND</span>
+                <span className="text-xl font-bold tracking-tight">ASCENDIFY</span>
                 <span className="text-[9px] text-white/50 tracking-[0.2em] uppercase">by WEBNESS</span>
               </div>
             </div>
@@ -343,7 +343,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
 
             {/* Subheadline - More specific value proposition */}
             <p className="text-lg sm:text-xl text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed">
-              ASCEND uses AI to break down your ambitious goals into achievable daily tasks. 
+              Ascendify uses AI to break down your ambitious goals into achievable daily tasks. 
               Build habits that stick. Track progress that compounds. Achieve goals that matter.
             </p>
 
@@ -497,7 +497,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
               </h2>
               
               <p className="text-lg text-white/60 mb-8 leading-relaxed">
-                Traditional habit apps assume everyone thinks the same way. ASCEND is built with ADHD, 
+                Traditional habit apps assume everyone thinks the same way. Ascendify is built with ADHD, 
                 autism, and other neurodivergent minds in focus. Less overwhelm, more wins.
               </p>
 
@@ -625,7 +625,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              How <span className="text-gold-400">ASCEND</span> Works
+              How <span className="text-gold-400">ASCENDIFY</span> Works
             </h2>
             <p className="text-lg text-white/60 max-w-2xl mx-auto">
               Three simple steps to transform your life
@@ -676,7 +676,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              Why Choose <span className="text-ascend-400">ASCEND</span>?
+              Why Choose <span className="text-ascend-400">ASCENDIFY</span>?
             </h2>
             <p className="text-lg text-white/60 max-w-2xl mx-auto">
               See how we compare to other popular habit tracking apps
@@ -691,7 +691,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
                   <th className="p-4 text-center">
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-ascend-500/20 to-gold-400/20 border border-ascend-500/30">
                       <Mountain className="w-4 h-4 text-ascend-400" />
-                      <span className="font-bold text-ascend-400">ASCEND</span>
+                      <span className="font-bold text-ascend-400">ASCENDIFY</span>
                     </div>
                   </th>
                   <th className="p-4 text-center text-white/50">Habitica</th>
@@ -880,43 +880,43 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
               Frequently Asked <span className="text-ascend-400">Questions</span>
             </h2>
             <p className="text-lg text-white/60 max-w-2xl mx-auto">
-              Everything you need to know about building better habits with ASCEND
+              Everything you need to know about building better habits with Ascendify
             </p>
           </div>
 
           <div className="space-y-4" itemScope itemType="https://schema.org/FAQPage">
             {[
               {
-                question: "What is ASCEND and how does it work?",
-                answer: "ASCEND is an AI-powered habit tracking app that helps you transform ambitious goals into achievable daily tasks. Our AI analyzes your goal, breaks it down into milestones, weekly objectives, and daily habits, making even the biggest dreams feel manageable. You track your progress, earn XP, level up, and watch your life transform through consistent daily action."
+                question: "What is Ascendify and how does it work?",
+                answer: "Ascendify is an AI-powered habit tracking app that helps you transform ambitious goals into achievable daily tasks. Our AI analyzes your goal, breaks it down into milestones, weekly objectives, and daily habits, making even the biggest dreams feel manageable. You track your progress, earn XP, level up, and watch your life transform through consistent daily action."
               },
               {
-                question: "Is ASCEND free to use?",
-                answer: "Yes! ASCEND offers a generous free plan that includes up to 3 habits, 1 active goal, basic analytics, 7-day history, and both light and dark themes. For unlimited habits, AI goal decomposition, advanced analytics, and full history access, you can upgrade to Pro at $5/month or get lifetime access for a one-time payment of $99."
+                question: "is Ascendify free to use?",
+                answer: "Yes! Ascendify offers a generous free plan that includes up to 3 habits, 1 active goal, basic analytics, 7-day history, and both light and dark themes. For unlimited habits, AI goal decomposition, advanced analytics, and full history access, you can upgrade to Pro at $5/month or get lifetime access for a one-time payment of $99."
               },
               {
                 question: "How does AI goal decomposition work?",
                 answer: "Our AI uses advanced language models to understand your ultimate goal and create a personalized roadmap. It generates realistic milestones spread across your timeline, weekly focus areas with specific objectives, and daily actionable tasks that fit your schedule. The AI adapts recommendations based on behavioral science and habit formation research."
               },
               {
-                question: "What makes ASCEND different from other habit trackers?",
-                answer: "Unlike other habit trackers that just track streaks, ASCEND offers true AI-powered goal decomposition, gamified progress with XP and levels, intelligent habit suggestions, streak protection features, and detailed pattern analytics. We're the only habit app that thinks like a personal coach, helping you plan AND execute."
+                question: "What makes Ascendify different from other habit trackers?",
+                answer: "Unlike other habit trackers that just track streaks, Ascendify offers true AI-powered goal decomposition, gamified progress with XP and levels, intelligent habit suggestions, streak protection features, and detailed pattern analytics. We're the only habit app that thinks like a personal coach, helping you plan AND execute."
               },
               {
                 question: "Is my data private and secure?",
-                answer: "Absolutely. Your data stays on your device by default - we don't track you or sell your data. ASCEND works offline as a Progressive Web App (PWA), and you can export your data anytime. We use industry-standard encryption for any cloud features, and our AI processing is done securely with no data retention."
+                answer: "Absolutely. Your data stays on your device by default - we don't track you or sell your data. Ascendify works offline as a Progressive Web App (PWA), and you can export your data anytime. We use industry-standard encryption for any cloud features, and our AI processing is done securely with no data retention."
               },
               {
-                question: "Can I use ASCEND on multiple devices?",
-                answer: "Yes! ASCEND is a Progressive Web App (PWA) that works on any device with a modern browser - iOS, Android, Windows, Mac, or Linux. Install it on your phone's home screen for a native app experience, or use it in your browser on desktop. Pro users get cloud sync across all devices."
+                question: "Can I use Ascendify on multiple devices?",
+                answer: "Yes! Ascendify is a Progressive Web App (PWA) that works on any device with a modern browser - iOS, Android, Windows, Mac, or Linux. Install it on your phone's home screen for a native app experience, or use it in your browser on desktop. Pro users get cloud sync across all devices."
               },
               {
                 question: "How long does it take to form a new habit?",
-                answer: "Research shows habit formation takes anywhere from 18 to 254 days, with 66 days being the average. ASCEND supports you through this journey with streak tracking, AI coaching messages, progressive difficulty adjustments, and celebration milestones at 7, 21, 66, and 90 days to keep you motivated."
+                answer: "Research shows habit formation takes anywhere from 18 to 254 days, with 66 days being the average. Ascendify supports you through this journey with streak tracking, AI coaching messages, progressive difficulty adjustments, and celebration milestones at 7, 21, 66, and 90 days to keep you motivated."
               },
               {
-                question: "Can ASCEND help with fitness and health goals?",
-                answer: "Absolutely! ASCEND is perfect for fitness goals like losing weight, building muscle, running a marathon, or establishing a workout routine. The AI breaks down your fitness goal into progressive milestones and daily habits, while tracking features help you monitor workout consistency, meal habits, sleep routines, and more."
+                question: "Can Ascendify help with fitness and health goals?",
+                answer: "Absolutely! Ascendify is perfect for fitness goals like losing weight, building muscle, running a marathon, or establishing a workout routine. The AI breaks down your fitness goal into progressive milestones and daily habits, while tracking features help you monitor workout consistency, meal habits, sleep routines, and more."
               }
             ].map((faq, index) => (
               <div 
@@ -955,7 +955,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
           </div>
           
           <h2 className="text-3xl sm:text-5xl font-bold mb-6">
-            Ready to <span className="text-ascend-400">ASCEND</span>?
+            Ready to <span className="text-ascend-400">ASCENDIFY</span>?
           </h2>
           <p className="text-lg text-white/60 mb-10 max-w-2xl mx-auto">
             Join thousands of achievers who have transformed their goals into reality. 
@@ -996,7 +996,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
                             flex items-center justify-center">
                 <Mountain className="w-4 h-4 text-white" />
               </div>
-              <span className="font-bold">ASCEND</span>
+              <span className="font-bold">ASCENDIFY</span>
             </div>
             
             <div className="flex items-center gap-6 text-sm text-white/50">
@@ -1006,7 +1006,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
             </div>
             
             <p className="text-sm text-white/40">
-              © 2026 ASCEND. All rights reserved.
+              © 2026 Ascendifyify. All rights reserved.
             </p>
           </div>
         </div>
@@ -1022,7 +1022,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
           <div className="relative w-full max-w-4xl bg-[#141416] rounded-2xl border border-white/10 overflow-hidden animate-fade-in">
             {/* Modal Header */}
             <div className="flex items-center justify-between p-4 border-b border-white/10">
-              <h3 className="font-semibold text-lg">See ASCEND in Action</h3>
+              <h3 className="font-semibold text-lg">See Ascendify in Action</h3>
               <button 
                 onClick={() => setShowDemoModal(false)}
                 className="p-2 hover:bg-white/5 rounded-lg transition-colors"

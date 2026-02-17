@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Global Error Handler
+// AscendifyIFY - Global Error Handler
 // Catches errors in root layout including head/metadata
 // ═══════════════════════════════════════════════════════════════════════════════
 

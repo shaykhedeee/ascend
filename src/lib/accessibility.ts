@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Accessibility Utilities
+// ASCENDIFY - Accessibility Utilities
 // WCAG 2.1 AA compliant helpers and utilities
 // ═══════════════════════════════════════════════════════════════════════════════
 

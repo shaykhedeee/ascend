@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Error Tracking Initializer
+// ASCENDIFY - Error Tracking Initializer
 // Client-side component to initialize error tracking
 // ═══════════════════════════════════════════════════════════════════════════════
 

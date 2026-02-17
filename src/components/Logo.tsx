@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Premium Logo Component
+// AscendifyIFY - Premium Logo Component
 // Summit Arrow Design - Represents climbing to the peak of your potential
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -96,7 +96,7 @@ export function Logo({
             textSizeClasses[size],
             "font-bold tracking-tight text-white leading-none"
           )}>
-            ASCEND
+            ASCENDIFY
           </h1>
           <span className="text-[9px] text-white/60 tracking-[0.2em] uppercase font-medium mt-0.5">
             by WEBNESS

@@ -1,9 +1,10 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Goal Decomposition API Route (Cost-Optimized)
+// ASCENDIFY - Goal Decomposition API Route (Cost-Optimized)
 // Server-side AI endpoint for breaking down goals using Atomic Habits principles
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@clerk/nextjs/server';
 
 // ─────────────────────────────────────────────────────────────────────────────────
 // CONFIGURATION
@@ -183,8 +184,8 @@ async function callOpenRouter(prompt: string): Promise<unknown> {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-      'HTTP-Referer': 'https://ascend.app',
-      'X-Title': 'ASCEND Goal Decomposer',
+      'HTTP-Referer': 'https://ascendify.app',
+      'X-Title': 'Ascendify Goal Decomposer',
     },
     body: JSON.stringify({
       model: 'google/gemma-2-9b-it:free',
@@ -344,6 +345,17 @@ function generateFallbackDecomposition(goal: string): GoalDecompositionResponse 
 
 export async function POST(request: NextRequest): Promise<NextResponse<GoalDecompositionResponse>> {
   try {
+    // ────────────────────────────────────────────────────────────────────────
+    // 1) Verify authentication - prevent unauthorized API abuse
+    // ────────────────────────────────────────────────────────────────────────
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json() as GoalDecompositionRequest;
     const { goal, targetDate, isPremium = false } = body;
 

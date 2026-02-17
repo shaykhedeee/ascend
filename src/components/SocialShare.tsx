@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Social Sharing Component
+// AscendifyIFY - Social Sharing Component
 // Share progress, streaks, and achievements on social media
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -59,10 +59,10 @@ const generateShareText = (props: SocialShareProps): string => {
   }
   
   if (parts.length === 0) {
-    return "I'm building better habits with ASCEND! Join me on the journey.";
+    return "I'm building better habits with Ascendify! Join me on the journey.";
   }
   
-  return `${parts.join(' | ')}\n\nBuilding better habits with @AscendApp 🚀`;
+  return `${parts.join(' | ')}\n\nBuilding better habits with @AscendifyApp 🚀`;
 };
 
 const shareUrls = {
@@ -122,7 +122,7 @@ export function SocialShare({
     goalProgress, 
     customMessage 
   });
-  const shareUrl = typeof window !== 'undefined' ? window.location.origin : 'https://ascend.app';
+  const shareUrl = typeof window !== 'undefined' ? window.location.origin : 'https://ascendify.app';
   const hashtags = ['habits', 'productivity', 'selfimprovement', 'goals'];
 
   const handleShare = async (platform: string) => {
@@ -131,7 +131,7 @@ export function SocialShare({
     if (platform === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'ASCEND Progress',
+          title: 'Ascendify Progress',
           text: shareText,
           url: shareUrl,
         });
@@ -238,7 +238,7 @@ export function SocialShare({
           <div className="w-8 h-8 rounded-lg bg-ascend-500/20 flex items-center justify-center">
             <span className="text-xs font-bold text-ascend-400">A</span>
           </div>
-          <span className="text-sm font-semibold text-themed">ASCEND Progress</span>
+          <span className="text-sm font-semibold text-themed">Ascendify Progress</span>
         </div>
         <p className="text-sm text-themed-secondary whitespace-pre-line">{shareText}</p>
       </div>
@@ -374,7 +374,7 @@ export function StreakShareCard({ streakDays, habitName }: { streakDays: number;
         </div>
         <SocialShare 
           streakDays={streakDays} 
-          customMessage={`Just hit a ${streakDays}-day streak on "${habitName}"! 🔥\n\nBuilding better habits with @AscendApp`}
+          customMessage={`Just hit a ${streakDays}-day streak on "${habitName}"! 🔥\n\nBuilding better habits with @AscendifyApp`}
           variant="button" 
         />
       </div>

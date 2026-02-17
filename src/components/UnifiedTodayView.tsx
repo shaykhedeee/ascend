@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Unified Today View
+// AscendifyIFY - Unified Today View
 // Single task stream combining habits, goals, and manual tasks
 // ═══════════════════════════════════════════════════════════════════════════════
 

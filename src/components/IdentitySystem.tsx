@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Identity System Component
+// AscendifyIFY - Identity System Component
 // Based on Atomic Habits: Identity-based habit formation
 // ═══════════════════════════════════════════════════════════════════════════════
 

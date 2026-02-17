@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Header Component
+// AscendifyIFY - Header Component
 // ═══════════════════════════════════════════════════════════════════════════════
 
 'use client';
@@ -72,7 +72,7 @@ export function Header({ activeTab, onTabChange, onOpenSettings, onOpenUpgrade }
             <div className="hidden sm:block">
               <h1 className="text-xl font-bold tracking-tight" 
                   style={{ color: 'var(--text-primary)' }}>
-                ASCEND
+                ASCENDIFY
               </h1>
               <p className="text-[10px] -mt-0.5" style={{ color: 'var(--text-muted)' }}>
                 Rise to your potential

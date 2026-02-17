@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - About Page (SEO-Optimized)
+// AscendifyIFY - About Page (SEO-Optimized)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { Metadata } from 'next';
@@ -7,15 +7,15 @@ import Link from 'next/link';
 import { Mountain, ArrowLeft, Heart, Zap, Shield, Users, BookOpen, Globe } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'About ASCEND — Our Mission to Help You Build Better Habits',
+  title: 'About Ascendify — Our Mission to Help You Build Better Habits',
   description:
-    'Learn about ASCEND, the AI-powered habit tracker built on behavioral science. Our mission: make self-improvement accessible, private, and genuinely effective.',
+    'Learn about Ascendify, the AI-powered habit tracker built on behavioral science. Our mission: make self-improvement accessible, private, and genuinely effective.',
   keywords: [
-    'about ascend app', 'habit tracker mission', 'who made ascend',
+    'about ascendify app', 'habit tracker mission', 'who made ascendify',
     'productivity app team', 'habit science app',
   ],
   openGraph: {
-    title: 'About ASCEND — Built for Achievers',
+    title: 'About Ascendify — Built for Achievers',
     description: 'The story behind the AI habit tracker that\'s helping 50K+ people build better lives.',
     url: '/about',
   },
@@ -56,7 +56,7 @@ const values = [
 ];
 
 const milestones = [
-  { year: '2024', event: 'ASCEND concept born — frustrated with habit trackers that just show checkboxes' },
+  { year: '2024', event: 'Ascendify concept born — frustrated with habit trackers that just show checkboxes' },
   { year: '2024', event: 'AI goal decomposition engine built — turning big dreams into daily tasks' },
   { year: '2025', event: 'Gamification system with 15 levels, achievements, and streak celebrations' },
   { year: '2025', event: 'Wellness features: mood tracking, breathing exercises, gentle mode' },
@@ -68,14 +68,14 @@ const milestones = [
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'AboutPage',
-  name: 'About ASCEND',
-  description: 'Learn about ASCEND, the AI-powered habit tracker.',
+  name: 'About Ascendify',
+  description: 'Learn about Ascendify, the AI-powered habit tracker.',
   mainEntity: {
     '@type': 'Organization',
-    name: 'ASCEND',
+    name: 'Ascendify',
     description: 'AI-powered habit tracking and goal achievement platform',
     foundingDate: '2024',
-    url: 'https://ascend.app',
+    url: 'https://ascendify.app',
     knowsAbout: [
       'Habit Formation', 'Behavioral Science', 'Goal Setting',
       'Gamification', 'AI Goal Decomposition', 'Productivity',
@@ -98,7 +98,7 @@ export default function AboutPage() {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-ascend-500 to-ascend-600 flex items-center justify-center">
               <Mountain className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-lg">ASCEND</span>
+            <span className="font-bold text-lg">ASCENDIFY</span>
             <span className="text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors flex items-center gap-1">
               <ArrowLeft className="w-4 h-4" /> Back
             </span>
@@ -116,7 +116,7 @@ export default function AboutPage() {
             </span>
           </h1>
           <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed">
-            Most habit trackers are just glorified checkboxes. ASCEND is different — it&apos;s an AI-powered
+            Most habit trackers are just glorified checkboxes. Ascendify is different — it&apos;s an AI-powered
             system built on behavioral science that turns your biggest goals into daily wins you can
             actually complete.
           </p>
@@ -133,7 +133,7 @@ export default function AboutPage() {
                 a few days of motivation you&apos;re back to square one.
               </p>
               <p className="text-[var(--text-secondary)] leading-relaxed">
-                ASCEND solves this by using AI to decompose your goal into a concrete roadmap — milestones,
+                Ascendify solves this by using AI to decompose your goal into a concrete roadmap — milestones,
                 weekly objectives, and daily tasks. Then it wraps everything in a gamified system that makes
                 showing up feel genuinely rewarding.
               </p>
@@ -141,7 +141,7 @@ export default function AboutPage() {
             <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-8">
               <div className="space-y-6">
                 <div>
-                  <p className="text-sm font-semibold text-red-400 mb-1">Without ASCEND</p>
+                  <p className="text-sm font-semibold text-red-400 mb-1">Without Ascendify</p>
                   <p className="text-[var(--text-secondary)]">&quot;I want to get fit&quot; → overwhelm → procrastination → guilt → quit</p>
                 </div>
                 <div className="border-t border-[var(--border)] pt-6">

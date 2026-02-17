@@ -5,15 +5,15 @@ export default function manifest(): MetadataRoute.Manifest {
     // ═══════════════════════════════════════════════════════════════════════════
     // CORE PWA METADATA (App Store Optimized)
     // ═══════════════════════════════════════════════════════════════════════════
-    name: 'ASCEND - AI Habit Tracker & Goal Planner',
-    short_name: 'ASCEND',
+    name: 'Ascendify - AI Habit Tracker & Goal Planner',
+    short_name: 'Ascendify',
     description: 'Build lasting habits with AI-powered goal decomposition. Track daily habits, earn XP, level up, and achieve your goals with gamified progress tracking. Free habit tracker with analytics.',
     
     // ═══════════════════════════════════════════════════════════════════════════
     // APP CONFIGURATION
     // ═══════════════════════════════════════════════════════════════════════════
     start_url: '/?source=pwa',
-    id: '/ascend-app',
+    id: '/ascendify-app',
     scope: '/',
     display: 'standalone',
     display_override: ['standalone', 'minimal-ui', 'window-controls-overlay'],

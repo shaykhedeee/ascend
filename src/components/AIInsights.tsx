@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - AI Insights Component
+// AscendifyIFY - AI Insights Component
 // Pattern analysis and predictive insights using AI
 // ═══════════════════════════════════════════════════════════════════════════════
 

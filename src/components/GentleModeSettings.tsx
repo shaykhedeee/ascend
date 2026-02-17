@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Gentle Mode Settings Component
+// AscendifyIFY - Gentle Mode Settings Component
 // ADHD & Anxiety-friendly configuration options
 // Features: Flexible streaks, reduced notifications, self-compassion prompts
 // ═══════════════════════════════════════════════════════════════════════════════

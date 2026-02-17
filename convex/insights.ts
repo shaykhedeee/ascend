@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// VANTAGE — AI Insights Cache (Convex)
-// Cache AI-generated insights server-side
+// ASCENDIFY — AI Insights Engine (Convex)
+// 8 insight types with confidence scoring, feedback & interaction tracking
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { mutation, query } from './_generated/server';
@@ -18,21 +18,49 @@ async function getAuthUser(ctx: any) {
   return user;
 }
 
+const insightTypeValidator = v.union(
+  v.literal('coaching'),
+  v.literal('pattern'),
+  v.literal('suggestion'),
+  v.literal('weekly_summary'),
+  v.literal('correlation'),
+  v.literal('prediction'),
+  v.literal('celebration'),
+  v.literal('prescription')
+);
+
+// Shared insight document validator
+const insightDocValidator = v.object({
+  _id: v.id('insights'),
+  _creationTime: v.number(),
+  userId: v.id('users'),
+  type: insightTypeValidator,
+  content: v.string(),
+  title: v.optional(v.string()),
+  confidenceScore: v.optional(v.number()),
+  metadata: v.optional(v.any()),
+  viewed: v.optional(v.boolean()),
+  viewedAt: v.optional(v.number()),
+  dismissed: v.optional(v.boolean()),
+  actionTaken: v.optional(v.boolean()),
+  feedback: v.optional(v.number()),
+  expiresAt: v.number(),
+  createdAt: v.number(),
+});
+
 // ─────────────────────────────────────────────────────────────────────────────
-// STORE INSIGHT
+// STORE INSIGHT (enhanced with title, confidence, etc.)
 // ─────────────────────────────────────────────────────────────────────────────
 export const store = mutation({
   args: {
-    type: v.union(
-      v.literal('coaching'),
-      v.literal('pattern'),
-      v.literal('suggestion'),
-      v.literal('weekly_summary')
-    ),
+    type: insightTypeValidator,
     content: v.string(),
+    title: v.optional(v.string()),
+    confidenceScore: v.optional(v.number()),
     metadata: v.optional(v.any()),
     expiresAt: v.optional(v.number()),
   },
+  returns: v.id('insights'),
   handler: async (ctx, args) => {
     const user = await getAuthUser(ctx);
 
@@ -40,7 +68,12 @@ export const store = mutation({
       userId: user._id,
       type: args.type,
       content: args.content,
+      title: args.title,
+      confidenceScore: args.confidenceScore,
       metadata: args.metadata,
+      viewed: false,
+      dismissed: false,
+      actionTaken: false,
       expiresAt: args.expiresAt ?? Date.now() + 7 * 24 * 60 * 60 * 1000,
       createdAt: Date.now(),
     });
@@ -51,14 +84,8 @@ export const store = mutation({
 // GET LATEST INSIGHT BY TYPE
 // ─────────────────────────────────────────────────────────────────────────────
 export const getLatest = query({
-  args: {
-    type: v.union(
-      v.literal('coaching'),
-      v.literal('pattern'),
-      v.literal('suggestion'),
-      v.literal('weekly_summary')
-    ),
-  },
+  args: { type: insightTypeValidator },
+  returns: v.union(insightDocValidator, v.null()),
   handler: async (ctx, { type }) => {
     const user = await getAuthUser(ctx);
 
@@ -81,23 +108,143 @@ export const getLatest = query({
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-// GET ALL INSIGHTS
+// LIST RECENT INSIGHTS (with optional type filter)
 // ─────────────────────────────────────────────────────────────────────────────
 export const listRecent = query({
-  args: { limit: v.optional(v.number()) },
-  handler: async (ctx, { limit }) => {
+  args: {
+    limit: v.optional(v.number()),
+    type: v.optional(insightTypeValidator),
+    includeExpired: v.optional(v.boolean()),
+  },
+  returns: v.array(insightDocValidator),
+  handler: async (ctx, { limit, type, includeExpired }) => {
+    const user = await getAuthUser(ctx);
+
+    let insights;
+    if (type) {
+      insights = await ctx.db
+        .query('insights')
+        .withIndex('by_userId_type', (q: any) =>
+          q.eq('userId', user._id).eq('type', type)
+        )
+        .order('desc')
+        .collect();
+    } else {
+      insights = await ctx.db
+        .query('insights')
+        .withIndex('by_userId', (q: any) => q.eq('userId', user._id))
+        .order('desc')
+        .collect();
+    }
+
+    // Filter expired unless requested
+    const valid = includeExpired
+      ? insights
+      : insights.filter((i) => !i.expiresAt || i.expiresAt >= Date.now());
+
+    return limit ? valid.slice(0, limit) : valid;
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MARK INSIGHT AS VIEWED
+// ─────────────────────────────────────────────────────────────────────────────
+export const markViewed = mutation({
+  args: { insightId: v.id('insights') },
+  returns: v.null(),
+  handler: async (ctx, { insightId }) => {
+    const user = await getAuthUser(ctx);
+    const insight = await ctx.db.get(insightId);
+    if (!insight || insight.userId !== user._id) throw new Error('Insight not found');
+
+    await ctx.db.patch(insightId, {
+      viewed: true,
+      viewedAt: Date.now(),
+    });
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DISMISS INSIGHT
+// ─────────────────────────────────────────────────────────────────────────────
+export const dismiss = mutation({
+  args: { insightId: v.id('insights') },
+  returns: v.null(),
+  handler: async (ctx, { insightId }) => {
+    const user = await getAuthUser(ctx);
+    const insight = await ctx.db.get(insightId);
+    if (!insight || insight.userId !== user._id) throw new Error('Insight not found');
+
+    await ctx.db.patch(insightId, {
+      dismissed: true,
+    });
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PROVIDE FEEDBACK ON INSIGHT (1-5 rating)
+// ─────────────────────────────────────────────────────────────────────────────
+export const provideFeedback = mutation({
+  args: {
+    insightId: v.id('insights'),
+    feedback: v.number(),
+    actionTaken: v.optional(v.boolean()),
+  },
+  returns: v.null(),
+  handler: async (ctx, { insightId, feedback, actionTaken }) => {
+    const user = await getAuthUser(ctx);
+    const insight = await ctx.db.get(insightId);
+    if (!insight || insight.userId !== user._id) throw new Error('Insight not found');
+
+    await ctx.db.patch(insightId, {
+      feedback: Math.min(5, Math.max(1, feedback)),
+      actionTaken: actionTaken ?? insight.actionTaken,
+    });
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GET UNREAD INSIGHTS COUNT
+// ─────────────────────────────────────────────────────────────────────────────
+export const getUnreadCount = query({
+  args: {},
+  returns: v.number(),
+  handler: async (ctx) => {
     const user = await getAuthUser(ctx);
 
     const insights = await ctx.db
       .query('insights')
       .withIndex('by_userId', (q: any) => q.eq('userId', user._id))
-      .order('desc')
       .collect();
 
-    const valid = insights.filter(
-      (i) => !i.expiresAt || i.expiresAt >= Date.now()
+    return insights.filter(
+      (i: any) => !i.viewed && !i.dismissed && (!i.expiresAt || i.expiresAt >= Date.now())
+    ).length;
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DELETE EXPIRED INSIGHTS (cleanup)
+// ─────────────────────────────────────────────────────────────────────────────
+export const cleanupExpired = mutation({
+  args: {},
+  returns: v.number(),
+  handler: async (ctx) => {
+    const user = await getAuthUser(ctx);
+
+    const insights = await ctx.db
+      .query('insights')
+      .withIndex('by_userId', (q: any) => q.eq('userId', user._id))
+      .collect();
+
+    const expired = insights.filter(
+      (i) => i.expiresAt && i.expiresAt < Date.now()
     );
 
-    return limit ? valid.slice(0, limit) : valid;
+    for (const insight of expired) {
+      await ctx.db.delete(insight._id);
+    }
+
+    return expired.length;
   },
 });

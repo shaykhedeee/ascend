@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Calendar View Component
+// AscendifyIFY - Calendar View Component
 // Monthly calendar showing habit completions, tasks, and progress
 // ═══════════════════════════════════════════════════════════════════════════════
 

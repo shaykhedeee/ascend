@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Profile Modal Component
+// AscendifyIFY - Profile Modal Component
 // User profile, stats, badges, and account settings
 // ═══════════════════════════════════════════════════════════════════════════════
 

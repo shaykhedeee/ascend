@@ -93,18 +93,35 @@ export async function POST(req: NextRequest) {
         const planIdentifier = extractClerkPlanIdentifier(data);
 
         if (!clerkId) {
-          throw new Error('Missing user id in billing webhook payload');
+          console.error('[Webhook] Missing user id in billing webhook payload');
+          return NextResponse.json({ error: 'Missing user id' }, { status: 400 });
         }
 
         const plan = mapClerkPlanToUserPlan(planIdentifier);
 
+        // Validate plan is one of the allowed values
+        if (!['free', 'pro', 'lifetime'].includes(plan)) {
+          console.error(`[Webhook] Invalid plan value: ${plan} from identifier: ${planIdentifier}`);
+          return NextResponse.json({ error: 'Invalid plan value' }, { status: 400 });
+        }
+
         console.log(`[Webhook] Updating plan for ${clerkId} → ${plan} (${planIdentifier ?? 'unknown-plan'})`);
 
-        await convex.mutation(api.users.updatePlanFromWebhook, {
-          clerkId,
-          plan,
-          webhookSecret: syncSecret,
-        });
+        try {
+          await convex.mutation(api.users.updatePlanFromWebhook, {
+            clerkId,
+            plan,
+            webhookSecret: syncSecret,
+          });
+          console.log(`[Webhook] Successfully updated plan for ${clerkId}`);
+        } catch (updateErr: any) {
+          console.error(`[Webhook] CRITICAL: Failed to update plan for ${clerkId}:`, updateErr);
+          // Return 500 so Clerk retries the webhook
+          return NextResponse.json(
+            { error: 'Failed to process plan update', details: updateErr.message },
+            { status: 500 }
+          );
+        }
 
         break;
       }
@@ -114,15 +131,25 @@ export async function POST(req: NextRequest) {
       case 'subscription.deleted': {
         const clerkId = data.user_id || data.user?.id;
         if (!clerkId) {
-          throw new Error('Missing user id in cancellation payload');
+          console.error('[Webhook] Missing user id in cancellation payload');
+          return NextResponse.json({ error: 'Missing user id' }, { status: 400 });
         }
 
         console.log(`[Webhook] Subscription cancelled for ${clerkId}`);
-        await convex.mutation(api.users.updatePlanFromWebhook, {
-          clerkId,
-          plan: 'free',
-          webhookSecret: syncSecret,
-        });
+        try {
+          await convex.mutation(api.users.updatePlanFromWebhook, {
+            clerkId,
+            plan: 'free',
+            webhookSecret: syncSecret,
+          });
+          console.log(`[Webhook] Successfully downgraded ${clerkId} to free plan`);
+        } catch (updateErr: any) {
+          console.error(`[Webhook] CRITICAL: Failed to downgrade ${clerkId}:`, updateErr);
+          return NextResponse.json(
+            { error: 'Failed to process cancellation', details: updateErr.message },
+            { status: 500 }
+          );
+        }
 
         break;
       }
@@ -136,9 +163,12 @@ export async function POST(req: NextRequest) {
       default:
         console.log(`[Webhook] Unhandled event: ${type}`);
     }
-  } catch (err) {
-    console.error(`[Webhook] Error processing ${type}:`, err);
-    return NextResponse.json({ error: 'Processing error' }, { status: 500 });
+  } catch (err: any) {
+    console.error(`[Webhook] Unexpected error processing ${type}:`, err);
+    return NextResponse.json(
+      { error: 'Processing error', details: err.message },
+      { status: 500 }
+    );
   }
 
   return NextResponse.json({ received: true });

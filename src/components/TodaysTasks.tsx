@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Today's Tasks Component
+// AscendifyIFY - Today's Tasks Component
 // Shows daily tasks from goals with interactive completion
 // ═══════════════════════════════════════════════════════════════════════════════
 

@@ -116,7 +116,7 @@ const habitLogDoc = v.object({
 
 // Plan limits
 const PLAN_LIMITS = {
-  free: { maxHabits: 5 },
+  free: { maxHabits: 10 },
   pro: { maxHabits: Infinity },
   lifetime: { maxHabits: Infinity },
 } as const;

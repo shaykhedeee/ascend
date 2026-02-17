@@ -7,7 +7,7 @@ import { mutation, query } from './_generated/server';
 import { v } from 'convex/values';
 
 const PLAN_LIMITS = {
-  free: { maxGoals: 1 },
+  free: { maxGoals: 3 },
   pro: { maxGoals: Infinity },
   lifetime: { maxGoals: Infinity },
 } as const;

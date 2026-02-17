@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// VANTAGE — Clerk Billing Webhook
+// ASCENDIFY — Clerk Billing Webhook
 // Handles subscription changes → updates user plan in Convex
 // POST /api/webhooks/clerk-billing
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -8,8 +8,32 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Webhook } from 'svix';
 import { ConvexHttpClient } from 'convex/browser';
 import { api } from '../../../../../convex/_generated/api';
+import { mapClerkPlanToUserPlan } from '@/lib/billing/plans';
 
 const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
+
+function extractClerkPlanIdentifier(data: any): string | null {
+  const candidates: Array<unknown> = [
+    data?.plan_id,
+    data?.plan?.id,
+    data?.plan?.slug,
+    data?.plan?.name,
+    data?.subscription?.plan_id,
+    data?.subscription?.plan?.id,
+    data?.subscription?.plan?.slug,
+    data?.subscription?.plan?.name,
+    data?.public_metadata?.plan,
+    data?.private_metadata?.plan,
+  ];
+
+  for (const value of candidates) {
+    if (typeof value === 'string' && value.trim().length > 0) {
+      return value;
+    }
+  }
+
+  return null;
+}
 
 export async function POST(req: NextRequest) {
   // ────────────────────────────────────────────────────────────────────────
@@ -49,42 +73,57 @@ export async function POST(req: NextRequest) {
   // 2) Handle billing events
   // ────────────────────────────────────────────────────────────────────────
   const { type, data } = event;
+  const syncSecret = process.env.BILLING_WEBHOOK_SYNC_SECRET;
+
+  if (!syncSecret) {
+    console.error('Missing BILLING_WEBHOOK_SYNC_SECRET env variable');
+    return NextResponse.json({ error: 'Server config error' }, { status: 500 });
+  }
 
   console.log(`[Webhook] Received: ${type}`);
 
   try {
     switch (type) {
       // Subscription created or updated
+      case 'billing.subscription.created':
+      case 'billing.subscription.updated':
       case 'subscription.created':
       case 'subscription.updated': {
-        const clerkId = data.user_id;
-        const planId = data.plan_id; // Your Clerk plan ID
+        const clerkId = data.user_id || data.user?.id;
+        const planIdentifier = extractClerkPlanIdentifier(data);
 
-        // Map Clerk plan IDs to our plan names
-        let plan: 'free' | 'pro' | 'lifetime' = 'free';
-        if (planId?.includes('pro') || planId?.includes('premium')) {
-          plan = 'pro';
-        } else if (planId?.includes('lifetime')) {
-          plan = 'lifetime';
+        if (!clerkId) {
+          throw new Error('Missing user id in billing webhook payload');
         }
 
-        // Update user plan in Convex via internal mutation
-        // Note: For production, use Convex HTTP client with a service token
-        // or call the updatePlan mutation directly
-        console.log(`[Webhook] Updating plan for ${clerkId} → ${plan}`);
+        const plan = mapClerkPlanToUserPlan(planIdentifier);
 
-        // We can't call internalMutation from HTTP client, 
-        // so use a public mutation that validates a webhook secret
-        await convex.mutation(api.users.store as any);
+        console.log(`[Webhook] Updating plan for ${clerkId} → ${plan} (${planIdentifier ?? 'unknown-plan'})`);
+
+        await convex.mutation(api.users.updatePlanFromWebhook, {
+          clerkId,
+          plan,
+          webhookSecret: syncSecret,
+        });
 
         break;
       }
 
       // Subscription cancelled
+      case 'billing.subscription.deleted':
       case 'subscription.deleted': {
-        const clerkId = data.user_id;
+        const clerkId = data.user_id || data.user?.id;
+        if (!clerkId) {
+          throw new Error('Missing user id in cancellation payload');
+        }
+
         console.log(`[Webhook] Subscription cancelled for ${clerkId}`);
-        // Downgrade to free
+        await convex.mutation(api.users.updatePlanFromWebhook, {
+          clerkId,
+          plan: 'free',
+          webhookSecret: syncSecret,
+        });
+
         break;
       }
 

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Pricing Page (SEO-Optimized)
+// AscendifyIFY - Pricing Page (SEO-Optimized)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { Metadata } from 'next';
@@ -9,13 +9,13 @@ import { Mountain, ArrowLeft, Check, Zap, Star, Shield, Crown } from 'lucide-rea
 export const metadata: Metadata = {
   title: 'Pricing — Free & Pro Plans',
   description:
-    'ASCEND pricing plans: Free habit tracker with 5 habits, or Pro with unlimited AI goal decomposition, advanced analytics, and priority support. No credit card required.',
+    'Ascendify pricing plans: Free habit tracker with 10 habits & AI insights, or Pro with unlimited AI goal decomposition, advanced analytics, and priority support. No credit card required.',
   keywords: [
     'habit tracker pricing', 'free habit tracker', 'habit tracker no ads',
     'best free goal tracker', 'productivity app pricing',
   ],
   openGraph: {
-    title: 'ASCEND Pricing — Free & Pro Plans',
+    title: 'Ascendify Pricing — Free & Pro Plans',
     description: 'Start free. Upgrade when you\'re ready. No credit card needed.',
     url: '/pricing',
   },
@@ -27,82 +27,87 @@ const plans = [
     name: 'Free',
     price: '$0',
     period: 'forever',
-    description: 'Perfect for getting started with habit tracking',
+    description: 'Everything you need to start building habits',
     icon: Zap,
     color: 'from-slate-400 to-slate-500',
     highlight: false,
     features: [
-      'Up to 5 active habits',
-      'Basic habit analytics',
-      'Streak tracking',
-      'Daily task management',
-      'Dark & light themes',
+      'Up to 10 active habits',
+      'Up to 3 active goals',
+      'AI-powered insights & suggestions',
+      'Streak tracking & reminders',
+      'Calendar view',
+      'Focus timer (basic)',
+      'Mood & wellness tracking',
+      '7-day analytics history',
       'PWA — works offline',
-      'Data export (JSON)',
     ],
     cta: 'Get Started Free',
   },
   {
     name: 'Pro',
-    price: '$9',
-    period: '/month',
-    description: 'Everything you need to achieve your biggest goals',
+    price: '$8',
+    period: '/mo (billed yearly)',
+    description: 'Unlimited power with AI coaching to achieve your biggest goals',
     icon: Crown,
     color: 'from-ascend-500 to-gold-400',
     highlight: true,
     badge: 'Most Popular',
     features: [
       'Unlimited habits & goals',
-      'AI Goal Decomposition',
-      'Advanced analytics & insights',
+      'AI Goal Decomposition engine',
+      'Adaptive AI coaching & smart nudges',
+      'Advanced analytics & long-range trends',
       'Contribution heatmap',
-      'Weekly review wizard',
-      'CSV & PDF export',
+      'Weekly AI review wizard',
       'Habit stacking builder',
-      'Identity-based tracking',
-      'Smart Coach AI messages',
-      'Priority support',
-      'Streak freeze tokens',
+      'Identity-based habit system',
       'Custom habit templates',
+      'Data export (CSV & PDF)',
+      'Priority email support',
+      'Priority roadmap voting',
     ],
-    cta: 'Start 14-Day Free Trial',
+    cta: 'Start Pro — $8/mo',
   },
   {
     name: 'Lifetime',
-    price: '$149',
+    price: '$199',
     period: 'one-time',
-    description: 'Pay once and own ASCEND forever',
+    description: 'Pay once, own Ascendify forever — limited founder pricing',
     icon: Star,
     color: 'from-gold-400 to-orange-500',
     highlight: false,
+    badge: 'Founder Deal',
     features: [
-      'Everything in Pro',
+      'Everything in Pro — forever',
       'Lifetime updates included',
-      'Early access to new features',
-      'Founding member badge',
-      'Community access',
-      'No recurring charges ever',
+      'No recurring charges, ever',
+      'Founder badge & early feature channel',
+      'Priority concierge onboarding',
+      'Exclusive founder community access',
     ],
     cta: 'Get Lifetime Access',
   },
 ];
 
 const comparisonFeatures = [
-  { name: 'Active Habits', free: '5', pro: 'Unlimited' },
-  { name: 'Goals', free: '1', pro: 'Unlimited' },
+  { name: 'Active Habits', free: '10', pro: 'Unlimited' },
+  { name: 'Active Goals', free: '3', pro: 'Unlimited' },
+  { name: 'AI-Powered Insights', free: '✓', pro: '✓' },
   { name: 'AI Goal Decomposition', free: '—', pro: '✓' },
+  { name: 'Adaptive AI Coaching', free: '—', pro: '✓' },
   { name: 'Streak Tracking', free: '✓', pro: '✓' },
-  { name: 'Basic Analytics', free: '✓', pro: '✓' },
-  { name: 'Advanced Analytics', free: '—', pro: '✓' },
+  { name: 'Calendar View', free: '✓', pro: '✓' },
+  { name: 'Focus Timer', free: 'Basic', pro: 'Advanced' },
+  { name: 'Mood & Wellness Tracking', free: '✓', pro: '✓' },
+  { name: 'Analytics History', free: '7 days', pro: 'Unlimited' },
   { name: 'Contribution Heatmap', free: '—', pro: '✓' },
-  { name: 'Weekly Review', free: '—', pro: '✓' },
+  { name: 'Weekly AI Review', free: '—', pro: '✓' },
   { name: 'Habit Stacking', free: '—', pro: '✓' },
-  { name: 'Smart Coach', free: '—', pro: '✓' },
-  { name: 'CSV & PDF Export', free: 'JSON only', pro: '✓' },
+  { name: 'Identity-Based System', free: '—', pro: '✓' },
   { name: 'Custom Templates', free: '—', pro: '✓' },
-  { name: 'Streak Freeze', free: '—', pro: '✓' },
-  { name: 'Identity System', free: '—', pro: '✓' },
-  { name: 'Offline Support', free: '✓', pro: '✓' },
+  { name: 'Data Export', free: '—', pro: 'CSV & PDF' },
+  { name: 'Offline Support (PWA)', free: '✓', pro: '✓' },
   { name: 'Priority Support', free: '—', pro: '✓' },
 ];
 
@@ -110,11 +115,11 @@ const comparisonFeatures = [
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'ASCEND Pricing',
-  description: 'Pricing plans for ASCEND AI-powered habit tracker',
+  name: 'Ascendify Pricing',
+  description: 'Pricing plans for Ascendify AI-powered habit tracker',
   mainEntity: {
     '@type': 'SoftwareApplication',
-    name: 'ASCEND',
+    name: 'Ascendify',
     applicationCategory: 'LifestyleApplication',
     offers: plans.map((plan) => ({
       '@type': 'Offer',
@@ -142,7 +147,7 @@ export default function PricingPage() {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-ascend-500 to-ascend-600 flex items-center justify-center">
               <Mountain className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-lg">ASCEND</span>
+            <span className="font-bold text-lg">ASCENDIFY</span>
             <span className="text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors flex items-center gap-1">
               <ArrowLeft className="w-4 h-4" /> Back
             </span>
@@ -198,7 +203,7 @@ export default function PricingPage() {
                 </div>
 
                 <Link
-                  href="/login"
+                  href="/sign-up"
                   className={`block w-full text-center py-3 rounded-xl font-semibold transition-all mb-8
                     ${plan.highlight
                       ? 'bg-gradient-to-r from-ascend-500 to-ascend-600 text-white hover:shadow-lg hover:shadow-ascend-500/25'
@@ -253,11 +258,11 @@ export default function PricingPage() {
           <h2 className="text-2xl font-bold text-center mb-8">Pricing FAQ</h2>
           <div className="space-y-4">
             {[
-              { q: 'Can I try Pro for free?', a: 'Yes! Every Pro plan comes with a 14-day free trial. No credit card needed to start.' },
-              { q: 'What happens when my trial ends?', a: 'You\'ll be moved to the Free plan with all your data intact. Upgrade anytime to regain Pro features.' },
+              { q: 'Can I try Pro for free?', a: 'Yes! Start with our generous free plan including 10 habits, 3 goals, and AI insights. Upgrade to Pro when you need unlimited power.' },
+              { q: 'What happens if I downgrade?', a: 'You keep Pro access until the end of your paid period. Then you move to Free with all your data intact — nothing is deleted.' },
               { q: 'Can I cancel anytime?', a: 'Absolutely. Cancel your subscription anytime from the billing page. No questions asked.' },
               { q: 'Is the lifetime plan really forever?', a: 'Yes. One payment, lifetime access. You\'ll receive all future updates at no additional cost.' },
-              { q: 'Do you offer student discounts?', a: 'Yes! Students get 50% off the Pro plan. Contact support@ascend.app with your student email.' },
+              { q: 'Do you offer student discounts?', a: 'Yes! Students get 50% off the Pro plan. Contact support@ascendify.app with your student email.' },
             ].map((faq) => (
               <details key={faq.q} className="group rounded-xl border border-[var(--border)] bg-[var(--surface)]">
                 <summary className="cursor-pointer py-4 px-5 font-medium flex justify-between items-center list-none">
@@ -273,9 +278,9 @@ export default function PricingPage() {
         {/* CTA */}
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-3">Ready to achieve your goals?</h2>
-          <p className="text-[var(--text-secondary)] mb-6">Join 50,000+ people building better habits with ASCEND.</p>
+          <p className="text-[var(--text-secondary)] mb-6">Join 50,000+ people building better habits with Ascendify.</p>
           <Link
-            href="/login"
+            href="/sign-up"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg
                      bg-gradient-to-r from-ascend-500 to-ascend-600 text-white shadow-xl shadow-ascend-500/25
                      hover:shadow-ascend-500/40 transition-all"

@@ -1,7 +1,7 @@
 'use client';
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// VANTAGE — usePlanGating Hook
+// ASCENDIFY — usePlanGating Hook
 // Check user's plan and gate features accordingly
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -10,9 +10,9 @@ import { useStoreUser } from './useStoreUser';
 // Feature flags by plan
 const FEATURES = {
   free: {
-    maxHabits: 5,
-    maxGoals: 1,
-    aiInsights: false,
+    maxHabits: 10,
+    maxGoals: 3,
+    aiInsights: true,
     advancedAnalytics: false,
     habitStacking: false,
     deepOnboarding: false,

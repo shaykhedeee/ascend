@@ -5,6 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
+import { auth, currentUser } from '@clerk/nextjs/server';
 
 // PayU configuration from environment
 const PAYU_MERCHANT_KEY = process.env.PAYU_MERCHANT_KEY || '';
@@ -19,8 +20,6 @@ const PAYU_URLS = {
 
 interface PaymentRequest {
   planType: 'pro' | 'lifetime';
-  userEmail: string;
-  userName: string;
   userPhone?: string;
 }
 
@@ -67,6 +66,17 @@ function generateTxnId(): string {
 
 export async function POST(request: NextRequest): Promise<NextResponse<PaymentResponse>> {
   try {
+    // Enforce authentication for payment initiation.
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    const user = await currentUser();
+
     // Validate configuration
     if (!PAYU_MERCHANT_KEY || !PAYU_MERCHANT_SALT) {
       console.error('PayU credentials not configured');
@@ -77,7 +87,11 @@ export async function POST(request: NextRequest): Promise<NextResponse<PaymentRe
     }
 
     const body = await request.json() as PaymentRequest;
-    const { planType, userEmail, userName, userPhone } = body;
+  const { planType, userPhone } = body;
+
+  // Derive payer identity from trusted auth context, not client payload.
+  const userEmail = user?.primaryEmailAddress?.emailAddress || '';
+  const userName = [user?.firstName, user?.lastName].filter(Boolean).join(' ').trim() || user?.username || 'User';
 
     // Validate request
     if (!planType || !['pro', 'lifetime'].includes(planType)) {
@@ -89,7 +103,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<PaymentRe
 
     if (!userEmail || !userName) {
       return NextResponse.json(
-        { success: false, error: 'Email and name are required' },
+        { success: false, error: 'Authenticated user profile is incomplete (email/name required)' },
         { status: 400 }
       );
     }

@@ -73,6 +73,7 @@ export async function POST(req: NextRequest) {
   // 2) Handle billing events
   // ────────────────────────────────────────────────────────────────────────
   const { type, data } = event;
+  const eventId = svix_id;
   const syncSecret = process.env.BILLING_WEBHOOK_SYNC_SECRET;
 
   if (!syncSecret) {
@@ -108,12 +109,19 @@ export async function POST(req: NextRequest) {
         console.log(`[Webhook] Updating plan for ${clerkId} → ${plan} (${planIdentifier ?? 'unknown-plan'})`);
 
         try {
-          await convex.mutation(api.users.updatePlanFromWebhook, {
+          const result = await convex.mutation(api.users.updatePlanFromWebhook, {
             clerkId,
             plan,
+            eventId,
+            eventType: type,
             webhookSecret: syncSecret,
           });
-          console.log(`[Webhook] Successfully updated plan for ${clerkId}`);
+
+          if (!result.applied && result.reason === 'duplicate_event') {
+            console.log(`[Webhook] Duplicate event ignored: ${eventId}`);
+          } else {
+            console.log(`[Webhook] Successfully updated plan for ${clerkId}`);
+          }
         } catch (updateErr: any) {
           console.error(`[Webhook] CRITICAL: Failed to update plan for ${clerkId}:`, updateErr);
           // Return 500 so Clerk retries the webhook
@@ -137,12 +145,19 @@ export async function POST(req: NextRequest) {
 
         console.log(`[Webhook] Subscription cancelled for ${clerkId}`);
         try {
-          await convex.mutation(api.users.updatePlanFromWebhook, {
+          const result = await convex.mutation(api.users.updatePlanFromWebhook, {
             clerkId,
             plan: 'free',
+            eventId,
+            eventType: type,
             webhookSecret: syncSecret,
           });
-          console.log(`[Webhook] Successfully downgraded ${clerkId} to free plan`);
+
+          if (!result.applied && result.reason === 'duplicate_event') {
+            console.log(`[Webhook] Duplicate cancellation event ignored: ${eventId}`);
+          } else {
+            console.log(`[Webhook] Successfully downgraded ${clerkId} to free plan`);
+          }
         } catch (updateErr: any) {
           console.error(`[Webhook] CRITICAL: Failed to downgrade ${clerkId}:`, updateErr);
           return NextResponse.json(

@@ -340,10 +340,15 @@ export const updatePlanFromWebhook = mutation({
   args: {
     clerkId: v.string(),
     plan: v.union(v.literal('free'), v.literal('pro'), v.literal('lifetime')),
+    eventId: v.string(),
+    eventType: v.string(),
     webhookSecret: v.string(),
   },
-  returns: v.null(),
-  handler: async (ctx, { clerkId, plan, webhookSecret }) => {
+  returns: v.object({
+    applied: v.boolean(),
+    reason: v.string(),
+  }),
+  handler: async (ctx, { clerkId, plan, eventId, eventType, webhookSecret }) => {
     const expected = process.env.BILLING_WEBHOOK_SYNC_SECRET;
     if (!expected) {
       throw new Error('BILLING_WEBHOOK_SYNC_SECRET is not configured');
@@ -365,6 +370,20 @@ export const updatePlanFromWebhook = mutation({
       throw new Error('Unauthorized webhook plan update');
     }
 
+    // Durable idempotency: if this webhook event has already been processed,
+    // return success without re-applying mutations.
+    const existingEvent = await ctx.db
+      .query('billingWebhookEvents')
+      .withIndex('by_eventId', (q) => q.eq('eventId', eventId))
+      .unique();
+
+    if (existingEvent) {
+      return {
+        applied: false,
+        reason: 'duplicate_event',
+      };
+    }
+
     const user = await ctx.db
       .query('users')
       .withIndex('by_clerkId', (q) => q.eq('clerkId', clerkId))
@@ -373,7 +392,21 @@ export const updatePlanFromWebhook = mutation({
     // Webhook may arrive before first signed-in sync; no-op safely.
     if (!user) {
       console.warn(`[users.updatePlanFromWebhook] User not found for clerkId=${clerkId}`);
-      return null;
+
+      await ctx.db.insert('billingWebhookEvents', {
+        eventId,
+        eventType,
+        clerkId,
+        plan,
+        status: 'ignored',
+        reason: 'user_not_found',
+        processedAt: Date.now(),
+      });
+
+      return {
+        applied: false,
+        reason: 'user_not_found',
+      };
     }
 
     await ctx.db.patch(user._id, {
@@ -381,7 +414,20 @@ export const updatePlanFromWebhook = mutation({
       updatedAt: Date.now(),
     });
 
-    return null;
+    await ctx.db.insert('billingWebhookEvents', {
+      eventId,
+      eventType,
+      clerkId,
+      plan,
+      status: 'applied',
+      reason: 'ok',
+      processedAt: Date.now(),
+    });
+
+    return {
+      applied: true,
+      reason: 'ok',
+    };
   },
 });
 

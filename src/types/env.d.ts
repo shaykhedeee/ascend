@@ -31,11 +31,6 @@ declare namespace NodeJS {
     OPENAI_API_KEY?: string;
     AIML_API_KEY?: string;
 
-    // Legacy/public AI keys (backward compatibility only)
-    NEXT_PUBLIC_GROQ_API_KEY?: string;
-    NEXT_PUBLIC_GOOGLE_AI_STUDIO_KEY?: string;
-    NEXT_PUBLIC_OPENAI_API_KEY?: string;
-
     // App config
     NEXT_PUBLIC_APP_NAME?: string;
     NEXT_PUBLIC_APP_URL?: string;

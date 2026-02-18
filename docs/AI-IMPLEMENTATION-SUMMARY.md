@@ -69,13 +69,13 @@ Pattern analysis dashboard:
 
 ```env
 # Primary AI - Groq (Fast & Cheap)
-NEXT_PUBLIC_GROQ_API_KEY=your_groq_api_key_here
+GROQ_API_KEY=your_groq_api_key_here
 
 # Secondary - Google Gemini (Free tier)
-NEXT_PUBLIC_GOOGLE_AI_STUDIO_KEY=your_google_ai_key_here
+GOOGLE_AI_STUDIO_KEY=your_google_ai_key_here
 
 # Backup - OpenAI (More expensive)
-NEXT_PUBLIC_OPENAI_API_KEY=your_openai_key_here
+OPENAI_API_KEY=your_openai_key_here
 ```
 
 ## 💰 Estimated Monthly Costs

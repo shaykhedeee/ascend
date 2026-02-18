@@ -793,4 +793,20 @@ export default defineSchema({
   })
     .index('by_category', ['category'])
     .index('by_lifeDomain', ['lifeDomain']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // BILLING WEBHOOK EVENTS — Durable idempotency & audit trail
+  // ─────────────────────────────────────────────────────────────────────────────
+  billingWebhookEvents: defineTable({
+    eventId: v.string(),
+    eventType: v.string(),
+    clerkId: v.string(),
+    plan: v.union(v.literal('free'), v.literal('pro'), v.literal('lifetime')),
+    status: v.union(v.literal('applied'), v.literal('ignored')),
+    reason: v.string(),
+    processedAt: v.number(),
+  })
+    .index('by_eventId', ['eventId'])
+    .index('by_clerkId', ['clerkId'])
+    .index('by_processedAt', ['processedAt']),
 });

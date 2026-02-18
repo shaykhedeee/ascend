@@ -2,12 +2,10 @@
 // ASCEND - Service Worker for Push Notifications & Offline Support
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'ascend-v1';
-const OFFLINE_URL = '/';
+const CACHE_NAME = 'ascend-v2';
 
 // Assets to cache for offline use
 const STATIC_ASSETS = [
-  '/',
   '/manifest.json',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png',
@@ -48,6 +46,28 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // For document navigations, use network-first to avoid serving stale shell pages.
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.ok) {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseClone);
+            });
+          }
+          return response;
+        })
+        .catch(async () => {
+          const cached = await caches.match(event.request);
+          if (cached) return cached;
+          return new Response('Offline', { status: 503 });
+        })
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       // Return cached version if available
@@ -74,10 +94,6 @@ self.addEventListener('fetch', (event) => {
         }
         return response;
       }).catch(() => {
-        // Return offline page for navigation requests
-        if (event.request.mode === 'navigate') {
-          return caches.match(OFFLINE_URL);
-        }
         return new Response('Offline', { status: 503 });
       });
     })

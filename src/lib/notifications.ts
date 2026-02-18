@@ -287,6 +287,19 @@ export function scheduleHabitReminder(
 export async function registerServiceWorker(): Promise<ServiceWorkerRegistration | null> {
   if (!('serviceWorker' in navigator)) return null;
 
+  // In local development, avoid stale cache/service-worker issues that can
+  // make the app appear stuck on old pages.
+  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    try {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map((reg) => reg.unregister()));
+      console.log('Service Worker disabled on localhost');
+    } catch {
+      // no-op
+    }
+    return null;
+  }
+
   try {
     const registration = await navigator.serviceWorker.register('/sw.js', {
       scope: '/',

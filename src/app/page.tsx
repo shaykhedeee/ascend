@@ -6,7 +6,7 @@
 
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@clerk/nextjs';
 import { LandingPageV2 as LandingPage } from '@/components/LandingPageV2';
@@ -14,6 +14,18 @@ import { LandingPageV2 as LandingPage } from '@/components/LandingPageV2';
 export default function Home() {
   const router = useRouter();
   const { isSignedIn, isLoaded } = useAuth();
+  const [loadingTimedOut, setLoadingTimedOut] = useState(false);
+
+  // Fallback: avoid getting stuck on spinner forever if auth handshake stalls.
+  useEffect(() => {
+    if (isLoaded) return;
+
+    const timer = window.setTimeout(() => {
+      setLoadingTimedOut(true);
+    }, 5000);
+
+    return () => window.clearTimeout(timer);
+  }, [isLoaded]);
 
   // Redirect authenticated users to the dashboard
   useEffect(() => {
@@ -23,7 +35,7 @@ export default function Home() {
   }, [isLoaded, isSignedIn, router]);
 
   // While Clerk is loading, show a minimal spinner
-  if (!isLoaded) {
+  if (!isLoaded && !loadingTimedOut) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
         <div className="flex flex-col items-center gap-4">

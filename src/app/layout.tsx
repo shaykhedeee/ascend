@@ -298,7 +298,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProviderWrapper>
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
         {/* JSON-LD Structured Data */}
@@ -324,8 +323,31 @@ export default function RootLayout({
             `,
           }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+                  if (!isLocal || !('serviceWorker' in navigator)) return;
+
+                  navigator.serviceWorker.getRegistrations().then(function(regs) {
+                    return Promise.all(regs.map(function(reg) { return reg.unregister(); }));
+                  }).catch(function() {});
+
+                  if ('caches' in window) {
+                    caches.keys().then(function(keys) {
+                      return Promise.all(keys.map(function(key) { return caches.delete(key); }));
+                    }).catch(function() {});
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
       </head>
       <body className="antialiased min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
+        <ClerkProviderWrapper>
           {/* Error Tracking */}
           <ErrorTrackingInit />
           
@@ -342,8 +364,8 @@ export default function RootLayout({
               </ConvexClientProvider>
             </AccessibilityProvider>
           </ThemeProvider>
+        </ClerkProviderWrapper>
       </body>
     </html>
-    </ClerkProviderWrapper>
   );
 }

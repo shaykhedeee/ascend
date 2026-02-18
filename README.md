@@ -78,9 +78,9 @@ cd ascend
 # Install dependencies
 npm install
 
-# Create environment file (optional - for AI features)
+# Create environment file
 cp .env.example .env.local
-# Edit .env.local and add your OpenAI API key
+# Edit .env.local and add Clerk/Convex/AI/Billing values
 
 # Start development server
 npm run dev
@@ -91,12 +91,30 @@ npm run dev
 Create a `.env.local` file based on `.env.example`:
 
 ```env
-# OpenAI API Key (Optional)
-# If not provided, the app will use intelligent mock templates for goal decomposition
-NEXT_PUBLIC_OPENAI_API_KEY=your_api_key_here
+# Clerk
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_SECRET_KEY=sk_test_...
+CLERK_WEBHOOK_SECRET=whsec_...
+
+# Convex
+CONVEX_DEPLOYMENT=dev:your-project
+NEXT_PUBLIC_CONVEX_URL=https://your-project.convex.cloud
+
+# AI (server-side only)
+GROQ_API_KEY=
+GOOGLE_AI_STUDIO_KEY=
+OPENROUTER_API_KEY=
+AIML_API_KEY=
+
+# Billing
+BILLING_WEBHOOK_SYNC_SECRET=
+BILLING_PRO_MONTHLY_CHECKOUT_URL=
+BILLING_PRO_YEARLY_CHECKOUT_URL=
+BILLING_LIFETIME_CHECKOUT_URL=
+BILLING_PORTAL_URL=
 ```
 
-**Note:** The app works fully without an API key. The AI goal decomposer will generate smart templates based on goal categories.
+**Note:** The app can still run without AI keys (limited/fallback AI behavior), but launch-ready billing requires Clerk + webhook + checkout URLs configured.
 
 ---
 

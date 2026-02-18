@@ -23,9 +23,9 @@ interface AIResponse {
 // ─────────────────────────────────────────────────────────────────────────────────
 
 const API_KEYS = {
-  groq: process.env.NEXT_PUBLIC_GROQ_API_KEY || '',
-  gemini: process.env.NEXT_PUBLIC_GOOGLE_AI_STUDIO_KEY || '',
-  openai: process.env.NEXT_PUBLIC_OPENAI_API_KEY || '',
+  groq: process.env.GROQ_API_KEY || process.env.NEXT_PUBLIC_GROQ_API_KEY || '',
+  gemini: process.env.GOOGLE_AI_STUDIO_KEY || process.env.NEXT_PUBLIC_GOOGLE_AI_STUDIO_KEY || '',
+  openai: process.env.OPENAI_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY || '',
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────

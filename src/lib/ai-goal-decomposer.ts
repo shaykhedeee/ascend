@@ -178,7 +178,7 @@ export class AIGoalDecomposer {
   private model: string;
 
   constructor(apiKey?: string) {
-    this.apiKey = apiKey || process.env.NEXT_PUBLIC_OPENAI_API_KEY || '';
+    this.apiKey = apiKey || '';
     this.model = 'gpt-4o-mini'; // Cost-effective for structured output
   }
 

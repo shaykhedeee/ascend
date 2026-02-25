@@ -1,10 +1,116 @@
+import { mutation, internalMutation } from './_generated/server';
+import { v } from 'convex/values';
+import { checkAndCreateGoal } from './lib/transactions';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ARCHIVE EXCESS GOALS ON DOWNGRADE
+// ─────────────────────────────────────────────────────────────────────────────
+export const archiveExcessOnDowngrade = mutation({
+  args: { newPlan: v.union(v.literal('free'), v.literal('pro'), v.literal('lifetime')) },
+  returns: v.number(),
+  handler: async (ctx, { newPlan }) => {
+    const user = await getAuthUser(ctx);
+    const limit = PLAN_LIMITS[newPlan].maxGoals;
+    const activeGoals = await ctx.db
+      .query('goals')
+      .withIndex('by_userId_status', (q) => q.eq('userId', user._id).eq('status', 'in_progress'))
+      .collect();
+    if (activeGoals.length <= limit) return 0;
+    // Sort by creation time, keep the most recent 'limit' goals active
+    const toArchive = activeGoals
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .slice(limit);
+    for (const goal of toArchive) {
+      await ctx.db.patch(goal._id, { status: 'paused', archivedByDowngrade: true, updatedAt: Date.now() });
+    }
+    return toArchive.length;
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RESTORE ARCHIVED GOALS ON UPGRADE
+// ─────────────────────────────────────────────────────────────────────────────
+export const restoreArchivedOnUpgrade = mutation({
+  args: { newPlan: v.union(v.literal('pro'), v.literal('lifetime')) },
+  returns: v.number(),
+  handler: async (ctx, { newPlan }) => {
+    const user = await getAuthUser(ctx);
+    const limit = PLAN_LIMITS[newPlan].maxGoals;
+    const archived = await ctx.db
+      .query('goals')
+      .withIndex('by_userId_archivedByDowngrade', (q) => q.eq('userId', user._id).eq('archivedByDowngrade', true))
+      .collect();
+    let restored = 0;
+    for (const goal of archived) {
+      // Only restore up to the new plan's limit
+      const activeCount = await ctx.db
+        .query('goals')
+        .withIndex('by_userId_status', (q) => q.eq('userId', user._id).eq('status', 'in_progress'))
+        .collect();
+      if (activeCount.length < limit) {
+        await ctx.db.patch(goal._id, { status: 'in_progress', archivedByDowngrade: false, updatedAt: Date.now() });
+        restored++;
+      } else {
+        break;
+      }
+    }
+    return restored;
+  },
+});
+
+// Internal helper mutations (internal-only) so other Convex functions can reuse
+// the centralized archive/restore behavior.
+export const archiveExcessOnDowngradeInternal = internalMutation({
+  args: { newPlan: v.union(v.literal('free'), v.literal('pro'), v.literal('lifetime')) },
+  returns: v.number(),
+  handler: async (ctx, { newPlan }) => {
+    const user = await getAuthUser(ctx);
+    const limit = PLAN_LIMITS[newPlan].maxGoals;
+    const activeGoals = await ctx.db
+      .query('goals')
+      .withIndex('by_userId_status', (q) => q.eq('userId', user._id).eq('status', 'in_progress'))
+      .collect();
+    if (activeGoals.length <= limit) return 0;
+    const toArchive = activeGoals.sort((a, b) => b.createdAt - a.createdAt).slice(limit);
+    for (const goal of toArchive) {
+      await ctx.db.patch(goal._id, { status: 'paused', archivedByDowngrade: true, updatedAt: Date.now() });
+    }
+    return toArchive.length;
+  },
+});
+
+export const restoreArchivedOnUpgradeInternal = internalMutation({
+  args: { newPlan: v.union(v.literal('pro'), v.literal('lifetime')) },
+  returns: v.number(),
+  handler: async (ctx, { newPlan }) => {
+    const user = await getAuthUser(ctx);
+    const limit = PLAN_LIMITS[newPlan].maxGoals;
+    const archived = await ctx.db
+      .query('goals')
+      .withIndex('by_userId_archivedByDowngrade', (q) => q.eq('userId', user._id).eq('archivedByDowngrade', true))
+      .collect();
+    let restored = 0;
+    for (const goal of archived) {
+      const activeCount = await ctx.db
+        .query('goals')
+        .withIndex('by_userId_status', (q) => q.eq('userId', user._id).eq('status', 'in_progress'))
+        .collect();
+      if (activeCount.length < limit) {
+        await ctx.db.patch(goal._id, { status: 'in_progress', archivedByDowngrade: false, updatedAt: Date.now() });
+        restored++;
+      } else {
+        break;
+      }
+    }
+    return restored;
+  },
+});
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY — Goals Engine (Convex)
+// RESURGO — Goals Engine (Convex)
 // Hierarchical goals with AI decomposition support
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { mutation, query } from './_generated/server';
-import { v } from 'convex/values';
+// mutation/query/v already imported above
 
 const PLAN_LIMITS = {
   free: { maxGoals: 3 },
@@ -61,30 +167,10 @@ export const create = mutation({
   returns: v.id('goals'),
   handler: async (ctx, args) => {
     const user = await getAuthUser(ctx);
-
-    // Enforce plan limits
-    const activeGoals = await ctx.db
-      .query('goals')
-      .withIndex('by_userId_status', (q: any) =>
-        q.eq('userId', user._id).eq('status', 'in_progress')
-      )
-      .collect();
-
-    const userPlan = (user.plan as keyof typeof PLAN_LIMITS) ?? 'free';
-    const limit = PLAN_LIMITS[userPlan].maxGoals;
-    if (activeGoals.length >= limit) {
-      throw new Error(
-        `Plan limit reached: ${user.plan} plan allows ${limit} active goals. Upgrade to Pro for unlimited.`
-      );
-    }
-
-    return await ctx.db.insert('goals', {
-      userId: user._id,
+    return await checkAndCreateGoal(ctx, user._id, {
       title: args.title,
       description: args.description,
       category: args.category,
-      status: 'in_progress',
-      progress: 0,
       targetDate: args.targetDate,
       startDate: args.startDate,
       identityLabel: args.identityLabel,
@@ -93,19 +179,15 @@ export const create = mutation({
       deadlineType: args.deadlineType,
       whyImportant: args.whyImportant,
       successCriteria: args.successCriteria,
-      difficultyLevel: args.difficultyLevel,
+      difficultyLevel: args.difficultyLevel ?? 1,
       estimatedHours: args.estimatedHours,
       targetValue: args.targetValue,
-      currentValue: args.targetValue ? 0 : undefined,
       unit: args.unit,
       color: args.color,
       icon: args.icon,
       tags: args.tags,
       parentGoalId: args.parentGoalId,
       visionConnection: args.visionConnection,
-      decompositionStatus: 'pending',
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
     });
   },
 });
@@ -160,6 +242,8 @@ const goalDocValidator = v.object({
   visionConnection: v.optional(v.string()),
   createdAt: v.number(),
   updatedAt: v.number(),
+  // Downgrade preservation
+  archivedByDowngrade: v.optional(v.boolean()),
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -366,5 +450,40 @@ export const updateProgress = mutation({
     }
 
     await ctx.db.patch(goalId, patchData);
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LIST GOALS ARCHIVED BY DOWNGRADE
+// ─────────────────────────────────────────────────────────────────────────────
+export const listArchivedByDowngrade = query({
+  args: {},
+  returns: v.array(goalDocValidator),
+  handler: async (ctx) => {
+    const user = await getAuthUser(ctx);
+    return await ctx.db
+      .query('goals')
+      .withIndex('by_userId_archivedByDowngrade', (q: any) =>
+        q.eq('userId', user._id).eq('archivedByDowngrade', true)
+      )
+      .collect();
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// COUNT GOALS ARCHIVED BY DOWNGRADE
+// ─────────────────────────────────────────────────────────────────────────────
+export const getArchivedDowngradeCount = query({
+  args: {},
+  returns: v.number(),
+  handler: async (ctx) => {
+    const user = await getAuthUser(ctx);
+    const archived = await ctx.db
+      .query('goals')
+      .withIndex('by_userId_archivedByDowngrade', (q: any) =>
+        q.eq('userId', user._id).eq('archivedByDowngrade', true)
+      )
+      .collect();
+    return archived.length;
   },
 });

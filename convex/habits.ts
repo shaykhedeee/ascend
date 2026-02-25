@@ -1,11 +1,116 @@
+import { mutation, internalMutation } from './_generated/server';
+import { v } from 'convex/values';
+import { checkAndCreateHabit } from './lib/transactions';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ARCHIVE EXCESS HABITS ON DOWNGRADE
+// ─────────────────────────────────────────────────────────────────────────────
+export const archiveExcessOnDowngrade = mutation({
+  args: { newPlan: v.union(v.literal('free'), v.literal('pro'), v.literal('lifetime')) },
+  returns: v.number(),
+  handler: async (ctx, { newPlan }) => {
+    const user = await getAuthUser(ctx);
+    const limit = PLAN_LIMITS[newPlan].maxHabits;
+    const activeHabits = await ctx.db
+      .query('habits')
+      .withIndex('by_userId_active', (q) => q.eq('userId', user._id).eq('isActive', true))
+      .collect();
+    if (activeHabits.length <= limit) return 0;
+    // Sort by creation time, keep the most recent 'limit' habits active
+    const toArchive = activeHabits
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .slice(limit);
+    for (const habit of toArchive) {
+      await ctx.db.patch(habit._id, { isActive: false, archivedByDowngrade: true, updatedAt: Date.now() });
+    }
+    return toArchive.length;
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RESTORE ARCHIVED HABITS ON UPGRADE
+// ─────────────────────────────────────────────────────────────────────────────
+export const restoreArchivedOnUpgrade = mutation({
+  args: { newPlan: v.union(v.literal('pro'), v.literal('lifetime')) },
+  returns: v.number(),
+  handler: async (ctx, { newPlan }) => {
+    const user = await getAuthUser(ctx);
+    const limit = PLAN_LIMITS[newPlan].maxHabits;
+    const archived = await ctx.db
+      .query('habits')
+      .withIndex('by_userId_archivedByDowngrade', (q) => q.eq('userId', user._id).eq('archivedByDowngrade', true))
+      .collect();
+    let restored = 0;
+    for (const habit of archived) {
+      // Only restore up to the new plan's limit
+      const activeCount = await ctx.db
+        .query('habits')
+        .withIndex('by_userId_active', (q) => q.eq('userId', user._id).eq('isActive', true))
+        .collect();
+      if (activeCount.length < limit) {
+        await ctx.db.patch(habit._id, { isActive: true, archivedByDowngrade: false, updatedAt: Date.now() });
+        restored++;
+      } else {
+        break;
+      }
+    }
+    return restored;
+  },
+});
+
+// Internal versions so other Convex functions can reuse the logic without
+// exposing these helpers to the public client API.
+export const archiveExcessOnDowngradeInternal = internalMutation({
+  args: { newPlan: v.union(v.literal('free'), v.literal('pro'), v.literal('lifetime')) },
+  returns: v.number(),
+  handler: async (ctx, { newPlan }) => {
+    const user = await getAuthUser(ctx);
+    const limit = PLAN_LIMITS[newPlan].maxHabits;
+    const activeHabits = await ctx.db
+      .query('habits')
+      .withIndex('by_userId_active', (q) => q.eq('userId', user._id).eq('isActive', true))
+      .collect();
+    if (activeHabits.length <= limit) return 0;
+    const toArchive = activeHabits.sort((a, b) => b.createdAt - a.createdAt).slice(limit);
+    for (const habit of toArchive) {
+      await ctx.db.patch(habit._id, { isActive: false, archivedByDowngrade: true, updatedAt: Date.now() });
+    }
+    return toArchive.length;
+  },
+});
+
+export const restoreArchivedOnUpgradeInternal = internalMutation({
+  args: { newPlan: v.union(v.literal('pro'), v.literal('lifetime')) },
+  returns: v.number(),
+  handler: async (ctx, { newPlan }) => {
+    const user = await getAuthUser(ctx);
+    const limit = PLAN_LIMITS[newPlan].maxHabits;
+    const archived = await ctx.db
+      .query('habits')
+      .withIndex('by_userId_archivedByDowngrade', (q) => q.eq('userId', user._id).eq('archivedByDowngrade', true))
+      .collect();
+    let restored = 0;
+    for (const habit of archived) {
+      const activeCount = await ctx.db
+        .query('habits')
+        .withIndex('by_userId_active', (q) => q.eq('userId', user._id).eq('isActive', true))
+        .collect();
+      if (activeCount.length < limit) {
+        await ctx.db.patch(habit._id, { isActive: true, archivedByDowngrade: false, updatedAt: Date.now() });
+        restored++;
+      } else {
+        break;
+      }
+    }
+    return restored;
+  },
+});
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY — Habits Engine (Convex)
+// RESURGO — Habits Engine (Convex)
 // Create, track, complete habits with streak management & plan enforcement
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { mutation, query } from './_generated/server';
-import { v } from 'convex/values';
-import { internal } from './_generated/api';
+// mutation/query/v already imported above
 
 // Reusable habit document validator
 const habitDoc = v.object({
@@ -79,6 +184,8 @@ const habitDoc = v.object({
   reminderEnabled: v.optional(v.boolean()),
   createdAt: v.number(),
   updatedAt: v.number(),
+  // Downgrade preservation
+  archivedByDowngrade: v.optional(v.boolean()),
 });
 
 const habitLogDoc = v.object({
@@ -198,24 +305,7 @@ export const create = mutation({
   handler: async (ctx, args) => {
     const user = await getAuthUser(ctx);
 
-    // Enforce plan limits
-    const activeHabits = await ctx.db
-      .query('habits')
-      .withIndex('by_userId_active', (q: any) =>
-        q.eq('userId', user._id).eq('isActive', true)
-      )
-      .collect();
-
-    const userPlan = (user.plan as keyof typeof PLAN_LIMITS) ?? 'free';
-    const limit = PLAN_LIMITS[userPlan].maxHabits;
-    if (activeHabits.length >= limit) {
-      throw new Error(
-        `Plan limit reached: ${user.plan} plan allows ${limit} active habits. Upgrade to Pro for unlimited.`
-      );
-    }
-
-    return await ctx.db.insert('habits', {
-      userId: user._id,
+    return await checkAndCreateHabit(ctx, user._id, {
       goalId: args.goalId,
       title: args.title,
       description: args.description,
@@ -224,13 +314,10 @@ export const create = mutation({
       customDays: args.customDays,
       timeOfDay: args.timeOfDay,
       identityLabel: args.identityLabel,
-      isActive: true,
-      streakCurrent: 0,
-      streakLongest: 0,
       color: args.color,
       icon: args.icon,
       estimatedMinutes: args.estimatedMinutes,
-      order: activeHabits.length,
+      order: undefined,
       habitType: args.habitType ?? 'yes_no',
       targetValue: args.targetValue,
       targetUnit: args.targetUnit,
@@ -246,9 +333,6 @@ export const create = mutation({
       immediateReward: args.immediateReward,
       specificTime: args.specificTime,
       reminderEnabled: args.reminderEnabled,
-      totalCompletions: 0,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
     });
   },
 });
@@ -334,6 +418,21 @@ export const toggleComplete = mutation({
           updatedAt: Date.now(),
         });
 
+        // Actually deduct XP from gamification profile
+        const gamification = await ctx.db
+          .query('gamification')
+          .withIndex('by_userId', (q: any) => q.eq('userId', user._id))
+          .unique();
+        if (gamification) {
+          const newXP = Math.max(0, gamification.totalXP - 10);
+          const newLevel = Math.floor(newXP / 100) + 1;
+          await ctx.db.patch(gamification._id, {
+            totalXP: newXP,
+            level: newLevel,
+            updatedAt: Date.now(),
+          });
+        }
+
         return { action: 'uncompleted', xpChange: -10 };
       }
       // Was skipped/failed → mark completed
@@ -341,6 +440,10 @@ export const toggleComplete = mutation({
         status: 'completed',
         mood,
         note,
+        value,
+        energyLevel,
+        difficulty,
+        loggedVia: 'manual',
         completedAt: Date.now(),
       });
     } else {
@@ -620,5 +723,40 @@ export const getStats = query({
       bestDay,
       worstDay,
     };
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LIST HABITS ARCHIVED BY DOWNGRADE
+// ─────────────────────────────────────────────────────────────────────────────
+export const listArchivedByDowngrade = query({
+  args: {},
+  returns: v.array(habitDoc),
+  handler: async (ctx) => {
+    const user = await getAuthUser(ctx);
+    return await ctx.db
+      .query('habits')
+      .withIndex('by_userId_archivedByDowngrade', (q: any) =>
+        q.eq('userId', user._id).eq('archivedByDowngrade', true)
+      )
+      .collect();
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// COUNT HABITS ARCHIVED BY DOWNGRADE
+// ─────────────────────────────────────────────────────────────────────────────
+export const getArchivedDowngradeCount = query({
+  args: {},
+  returns: v.number(),
+  handler: async (ctx) => {
+    const user = await getAuthUser(ctx);
+    const archived = await ctx.db
+      .query('habits')
+      .withIndex('by_userId_archivedByDowngrade', (q: any) =>
+        q.eq('userId', user._id).eq('archivedByDowngrade', true)
+      )
+      .collect();
+    return archived.length;
   },
 });

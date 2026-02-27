@@ -129,7 +129,7 @@ export function AIInsights({ className }: AIInsightsProps) {
 
   useEffect(() => {
     analyzePatterns();
-  }, [habits.length]); // Re-analyze when habits change
+  }, [habits.length, analyzePatterns]); // Re-analyze when habits change
 
   return (
     <div className={cn('glass-card p-5', className)}>

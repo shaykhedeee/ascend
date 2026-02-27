@@ -55,9 +55,9 @@ export default function Error({ error, reset }: ErrorProps) {
             <span className="font-mono text-[9px] tracking-widest text-red-600">RESURGO_OS :: RUNTIME_EXCEPTION</span>
           </div>
           <div className="px-4 py-4">
-            <p className="font-mono text-[9px] tracking-widest text-zinc-600">FAULT_HANDLER v2.1.0</p>
+            <p className="font-mono text-[9px] tracking-widest text-zinc-400">FAULT_HANDLER v2.1.0</p>
             <h1 className="mt-1 font-mono text-xl font-bold tracking-tight text-zinc-100">UNHANDLED_ERROR_DETECTED</h1>
-            <p className="mt-1 font-mono text-xs text-zinc-600">
+            <p className="mt-1 font-mono text-xs text-zinc-400">
               EXCEPTION_LOGGED :: DATA_INTEGRITY_MAINTAINED :: RECOVERY_OPTIONS_BELOW
             </p>
           </div>
@@ -78,16 +78,16 @@ export default function Error({ error, reset }: ErrorProps) {
           </button>
         </div>
 
-        <p className="mb-4 text-center font-mono text-[9px] tracking-widest text-zinc-700">
+        <p className="mb-4 text-center font-mono text-[9px] tracking-widest text-zinc-400">
           PERSISTENT_ERROR &rarr; CLEAR_BROWSER_CACHE &rarr; CONTACT_SUPPORT
         </p>
 
         {errorId && (
           <div className="mb-4 flex items-center justify-between border border-zinc-900 bg-zinc-950 px-4 py-2">
-            <span className="font-mono text-[9px] text-zinc-700">ERR_ID: {errorId}</span>
+            <span className="font-mono text-[9px] text-zinc-400">ERR_ID: {errorId}</span>
             <button
               onClick={handleCopyErrorId}
-              className="border border-zinc-800 p-1 text-zinc-700 transition hover:border-zinc-700 hover:text-zinc-400"
+              className="border border-zinc-800 p-1 text-zinc-400 transition hover:border-zinc-700 hover:text-zinc-400"
               aria-label="Copy error ID"
             >
               {copied ? <Check className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3" />}

@@ -7,8 +7,8 @@ const useQueryMock = jest.fn();
 const useMutationMock = jest.fn();
 
 jest.mock('convex/react', () => ({
-  useQuery: (fn: any) => useQueryMock(fn),
-  useMutation: (fn: any) => useMutationMock(fn),
+  useQuery: (fn: unknown) => useQueryMock(fn),
+  useMutation: (fn: unknown) => useMutationMock(fn),
 }));
 
 jest.mock('../../convex/_generated/api', () => ({
@@ -40,7 +40,7 @@ describe('DowngradePlanNotice UI', () => {
       return undefined;
     });
 
-    useMutationMock.mockImplementation((fn) => async () => 0);
+    useMutationMock.mockImplementation((_fn) => async () => 0);
 
     // Define a minimal local component that mirrors the banner text logic
     function TestDowngradePlanNotice() {

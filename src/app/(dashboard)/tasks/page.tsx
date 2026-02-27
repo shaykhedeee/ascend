@@ -1,9 +1,9 @@
-﻿'use client';
+'use client';
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// RESURGO â€” Tasks Page
+// ═══════════════════════════════════════════════════════════════════════════════
+// RESURGO — Tasks Page
 // Full task management with filters, Eisenhower matrix view, quick add
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════════════════════
 
 import { useQuery, useMutation } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
@@ -110,7 +110,7 @@ export default function TasksPage() {
     <div className="min-h-screen bg-black p-4 md:p-6">
       <div className="mx-auto max-w-6xl">
 
-        {/* ── TASK QUEUE HEADER ── */}
+        {/* -- TASK QUEUE HEADER -- */}
         <div className="mb-6 border border-zinc-900 bg-zinc-950">
           <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
@@ -118,14 +118,14 @@ export default function TasksPage() {
           </div>
           <div className="flex flex-col gap-4 px-5 py-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">TASK_QUEUE</h1>
-              <p className="mt-1 font-mono text-xs tracking-widest text-zinc-600">EXECUTION_PLANNING :: EISENHOWER_MATRIX AVAILABLE</p>
+              <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">Tasks</h1>
+              <p className="mt-1 font-mono text-xs tracking-widest text-zinc-400">Prioritise and execute � Eisenhower matrix available</p>
             </div>
             <div className="flex items-center gap-px">
-              <button onClick={() => setViewMode('list')} className={`border p-2.5 transition ${viewMode === 'list' ? 'border-orange-800 bg-orange-950/30 text-orange-500' : 'border-zinc-800 bg-zinc-900 text-zinc-600 hover:text-zinc-300'}`} aria-label="List view">
+              <button onClick={() => setViewMode('list')} className={`border p-2.5 transition ${viewMode === 'list' ? 'border-orange-800 bg-orange-950/30 text-orange-500' : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-zinc-300'}`} aria-label="List view">
                 <List className="h-4 w-4" />
               </button>
-              <button onClick={() => setViewMode('eisenhower')} className={`border p-2.5 transition ${viewMode === 'eisenhower' ? 'border-orange-800 bg-orange-950/30 text-orange-500' : 'border-zinc-800 bg-zinc-900 text-zinc-600 hover:text-zinc-300'}`} aria-label="Matrix view">
+              <button onClick={() => setViewMode('eisenhower')} className={`border p-2.5 transition ${viewMode === 'eisenhower' ? 'border-orange-800 bg-orange-950/30 text-orange-500' : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-zinc-300'}`} aria-label="Matrix view">
                 <Grid3X3 className="h-4 w-4" />
               </button>
               <button onClick={() => setShowCreate(true)} className="ml-px inline-flex items-center gap-2 border border-orange-800 bg-orange-950/30 px-4 py-2 font-mono text-xs tracking-widest text-orange-500 transition hover:border-orange-600 hover:bg-orange-950/60">
@@ -141,7 +141,7 @@ export default function TasksPage() {
           </div>
         </div>
 
-        {/* ── STATUS FILTERS (list view) ── */}
+        {/* -- STATUS FILTERS (list view) -- */}
         {viewMode === 'list' && (
           <div className="mb-4 flex gap-px border border-zinc-900">
             {[
@@ -156,7 +156,7 @@ export default function TasksPage() {
                 className={`flex-1 py-2.5 font-mono text-[10px] tracking-widest transition border-b-2 ${
                   statusFilter === key
                     ? 'border-orange-600 bg-orange-950/20 text-orange-500'
-                    : 'border-transparent bg-zinc-950 text-zinc-600 hover:text-zinc-300'
+                    : 'border-transparent bg-zinc-950 text-zinc-400 hover:text-zinc-300'
                 }`}
               >
                 {label}
@@ -165,13 +165,13 @@ export default function TasksPage() {
           </div>
         )}
 
-        {/* ── LIST VIEW ── */}
+        {/* -- LIST VIEW -- */}
         {viewMode === 'list' && (
           <div className="space-y-px">
             {(!tasks || tasks.length === 0) ? (
               <div className="border border-dashed border-zinc-800 py-16 text-center">
-                <p className="font-mono text-xs tracking-widest text-zinc-600">QUEUE_EMPTY</p>
-                <p className="mt-2 font-mono text-[10px] text-zinc-700">No tasks in queue. Add a task to begin execution.</p>
+                <p className="font-mono text-xs tracking-widest text-zinc-400">Queue empty</p>
+                <p className="mt-2 font-mono text-[10px] text-zinc-400">No tasks in queue. Add a task to begin.</p>
                 <button onClick={() => setShowCreate(true)} className="mt-4 border border-zinc-800 bg-zinc-900 px-4 py-2 font-mono text-[10px] tracking-widest text-zinc-500 transition hover:border-orange-900 hover:text-orange-500">
                   <Plus className="mr-1 inline h-3 w-3" /> QUEUE_TASK
                 </button>
@@ -184,7 +184,7 @@ export default function TasksPage() {
           </div>
         )}
 
-        {/* ── EISENHOWER MATRIX VIEW ── */}
+        {/* -- EISENHOWER MATRIX VIEW -- */}
         {viewMode === 'eisenhower' && (
           <div className="grid gap-px md:grid-cols-2">
             {QUADRANT_OPTIONS.map((quad) => {
@@ -193,14 +193,14 @@ export default function TasksPage() {
                 <div key={quad} className={`min-h-[200px] border p-4 ${QUADRANT_COLORS[quad]}`}>
                   <div className="mb-3 flex items-center gap-2">
                     <span className="font-mono text-[10px] tracking-widest text-orange-500">{quad.toUpperCase()}</span>
-                    <span className="font-mono text-[10px] text-zinc-600">:: {QUADRANT_LABELS[quad].toUpperCase()}</span>
+                    <span className="font-mono text-[10px] text-zinc-400">:: {QUADRANT_LABELS[quad].toUpperCase()}</span>
                   </div>
                   <div className="space-y-px">
                     {quadTasks.map((task) => (
                       <TaskItem key={task._id} task={task} onToggle={handleToggle} onDelete={handleDelete} compact />
                     ))}
                     {quadTasks.length === 0 && (
-                      <p className="font-mono text-[10px] text-zinc-700">NO_TASKS_ASSIGNED</p>
+                      <p className="font-mono text-[10px] text-zinc-500">No tasks assigned</p>
                     )}
                   </div>
                 </div>
@@ -216,18 +216,18 @@ export default function TasksPage() {
           <div className="w-full max-w-lg border border-zinc-800 bg-zinc-950 shadow-2xl">
             <div className="flex items-center justify-between border-b border-zinc-900 px-5 py-3">
               <span className="font-mono text-xs tracking-widest text-orange-500">QUEUE_TASK :: ADD_TO_EXECUTION_QUEUE</span>
-              <button onClick={() => setShowCreate(false)} className="text-zinc-600 transition hover:text-zinc-300">
+              <button onClick={() => setShowCreate(false)} className="text-zinc-400 transition hover:text-zinc-300">
                 <X className="h-4 w-4" />
               </button>
             </div>
             <form onSubmit={handleCreate} className="max-h-[80vh] overflow-y-auto p-5 space-y-4">
               <div>
                 <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">TASK_TITLE *</label>
-                <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="What needs to be done?" className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-700 focus:border-orange-800 focus:outline-none" required autoFocus />
+                <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="What needs to be done?" className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-400 focus:border-orange-800 focus:outline-none" required autoFocus />
               </div>
               <div>
                 <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">DESCRIPTION</label>
-                <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Add details..." rows={2} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-700 focus:border-orange-800 focus:outline-none" />
+                <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Add details..." rows={2} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-400 focus:border-orange-800 focus:outline-none" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
@@ -251,7 +251,7 @@ export default function TasksPage() {
                 </div>
                 <div>
                   <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">EST_MINUTES</label>
-                  <input type="number" value={estimatedMinutes} onChange={(e) => setEstimatedMinutes(e.target.value)} placeholder="30" className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-700 focus:border-orange-800 focus:outline-none" />
+                  <input type="number" value={estimatedMinutes} onChange={(e) => setEstimatedMinutes(e.target.value)} placeholder="30" className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-400 focus:border-orange-800 focus:outline-none" />
                 </div>
               </div>
               <div className="flex gap-px pt-1">
@@ -286,7 +286,7 @@ function TaskItem({ task, onToggle, onDelete, compact }: {
     urgent: 'border-red-900 bg-red-950/30 text-red-500',
     high: 'border-orange-900 bg-orange-950/30 text-orange-500',
     medium: 'border-yellow-900 bg-yellow-950/30 text-yellow-600',
-    low: 'border-zinc-800 text-zinc-600',
+    low: 'border-zinc-800 text-zinc-400',
   };
   return (
     <div className={`group flex items-center gap-3 border border-zinc-900 bg-zinc-950 px-4 py-3 transition hover:border-zinc-700 hover:bg-zinc-900 ${compact ? 'py-2' : ''}`}>
@@ -294,11 +294,11 @@ function TaskItem({ task, onToggle, onDelete, compact }: {
         {isDone ? (
           <CheckCircle2 className="h-4 w-4 text-orange-600" />
         ) : (
-          <Circle className="h-4 w-4 text-zinc-700 transition hover:text-orange-500" />
+          <Circle className="h-4 w-4 text-zinc-400 transition hover:text-orange-500" />
         )}
       </button>
       <div className="min-w-0 flex-1">
-        <p className={`truncate font-mono text-xs ${isDone ? 'text-zinc-700 line-through' : 'text-zinc-200'}`}>
+        <p className={`truncate font-mono text-xs ${isDone ? 'text-zinc-400 line-through' : 'text-zinc-200'}`}>
           {task.title.toUpperCase()}
         </p>
         {!compact && (
@@ -307,7 +307,7 @@ function TaskItem({ task, onToggle, onDelete, compact }: {
               {task.priority.toUpperCase()}
             </span>
             {task.dueDate && (
-              <span className="flex items-center gap-1 font-mono text-[10px] text-zinc-600">
+              <span className="flex items-center gap-1 font-mono text-[10px] text-zinc-400">
                 <Clock className="h-2.5 w-2.5" /> DUE_{task.dueDate.replace(/-/g, '')}
               </span>
             )}
@@ -329,7 +329,7 @@ function TaskItem({ task, onToggle, onDelete, compact }: {
 function QMetric({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
     <div className="bg-zinc-950 px-4 py-3 transition hover:bg-zinc-900">
-      <p className="font-mono text-[9px] tracking-widest text-zinc-600">{label}</p>
+          <p className="font-mono text-[9px] tracking-widest text-zinc-400">{label}</p>
       <p className={`mt-0.5 font-mono text-lg font-bold ${highlight ? 'text-orange-500' : 'text-zinc-100'}`}>{value}</p>
     </div>
   );

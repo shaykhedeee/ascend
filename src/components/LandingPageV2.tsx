@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -72,7 +72,7 @@ const FAQS = [
   },
   {
     question: 'How is this different from standard habit trackers?',
-    answer: 'RESURGO is an execution terminal, not a checkbox app. AI coaching, structured decomposition, and production-grade data architecture are core — not add-ons.',
+    answer: 'RESURGO is an execution terminal, not a checkbox app. AI coaching, structured decomposition, and production-grade data architecture are core � not add-ons.',
   },
   {
     question: 'Can I start free and upgrade later without losing node data?',
@@ -197,7 +197,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
             <span className="animate-flicker font-mono text-sm font-bold tracking-widest text-orange-600">
               RESURGO
             </span>
-            <span className="hidden font-mono text-[10px] tracking-widest text-zinc-700 sm:block">
+            <span className="hidden font-mono text-[10px] tracking-widest text-zinc-400 sm:block">
               VITALITY_TERMINAL v1.0
             </span>
           </div>
@@ -213,7 +213,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
               <a
                 key={label}
                 href={href}
-                className="px-3 py-1.5 font-mono text-[11px] tracking-widest text-zinc-600 transition-colors hover:text-orange-500"
+                className="px-3 py-1.5 font-mono text-[11px] tracking-widest text-zinc-400 transition-colors hover:text-orange-500"
               >
                 {label}
               </a>
@@ -231,7 +231,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
             )}
             <Link
               href="/sign-in"
-              className="font-mono text-[11px] tracking-widest text-zinc-600 transition hover:text-zinc-300"
+              className="font-mono text-[11px] tracking-widest text-zinc-400 transition hover:text-zinc-300"
             >
               [LOGIN]
             </Link>
@@ -248,16 +248,16 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
         <div className="border-t border-zinc-900 bg-zinc-950 px-4 py-1">
           <div className="flex items-center gap-2 overflow-hidden">
             <span className="font-mono text-[9px] tracking-widest text-orange-600">SYS&gt;</span>
-            <span className="font-mono text-[9px] tracking-widest text-zinc-600">
+            <span className="font-mono text-[9px] tracking-widest text-zinc-400">
               {TICKER_ITEMS[tickerIdx]}
               <span className="ml-0.5 animate-blink text-orange-600">_</span>
             </span>
             <span className="mx-2 text-zinc-800">|</span>
-            <span className="font-mono text-[9px] tracking-widest text-zinc-700">
+            <span className="font-mono text-[9px] tracking-widest text-zinc-400">
               STATUS: ALL_SYSTEMS_NOMINAL
             </span>
             <span className="mx-2 text-zinc-800">|</span>
-            <span className="font-mono text-[9px] tracking-widest text-zinc-700">NODES: 50K+ ONLINE</span>
+            <span className="font-mono text-[9px] tracking-widest text-zinc-400">NODES: 50K+ ONLINE</span>
           </div>
         </div>
       </header>
@@ -280,8 +280,8 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
                   <span className="block text-orange-600">POTENTIAL.</span>
                 </h1>
                 <div className="mt-3 flex items-center gap-3">
-                  <span className="font-mono text-sm tracking-widest text-zinc-600">[RESURGO_v1.0]</span>
-                  <span className="hidden font-mono text-sm text-zinc-700 md:block">
+                  <span className="font-mono text-sm tracking-widest text-zinc-400">[RESURGO_v1.0]</span>
+                  <span className="hidden font-mono text-sm text-zinc-400 md:block">
                     EXECUTION OS FOR HIGH-INTEGRITY OPERATORS
                   </span>
                 </div>
@@ -300,7 +300,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
                   </Link>
                   <a
                     href="#specs"
-                    className="inline-flex min-h-[48px] items-center justify-center border border-zinc-800 px-8 font-mono text-sm tracking-widest text-zinc-600 transition hover:border-zinc-600 hover:text-zinc-400"
+                    className="inline-flex min-h-[48px] items-center justify-center border border-zinc-800 px-8 font-mono text-sm tracking-widest text-zinc-400 transition hover:border-zinc-600 hover:text-zinc-400"
                   >
                     [ VIEW_SYSTEM_SPECS ]
                   </a>
@@ -310,7 +310,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
                   {METRICS.map((m) => (
                     <div key={m.label} className="border-r border-zinc-900 bg-zinc-950 px-4 py-4 last:border-r-0">
                       <p className="font-mono text-xl font-bold text-zinc-100">{m.value}</p>
-                      <p className="mt-1 font-mono text-[9px] tracking-widest text-zinc-600">{m.label}</p>
+                      <p className="mt-1 font-mono text-[9px] tracking-widest text-zinc-400">{m.label}</p>
                     </div>
                   ))}
                 </div>
@@ -320,7 +320,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
               <div className="border border-zinc-900 bg-zinc-950">
                 <div className="flex items-center justify-between border-b border-zinc-900 px-4 py-2">
                   <span className="font-mono text-[10px] tracking-widest text-orange-600">COMMAND_CTR</span>
-                  <span className="font-mono text-[9px] tracking-widest text-zinc-700">CYCLE: ACTIVE</span>
+                  <span className="font-mono text-[9px] tracking-widest text-zinc-400">CYCLE: ACTIVE</span>
                 </div>
                 <div className="space-y-px p-4">
                   {[
@@ -334,7 +334,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
                     >
                       <div>
                         <p className="font-mono text-xs text-zinc-300">{row.label}</p>
-                        <p className="font-mono text-[10px] text-zinc-600">{row.meta}</p>
+                        <p className="font-mono text-[10px] text-zinc-400">{row.meta}</p>
                       </div>
                       <span
                         className={cn(
@@ -351,11 +351,11 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
                 </div>
                 <div className="grid grid-cols-2 gap-px border-t border-zinc-900">
                   <div className="bg-zinc-950 px-4 py-3">
-                    <p className="font-mono text-[9px] tracking-widest text-zinc-600">WEEKLY_INTEGRITY</p>
+                    <p className="font-mono text-[9px] tracking-widest text-zinc-400">WEEKLY_INTEGRITY</p>
                     <p className="mt-1 font-mono text-2xl font-bold text-orange-500">89%</p>
                   </div>
                   <div className="border-l border-zinc-900 bg-zinc-950 px-4 py-3">
-                    <p className="font-mono text-[9px] tracking-widest text-zinc-600">MOMENTUM_DELTA</p>
+                    <p className="font-mono text-[9px] tracking-widest text-zinc-400">MOMENTUM_DELTA</p>
                     <p className="mt-1 font-mono text-2xl font-bold text-green-500">+14</p>
                   </div>
                 </div>
@@ -372,7 +372,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
                 <p className="font-mono text-[10px] tracking-widest text-orange-600">SYSTEM_CAPABILITIES</p>
                 <h2 className="mt-2 font-mono text-3xl font-bold text-zinc-100 sm:text-4xl">CORE_MODULES</h2>
               </div>
-              <p className="max-w-md font-mono text-xs leading-relaxed text-zinc-600">
+              <p className="max-w-md font-mono text-xs leading-relaxed text-zinc-400">
                 Each module is independently operational. Failure in one node does not cascade system-wide.
               </p>
             </div>
@@ -397,13 +397,13 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
         <section className="border-t border-zinc-900 bg-zinc-950 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-7xl">
             <h2 className="text-center font-mono text-3xl font-bold text-zinc-100 sm:text-4xl">BOOT_SEQUENCE</h2>
-            <p className="mx-auto mt-2 max-w-lg text-center font-mono text-xs tracking-wider text-zinc-600">
+            <p className="mx-auto mt-2 max-w-lg text-center font-mono text-xs tracking-wider text-zinc-400">
               AMBITION_TO_EXECUTION IN 3 CYCLES
             </p>
             <div className="mt-10 grid gap-px border border-zinc-900 md:grid-cols-3">
               {BOOT_STEPS.map((s) => (
                 <div key={s.step} className="bg-black p-6">
-                  <p className="font-mono text-[10px] tracking-widest text-zinc-700">CYCLE_{s.step}</p>
+                  <p className="font-mono text-[10px] tracking-widest text-zinc-400">CYCLE_{s.step}</p>
                   <p className="mt-2 font-mono text-sm font-bold text-orange-500">{s.cmd}</p>
                   <p className="mt-3 font-mono text-xs leading-relaxed text-zinc-500">{s.desc}</p>
                 </div>
@@ -418,7 +418,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
             <h2 className="text-center font-mono text-3xl font-bold text-zinc-100 sm:text-4xl">
               ACCESS_TIER_MATRIX
             </h2>
-            <p className="mx-auto mt-2 max-w-xl text-center font-mono text-xs text-zinc-600">
+            <p className="mx-auto mt-2 max-w-xl text-center font-mono text-xs text-zinc-400">
               SELECT YOUR CLEARANCE LEVEL
             </p>
 
@@ -436,7 +436,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
                   <p className="font-mono text-xs tracking-widest text-zinc-500">{plan.tier}</p>
                   <p className="mt-3 font-mono text-4xl font-bold text-zinc-100">
                     {plan.price}
-                    <span className="font-mono text-xs text-zinc-600"> {plan.period}</span>
+                    <span className="font-mono text-xs text-zinc-400"> {plan.period}</span>
                   </p>
                   <ul className="mt-6 space-y-2">
                     {plan.specs.map((spec) => (
@@ -467,7 +467,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
         <section id="logs" className="border-t border-zinc-900 bg-zinc-950 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-6xl">
             <h2 className="font-mono text-3xl font-bold text-zinc-100 sm:text-4xl">OPERATOR_LOGS</h2>
-            <p className="mt-1 font-mono text-[10px] tracking-widest text-zinc-700">
+            <p className="mt-1 font-mono text-[10px] tracking-widest text-zinc-400">
               VERIFIED FIELD REPORTS FROM ACTIVE USERS
             </p>
 
@@ -476,7 +476,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
                 <span className="font-mono text-[9px] tracking-widest text-orange-600">
                   LOG_ENTRY_{activeLog + 1}_OF_{OPERATOR_LOGS.length}
                 </span>
-                <span className="font-mono text-[9px] tracking-widest text-zinc-700">FIELD_VERIFIED</span>
+                <span className="font-mono text-[9px] tracking-widest text-zinc-400">FIELD_VERIFIED</span>
               </div>
               <div className="bg-zinc-950 p-6">
                 <p className="font-mono text-sm leading-relaxed text-zinc-300">
@@ -487,7 +487,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
                     <p className="font-mono text-xs font-bold text-zinc-400">
                       {OPERATOR_LOGS[activeLog].operator}
                     </p>
-                    <p className="font-mono text-[10px] tracking-widest text-zinc-600">
+                    <p className="font-mono text-[10px] tracking-widest text-zinc-400">
                       {OPERATOR_LOGS[activeLog].role}
                     </p>
                   </div>
@@ -517,7 +517,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
         <section id="faq" className="border-t border-zinc-900 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-4xl">
             <h2 className="font-mono text-3xl font-bold text-zinc-100 sm:text-4xl">SYSTEM_FAQ</h2>
-            <p className="mt-1 font-mono text-[10px] tracking-widest text-zinc-700">
+            <p className="mt-1 font-mono text-[10px] tracking-widest text-zinc-400">
               COMMON_QUERIES :: OPERATOR_SUPPORT
             </p>
 
@@ -546,11 +546,11 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
                       </h3>
                       <span
                         className={cn(
-                          'shrink-0 font-mono text-xs text-zinc-600 transition-transform',
+                          'shrink-0 font-mono text-xs text-zinc-400 transition-transform',
                           isOpen && 'rotate-180',
                         )}
                       >
-                        ▾
+                        ?
                       </span>
                     </button>
                     <div
@@ -567,7 +567,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
                       >
                         <p
                           itemProp="text"
-                          className="border-t border-zinc-900 px-5 pb-4 pt-3 font-mono text-xs leading-relaxed text-zinc-600"
+                          className="border-t border-zinc-900 px-5 pb-4 pt-3 font-mono text-xs leading-relaxed text-zinc-400"
                         >
                           {faq.answer}
                         </p>
@@ -585,7 +585,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
           <div className="mx-auto max-w-6xl border border-zinc-900 bg-zinc-950">
             <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
               <span className="h-2 w-2 rounded-full bg-orange-600" />
-              <span className="font-mono text-[10px] tracking-widest text-zinc-600">
+              <span className="font-mono text-[10px] tracking-widest text-zinc-400">
                 TERMINAL :: READY_FOR_INPUT
               </span>
             </div>
@@ -598,7 +598,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
                 <br />
                 WITH A TERMINAL?
               </h2>
-              <p className="mx-auto mt-4 max-w-xl font-mono text-xs leading-relaxed text-zinc-600">
+              <p className="mx-auto mt-4 max-w-xl font-mono text-xs leading-relaxed text-zinc-400">
                 Start free in under two minutes. Keep your existing rhythm, gain execution structure, and track
                 consistency with production-grade operational tooling.
               </p>
@@ -616,7 +616,7 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
                   [ VIEW_ACCESS_TIERS ]
                 </Link>
               </div>
-              <div className="mt-6 flex flex-wrap items-center justify-center gap-4 font-mono text-[9px] tracking-widest text-zinc-700">
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-4 font-mono text-[9px] tracking-widest text-zinc-400">
                 <span>&gt; NO_CREDIT_CARD_REQUIRED</span>
                 <span>&gt; SECURE_BILLING_INFRA</span>
                 <span>&gt; ARCHIVE_SAFE_DOWNGRADE</span>
@@ -631,11 +631,11 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="font-mono text-sm font-bold tracking-widest text-orange-600">RESURGO</p>
-            <p className="mt-1 font-mono text-[9px] tracking-widest text-zinc-700">
+            <p className="mt-1 font-mono text-[9px] tracking-widest text-zinc-400">
               VITALITY_TERMINAL :: BUILD_FOR_CONSISTENT_OPERATORS
             </p>
           </div>
-          <div className="flex flex-wrap items-center gap-4 font-mono text-[10px] tracking-widest text-zinc-700">
+          <div className="flex flex-wrap items-center gap-4 font-mono text-[10px] tracking-widest text-zinc-400">
             {[
               ['Guides', '/guides'],
               ['Help', '/help'],

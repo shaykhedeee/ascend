@@ -1,9 +1,9 @@
-﻿'use client';
+'use client';
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// RESURGO â€” Calendar Page
+// ═══════════════════════════════════════════════════════════════════════════════
+// RESURGO — Calendar Page
 // Monthly calendar view with habit/task completion overlays
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════════════════════
 
 import { useQuery } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
@@ -112,7 +112,7 @@ export default function CalendarPage() {
     <div className="min-h-screen bg-black p-4 md:p-6">
       <div className="mx-auto max-w-4xl">
 
-        {/* ── MISSION_TIMELINE HEADER ── */}
+        {/* -- MISSION_TIMELINE HEADER -- */}
         <div className="mb-6 border border-zinc-900 bg-zinc-950">
           <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
@@ -122,9 +122,9 @@ export default function CalendarPage() {
           </div>
           <div className="flex items-center justify-between px-5 py-4">
             <div>
-              <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">MISSION_TIMELINE</h1>
-              <p className="mt-1 font-mono text-xs tracking-widest text-zinc-600">
-                HABIT_COMPLETIONS :: TASK_OVERLAYS :: MONTHLY_VIEW
+              <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">Schedule</h1>
+              <p className="mt-1 font-mono text-xs tracking-widest text-zinc-400">
+                Habits � Tasks � Monthly overview
               </p>
             </div>
             <button
@@ -138,7 +138,7 @@ export default function CalendarPage() {
           </div>
         </div>
 
-        {/* ── CALENDAR PANEL ── */}
+        {/* -- CALENDAR PANEL -- */}
         <div className="border border-zinc-900 bg-zinc-950">
           {/* Month navigation */}
           <div className="flex items-center justify-between border-b border-zinc-900 px-4 py-3">
@@ -171,7 +171,7 @@ export default function CalendarPage() {
             {/* Days of week header */}
             <div className="mb-1 grid grid-cols-7 gap-px">
               {DAYS.map((d) => (
-                <div key={d} className="py-1.5 text-center font-mono text-[9px] tracking-widest text-zinc-700">
+                <div key={d} className="py-1.5 text-center font-mono text-[9px] tracking-widest text-zinc-400">
                   {d.toUpperCase()}
                 </div>
               ))}
@@ -214,17 +214,17 @@ export default function CalendarPage() {
 
             {/* Legend */}
             <div className="flex items-center gap-4">
-              <span className="flex items-center gap-1.5 font-mono text-[9px] tracking-widest text-zinc-700">
+              <span className="flex items-center gap-1.5 font-mono text-[9px] tracking-widest text-zinc-400">
                 <div className="h-1.5 w-1.5 bg-green-500" /> NODES_COMPLETED
               </span>
-              <span className="flex items-center gap-1.5 font-mono text-[9px] tracking-widest text-zinc-700">
+              <span className="flex items-center gap-1.5 font-mono text-[9px] tracking-widest text-zinc-400">
                 <div className="h-1.5 w-1.5 bg-blue-500" /> TASKS_COMPLETED
               </span>
             </div>
           </div>
         </div>
 
-        {/* ── SELECTED DAY DETAIL ── */}
+        {/* -- SELECTED DAY DETAIL -- */}
         {selectedDate && (
           <div className="mt-4 border border-zinc-900 bg-zinc-950">
             <div className="border-b border-zinc-900 px-4 py-2.5">
@@ -249,7 +249,7 @@ export default function CalendarPage() {
                   </div>
                 </div>
               ) : (
-                <p className="font-mono text-[10px] tracking-widest text-zinc-700">NO_ACTIVITY_RECORDED</p>
+                <p className="font-mono text-[10px] tracking-widest text-zinc-400">NO_ACTIVITY_RECORDED</p>
               )}
             </div>
           </div>

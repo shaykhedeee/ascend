@@ -1,8 +1,8 @@
-﻿'use client';
+'use client';
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// RESURGO â€” Habits Tracker Page
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════════════════════
+// RESURGO — Habits Tracker Page
+// ═══════════════════════════════════════════════════════════════════════════════
 
 import { useQuery, useMutation } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
@@ -119,7 +119,7 @@ export default function HabitsPage() {
     <div className="min-h-screen bg-black p-4 md:p-6">
       <div className="mx-auto max-w-6xl">
 
-        {/* ── NODE TRACKER HEADER ── */}
+        {/* -- NODE TRACKER HEADER -- */}
         <div className="mb-6 border border-zinc-900 bg-zinc-950">
           <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
@@ -127,9 +127,9 @@ export default function HabitsPage() {
           </div>
           <div className="flex flex-col gap-4 px-5 py-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">NODE_MANAGEMENT</h1>
-              <p className="mt-1 font-mono text-xs tracking-widest text-zinc-600">
-                IDENTITY_DRIVEN ROUTINES :: STREAK_INTEGRITY MONITORING
+              <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">Habits</h1>
+              <p className="mt-1 font-mono text-xs tracking-widest text-zinc-400">
+                Build identity-driven routines � Monitor streak integrity
               </p>
             </div>
             <button
@@ -147,7 +147,7 @@ export default function HabitsPage() {
           </div>
         </div>
 
-        {/* ── TABS ── */}
+        {/* -- TABS -- */}
         <div className="mb-4 flex gap-px border border-zinc-900">
           {(['active', 'all'] as const).map(t => (
             <button
@@ -156,7 +156,7 @@ export default function HabitsPage() {
               className={`flex-1 border-b-2 px-4 py-2.5 font-mono text-[10px] tracking-widest transition ${
                 tab === t
                   ? 'border-orange-600 bg-orange-950/20 text-orange-500'
-                  : 'border-transparent bg-zinc-950 text-zinc-600 hover:text-zinc-300'
+                  : 'border-transparent bg-zinc-950 text-zinc-400 hover:text-zinc-300'
               }`}
             >
               {t === 'active' ? `ACTIVE_NODES [${activeCount}]` : `ALL_NODES [${totalCount}]`}
@@ -164,11 +164,11 @@ export default function HabitsPage() {
           ))}
         </div>
 
-        {/* ── NODE LIST ── */}
+        {/* -- NODE LIST -- */}
         {!displayHabits || displayHabits.length === 0 ? (
           <div className="border border-dashed border-zinc-800 py-16 text-center">
-            <p className="font-mono text-xs tracking-widest text-zinc-600">NODE_OFFLINE</p>
-            <p className="mt-2 font-mono text-[10px] text-zinc-700">No nodes registered. Initialize first behavioral node.</p>
+            <p className="font-mono text-xs tracking-widest text-zinc-400">No habits yet</p>
+            <p className="mt-2 font-mono text-[10px] text-zinc-400">Create your first habit to start building streaks.</p>
             <button
               onClick={() => setShowCreate(true)}
               className="mt-4 border border-zinc-800 bg-zinc-900 px-4 py-2 font-mono text-[10px] tracking-widest text-zinc-500 transition hover:border-orange-900 hover:text-orange-500"
@@ -187,7 +187,7 @@ export default function HabitsPage() {
                   <button
                     onClick={() => handleToggle(habit._id)}
                     disabled={toggling === habit._id}
-                    className="flex h-8 w-8 shrink-0 items-center justify-center border border-zinc-800 text-zinc-600 transition hover:border-orange-600 hover:text-orange-500 disabled:opacity-50"
+                    className="flex h-8 w-8 shrink-0 items-center justify-center border border-zinc-800 text-zinc-400 transition hover:border-orange-600 hover:text-orange-500 disabled:opacity-50"
                   >
                     {toggling === habit._id ? (
                       <div className="h-3.5 w-3.5 animate-spin border border-orange-600 border-t-transparent" />
@@ -200,12 +200,12 @@ export default function HabitsPage() {
                     <div className="flex items-center gap-2">
                       <p className="truncate font-mono text-sm text-zinc-200">{habit.title.toUpperCase()}</p>
                       {habit.habitType && habit.habitType !== 'yes_no' && (
-                        <span className="border border-zinc-800 px-1.5 py-0.5 font-mono text-[9px] text-zinc-600">
+                        <span className="border border-zinc-800 px-1.5 py-0.5 font-mono text-[9px] text-zinc-400">
                           {habit.habitType.replace('_', '/').toUpperCase()}
                         </span>
                       )}
                     </div>
-                    <div className="mt-0.5 flex items-center gap-2 font-mono text-[10px] text-zinc-600">
+                    <div className="mt-0.5 flex items-center gap-2 font-mono text-[10px] text-zinc-400">
                       <span>{habit.category.toUpperCase()}</span>
                       <span>::</span>
                       <span>{habit.frequency.replace('_', '_').toUpperCase()}</span>
@@ -218,11 +218,11 @@ export default function HabitsPage() {
                   <div className="flex items-center gap-3">
                     <div className="text-right">
                       <p className="font-mono text-base font-bold text-orange-500">UPTIME_{habit.streakCurrent}D</p>
-                      <p className="font-mono text-[10px] text-zinc-600">PEAK_{habit.streakLongest}D</p>
+                      <p className="font-mono text-[10px] text-zinc-400">PEAK_{habit.streakLongest}D</p>
                     </div>
                     <button
                       onClick={() => handleSkip(habit._id)}
-                      className="border border-transparent p-1.5 font-mono text-[10px] text-zinc-700 transition hover:border-zinc-800 hover:text-zinc-400"
+                      className="border border-transparent p-1.5 font-mono text-[10px] text-zinc-400 transition hover:border-zinc-800 hover:text-zinc-400"
                       title="Skip today"
                     >
                       <SkipForward className="h-3.5 w-3.5" />
@@ -238,7 +238,7 @@ export default function HabitsPage() {
                         style={{ width: `${Math.min(100, ((habit.totalCompletions || 0) / habit.targetValue) * 100)}%` }}
                       />
                     </div>
-                    <span className="font-mono text-[10px] text-zinc-600">
+                    <span className="font-mono text-[10px] text-zinc-400">
                       {habit.totalCompletions || 0}/{habit.targetValue}{habit.targetUnit ? `_${habit.targetUnit.toUpperCase()}` : ''}
                     </span>
                   </div>
@@ -255,7 +255,7 @@ export default function HabitsPage() {
           <div className="w-full max-w-lg border border-zinc-800 bg-zinc-950 shadow-2xl">
             <div className="flex items-center justify-between border-b border-zinc-900 px-5 py-3">
               <span className="font-mono text-xs tracking-widest text-orange-500">INIT_NODE :: CREATE_BEHAVIORAL_ROUTINE</span>
-              <button onClick={() => setShowCreate(false)} className="text-zinc-600 transition hover:text-zinc-300">
+              <button onClick={() => setShowCreate(false)} className="text-zinc-400 transition hover:text-zinc-300">
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -267,7 +267,7 @@ export default function HabitsPage() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="Meditate, Read, Exercise..."
-                  className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-700 focus:border-orange-800 focus:outline-none"
+                  className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-400 focus:border-orange-800 focus:outline-none"
                   required autoFocus
                 />
               </div>
@@ -275,12 +275,12 @@ export default function HabitsPage() {
               <div>
                 <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">IDENTITY_LABEL</label>
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs text-zinc-600">I_AM::</span>
+                  <span className="font-mono text-xs text-zinc-400">I_AM::</span>
                   <input
                     value={identityLabel}
                     onChange={(e) => setIdentityLabel(e.target.value)}
                     placeholder="a_reader, a_healthy_person"
-                    className="flex-1 border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-700 focus:border-orange-800 focus:outline-none"
+                    className="flex-1 border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-400 focus:border-orange-800 focus:outline-none"
                   />
                 </div>
               </div>
@@ -319,18 +319,18 @@ export default function HabitsPage() {
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">TARGET_VALUE</label>
-                    <input type="number" value={targetValue} onChange={(e) => setTargetValue(e.target.value)} placeholder="30" className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-700 focus:border-orange-800 focus:outline-none" />
+                    <input type="number" value={targetValue} onChange={(e) => setTargetValue(e.target.value)} placeholder="30" className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-400 focus:border-orange-800 focus:outline-none" />
                   </div>
                   <div>
                     <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">TARGET_UNIT</label>
-                    <input value={targetUnit} onChange={(e) => setTargetUnit(e.target.value)} placeholder="minutes, reps" className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-700 focus:border-orange-800 focus:outline-none" />
+                    <input value={targetUnit} onChange={(e) => setTargetUnit(e.target.value)} placeholder="minutes, reps" className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-400 focus:border-orange-800 focus:outline-none" />
                   </div>
                 </div>
               )}
 
               <div>
                 <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">DESCRIPTION</label>
-                <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Why is this node important?" rows={2} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-700 focus:border-orange-800 focus:outline-none" />
+                <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Why is this node important?" rows={2} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-400 focus:border-orange-800 focus:outline-none" />
               </div>
 
               <div className="flex gap-px pt-1">
@@ -352,7 +352,7 @@ export default function HabitsPage() {
 function NodeMetric({ label, value }: { label: string; value: string }) {
   return (
     <div className="bg-zinc-950 px-4 py-3 transition hover:bg-zinc-900">
-      <p className="font-mono text-[9px] tracking-widest text-zinc-600">{label}</p>
+          <p className="font-mono text-[9px] tracking-widest text-zinc-400">{label}</p>
       <p className="mt-0.5 font-mono text-lg font-bold text-zinc-100">{value}</p>
     </div>
   );

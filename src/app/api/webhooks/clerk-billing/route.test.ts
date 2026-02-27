@@ -1,4 +1,5 @@
 /** @jest-environment node */
+export {};
 
 const verifyMock = jest.fn();
 const mutationMock = jest.fn();

@@ -15,6 +15,45 @@ import {
 import { addDays, differenceInDays, endOfWeek } from 'date-fns';
 import { ascendAI } from './ai-service';
 
+// Type definitions for AI responses
+interface AITaskResponse {
+  title: string;
+  description: string;
+  estimatedMinutes?: number;
+  priority?: string;
+  difficulty?: string;
+  bestTimeOfDay?: string;
+}
+
+interface AIWeeklyObjectiveResponse {
+  title: string;
+  description: string;
+  estimatedHours?: number;
+  dailyTasks?: AITaskResponse[];
+}
+
+interface AIMilestoneResponse {
+  title: string;
+  description: string;
+  weekNumber: number;
+  estimatedHours?: number;
+  weeklyObjectives: AIWeeklyObjectiveResponse[];
+}
+
+interface AIHabitResponse {
+  title: string;
+  description: string;
+  frequency?: string;
+  category?: string;
+}
+
+interface AIGoalPlanResponse {
+  milestones: AIMilestoneResponse[];
+  suggestedHabits?: AIHabitResponse[];
+  summary?: string;
+  estimatedTotalHours?: number;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────────
 // AI PROMPT TEMPLATES
 // ─────────────────────────────────────────────────────────────────────────────────
@@ -223,22 +262,22 @@ export class AIGoalDecomposer {
   }
 
   private transformToResponse(
-    aiResponse: any,
+    aiResponse: AIGoalPlanResponse,
     _request: AIGoalDecompositionRequest,
     _totalWeeks: number
   ): AIGoalDecompositionResponse {
     const goalId = this.generateId();
     const today = new Date();
 
-    const milestones: Milestone[] = aiResponse.milestones.map((m: any, mIndex: number) => {
+    const milestones: Milestone[] = aiResponse.milestones.map((m: AIMilestoneResponse, mIndex: number) => {
       const milestoneId = this.generateId();
       const milestoneDate = addDays(today, m.weekNumber * 7);
 
-      const weeklyObjectives: WeeklyObjective[] = m.weeklyObjectives.map((w: any, wIndex: number) => {
+      const weeklyObjectives: WeeklyObjective[] = m.weeklyObjectives.map((w: AIWeeklyObjectiveResponse, wIndex: number) => {
         const objectiveId = this.generateId();
         const weekStart = addDays(today, (mIndex === 0 ? wIndex : m.weekNumber - m.weeklyObjectives.length + wIndex) * 7);
         
-        const dailyTasks: DailyTask[] = (w.dailyTasks || []).map((t: any, tIndex: number) => ({
+        const dailyTasks: DailyTask[] = (w.dailyTasks || []).map((t: AITaskResponse, tIndex: number) => ({
           id: this.generateId(),
           objectiveId,
           title: t.title,
@@ -279,7 +318,7 @@ export class AIGoalDecomposer {
       };
     });
 
-    const suggestedHabits: Partial<Habit>[] = (aiResponse.suggestedHabits || []).map((h: any) => ({
+    const suggestedHabits: Partial<Habit>[] = (aiResponse.suggestedHabits || []).map((h: AIHabitResponse) => ({
       name: h.name,
       description: h.description,
       category: h.category || 'custom',
@@ -464,8 +503,8 @@ export class AIGoalDecomposer {
     return preview;
   }
 
-  private getMilestoneTemplates(category: GoalCategory, _goal: string): any[] {
-    const templates: Record<GoalCategory, any[]> = {
+  private getMilestoneTemplates(category: GoalCategory, _goal: string): AIMilestoneResponse[] {
+    const templates: Record<GoalCategory, AIMilestoneResponse[]> = {
       fitness: [
         { title: 'Foundation Building', description: 'Establish baseline fitness and build consistent exercise habits', weeklyFocus: ['Baseline Assessment', 'Form Practice', 'Endurance Building', 'Recovery Optimization'] },
         { title: 'Strength Development', description: 'Progressive overload and technique refinement', weeklyFocus: ['Strength Training', 'Cardio Integration', 'Flexibility Work', 'Performance Testing'] },

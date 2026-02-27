@@ -477,8 +477,8 @@ const COACH_MOTIVATION_TEMPLATES = {
   },
 };
 
-function getPersonaMessage(personaId, touchpoint, fallback) {
-  const persona = COACH_MOTIVATION_TEMPLATES[personaId];
+function getPersonaMessage(personaId: string, touchpoint: string, fallback: string) {
+  const persona = (COACH_MOTIVATION_TEMPLATES as Record<string, Record<string, string>>)[personaId];
   if (persona && persona[touchpoint]) return persona[touchpoint];
   return fallback;
 }

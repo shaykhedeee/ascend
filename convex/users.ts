@@ -3,7 +3,7 @@
 // Syncs Clerk users to Convex DB, manages plan status
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { mutation, query } from './_generated/server';
+import { mutation, query, internalMutation } from './_generated/server';
 import { internal } from './_generated/api';
 import { v } from 'convex/values';
 import { Id } from './_generated/dataModel';

@@ -78,7 +78,8 @@ const taskDocValidator = v.object({
     v.literal('ai_generated'),
     v.literal('recurring'),
     v.literal('decomposition'),
-    v.literal('imported')
+    v.literal('imported'),
+    v.literal('telegram')
   )),
   xpValue: v.optional(v.number()),
   context: v.optional(v.array(v.string())),
@@ -137,7 +138,8 @@ export const create = mutation({
       v.literal('ai_generated'),
       v.literal('recurring'),
       v.literal('decomposition'),
-      v.literal('imported')
+      v.literal('imported'),
+      v.literal('telegram')
     )),
     xpValue: v.optional(v.number()),
     context: v.optional(v.array(v.string())),

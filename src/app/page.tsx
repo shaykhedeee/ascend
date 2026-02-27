@@ -1,6 +1,6 @@
-﻿// =============================================================================
+// =============================================================================
 // RESURGO - Root Page
-// Public landing page â€” all navigation via native <Link> tags.
+// Public landing page — all navigation via native <Link> tags.
 // force-dynamic prevents Next.js from statically caching this page.
 // =============================================================================
 
@@ -11,6 +11,6 @@ import { LandingPageV2 as LandingPage } from '@/components/LandingPageV2';
 export default function Home() {
   // Show the marketing landing page for everyone on root.
   // Protected app routes (e.g. /dashboard) remain enforced by middleware.
-  // All CTAs use native <Link href> â€” no router.push needed.
+  // All CTAs use native <Link href> — no router.push needed.
   return <LandingPage />;
 }

@@ -43,5 +43,17 @@ declare namespace NodeJS {
     NEXT_PUBLIC_VAPID_PUBLIC_KEY?: string;
     VAPID_PRIVATE_KEY?: string;
     VAPID_SUBJECT?: string;
+
+    // Telegram Bot
+    TELEGRAM_BOT_TOKEN?: string;
+    TELEGRAM_WEBHOOK_SECRET?: string;  // Optional X-Telegram-Bot-Api-Secret-Token for webhook verification
   }
+}
+
+// Clerk global on window (loaded via CDN / Next.js)
+interface Window {
+  Clerk?: {
+    signOut?: () => Promise<void>;
+    [key: string]: unknown;
+  };
 }

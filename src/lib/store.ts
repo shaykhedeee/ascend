@@ -4,7 +4,7 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { completionFeedback, hapticFeedback } from '@/lib/sounds';
+import { completionFeedback } from '@/lib/sounds';
 import {
   User,
   UltimateGoal,
@@ -162,7 +162,7 @@ interface AscendStore {
   // Analytics helpers
   getDailyStats: (date: string) => { completed: number; total: number; percentage: number };
   getWeeklyStats: (weekNumber: number) => { completed: number; total: number; percentage: number };
-  getMonthlyStats: () => { completed: number; total: number; percentage: number; topHabits: any[]; worstHabits: any[] };
+  getMonthlyStats: () => { completed: number; total: number; percentage: number; topHabits: Array<{ id: string; name: string; completionRate: number }>; worstHabits: Array<{ id: string; name: string; completionRate: number }> };
   
   // Identity System (Atomic Habits)
   identities: IdentityArchetype[];
@@ -1247,7 +1247,7 @@ export const useAscendStore = create<AscendStore>()(
                 customDays: habit.customDays,
               },
               priority: 'medium',
-              category: habit.category as any,
+              category: habit.category as 'health' | 'productivity' | 'learning' | 'relationships' | 'finance' | 'other',
               xpReward: XP_REWARDS.HABIT_COMPLETED,
               icon: habit.icon,
               color: habit.color,
@@ -1321,7 +1321,7 @@ export const useAscendStore = create<AscendStore>()(
               completedAt: task.completedAt,
               isRecurring: task.repeat !== 'none',
               recurrence: task.repeat !== 'none' ? {
-                frequency: task.repeat as any,
+                frequency: task.repeat as 'daily' | 'weekly' | 'monthly',
                 customDays: task.repeatConfig?.days,
               } : undefined,
               priority: task.priority,
@@ -1389,7 +1389,7 @@ export const useAscendStore = create<AscendStore>()(
                   customDays: habit.customDays,
                 },
                 priority: 'medium',
-                category: habit.category as any,
+                category: habit.category as 'health' | 'productivity' | 'learning' | 'relationships' | 'finance' | 'other',
                 xpReward: XP_REWARDS.HABIT_COMPLETED,
                 icon: habit.icon,
                 color: habit.color,
@@ -1456,7 +1456,7 @@ export const useAscendStore = create<AscendStore>()(
                 completedAt: task.completedAt,
                 isRecurring: task.repeat !== 'none',
                 recurrence: task.repeat !== 'none' ? {
-                  frequency: task.repeat as any,
+                  frequency: task.repeat as 'daily' | 'weekly' | 'monthly' | 'once',
                   customDays: task.repeatConfig?.days,
                 } : undefined,
                 priority: task.priority,

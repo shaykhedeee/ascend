@@ -1,4 +1,4 @@
-import { mutation, internalMutation } from './_generated/server';
+import { mutation, internalMutation, query } from './_generated/server';
 import { v } from 'convex/values';
 import { checkAndCreateGoal } from './lib/transactions';
 

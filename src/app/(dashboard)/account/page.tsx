@@ -54,14 +54,14 @@ export default function AccountPage() {
           </div>
           <div className="px-5 py-4">
             <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">OPERATOR_ACCOUNT</h1>
-            <p className="mt-1 font-mono text-xs tracking-widest text-zinc-600">PROFILE :: SUBSCRIPTION :: SECURITY :: DATA</p>
+            <p className="mt-1 font-mono text-xs tracking-widest text-zinc-400">PROFILE :: SUBSCRIPTION :: SECURITY :: DATA</p>
           </div>
         </div>
 
         {/* ── PROFILE ── */}
         <div className="mb-3 border border-zinc-900 bg-zinc-950">
           <div className="border-b border-zinc-900 px-4 py-2.5">
-            <span className="font-mono text-[10px] font-bold tracking-widest text-zinc-600">OPERATOR_PROFILE</span>
+            <span className="font-mono text-[10px] font-bold tracking-widest text-zinc-400">OPERATOR_PROFILE</span>
           </div>
           <div className="flex items-center gap-4 px-4 py-4">
             <div className="flex h-12 w-12 items-center justify-center border border-zinc-800 bg-black font-mono text-xl font-bold text-orange-600">
@@ -69,7 +69,7 @@ export default function AccountPage() {
             </div>
             <div>
               <p className="font-mono text-sm font-semibold text-zinc-200">{user?.name}</p>
-              <p className="font-mono text-xs text-zinc-600">{user?.email}</p>
+              <p className="font-mono text-xs text-zinc-400">{user?.email}</p>
             </div>
           </div>
         </div>
@@ -77,7 +77,7 @@ export default function AccountPage() {
         {/* ── SUBSCRIPTION ── */}
         <div className="mb-3 border border-zinc-900 bg-zinc-950">
           <div className="border-b border-zinc-900 px-4 py-2.5">
-            <span className="font-mono text-[10px] font-bold tracking-widest text-zinc-600">SUBSCRIPTION_TIER</span>
+            <span className="font-mono text-[10px] font-bold tracking-widest text-zinc-400">SUBSCRIPTION_TIER</span>
           </div>
           <div className="flex items-center justify-between px-4 py-4">
             <span className="font-mono text-xs tracking-widest text-zinc-400">
@@ -97,10 +97,10 @@ export default function AccountPage() {
         {/* ── SECURITY ── */}
         <div className="mb-3 border border-zinc-900 bg-zinc-950">
           <div className="border-b border-zinc-900 px-4 py-2.5">
-            <span className="font-mono text-[10px] font-bold tracking-widest text-zinc-600">SECURITY_SESSIONS</span>
+            <span className="font-mono text-[10px] font-bold tracking-widest text-zinc-400">SECURITY_SESSIONS</span>
           </div>
           <div className="flex items-center justify-between px-4 py-4">
-            <p className="font-mono text-xs text-zinc-700">ACTIVE_SESSION_MANAGEMENT :: COMING_SOON</p>
+            <p className="font-mono text-xs text-zinc-400">ACTIVE_SESSION_MANAGEMENT :: COMING_SOON</p>
             <button onClick={() => alert('Sign out from other devices (server required)')} className="border border-zinc-800 px-3 py-1.5 font-mono text-[10px] tracking-widest text-zinc-500 transition hover:border-zinc-700">
               [REVOKE_SESSIONS]
             </button>
@@ -110,10 +110,10 @@ export default function AccountPage() {
         {/* ── DATA ── */}
         <div className="mb-6 border border-zinc-900 bg-zinc-950">
           <div className="border-b border-zinc-900 px-4 py-2.5">
-            <span className="font-mono text-[10px] font-bold tracking-widest text-zinc-600">DATA_MANAGEMENT</span>
+            <span className="font-mono text-[10px] font-bold tracking-widest text-zinc-400">DATA_MANAGEMENT</span>
           </div>
           <div className="flex items-center justify-between px-4 py-4">
-            <p className="font-mono text-xs text-zinc-700">EXPORT_OR_PURGE_OPERATOR_DATA</p>
+            <p className="font-mono text-xs text-zinc-400">EXPORT_OR_PURGE_OPERATOR_DATA</p>
             <div className="flex gap-2">
               <button onClick={handleExport} className="border border-zinc-800 px-3 py-1.5 font-mono text-[10px] tracking-widest text-zinc-500 transition hover:border-zinc-700">
                 {exporting ? '[EXPORTING...]' : '[EXPORT_DATA]'}

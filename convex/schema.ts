@@ -126,11 +126,26 @@ export default defineSchema({
     planVersion: v.optional(v.number()),     // monotonic counter, incremented on each plan change
     planUpdatedAt: v.optional(v.number()),   // ms timestamp of last plan update for stale-event guard
     lastBillingEventId: v.optional(v.string()), // last applied webhook event id
+    // ── Telegram integration ──
+    telegramChatId: v.optional(v.string()),  // Telegram chat ID after /start auth flow
+    telegramLinked: v.optional(v.boolean()), // true after user has completed link flow
+    // ── Referral ──
+    referralCode: v.optional(v.string()),    // unique code for referral tracking
+    // ── Coach selection ──
+    selectedCoach: v.optional(v.union(
+      v.literal('MARCUS'),
+      v.literal('AURORA'),
+      v.literal('TITAN'),
+      v.literal('SAGE'),
+      v.literal('PHOENIX'),
+      v.literal('NOVA'),
+    )),
     createdAt: v.number(),
     updatedAt: v.number(),
   })
     .index('by_clerkId', ['clerkId'])
-    .index('by_email', ['email']),
+    .index('by_email', ['email'])
+    .index('by_telegramChatId', ['telegramChatId']),
 
   // ─────────────────────────────────────────────────────────────────────────────
   // GOALS — Enhanced with decomposition engine (Module 2)
@@ -401,7 +416,8 @@ export default defineSchema({
       v.literal('ai_generated'),
       v.literal('recurring'),
       v.literal('decomposition'),
-      v.literal('imported')
+      v.literal('imported'),
+      v.literal('telegram')
     )),
     xpValue: v.optional(v.number()),
     context: v.optional(v.array(v.string())),
@@ -916,4 +932,272 @@ export default defineSchema({
   })
     .index('by_clerkId_and_dueAt', ['clerkId', 'dueAt'])
     .index('by_status_and_dueAt', ['status', 'dueAt']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // REMINDERS — Scheduled reminders (from Telegram /remind command or app)
+  // ─────────────────────────────────────────────────────────────────────────────
+  reminders: defineTable({
+    userId: v.id('users'),
+    text: v.string(),
+    remindAt: v.number(),           // Unix ms timestamp
+    status: v.union(
+      v.literal('pending'),
+      v.literal('sent'),
+      v.literal('dismissed')
+    ),
+    source: v.union(
+      v.literal('telegram'),
+      v.literal('app')
+    ),
+    telegramChatId: v.optional(v.string()), // if set, reminder is delivered to Telegram
+    createdAt: v.number(),
+  })
+    .index('by_userId', ['userId'])
+    .index('by_userId_status', ['userId', 'status'])
+    .index('by_status_remindAt', ['status', 'remindAt']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // TELEGRAM CONTEXT — Last 10 messages per user for coherent multi-turn AI
+  // ─────────────────────────────────────────────────────────────────────────────
+  telegramContext: defineTable({
+    userId: v.id('users'),
+    telegramChatId: v.string(),
+    messages: v.array(v.object({
+      role: v.union(v.literal('user'), v.literal('assistant')),
+      content: v.string(),
+      timestamp: v.number(),
+    })),
+    updatedAt: v.number(),
+  })
+    .index('by_userId', ['userId'])
+    .index('by_telegramChatId', ['telegramChatId']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // TELEGRAM OTPS — Short-lived tokens for the /start account-link auth flow
+  // ─────────────────────────────────────────────────────────────────────────────
+  telegramOtps: defineTable({
+    clerkId: v.string(),
+    token: v.string(),              // 6-char alphanumeric OTP
+    telegramChatId: v.string(),
+    telegramUsername: v.optional(v.string()),
+    used: v.boolean(),
+    expiresAt: v.number(),          // Unix ms timestamp (15 min TTL)
+    createdAt: v.number(),
+  })
+    .index('by_token', ['token'])
+    .index('by_clerkId', ['clerkId']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // COACH MEMORY — AI persona long-term memory per user per coach
+  // ─────────────────────────────────────────────────────────────────────────────
+  coachMemory: defineTable({
+    userId: v.id('users'),
+    coachId: v.union(
+      v.literal('MARCUS'),
+      v.literal('AURORA'),
+      v.literal('TITAN'),
+      v.literal('SAGE'),
+      v.literal('PHOENIX'),
+      v.literal('NOVA'),
+    ),
+    insights: v.array(v.string()),       // inferred behavioral patterns
+    patterns: v.array(v.string()),       // recurring themes from history
+    lastAnalysisAt: v.optional(v.number()),
+    messageCount: v.number(),
+    updatedAt: v.number(),
+  })
+    .index('by_userId', ['userId'])
+    .index('by_userId_coachId', ['userId', 'coachId']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // BUDGET TRANSACTIONS — Personal finance tracker
+  // ─────────────────────────────────────────────────────────────────────────────
+  transactions: defineTable({
+    userId: v.id('users'),
+    type: v.union(v.literal('income'), v.literal('expense')),
+    amount: v.number(),                  // always positive
+    currency: v.optional(v.string()),
+    category: v.string(),
+    subCategory: v.optional(v.string()),
+    description: v.string(),
+    date: v.string(),                    // YYYY-MM-DD
+    isRecurring: v.optional(v.boolean()),
+    recurringPeriod: v.optional(v.union(
+      v.literal('daily'),
+      v.literal('weekly'),
+      v.literal('monthly'),
+      v.literal('yearly'),
+    )),
+    tags: v.optional(v.array(v.string())),
+    createdAt: v.number(),
+  })
+    .index('by_userId', ['userId'])
+    .index('by_userId_date', ['userId', 'date'])
+    .index('by_userId_category', ['userId', 'category']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // BUDGET CATEGORIES — Spend envelopes / budgets per category
+  // ─────────────────────────────────────────────────────────────────────────────
+  budgetCategories: defineTable({
+    userId: v.id('users'),
+    name: v.string(),
+    icon: v.optional(v.string()),
+    color: v.optional(v.string()),
+    monthlyBudget: v.number(),           // target spend ceiling per month
+    type: v.union(v.literal('essential'), v.literal('discretionary'), v.literal('savings'), v.literal('investment')),
+    createdAt: v.number(),
+  })
+    .index('by_userId', ['userId']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // FINANCIAL GOALS — Saving targets
+  // ─────────────────────────────────────────────────────────────────────────────
+  financialGoals: defineTable({
+    userId: v.id('users'),
+    title: v.string(),
+    targetAmount: v.number(),
+    currentAmount: v.number(),
+    currency: v.optional(v.string()),
+    deadline: v.optional(v.string()),    // ISO date
+    status: v.union(
+      v.literal('active'),
+      v.literal('completed'),
+      v.literal('paused'),
+    ),
+    icon: v.optional(v.string()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index('by_userId', ['userId'])
+    .index('by_userId_status', ['userId', 'status']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // NUTRITION LOGS — Daily calorie + macro tracking
+  // ─────────────────────────────────────────────────────────────────────────────
+  nutritionLogs: defineTable({
+    userId: v.id('users'),
+    date: v.string(),                    // YYYY-MM-DD
+    meals: v.array(v.object({
+      name: v.string(),
+      calories: v.number(),
+      protein: v.optional(v.number()),   // g
+      carbs: v.optional(v.number()),     // g
+      fat: v.optional(v.number()),       // g
+      time: v.optional(v.string()),
+    })),
+    totalCalories: v.number(),
+    totalProtein: v.optional(v.number()),
+    totalCarbs: v.optional(v.number()),
+    totalFat: v.optional(v.number()),
+    waterMl: v.optional(v.number()),
+    steps: v.optional(v.number()),
+    calorieGoal: v.optional(v.number()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index('by_userId', ['userId'])
+    .index('by_userId_date', ['userId', 'date']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SLEEP LOGS — Sleep quality & duration tracking
+  // ─────────────────────────────────────────────────────────────────────────────
+  sleepLogs: defineTable({
+    userId: v.id('users'),
+    date: v.string(),                    // YYYY-MM-DD (date of the night)
+    bedtime: v.optional(v.string()),     // HH:MM
+    wakeTime: v.optional(v.string()),    // HH:MM
+    durationMinutes: v.optional(v.number()),
+    quality: v.optional(v.number()),     // 1-5
+    notes: v.optional(v.string()),
+    createdAt: v.number(),
+  })
+    .index('by_userId', ['userId'])
+    .index('by_userId_date', ['userId', 'date']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // BUSINESS GOALS — Business Command Center
+  // ─────────────────────────────────────────────────────────────────────────────
+  businessGoals: defineTable({
+    userId: v.id('users'),
+    businessName: v.optional(v.string()),
+    type: v.union(
+      v.literal('revenue'),
+      v.literal('clients'),
+      v.literal('launch'),
+      v.literal('growth'),
+      v.literal('product'),
+      v.literal('marketing'),
+      v.literal('operations'),
+    ),
+    title: v.string(),
+    description: v.optional(v.string()),
+    target: v.optional(v.number()),       // numeric target (e.g., revenue $)
+    current: v.optional(v.number()),      // current value
+    unit: v.optional(v.string()),         // $, clients, users, etc.
+    deadline: v.optional(v.string()),     // ISO date
+    status: v.union(
+      v.literal('active'),
+      v.literal('completed'),
+      v.literal('paused'),
+    ),
+    milestones: v.optional(v.array(v.object({
+      title: v.string(),
+      done: v.boolean(),
+      dueDate: v.optional(v.string()),
+    }))),
+    aiTasks: v.optional(v.array(v.string())),  // AI-generated action items
+    priority: v.optional(v.number()),     // 1-5
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index('by_userId', ['userId'])
+    .index('by_userId_status', ['userId', 'status']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // WEBHOOKS — Zapier/Make outbound event subscriptions
+  // ─────────────────────────────────────────────────────────────────────────────
+  webhooks: defineTable({
+    userId: v.id('users'),
+    url: v.string(),
+    events: v.array(v.string()),          // e.g. ['task.created', 'habit.logged']
+    secret: v.optional(v.string()),       // HMAC secret for verification
+    active: v.boolean(),
+    name: v.optional(v.string()),
+    lastFiredAt: v.optional(v.number()),
+    createdAt: v.number(),
+  })
+    .index('by_userId', ['userId']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // API KEYS — Public developer API authentication
+  // ─────────────────────────────────────────────────────────────────────────────
+  apiKeys: defineTable({
+    userId: v.id('users'),
+    name: v.string(),
+    keyHash: v.string(),                  // SHA-256 hash of the actual key
+    keyPrefix: v.string(),                // first 8 chars for display (rsg_xxxx...)
+    createdAt: v.number(),
+    lastUsedAt: v.optional(v.number()),
+    revokedAt: v.optional(v.number()),
+    rateLimitPerHour: v.number(),
+  })
+    .index('by_userId', ['userId'])
+    .index('by_keyHash', ['keyHash']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // REFERRALS — "Help shape your homeboy's life too"
+  // ─────────────────────────────────────────────────────────────────────────────
+  referrals: defineTable({
+    referrerId: v.id('users'),
+    refereeId: v.optional(v.id('users')),
+    code: v.string(),
+    status: v.union(
+      v.literal('pending'),
+      v.literal('completed'),
+    ),
+    rewardGranted: v.boolean(),
+    createdAt: v.number(),
+  })
+    .index('by_referrerId', ['referrerId'])
+    .index('by_code', ['code']),
 });

@@ -1,10 +1,10 @@
-﻿import { Metadata } from 'next';
+import { Metadata } from 'next';
 import Link from 'next/link';
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════════════════════
 // SEO-OPTIMIZED PILLAR PAGE - Atomic Habits Complete Guide
 // High-value content for ranking and E-E-A-T
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════════════════════
 
 export const metadata: Metadata = {
   title: 'The Complete Atomic Habits Guide (2026) | RESURGO',
@@ -29,9 +29,9 @@ export const metadata: Metadata = {
   },
 };
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════════════════════
 // JSON-LD STRUCTURED DATA
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════════════════════
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -97,9 +97,9 @@ const faqSchema = {
   ],
 };
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════════════════════
 // TABLE OF CONTENTS
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════════════════════
 
 const tableOfContents = [
   { id: 'intro', title: 'Introduction: Why Tiny Changes Matter' },
@@ -117,9 +117,9 @@ const tableOfContents = [
   { id: 'faq', title: 'Frequently Asked Questions' },
 ];
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════════════════════
 // PAGE COMPONENT
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════════════════════
 
 export default function AtomicHabitsGuidePage() {
   return (
@@ -168,9 +168,9 @@ export default function AtomicHabitsGuidePage() {
               </svg>
               25 min read
             </span>
-            <span>â€¢</span>
+            <span>•</span>
             <span>Updated February 2026</span>
-            <span>â€¢</span>
+            <span>•</span>
             <span>125K+ reads</span>
           </div>
         </div>
@@ -251,7 +251,7 @@ export default function AtomicHabitsGuidePage() {
               </div>
               <p className="text-[var(--text-secondary)]">
                 This is the mathematics of tiny gains. While a 1% improvement isn&apos;t noticeable in the 
-                moment, it compounds dramatically over time. The same is true in reverseâ€”1% worse every 
+                moment, it compounds dramatically over time. The same is true in reverse—1% worse every 
                 day leads to decline.
               </p>
               <p className="text-[var(--text-secondary)]">
@@ -424,7 +424,7 @@ export default function AtomicHabitsGuidePage() {
               </div>
               <p className="text-[var(--text-secondary)]">
                 Habit stacking takes advantage of the momentum you already have. By linking a new 
-                behavior to an old one, you don&apos;t need to find a new triggerâ€”you use your existing 
+                behavior to an old one, you don&apos;t need to find a new trigger—you use your existing 
                 routines.
               </p>
               <h3 className="text-xl font-semibold text-[var(--text-primary)] mt-6">Examples:</h3>
@@ -559,7 +559,7 @@ export default function AtomicHabitsGuidePage() {
                   },
                   {
                     q: 'How long does it take to form a habit?',
-                    a: 'Research shows it takes an average of 66 days to form a new habit, though this can range from 18 to 254 days. The key is consistency over perfectionâ€”never miss twice in a row.',
+                    a: 'Research shows it takes an average of 66 days to form a new habit, though this can range from 18 to 254 days. The key is consistency over perfection—never miss twice in a row.',
                   },
                   {
                     q: 'What is habit stacking?',

@@ -301,7 +301,7 @@ export class AscendAIService {
       hoursPerDay?: number;
       difficulty?: 'easy' | 'moderate' | 'challenging';
     } = {}
-  ): Promise<any> {
+  ): Promise<unknown> {
     const { skillLevel = 'beginner', hoursPerDay = 1, difficulty = 'moderate' } = options;
     
     const totalDays = Math.ceil((targetDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));

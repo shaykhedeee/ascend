@@ -108,6 +108,9 @@ export interface UserProfile {
   previousChallenges: string; // What didn't work before
   biggestMotivation: string; // Their "why"
   
+  // AI Coach
+  coachPersona?: string; // e.g. 'tony-robbins', 'mel-robbins'
+
   // Tracking
   profileCompleteness: number; // 0-100%
   createdAt: string;

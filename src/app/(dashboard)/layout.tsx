@@ -1,10 +1,11 @@
-﻿'use client';
+'use client';
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// RESURGO â€” Dashboard Layout (Protected)
+// ═══════════════════════════════════════════════════════════════════════════════
+// RESURGO — Dashboard Layout (Protected)
 // Sidebar + top-bar shell for all authenticated routes
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════════════════════
 
+import { Logo, LogoMark } from '@/components/Logo';
 import { useStoreUser } from '@/hooks/useStoreUser';
 import { DowngradePlanNotice } from '@/components/DowngradePlanNotice';
 import { OnboardingResume } from '@/components/OnboardingResume';
@@ -28,22 +29,32 @@ import {
   MessageSquare,
   Menu,
   X,
+  DollarSign,
+  Briefcase,
+  Map,
+  Puzzle,
+  Gift,
 } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { href: '/dashboard', label: 'COMMAND_CTR', icon: LayoutDashboard, color: 'text-zinc-500' },
-  { href: '/goals', label: 'OBJECTIVES', icon: Target, color: 'text-zinc-500' },
-  { href: '/tasks', label: 'TASK_QUEUE', icon: CheckSquare, color: 'text-zinc-500' },
-  { href: '/habits', label: 'NODES', icon: Sparkles, color: 'text-zinc-500' },
-  { href: '/focus', label: 'DEEP_WORK', icon: Timer, color: 'text-zinc-500' },
-  { href: '/analytics', label: 'TELEMETRY', icon: BarChart3, color: 'text-zinc-500' },
-  { href: '/calendar', label: 'TIMELINE', icon: Calendar, color: 'text-zinc-500' },
-  { href: '/wellness', label: 'BIOMETRICS', icon: Heart, color: 'text-zinc-500' },
-  { href: '/coach', label: 'COMMS', icon: MessageSquare, color: 'text-zinc-500' },
+  { href: '/dashboard', label: 'DASHBOARD', icon: LayoutDashboard, color: 'text-zinc-500' },
+  { href: '/goals', label: 'GOALS', icon: Target, color: 'text-zinc-500' },
+  { href: '/tasks', label: 'TASKS', icon: CheckSquare, color: 'text-zinc-500' },
+  { href: '/habits', label: 'HABITS', icon: Sparkles, color: 'text-zinc-500' },
+  { href: '/focus', label: 'FOCUS', icon: Timer, color: 'text-zinc-500' },
+  { href: '/analytics', label: 'ANALYTICS', icon: BarChart3, color: 'text-zinc-500' },
+  { href: '/calendar', label: 'CALENDAR', icon: Calendar, color: 'text-zinc-500' },
+  { href: '/wellness', label: 'WELLNESS', icon: Heart, color: 'text-zinc-500' },
+  { href: '/budget', label: 'BUDGET', icon: DollarSign, color: 'text-zinc-500' },
+  { href: '/business', label: 'BUSINESS', icon: Briefcase, color: 'text-zinc-500' },
+  { href: '/plan-builder', label: 'PLAN BUILDER', icon: Map, color: 'text-zinc-500' },
+  { href: '/coach', label: 'AI COACH', icon: MessageSquare, color: 'text-zinc-500' },
+  { href: '/integrations', label: 'INTEGRATIONS', icon: Puzzle, color: 'text-zinc-500' },
+  { href: '/refer', label: 'REFER & EARN', icon: Gift, color: 'text-zinc-500' },
 ];
 
 const BOTTOM_ITEMS = [
-  { href: '/settings', label: 'CONFIG', icon: Settings, color: 'text-zinc-500' },
+  { href: '/settings', label: 'SETTINGS', icon: Settings, color: 'text-zinc-500' },
 ];
 
 function DashboardLayoutContent({ children }: { children: ReactNode }) {
@@ -73,7 +84,7 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
         <div className="flex flex-col items-center gap-3 border border-zinc-900 bg-zinc-950 px-8 py-6">
           <div className="h-px w-32 animate-pulse bg-orange-600" />
           <p className="font-mono text-xs tracking-widest text-zinc-500">INITIALIZING_SYSTEM<span className="animate-blink">_</span></p>
-          <p className="font-mono text-[10px] tracking-widest text-zinc-700">LOADING WORKSPACE...</p>
+          <p className="font-mono text-[10px] tracking-widest text-zinc-400">LOADING WORKSPACE...</p>
         </div>
       </div>
     );
@@ -82,7 +93,7 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
   if (!isAuthenticated) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-black">
-        <p className="font-mono text-xs tracking-widest text-zinc-600">REDIRECTING_TO_AUTH<span className="animate-blink">_</span></p>
+        <p className="font-mono text-xs tracking-widest text-zinc-400">REDIRECTING_TO_AUTH<span className="animate-blink">_</span></p>
       </div>
     );
   }
@@ -105,24 +116,24 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
         {/* Logo / Header */}
         <div className="flex h-12 items-center justify-between border-b border-zinc-900 px-3">
           {!collapsed && (
-            <Link href="/dashboard" className="flex items-center gap-2">
-              <span className="text-sm font-mono font-bold tracking-widest text-orange-600">RESURGO</span>
+            <Link href="/dashboard" className="flex items-center gap-1.5">
+              <Logo showText size="sm" />
             </Link>
           )}
           {collapsed && (
             <Link href="/dashboard" className="mx-auto">
-              <span className="font-mono text-xs font-bold text-orange-600">R/</span>
+              <LogoMark className="w-6 h-6" />
             </Link>
           )}
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="hidden p-1 text-zinc-600 hover:text-zinc-400 md:block"
+            className="hidden p-1 text-zinc-400 hover:text-zinc-400 md:block"
           >
             {collapsed ? <ChevronRight className="h-3.5 w-3.5" /> : <ChevronLeft className="h-3.5 w-3.5" />}
           </button>
           <button
             onClick={() => setMobileOpen(false)}
-            className="p-1 text-zinc-600 hover:text-zinc-400 md:hidden"
+            className="p-1 text-zinc-400 hover:text-zinc-400 md:hidden"
           >
             <X className="h-3.5 w-3.5" />
           </button>
@@ -141,10 +152,10 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
                       'flex items-center gap-2.5 px-2.5 py-2 text-[11px] font-mono tracking-wider transition-colors',
                       isActive
                         ? 'border-l border-orange-600 bg-orange-950/30 text-orange-500 pl-2'
-                        : 'border-l border-transparent text-zinc-600 hover:bg-zinc-900 hover:text-zinc-300'
+                        : 'border-l border-transparent text-zinc-400 hover:bg-zinc-900 hover:text-zinc-300'
                     )}
                   >
-                    <item.icon className={cn('h-4 w-4 shrink-0', isActive ? 'text-orange-500' : 'text-zinc-600')} />
+                    <item.icon className={cn('h-4 w-4 shrink-0', isActive ? 'text-orange-500' : 'text-zinc-400')} />
                     {!collapsed && <span>{item.label}</span>}
                   </Link>
                 </li>
@@ -165,7 +176,7 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
                   'flex items-center gap-2.5 px-2.5 py-2 text-[11px] font-mono tracking-wider transition-colors',
                   isActive
                     ? 'border-l border-orange-600 bg-orange-950/30 text-orange-500 pl-2'
-                    : 'border-l border-transparent text-zinc-600 hover:bg-zinc-900 hover:text-zinc-300'
+                    : 'border-l border-transparent text-zinc-400 hover:bg-zinc-900 hover:text-zinc-300'
                 )}
               >
                 <item.icon className="h-4 w-4 shrink-0" />
@@ -181,13 +192,13 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
                 {user && (
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-mono text-[10px] tracking-wider text-zinc-400">{user.name}</p>
-                    <p className="truncate font-mono text-[9px] tracking-wider text-zinc-700">
+                    <p className="truncate font-mono text-[9px] tracking-wider text-zinc-500">
                       {user.plan === 'free' ? 'FREE_TIER' : user.plan === 'lifetime' ? 'LIFETIME' : 'PRO_ACCESS'}
                     </p>
                   </div>
                 )}
                 <button
-                  className="font-mono text-[9px] tracking-widest text-zinc-700 hover:text-orange-600 transition-colors"
+                  className="font-mono text-[9px] tracking-widest text-zinc-400 hover:text-orange-600 transition-colors"
                   onClick={() => { void signOut({ redirectUrl: '/' }); }}
                 >
                   [EXIT]
@@ -199,13 +210,13 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
       </aside>
 
       {/* Main content */}
-      <main className={cn('flex-1 transition-all duration-300', collapsed ? 'md:ml-14' : 'md:ml-56')}>
+      <main className={cn('flex-1 transition-all duration-300 pb-16 md:pb-0', collapsed ? 'md:ml-14' : 'md:ml-56')}>
         {/* Top bar (mobile) */}
         <div className="sticky top-0 z-30 flex h-12 items-center gap-4 border-b border-zinc-900 bg-black px-4 md:hidden">
-          <button onClick={() => setMobileOpen(true)} className="p-1 text-zinc-600 hover:text-zinc-400">
+          <button onClick={() => setMobileOpen(true)} className="p-1 text-zinc-400 hover:text-zinc-400">
             <Menu className="h-4 w-4" />
           </button>
-          <span className="font-mono text-sm font-bold tracking-widest text-orange-600">RESURGO</span>
+          <Logo showText size="sm" />
         </div>
 
         {/* Downgrade notice banner (shown only when user has archived items) */}
@@ -216,6 +227,32 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
         <OnboardingResume onboardingComplete={user?.onboardingComplete} />
         {children}
       </main>
+
+      {/* -- Mobile bottom tab bar -- */}
+      <nav className="fixed bottom-0 left-0 right-0 z-40 flex h-16 items-center justify-around border-t border-zinc-900 bg-black pb-safe md:hidden">
+        {[
+          { href: '/dashboard', label: 'HOME', icon: LayoutDashboard },
+          { href: '/goals', label: 'GOALS', icon: Target },
+          { href: '/habits', label: 'HABITS', icon: Sparkles },
+          { href: '/focus', label: 'FOCUS', icon: Timer },
+          { href: '/coach', label: 'COACH', icon: MessageSquare },
+        ].map((item) => {
+          const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                'flex flex-col items-center gap-1 px-3 py-1',
+                isActive ? 'text-orange-500' : 'text-zinc-400 hover:text-zinc-400'
+              )}
+            >
+              <item.icon className="h-5 w-5" />
+              <span className="font-mono text-[8px] tracking-wider">{item.label}</span>
+            </Link>
+          );
+        })}
+      </nav>
     </div>
   );
 }

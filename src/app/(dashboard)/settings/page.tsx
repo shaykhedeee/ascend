@@ -1,9 +1,9 @@
-﻿'use client';
+'use client';
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// RESURGO â€” Settings Page
+// ═══════════════════════════════════════════════════════════════════════════════
+// RESURGO — Settings Page
 // Profile, schedule, notifications, theme preferences
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ═══════════════════════════════════════════════════════════════════════════════
 
 import React, { useState, useEffect } from 'react';
 import { useMutation, useQuery } from 'convex/react';
@@ -175,7 +175,7 @@ export default function SettingsPage() {
     <div className="min-h-screen bg-black p-4 md:p-6">
       <div className="mx-auto max-w-3xl">
 
-        {/* ── CONFIGURATION_MATRIX HEADER ── */}
+        {/* -- CONFIGURATION_MATRIX HEADER -- */}
         <div className="mb-6 border border-zinc-900 bg-zinc-950">
           <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
@@ -184,18 +184,18 @@ export default function SettingsPage() {
             </span>
           </div>
           <div className="px-5 py-4">
-            <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">CONFIGURATION_MATRIX</h1>
-            <p className="mt-1 font-mono text-xs tracking-widest text-zinc-600">
-              PROFILE &gt; SCHEDULE &gt; NOTIFICATIONS &gt; APPEARANCE
+            <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">Settings</h1>
+            <p className="mt-1 font-mono text-xs tracking-widest text-zinc-400">
+              Profile � Schedule � Notifications � Appearance
             </p>
           </div>
         </div>
 
-        {/* ── PROFILE SECTION ── */}
+        {/* -- PROFILE SECTION -- */}
         <SettingsSection title="OPERATOR_PROFILE">
           <div className="space-y-4">
             <div>
-              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">DISPLAY_NAME</label>
+              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-400">DISPLAY_NAME</label>
               <input
                 type="text"
                 value={name}
@@ -204,11 +204,11 @@ export default function SettingsPage() {
               />
             </div>
             <div>
-              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">EMAIL_ADDRESS</label>
+              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-400">EMAIL_ADDRESS</label>
               <p className="font-mono text-xs text-zinc-500">{clerkUser?.primaryEmailAddress?.emailAddress ?? 'N/A'}</p>
             </div>
             <div>
-              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">TIMEZONE</label>
+              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-400">TIMEZONE</label>
               <select
                 value={timezone}
                 onChange={(e) => setTimezone(e.target.value)}
@@ -220,11 +220,11 @@ export default function SettingsPage() {
               </select>
             </div>
             <div>
-              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">ACCESS_TIER</label>
+              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-400">ACCESS_TIER</label>
               <span className={`inline-block border px-2.5 py-0.5 font-mono text-[9px] tracking-widest ${
                 currentUser.plan === 'lifetime' ? 'border-purple-900 text-purple-500' :
                 currentUser.plan === 'pro'      ? 'border-orange-900 text-orange-500' :
-                'border-zinc-800 text-zinc-600'
+                'border-zinc-800 text-zinc-400'
               }`}>
                 {(currentUser.plan?.toUpperCase() ?? 'FREE') + '_TIER'}
               </span>
@@ -239,7 +239,7 @@ export default function SettingsPage() {
           </div>
         </SettingsSection>
 
-        {/* ── APPEARANCE SECTION ── */}
+        {/* -- APPEARANCE SECTION -- */}
         <SettingsSection title="APPEARANCE_MODE">
           <div className="flex gap-2">
             {(['dark', 'light', 'system'] as const).map((t) => (
@@ -249,7 +249,7 @@ export default function SettingsPage() {
                 className={`border px-4 py-2 font-mono text-[10px] tracking-widest transition ${
                   theme === t
                     ? 'border-orange-800 bg-orange-950/30 text-orange-500'
-                    : 'border-zinc-800 text-zinc-600 hover:border-zinc-700'
+                    : 'border-zinc-800 text-zinc-400 hover:border-zinc-700'
                 }`}
               >
                 {t.toUpperCase()}
@@ -258,12 +258,12 @@ export default function SettingsPage() {
           </div>
         </SettingsSection>
 
-        {/* ── SCHEDULE SECTION ── */}
+        {/* -- SCHEDULE SECTION -- */}
         <SettingsSection title="DAILY_SCHEDULE">
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">WAKE_TIME</label>
+                <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-400">WAKE_TIME</label>
                 <input
                   type="time"
                   value={wakeTime}
@@ -272,7 +272,7 @@ export default function SettingsPage() {
                 />
               </div>
               <div>
-                <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">SLEEP_TIME</label>
+                <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-400">SLEEP_TIME</label>
                 <input
                   type="time"
                   value={sleepTime}
@@ -282,7 +282,7 @@ export default function SettingsPage() {
               </div>
             </div>
             <div>
-              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">PEAK_PRODUCTIVITY_WINDOW</label>
+              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-400">PEAK_PRODUCTIVITY_WINDOW</label>
               <select
                 value={peakTime}
                 onChange={(e) => setPeakTime(e.target.value)}
@@ -304,7 +304,7 @@ export default function SettingsPage() {
           </div>
         </SettingsSection>
 
-        {/* ── NOTIFICATIONS SECTION ── */}
+        {/* -- NOTIFICATIONS SECTION -- */}
         <SettingsSection title="NOTIFICATION_PREFS">
           <div className="space-y-3">
             {[
@@ -337,7 +337,7 @@ export default function SettingsPage() {
             {quietHoursEnabled && (
               <div className="grid grid-cols-2 gap-4 border border-zinc-800 bg-black p-3">
                 <div>
-                  <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">QUIET_START</label>
+                  <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-400">QUIET_START</label>
                   <input
                     type="time"
                     value={quietHoursStart}
@@ -346,7 +346,7 @@ export default function SettingsPage() {
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">QUIET_END</label>
+                  <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-400">QUIET_END</label>
                   <input
                     type="time"
                     value={quietHoursEnd}
@@ -358,7 +358,7 @@ export default function SettingsPage() {
             )}
 
             <div>
-              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">REMINDER_STYLE</label>
+              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-400">REMINDER_STYLE</label>
               <select
                 value={reminderStyle}
                 onChange={(e) => setReminderStyle(e.target.value as typeof reminderStyle)}
@@ -372,7 +372,7 @@ export default function SettingsPage() {
             </div>
 
             <div>
-              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">COACHING_FREQUENCY</label>
+              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-400">COACHING_FREQUENCY</label>
               <select
                 value={coachingFrequency}
                 onChange={(e) => setCoachingFrequency(e.target.value as typeof coachingFrequency)}
@@ -395,24 +395,24 @@ export default function SettingsPage() {
           </div>
         </SettingsSection>
 
-        {/* ── ARCHIVED ITEMS ── */}
+        {/* -- ARCHIVED ITEMS -- */}
         {(archivedHabits.length > 0 || archivedGoals.length > 0) && (
           <SettingsSection title="ARCHIVED_ITEMS">
-            <p className="mb-3 font-mono text-[10px] text-zinc-600">
+            <p className="mb-3 font-mono text-[10px] text-zinc-400">
               These items were archived on plan downgrade. Upgrade to restore.
             </p>
 
             {archivedHabits.length > 0 && (
               <div className="mb-3">
-                <p className="mb-1.5 font-mono text-[9px] tracking-widest text-zinc-700">
+                <p className="mb-1.5 font-mono text-[9px] tracking-widest text-zinc-400">
                   NODES ({archivedHabits.length})
                 </p>
                 <div className="space-y-px">
                   {(archivedHabits as { _id: string; title: string; category: string }[]).map((h) => (
                     <div key={h._id} className="flex items-center gap-2 border border-zinc-900 bg-black px-3 py-2">
-                      <Archive className="h-3 w-3 shrink-0 text-zinc-700" />
+                      <Archive className="h-3 w-3 shrink-0 text-zinc-400" />
                       <span className="flex-1 truncate font-mono text-[10px] text-zinc-500">{h.title}</span>
-                      <span className="font-mono text-[9px] text-zinc-700">{h.category?.toUpperCase()}</span>
+                      <span className="font-mono text-[9px] text-zinc-400">{h.category?.toUpperCase()}</span>
                     </div>
                   ))}
                 </div>
@@ -421,15 +421,15 @@ export default function SettingsPage() {
 
             {archivedGoals.length > 0 && (
               <div className="mb-3">
-                <p className="mb-1.5 font-mono text-[9px] tracking-widest text-zinc-700">
+                <p className="mb-1.5 font-mono text-[9px] tracking-widest text-zinc-400">
                   OBJECTIVES ({archivedGoals.length})
                 </p>
                 <div className="space-y-px">
                   {(archivedGoals as { _id: string; title: string; category: string }[]).map((g) => (
                     <div key={g._id} className="flex items-center gap-2 border border-zinc-900 bg-black px-3 py-2">
-                      <Archive className="h-3 w-3 shrink-0 text-zinc-700" />
+                      <Archive className="h-3 w-3 shrink-0 text-zinc-400" />
                       <span className="flex-1 truncate font-mono text-[10px] text-zinc-500">{g.title}</span>
-                      <span className="font-mono text-[9px] text-zinc-700">{g.category?.toUpperCase()}</span>
+                      <span className="font-mono text-[9px] text-zinc-400">{g.category?.toUpperCase()}</span>
                     </div>
                   ))}
                 </div>

@@ -43,7 +43,7 @@ export default function GoalDetailPage() {
   if (goal === null) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-black">
-        <p className="font-mono text-xs tracking-widest text-zinc-600">OBJECTIVE_NOT_FOUND</p>
+        <p className="font-mono text-xs tracking-widest text-zinc-400">OBJECTIVE_NOT_FOUND</p>
         <Link href="/goals" className="border border-zinc-800 px-3 py-1.5 font-mono text-[10px] tracking-widest text-zinc-500 transition hover:border-zinc-700">[RETURN_TO_OBJECTIVES]</Link>
       </div>
     );
@@ -77,7 +77,7 @@ export default function GoalDetailPage() {
       <div className="mx-auto max-w-3xl">
 
         {/* ── BACK NAV ── */}
-        <Link href="/goals" className="mb-6 inline-flex items-center gap-1.5 font-mono text-[10px] tracking-widest text-zinc-600 transition hover:text-zinc-400">
+        <Link href="/goals" className="mb-6 inline-flex items-center gap-1.5 font-mono text-[10px] tracking-widest text-zinc-400 transition hover:text-zinc-300">
           <ArrowLeft className="h-3 w-3" /> [RETURN_TO_OBJECTIVES]
         </Link>
 
@@ -112,13 +112,13 @@ export default function GoalDetailPage() {
                 <div className="flex-1">
                   <h1 className="font-mono text-xl font-bold tracking-tight text-zinc-100">{goal.title}</h1>
                   {goal.description && (
-                    <p className="mt-1.5 font-mono text-xs text-zinc-600">{goal.description}</p>
+                    <p className="mt-1.5 font-mono text-xs text-zinc-400">{goal.description}</p>
                   )}
                 </div>
                 <div className="flex gap-1">
                   <button
                     onClick={() => { setEditTitle(goal.title); setEditDescription(goal.description || ''); setEditing(true); }}
-                    className="border border-zinc-800 p-1.5 text-zinc-600 transition hover:border-zinc-700 hover:text-zinc-300"
+                    className="border border-zinc-800 p-1.5 text-zinc-400 transition hover:border-zinc-700 hover:text-zinc-300"
                   >
                     <Edit3 className="h-3 w-3" />
                   </button>
@@ -133,7 +133,7 @@ export default function GoalDetailPage() {
           {/* Progress */}
           <div className="border-t border-zinc-900 px-4 py-3">
             <div className="mb-1.5 flex items-center justify-between">
-              <span className="font-mono text-[9px] tracking-widest text-zinc-700">COMPLETION_RATIO</span>
+              <span className="font-mono text-[9px] tracking-widest text-zinc-400">COMPLETION_RATIO</span>
               <span className="font-mono text-sm font-bold text-orange-500">{goal.progress ?? 0}%</span>
             </div>
             <div className="h-0.5 overflow-hidden bg-zinc-900">
@@ -146,17 +146,17 @@ export default function GoalDetailPage() {
 
           {/* Meta */}
           <div className="flex flex-wrap items-center gap-3 border-t border-zinc-900 px-4 py-3">
-            <span className="flex items-center gap-1 font-mono text-[10px] tracking-widest text-zinc-600">
+            <span className="flex items-center gap-1 font-mono text-[10px] tracking-widest text-zinc-400">
               <TrendingUp className="h-3 w-3" />
               <span className="text-zinc-500">{goal.status?.replace('_', ' ').toUpperCase()}</span>
             </span>
             {goal.lifeDomain && (
-              <span className="border border-zinc-800 px-2 py-0.5 font-mono text-[9px] tracking-widest text-zinc-600">
+              <span className="border border-zinc-800 px-2 py-0.5 font-mono text-[9px] tracking-widest text-zinc-400">
                 {goal.lifeDomain.replace('_', ' ').toUpperCase()}
               </span>
             )}
             {goal.targetDate && (
-              <span className="flex items-center gap-1 font-mono text-[10px] text-zinc-600">
+              <span className="flex items-center gap-1 font-mono text-[10px] text-zinc-400">
                 <Calendar className="h-3 w-3" /> {goal.targetDate}
               </span>
             )}
@@ -202,21 +202,21 @@ export default function GoalDetailPage() {
         {/* ── RELATED TASKS ── */}
         <div className="border border-zinc-900 bg-zinc-950">
           <div className="flex items-center justify-between border-b border-zinc-900 px-4 py-2.5">
-            <span className="font-mono text-[10px] font-bold tracking-widest text-zinc-600">LINKED_TASKS</span>
-            <Link href="/tasks" className="font-mono text-[10px] tracking-widest text-orange-600 transition hover:text-orange-500">[ADD_TASK]</Link>
+            <span className="font-mono text-[10px] font-bold tracking-widest text-zinc-400">Linked Tasks</span>
+            <Link href="/tasks" className="font-mono text-[10px] tracking-widest text-orange-600 transition hover:text-orange-500">[Add Task]</Link>
           </div>
 
           {!tasks || tasks.length === 0 ? (
-            <p className="px-4 py-6 font-mono text-xs tracking-widest text-zinc-700">NO_TASKS_LINKED_TO_OBJECTIVE</p>
+            <p className="px-4 py-6 font-mono text-xs tracking-widest text-zinc-400">No tasks linked to this goal yet.</p>
           ) : (
             <div className="divide-y divide-zinc-900">
               {tasks.map((task) => (
                 <div key={task._id} className="flex items-center gap-3 px-4 py-3 transition hover:bg-zinc-900">
                   <div className={`h-3 w-3 border ${task.status === 'done' ? 'border-green-600 bg-green-950/40' : 'border-zinc-700'}`} />
-                  <p className={`flex-1 font-mono text-xs ${task.status === 'done' ? 'text-zinc-700 line-through' : 'text-zinc-400'}`}>
+                  <p className={`flex-1 font-mono text-xs ${task.status === 'done' ? 'text-zinc-400 line-through' : 'text-zinc-400'}`}>
                     {task.title}
                   </p>
-                  {task.dueDate && <span className="font-mono text-[9px] text-zinc-700">{task.dueDate}</span>}
+                  {task.dueDate && <span className="font-mono text-[9px] text-zinc-400">{task.dueDate}</span>}
                 </div>
               ))}
             </div>

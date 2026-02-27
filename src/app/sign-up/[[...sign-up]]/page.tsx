@@ -10,7 +10,7 @@ export default function Page() {
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
             <span className="font-mono text-[9px] tracking-widest text-orange-600">AUTH_TERMINAL :: NEW_OPERATOR</span>
           </div>
-          <Link href="/" className="font-mono text-[9px] tracking-widest text-zinc-600 transition-colors hover:text-zinc-400">
+          <Link href="/" className="font-mono text-[9px] tracking-widest text-zinc-400 transition-colors hover:text-zinc-300">
             [← HOME]
           </Link>
         </div>

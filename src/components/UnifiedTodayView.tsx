@@ -203,7 +203,7 @@ export function UnifiedTodayView({ onOpenGoalWizard, onAddTask }: UnifiedTodayVi
           ].map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setFilter(tab.id as any)}
+              onClick={() => setFilter(tab.id as 'all' | 'important' | 'urgent' | 'focus' | 'quick')}
               className={cn(
                 "px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all",
                 filter === tab.id

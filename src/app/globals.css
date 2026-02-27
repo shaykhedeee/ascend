@@ -1779,3 +1779,55 @@ textarea {
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
+
+/* -- Terminal panel glow ----------------------------------------------- */
+.terminal-panel {
+  position: relative;
+  box-shadow: 0 0 0 1px #18181b, 0 0 20px rgba(234, 88, 12, 0.04);
+  transition: box-shadow 0.2s ease;
+}
+.terminal-panel:hover {
+  box-shadow: 0 0 0 1px #27272a, 0 0 25px rgba(234, 88, 12, 0.10);
+}
+.terminal-panel:hover::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(234, 88, 12, 0.12);
+  animation: scanline 2s linear;
+  pointer-events: none;
+}
+@keyframes scanline {
+  from { top: 0%; }
+  to   { top: 100%; }
+}
+
+/* -- Custom pixelated cursor (body class toggled by Cursor.tsx) -------- */
+body.custom-cursor-active,
+body.custom-cursor-active * {
+  cursor: url('/icons/cursor.svg') 0 0, auto !important;
+}
+/* Restore not-allowed for disabled elements */
+body.custom-cursor-active [disabled],
+body.custom-cursor-active .cursor-not-allowed {
+  cursor: url('/icons/cursor.svg') 0 0, not-allowed !important;
+}
+
+/* -- Typography helpers ------------------------------------------------ */
+.text-headline {
+  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', Menlo, monospace;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.text-body {
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+}
+
+/* -- Safe-area bottom padding (iOS PWA) -------------------------------- */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}

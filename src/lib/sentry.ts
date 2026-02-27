@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// AscendifyIFY - Error Tracking & Monitoring Utility
+// ResurgoIFY - Error Tracking & Monitoring Utility
 // Lightweight error tracking without external dependencies
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -65,7 +65,7 @@ class ErrorTracker {
     }
 
     this.isInitialized = true;
-    console.log('🔍 Ascendify Error Tracking initialized');
+    console.log('🔍 Resurgo Error Tracking initialized');
   }
 
   private observeWebVitals(): void {
@@ -162,7 +162,7 @@ class ErrorTracker {
 
     // Log to console in development
     if (process.env.NODE_ENV === 'development') {
-      console.error(`[Ascendify Error ${errorId}]`, error, extra);
+      console.error(`[Resurgo Error ${errorId}]`, error, extra);
     }
 
     return errorId;
@@ -193,7 +193,7 @@ class ErrorTracker {
 
     // Log performance issues
     if (rating === 'poor') {
-      console.warn(`[Ascendify Performance] ${name}: ${value.toFixed(2)} (${rating})`);
+      console.warn(`[Resurgo Performance] ${name}: ${value.toFixed(2)} (${rating})`);
     }
 
     // Store metrics

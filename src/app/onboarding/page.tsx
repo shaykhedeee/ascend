@@ -1,346 +1,628 @@
 'use client';
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// Ascendify — Onboarding Flow
-// Multi-step wizard: Welcome → Life Wheel → Core Values → Vision → Coach → Done
-// ═══════════════════════════════════════════════════════════════════════════════
+export const dynamic = 'force-dynamic';
+
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// RESURGO â€” Premium Onboarding Flow
+// 6-step wizard: Welcome â†’ Goal â†’ Focus â†’ Habits â†’ Schedule â†’ Launch
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useStoreUser } from '@/hooks/useStoreUser';
+import { useUser } from '@clerk/nextjs';
 import {
-  ArrowRight,
   ArrowLeft,
+  Check,
   Target,
-  Star,
-  Compass,
-  MessageCircle,
+  Dumbbell,
+  BookOpen,
+  Heart,
+  Zap,
   Sparkles,
+  Flame,
+  Brain,
+  Star,
+  Moon,
 } from 'lucide-react';
 
-const LIFE_DOMAINS = [
-  'health', 'career', 'finance', 'learning',
-  'relationships', 'creativity', 'mindfulness', 'personal_growth',
-] as const;
+// â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-const LIFE_DOMAIN_LABELS: Record<string, string> = {
-  health: '🏃 Health & Fitness',
-  career: '💼 Career & Work',
-  finance: '💰 Finance',
-  learning: '📚 Learning',
-  relationships: '❤️ Relationships',
-  creativity: '🎨 Creativity',
-  mindfulness: '🧘 Mindfulness',
-  personal_growth: '🌱 Personal Growth',
-};
+type Step = 'welcome' | 'goal' | 'focus' | 'habits' | 'schedule' | 'ready';
+const STEPS: Step[] = ['welcome', 'goal', 'focus', 'habits', 'schedule', 'ready'];
 
-const VALUE_OPTIONS = [
-  'Growth', 'Integrity', 'Courage', 'Compassion', 'Creativity',
-  'Discipline', 'Freedom', 'Family', 'Health', 'Wisdom',
-  'Adventure', 'Balance', 'Community', 'Gratitude', 'Resilience',
-  'Curiosity', 'Excellence', 'Authenticity', 'Kindness', 'Leadership',
+interface FocusArea {
+  id: string;
+  label: string;
+  description: string;
+  icon: React.ReactNode;
+  color: string;
+}
+
+interface HabitTemplate {
+  id: string;
+  name: string;
+  icon: React.ReactNode;
+  description: string;
+  frequency: string;
+  focusAreas: string[];
+}
+
+// â”€â”€â”€ Data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+const FOCUS_AREAS: FocusArea[] = [
+  { id: 'habits', label: 'Build Better Habits', description: 'Create routines that stick', icon: <Flame className="w-5 h-5" />, color: 'from-orange-500 to-amber-500' },
+  { id: 'goals', label: 'Achieve Big Goals', description: 'Break down & conquer goals', icon: <Target className="w-5 h-5" />, color: 'from-blue-500 to-indigo-500' },
+  { id: 'health', label: 'Health & Fitness', description: 'Move more, feel better', icon: <Dumbbell className="w-5 h-5" />, color: 'from-green-500 to-emerald-500' },
+  { id: 'productivity', label: 'Boost Productivity', description: 'Get more done, stress less', icon: <Zap className="w-5 h-5" />, color: 'from-yellow-500 to-orange-500' },
+  { id: 'learning', label: 'Personal Growth', description: 'Learn & grow every day', icon: <BookOpen className="w-5 h-5" />, color: 'from-purple-500 to-violet-500' },
+  { id: 'wellness', label: 'Mental Wellness', description: 'Mindfulness & self-care', icon: <Heart className="w-5 h-5" />, color: 'from-pink-500 to-rose-500' },
 ];
 
-const COACH_TYPES = [
-  { id: 'supportive', label: 'Supportive', desc: 'Encouraging, warm, celebrates wins', icon: '🤗' },
-  { id: 'challenging', label: 'Challenging', desc: 'Pushes you to do better, direct', icon: '💪' },
-  { id: 'analytical', label: 'Analytical', desc: 'Data-driven, strategic, focused', icon: '📊' },
-  { id: 'humorous', label: 'Humorous', desc: 'Lighthearted, fun, motivating', icon: '😄' },
-] as const;
+const HABIT_TEMPLATES: HabitTemplate[] = [
+  { id: 'morning-routine', name: 'Morning Routine', icon: <Sparkles className="w-5 h-5" />, description: 'Start your day with intention', frequency: 'Daily', focusAreas: ['habits', 'productivity'] },
+  { id: 'exercise-30', name: 'Exercise 30 min', icon: <Dumbbell className="w-5 h-5" />, description: 'Move your body every day', frequency: 'Daily', focusAreas: ['health', 'habits'] },
+  { id: 'read-20', name: 'Read 20 pages', icon: <BookOpen className="w-5 h-5" />, description: 'Build a reading habit', frequency: 'Daily', focusAreas: ['learning', 'habits'] },
+  { id: 'meditate', name: 'Meditate 10 min', icon: <Heart className="w-5 h-5" />, description: 'Find your calm center', frequency: 'Daily', focusAreas: ['wellness', 'habits'] },
+  { id: 'journal', name: 'Daily Journal', icon: <Brain className="w-5 h-5" />, description: 'Reflect and grow', frequency: 'Daily', focusAreas: ['wellness', 'learning'] },
+  { id: 'water-8', name: 'Drink 8 glasses', icon: <Heart className="w-5 h-5" />, description: 'Stay hydrated all day', frequency: 'Daily', focusAreas: ['health', 'habits'] },
+  { id: 'no-phone-bed', name: 'No phone in bed', icon: <Moon className="w-5 h-5" />, description: 'Better sleep starts here', frequency: 'Daily', focusAreas: ['wellness', 'productivity'] },
+  { id: 'learn-new', name: 'Learn something new', icon: <Target className="w-5 h-5" />, description: '15 min of skill building', frequency: 'Daily', focusAreas: ['learning', 'goals'] },
+  { id: 'gratitude', name: 'Gratitude practice', icon: <Star className="w-5 h-5" />, description: 'Write 3 things grateful for', frequency: 'Daily', focusAreas: ['wellness', 'habits'] },
+  { id: 'walk-10k', name: 'Walk 10,000 steps', icon: <Flame className="w-5 h-5" />, description: 'Keep moving through the day', frequency: 'Daily', focusAreas: ['health'] },
+  { id: 'meal-prep', name: 'Eat healthy meals', icon: <Heart className="w-5 h-5" />, description: 'Nourish your body', frequency: 'Daily', focusAreas: ['health'] },
+  { id: 'deep-work', name: 'Deep work session', icon: <Zap className="w-5 h-5" />, description: '90 min focused work block', frequency: 'Weekdays', focusAreas: ['productivity', 'goals'] },
+];
 
-type Step = 'welcome' | 'lifeWheel' | 'values' | 'vision' | 'coach' | 'done';
-const STEPS: Step[] = ['welcome', 'lifeWheel', 'values', 'vision', 'coach', 'done'];
+const TIME_OPTIONS = [
+  { id: 'early', label: 'Early Bird', description: '5 â€“ 7 AM', icon: <Flame className="w-6 h-6" /> },
+  { id: 'morning', label: 'Morning Person', description: '7 â€“ 10 AM', icon: <Sparkles className="w-6 h-6" /> },
+  { id: 'afternoon', label: 'Afternoon Riser', description: '12 â€“ 3 PM', icon: <Zap className="w-6 h-6" /> },
+  { id: 'evening', label: 'Night Owl', description: '6 â€“ 10 PM', icon: <Moon className="w-6 h-6" /> },
+];
+
+const GOAL_EXAMPLES = [
+  'Get fit and lose weight',
+  'Launch my own business',
+  'Learn a new language',
+  'Read 24 books this year',
+  'Build a morning routine',
+  'Land my dream job',
+  'Save and invest money',
+  'Run a half marathon',
+];
+
+const DEADLINE_OPTIONS = [
+  { id: '1m', label: '1 month', description: 'Quick win' },
+  { id: '3m', label: '3 months', description: 'Short sprint' },
+  { id: '6m', label: '6 months', description: 'Mid-term push' },
+  { id: '1y', label: '1 year', description: 'Long-game' },
+  { id: 'ongoing', label: 'Ongoing', description: 'Lifestyle change' },
+];
+
+function cn(...classes: (string | boolean | undefined)[]) {
+  return classes.filter(Boolean).join(' ');
+}
+
+// â”€â”€â”€ Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export default function OnboardingPage() {
   const { user, isLoading } = useStoreUser();
+  const { user: clerkUser } = useUser();
   const router = useRouter();
   const completeOnboarding = useMutation(api.users.completeOnboarding);
 
   const [step, setStep] = useState<Step>('welcome');
   const [saving, setSaving] = useState(false);
+  const [animating, setAnimating] = useState(false);
+  const _goalInputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Life Wheel
-  const [lifeWheel, setLifeWheel] = useState<Record<string, number>>(
-    Object.fromEntries(LIFE_DOMAINS.map((d) => [d, 5]))
-  );
+  // Onboarding data
+  const [primaryGoal, setPrimaryGoal] = useState('');
+  const [primaryGoalReason, setPrimaryGoalReason] = useState('');
+  const [primaryGoalDeadline, setPrimaryGoalDeadline] = useState('6m');
+  const [lifeVision, setLifeVision] = useState('');
+  const [selectedFocus, setSelectedFocus] = useState<string[]>([]);
+  const [selectedHabits, setSelectedHabits] = useState<string[]>([]);
+  const [preferredTime, setPreferredTime] = useState<string>('morning');
 
-  // Core Values
-  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  // Redirect if already onboarded
+  useEffect(() => {
+    if (!isLoading && user?.onboardingComplete) {
+      router.replace('/dashboard');
+    }
+  }, [isLoading, user, router]);
 
-  // Vision
-  const [vision, setVision] = useState('');
+  const firstName = clerkUser?.firstName || user?.name?.split(' ')[0] || 'there';
 
-  // Coach
-  const [coachType, setCoachType] = useState<'supportive' | 'challenging' | 'analytical' | 'humorous'>('supportive');
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[var(--background)]">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-ascend-500 border-t-transparent" />
-      </div>
-    );
-  }
-
-  if (user?.onboardingComplete) {
-    router.push('/dashboard');
-    return null;
-  }
-
-  const stepIndex = STEPS.indexOf(step);
-  const progress = ((stepIndex) / (STEPS.length - 1)) * 100;
+  // Step navigation with animation
+  const goToStep = useCallback((target: Step) => {
+    setAnimating(true);
+    setTimeout(() => {
+      setStep(target);
+      setAnimating(false);
+    }, 180);
+  }, []);
 
   const next = () => {
     const idx = STEPS.indexOf(step);
-    if (idx < STEPS.length - 1) setStep(STEPS[idx + 1]);
+    if (idx < STEPS.length - 1) goToStep(STEPS[idx + 1]);
   };
 
   const back = () => {
     const idx = STEPS.indexOf(step);
-    if (idx > 0) setStep(STEPS[idx - 1]);
+    if (idx > 0) goToStep(STEPS[idx - 1]);
   };
 
-  const toggleValue = (v: string) => {
-    setSelectedValues((prev) =>
-      prev.includes(v)
-        ? prev.filter((x) => x !== v)
-        : prev.length < 5 ? [...prev, v] : prev
-    );
-  };
-
-  const handleComplete = async () => {
+  // Complete onboarding â€” ALWAYS redirects, even on failure
+  const handleComplete = useCallback(async () => {
+    if (saving) return;
     setSaving(true);
     try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
       await completeOnboarding({
-        lifeWheelScores: lifeWheel as any,
-        coreValues: selectedValues.length > 0 ? selectedValues : undefined,
-        lifeVision: vision || undefined,
-        coachPersonality: coachType,
+        primaryGoal: primaryGoal.trim() || undefined,
+        primaryGoalReason: primaryGoalReason.trim() || undefined,
+        primaryGoalDeadline: primaryGoalDeadline || undefined,
+        lifeVision: lifeVision.trim() || undefined,
+        focusAreas: selectedFocus.length > 0 ? selectedFocus : undefined,
+        selectedHabitTemplates: selectedHabits.length > 0 ? selectedHabits : undefined,
+        preferredTime: preferredTime || undefined,
+        timezone: tz,
       });
-      setStep('done');
-    } catch (e) {
-      console.error('Failed to complete onboarding:', e);
+    } catch (err) {
+      // Non-fatal: log but always proceed to dashboard
+      console.warn('Onboarding save failed, proceeding anyway:', err);
     }
-    setSaving(false);
-  };
+    // Always navigate regardless of mutation success
+    router.replace('/dashboard');
+  }, [saving, completeOnboarding, primaryGoal, primaryGoalReason, primaryGoalDeadline, lifeVision, selectedFocus, selectedHabits, preferredTime, router]);
+
+  // Skip: save whatever we have and go straight to dashboard
+  const handleSkip = useCallback(() => {
+    handleComplete();
+  }, [handleComplete]);
+
+  // Filter habits based on selected focus areas
+  const relevantHabits = selectedFocus.length > 0
+    ? HABIT_TEMPLATES.filter(h => h.focusAreas.some(fa => selectedFocus.includes(fa)))
+    : HABIT_TEMPLATES;
+
+  const stepIndex = STEPS.indexOf(step);
+  const progress = stepIndex === 0 ? 0 : (stepIndex / (STEPS.length - 1)) * 100;
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-black">
+        <p className="animate-pulse font-mono text-xs tracking-widest text-orange-600">INITIALIZING_OPERATOR_PROFILE...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[var(--background)] p-4">
-      {/* Progress bar */}
-      {step !== 'welcome' && step !== 'done' && (
-        <div className="mb-8 w-full max-w-lg">
-          <div className="h-1.5 w-full overflow-hidden rounded-full bg-[var(--surface)]">
-            <div
-              className="h-full rounded-full bg-ascend-500 transition-all duration-500"
-              style={{ width: `${progress}%` }}
-            />
+    <div className="min-h-screen bg-black text-zinc-100">
+
+      {/* ── PROGRESS BAR (hidden on welcome) ── */}
+      {step !== 'welcome' && (
+        <div className="fixed left-0 right-0 top-0 z-50 border-b border-zinc-900 bg-black">
+          <div className="mx-auto flex max-w-2xl items-center gap-3 px-4 py-3">
+            <button onClick={back} className="shrink-0 border border-zinc-800 p-1.5 text-zinc-600 transition hover:border-zinc-700 hover:text-zinc-300">
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+            <div className="flex-1">
+              <div className="mb-1 flex justify-between font-mono text-[9px] tracking-widest text-zinc-700">
+                <span>SETUP_SEQUENCE</span>
+                <span>STEP_{stepIndex}/{STEPS.length - 1}</span>
+              </div>
+              <div className="h-px overflow-hidden bg-zinc-900">
+                <div className="h-full bg-orange-600 transition-all duration-500 ease-out" style={{ width: `${progress}%` }} />
+              </div>
+            </div>
+            <button onClick={handleSkip} disabled={saving} className="shrink-0 font-mono text-[9px] tracking-widest text-zinc-700 transition hover:text-zinc-400 disabled:opacity-40">
+              [SKIP]
+            </button>
           </div>
-          <p className="mt-1 text-center text-xs text-[var(--text-secondary)]">
-            Step {stepIndex} of {STEPS.length - 2}
-          </p>
         </div>
       )}
 
-      <div className="w-full max-w-lg">
-        {/* ════════ WELCOME ════════ */}
+      {/* ── CONTENT ── */}
+      <div className={cn(
+        'mx-auto max-w-2xl px-5 transition-all duration-200',
+        animating ? 'translate-y-3 opacity-0' : 'translate-y-0 opacity-100',
+        step !== 'welcome' && 'pt-20'
+      )}>
+
+        {/* ── STEP 1: WELCOME ── */}
         {step === 'welcome' && (
-          <div className="text-center">
-            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-ascend-500/20">
-              <Sparkles className="h-10 w-10 text-ascend-400" />
-            </div>
-            <h1 className="mb-3 text-3xl font-bold text-[var(--text-primary)]">
-              Welcome to Ascendify
-            </h1>
-            <p className="mb-8 text-[var(--text-secondary)]">
-              Let&apos;s set up your personal growth journey. This takes about 2 minutes and helps us personalize your experience.
-            </p>
-            <button
-              onClick={next}
-              className="flex mx-auto items-center gap-2 rounded-lg bg-ascend-500 px-8 py-3 text-sm font-medium text-white hover:bg-ascend-600"
-            >
-              Get Started <ArrowRight className="h-4 w-4" />
-            </button>
-          </div>
-        )}
-
-        {/* ════════ LIFE WHEEL ════════ */}
-        {step === 'lifeWheel' && (
-          <div>
-            <div className="mb-6 text-center">
-              <Target className="mx-auto mb-2 h-8 w-8 text-ascend-400" />
-              <h2 className="text-xl font-bold text-[var(--text-primary)]">Life Wheel Assessment</h2>
-              <p className="text-sm text-[var(--text-secondary)]">Rate your current satisfaction in each area (1-10)</p>
-            </div>
-
-            <div className="space-y-4 mb-8">
-              {LIFE_DOMAINS.map((domain) => (
-                <div key={domain}>
-                  <div className="mb-1 flex items-center justify-between">
-                    <span className="text-sm text-[var(--text-primary)]">{LIFE_DOMAIN_LABELS[domain]}</span>
-                    <span className="text-sm font-bold text-ascend-400">{lifeWheel[domain]}</span>
+          <div className="flex min-h-screen flex-col items-center justify-center py-16 text-center">
+            <div className="mb-8 w-full max-w-sm border border-zinc-900 bg-zinc-950 p-6">
+              <div className="mb-4 flex items-center gap-2">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
+                <span className="font-mono text-[9px] tracking-widest text-orange-600">RESURGO_OS :: OPERATOR_INIT</span>
+              </div>
+              <div className="space-y-1 text-left">
+                {['LOADING_SYSTEM_MODULES...', 'MOUNTING_HABIT_ENGINE...', 'CALIBRATING_AI_COACH...', 'OPERATOR_PROFILE_READY'].map((msg, i) => (
+                  <div key={msg} className={`font-mono text-[10px] tracking-wider ${i === 3 ? 'text-green-500' : 'text-zinc-700'}`}>
+                    {i < 3 ? <span className="mr-2 text-green-700">[OK]</span> : <span className="mr-2 animate-pulse text-green-500">[OK]</span>}
+                    {msg}
                   </div>
-                  <input
-                    type="range"
-                    min={1}
-                    max={10}
-                    value={lifeWheel[domain]}
-                    onChange={(e) =>
-                      setLifeWheel((prev) => ({ ...prev, [domain]: parseInt(e.target.value) }))
-                    }
-                    className="w-full accent-[#F97316]"
-                  />
+                ))}
+              </div>
+            </div>
+
+            <h1 className="mb-2 font-mono text-4xl font-black tracking-tight text-zinc-100 sm:text-5xl">
+              WELCOME, <span className="text-orange-500">{firstName.toUpperCase()}</span>
+            </h1>
+            <p className="mb-8 max-w-md font-mono text-xs tracking-widest text-zinc-600">
+              RESURGO_LIFE_OS :: QUICK_2_MIN_SETUP :: PERSONALISED_FOR_YOU
+            </p>
+
+            <div className="mb-10 flex flex-wrap justify-center gap-2">
+              {[
+                { text: 'AI_GOAL_BREAKDOWN' },
+                { text: 'HABIT_STREAKS' },
+                { text: 'SMART_ANALYTICS' },
+                { text: 'AI_COACHING' },
+              ].map((f) => (
+                <div key={f.text} className="border border-zinc-800 bg-zinc-950 px-3 py-1.5 font-mono text-[9px] tracking-widest text-zinc-600">
+                  {f.text}
                 </div>
               ))}
             </div>
 
-            <div className="flex justify-between">
-              <button onClick={back} className="flex items-center gap-1 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
-                <ArrowLeft className="h-4 w-4" /> Back
-              </button>
-              <button onClick={next} className="flex items-center gap-2 rounded-lg bg-ascend-500 px-6 py-2 text-sm font-medium text-white hover:bg-ascend-600">
-                Continue <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* ════════ CORE VALUES ════════ */}
-        {step === 'values' && (
-          <div>
-            <div className="mb-6 text-center">
-              <Star className="mx-auto mb-2 h-8 w-8 text-yellow-400" />
-              <h2 className="text-xl font-bold text-[var(--text-primary)]">Core Values</h2>
-              <p className="text-sm text-[var(--text-secondary)]">
-                Choose up to 5 values that matter most to you
-              </p>
-            </div>
-
-            <div className="mb-8 flex flex-wrap justify-center gap-2">
-              {VALUE_OPTIONS.map((v) => (
-                <button
-                  key={v}
-                  onClick={() => toggleValue(v)}
-                  className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${
-                    selectedValues.includes(v)
-                      ? 'bg-ascend-500 text-white scale-105'
-                      : 'bg-[var(--surface)] text-[var(--text-secondary)] hover:bg-[var(--surface-hover)]'
-                  }`}
-                >
-                  {v}
-                </button>
-              ))}
-            </div>
-
-            <p className="mb-4 text-center text-xs text-[var(--text-secondary)]">
-              {selectedValues.length}/5 selected
-            </p>
-
-            <div className="flex justify-between">
-              <button onClick={back} className="flex items-center gap-1 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
-                <ArrowLeft className="h-4 w-4" /> Back
-              </button>
-              <button onClick={next} className="flex items-center gap-2 rounded-lg bg-ascend-500 px-6 py-2 text-sm font-medium text-white hover:bg-ascend-600">
-                Continue <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* ════════ VISION ════════ */}
-        {step === 'vision' && (
-          <div>
-            <div className="mb-6 text-center">
-              <Compass className="mx-auto mb-2 h-8 w-8 text-blue-400" />
-              <h2 className="text-xl font-bold text-[var(--text-primary)]">Life Vision</h2>
-              <p className="text-sm text-[var(--text-secondary)]">
-                Describe your ideal life 1-5 years from now
-              </p>
-            </div>
-
-            <textarea
-              value={vision}
-              onChange={(e) => setVision(e.target.value)}
-              placeholder="In 5 years, I want to be..."
-              className="mb-8 w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-4 py-3 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] focus:border-ascend-500 focus:outline-none resize-none"
-              rows={6}
-            />
-
-            <div className="flex justify-between">
-              <button onClick={back} className="flex items-center gap-1 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
-                <ArrowLeft className="h-4 w-4" /> Back
-              </button>
-              <button onClick={next} className="flex items-center gap-2 rounded-lg bg-ascend-500 px-6 py-2 text-sm font-medium text-white hover:bg-ascend-600">
-                Continue <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* ════════ COACH TYPE ════════ */}
-        {step === 'coach' && (
-          <div>
-            <div className="mb-6 text-center">
-              <MessageCircle className="mx-auto mb-2 h-8 w-8 text-green-400" />
-              <h2 className="text-xl font-bold text-[var(--text-primary)]">Coach Personality</h2>
-              <p className="text-sm text-[var(--text-secondary)]">
-                How would you like your AI coach to interact with you?
-              </p>
-            </div>
-
-            <div className="mb-8 grid gap-3 grid-cols-1 sm:grid-cols-2">
-              {COACH_TYPES.map((c) => (
-                <button
-                  key={c.id}
-                  onClick={() => setCoachType(c.id)}
-                  className={`rounded-xl p-4 text-left transition-all ${
-                    coachType === c.id
-                      ? 'bg-ascend-500/20 ring-2 ring-ascend-500'
-                      : 'bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-hover)]'
-                  }`}
-                >
-                  <span className="text-2xl">{c.icon}</span>
-                  <p className="mt-1 text-sm font-semibold text-[var(--text-primary)]">{c.label}</p>
-                  <p className="text-xs text-[var(--text-secondary)]">{c.desc}</p>
-                </button>
-              ))}
-            </div>
-
-            <div className="flex justify-between">
-              <button onClick={back} className="flex items-center gap-1 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)]">
-                <ArrowLeft className="h-4 w-4" /> Back
-              </button>
-              <button
-                onClick={handleComplete}
-                disabled={saving}
-                className="flex items-center gap-2 rounded-lg bg-ascend-500 px-6 py-2 text-sm font-medium text-white hover:bg-ascend-600 disabled:opacity-50"
-              >
-                {saving ? 'Saving...' : 'Complete Setup'} <Sparkles className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* ════════ DONE ════════ */}
-        {step === 'done' && (
-          <div className="text-center">
-            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-500/20">
-              <Sparkles className="h-10 w-10 text-green-400" />
-            </div>
-            <h1 className="mb-3 text-3xl font-bold text-[var(--text-primary)]">
-              You&apos;re all set! 🎉
-            </h1>
-            <p className="mb-8 text-[var(--text-secondary)]">
-              Your personalized growth journey starts now. Let&apos;s make it count.
-            </p>
             <button
-              onClick={() => router.push('/dashboard')}
-              className="flex mx-auto items-center gap-2 rounded-lg bg-ascend-500 px-8 py-3 text-sm font-medium text-white hover:bg-ascend-600"
+              onClick={next}
+              className="mb-3 border border-orange-800 bg-orange-950/30 px-8 py-3 font-mono text-xs tracking-widest text-orange-500 transition hover:bg-orange-950/50"
             >
-              Go to Dashboard <ArrowRight className="h-4 w-4" />
+              [INITIALIZE_OPERATOR_PROFILE]
+            </button>
+            <button onClick={handleSkip} className="font-mono text-[9px] tracking-widest text-zinc-700 transition hover:text-zinc-500">
+              [SKIP_SETUP]
             </button>
           </div>
         )}
+
+        {/* ── STEP 2: PRIMARY GOAL ── */}
+        {step === 'goal' && (
+          <div className="py-10">
+            <div className="mb-6 border border-zinc-900 bg-zinc-950">
+              <div className="flex items-center gap-2 border-b border-zinc-900 px-4 py-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-orange-600" />
+                <span className="font-mono text-[9px] tracking-widest text-orange-600">STEP_1 :: PRIMARY_OBJECTIVE</span>
+              </div>
+              <div className="px-4 py-4">
+                <h2 className="font-mono text-xl font-bold tracking-tight text-zinc-100">DEFINE_PRIMARY_OBJECTIVE</h2>
+                <p className="mt-1 font-mono text-xs text-zinc-600">SET_YOUR_#1_GOAL. YOU_CAN_ADD_MORE_LATER.</p>
+              </div>
+            </div>
+
+            {/* Example chips */}
+            <div className="mb-4 flex flex-wrap gap-2">
+              {GOAL_EXAMPLES.map((ex) => (
+                <button
+                  key={ex}
+                  onClick={() => setPrimaryGoal(ex)}
+                  className={cn(
+                    'border px-2.5 py-1 font-mono text-[9px] tracking-widest transition',
+                    primaryGoal === ex
+                      ? 'border-orange-800 bg-orange-950/30 text-orange-500'
+                      : 'border-zinc-800 text-zinc-600 hover:border-zinc-700 hover:text-zinc-400'
+                  )}
+                >
+                  {ex}
+                </button>
+              ))}
+            </div>
+
+            <textarea
+              value={primaryGoal}
+              onChange={(e) => setPrimaryGoal(e.target.value)}
+              placeholder="e.g. Get fit and feel more energetic every day..."
+              rows={3}
+              className="mb-4 w-full border border-zinc-800 bg-black px-4 py-3 font-mono text-xs text-zinc-300 placeholder-zinc-700 outline-none transition focus:border-orange-800 resize-none"
+            />
+
+            {/* Deadline */}
+            <div className="mb-4">
+              <p className="mb-2 font-mono text-[9px] tracking-widest text-zinc-600">TARGET_DEADLINE</p>
+              <div className="grid grid-cols-5 gap-1">
+                {DEADLINE_OPTIONS.map((d) => (
+                  <button
+                    key={d.id}
+                    onClick={() => setPrimaryGoalDeadline(d.id)}
+                    className={cn(
+                      'flex flex-col items-center gap-0.5 border py-3 font-mono text-center transition',
+                      primaryGoalDeadline === d.id
+                        ? 'border-orange-800 bg-orange-950/30 text-orange-500'
+                        : 'border-zinc-800 bg-zinc-950 text-zinc-600 hover:border-zinc-700'
+                    )}
+                  >
+                    <span className="text-[10px] font-bold">{d.label}</span>
+                    <span className="text-[8px] text-zinc-700">{d.description}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Why */}
+            <div className="mb-6">
+              <p className="mb-2 font-mono text-[9px] tracking-widest text-zinc-600">WHY_THIS_MATTERS <span className="text-zinc-800">(optional)</span></p>
+              <textarea
+                value={primaryGoalReason}
+                onChange={(e) => setPrimaryGoalReason(e.target.value)}
+                placeholder="Your 'why' is your most powerful motivator..."
+                rows={2}
+                className="w-full border border-zinc-800 bg-black px-4 py-3 font-mono text-xs text-zinc-300 placeholder-zinc-700 outline-none transition focus:border-orange-800 resize-none"
+              />
+            </div>
+
+            <div className="flex flex-col items-center gap-3">
+              <button onClick={next} disabled={!primaryGoal.trim()} className="border border-orange-800 bg-orange-950/30 px-8 py-2.5 font-mono text-xs tracking-widest text-orange-500 transition hover:bg-orange-950/50 disabled:cursor-not-allowed disabled:opacity-40">
+                [SET_OBJECTIVE]
+              </button>
+              <button onClick={next} className="font-mono text-[9px] tracking-widest text-zinc-700 transition hover:text-zinc-500">[SKIP_FOR_NOW]</button>
+            </div>
+          </div>
+        )}
+
+        {/* ── STEP 3: FOCUS AREAS ── */}
+        {step === 'focus' && (
+          <div className="py-10">
+            <div className="mb-6 border border-zinc-900 bg-zinc-950">
+              <div className="flex items-center gap-2 border-b border-zinc-900 px-4 py-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-orange-600" />
+                <span className="font-mono text-[9px] tracking-widest text-orange-600">STEP_2 :: FOCUS_VECTORS</span>
+              </div>
+              <div className="px-4 py-4">
+                <h2 className="font-mono text-xl font-bold tracking-tight text-zinc-100">SELECT_FOCUS_VECTORS</h2>
+                <p className="mt-1 font-mono text-xs text-zinc-600">PICK_UP_TO_3 :: PERSONALISES_AI_COACHING</p>
+              </div>
+            </div>
+
+            <div className="mb-6 grid grid-cols-1 gap-1 sm:grid-cols-2">
+              {FOCUS_AREAS.map((area) => {
+                const isSelected = selectedFocus.includes(area.id);
+                return (
+                  <button
+                    key={area.id}
+                    onClick={() => {
+                      setSelectedFocus(prev =>
+                        isSelected
+                          ? prev.filter(id => id !== area.id)
+                          : prev.length < 3 ? [...prev, area.id] : prev
+                      );
+                    }}
+                    className={cn(
+                      'flex items-center gap-3 border px-4 py-3 text-left transition',
+                      isSelected
+                        ? 'border-orange-800 bg-orange-950/20 text-orange-500'
+                        : 'border-zinc-800 bg-zinc-950 text-zinc-500 hover:border-zinc-700 hover:text-zinc-300'
+                    )}
+                  >
+                    <div className="flex-1">
+                      <div className="font-mono text-xs font-semibold tracking-wider">{area.label.toUpperCase().replace(/ /g, '_')}</div>
+                      <div className="font-mono text-[9px] text-zinc-700">{area.description}</div>
+                    </div>
+                    {isSelected && <Check className="h-3 w-3 shrink-0 text-orange-500" />}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Life vision */}
+            <div className="mb-6 border border-zinc-900 bg-zinc-950 p-4">
+              <p className="mb-2 font-mono text-[9px] tracking-widest text-zinc-600">1_YEAR_VISION <span className="text-zinc-800">(optional)</span></p>
+              <textarea
+                value={lifeVision}
+                onChange={(e) => setLifeVision(e.target.value)}
+                placeholder="Paint a vivid picture of where you'll be in 1 year..."
+                rows={3}
+                className="w-full border border-zinc-800 bg-black px-3 py-2.5 font-mono text-xs text-zinc-300 placeholder-zinc-700 outline-none transition focus:border-orange-800 resize-none"
+              />
+              <p className="mt-1.5 font-mono text-[9px] text-zinc-700">YOUR_AI_COACH_USES_THIS_FOR_TAILORED_ADVICE</p>
+            </div>
+
+            <div className="flex flex-col items-center gap-3">
+              <button onClick={next} className="border border-orange-800 bg-orange-950/30 px-8 py-2.5 font-mono text-xs tracking-widest text-orange-500 transition hover:bg-orange-950/50">
+                {selectedFocus.length > 0 ? `[CONFIRM_${selectedFocus.length}_VECTORS]` : '[CONTINUE]'}
+              </button>
+              <button onClick={next} className="font-mono text-[9px] tracking-widest text-zinc-700 transition hover:text-zinc-500">[SKIP]</button>
+            </div>
+          </div>
+        )}
+
+        {/* ── STEP 4: HABITS ── */}
+        {step === 'habits' && (
+          <div className="py-10">
+            <div className="mb-6 border border-zinc-900 bg-zinc-950">
+              <div className="flex items-center gap-2 border-b border-zinc-900 px-4 py-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-orange-600" />
+                <span className="font-mono text-[9px] tracking-widest text-orange-600">STEP_3 :: NODE_SELECTION</span>
+              </div>
+              <div className="px-4 py-4">
+                <h2 className="font-mono text-xl font-bold tracking-tight text-zinc-100">SELECT_STARTER_NODES</h2>
+                <p className="mt-1 font-mono text-xs text-zinc-600">
+                  {selectedFocus.length > 0 ? 'CURATED_FOR_YOUR_VECTORS :: START_SMALL' : 'SELECT_HABITS_TO_ACTIVATE_TODAY'}
+                </p>
+              </div>
+            </div>
+
+            <div className="mb-4 divide-y divide-zinc-900 border border-zinc-900">
+              {relevantHabits.map((habit) => {
+                const isSelected = selectedHabits.includes(habit.id);
+                return (
+                  <button
+                    key={habit.id}
+                    onClick={() => {
+                      setSelectedHabits(prev =>
+                        isSelected ? prev.filter(id => id !== habit.id) : [...prev, habit.id]
+                      );
+                    }}
+                    className={cn(
+                      'flex w-full items-center gap-3 px-4 py-3 text-left transition',
+                      isSelected ? 'bg-orange-950/20' : 'bg-zinc-950 hover:bg-zinc-900'
+                    )}
+                  >
+                    <div className={cn('h-3 w-3 shrink-0 border', isSelected ? 'border-orange-600 bg-orange-950/60' : 'border-zinc-700')} />
+                    <div className="flex-1">
+                      <p className={cn('font-mono text-xs', isSelected ? 'text-orange-400' : 'text-zinc-400')}>{habit.name}</p>
+                      <p className="font-mono text-[9px] text-zinc-700">{habit.description}</p>
+                    </div>
+                    <span className="shrink-0 border border-zinc-800 px-1.5 py-0.5 font-mono text-[8px] text-zinc-700">{habit.frequency.toUpperCase()}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {selectedHabits.length > 0 && (
+              <div className="mb-4 border border-orange-900 bg-orange-950/10 px-4 py-2.5">
+                <p className="font-mono text-[10px] tracking-widest text-orange-600">
+                  {selectedHabits.length}_NODE{selectedHabits.length !== 1 ? 'S' : ''}_SELECTED :: START_SMALL_FOR_BEST_RESULTS
+                </p>
+              </div>
+            )}
+
+            <div className="flex flex-col items-center gap-3">
+              <button onClick={next} className="border border-orange-800 bg-orange-950/30 px-8 py-2.5 font-mono text-xs tracking-widest text-orange-500 transition hover:bg-orange-950/50">
+                {selectedHabits.length > 0 ? `[ACTIVATE_${selectedHabits.length}_NODE${selectedHabits.length !== 1 ? 'S' : ''}]` : '[CONTINUE]'}
+              </button>
+              <button onClick={next} className="font-mono text-[9px] tracking-widest text-zinc-700 transition hover:text-zinc-500">[ADD_FROM_DASHBOARD_LATER]</button>
+            </div>
+          </div>
+        )}
+
+        {/* ── STEP 5: SCHEDULE ── */}
+        {step === 'schedule' && (
+          <div className="py-10">
+            <div className="mb-6 border border-zinc-900 bg-zinc-950">
+              <div className="flex items-center gap-2 border-b border-zinc-900 px-4 py-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-orange-600" />
+                <span className="font-mono text-[9px] tracking-widest text-orange-600">STEP_4 :: OPERATIONAL_RHYTHM</span>
+              </div>
+              <div className="px-4 py-4">
+                <h2 className="font-mono text-xl font-bold tracking-tight text-zinc-100">SET_OPERATIONAL_RHYTHM</h2>
+                <p className="mt-1 font-mono text-xs text-zinc-600">DAILY_CHECKINS_CALIBRATED_TO_YOUR_PEAK_ENERGY</p>
+              </div>
+            </div>
+
+            <div className="mb-8 grid grid-cols-2 gap-2">
+              {TIME_OPTIONS.map((time) => {
+                const isSelected = preferredTime === time.id;
+                return (
+                  <button
+                    key={time.id}
+                    onClick={() => setPreferredTime(time.id)}
+                    className={cn(
+                      'flex flex-col items-center gap-1.5 border py-6 transition',
+                      isSelected
+                        ? 'border-orange-800 bg-orange-950/20 text-orange-500'
+                        : 'border-zinc-800 bg-zinc-950 text-zinc-500 hover:border-zinc-700'
+                    )}
+                  >
+                    <div className="font-mono text-xs font-bold tracking-widest">{time.label.toUpperCase().replace(/ /g, '_')}</div>
+                    <div className="font-mono text-[9px] text-zinc-700">{time.description}</div>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="flex flex-col items-center gap-3">
+              <button onClick={next} className="border border-orange-800 bg-orange-950/30 px-8 py-2.5 font-mono text-xs tracking-widest text-orange-500 transition hover:bg-orange-950/50">
+                [CONFIRM_RHYTHM]
+              </button>
+              <button onClick={next} className="font-mono text-[9px] tracking-widest text-zinc-700 transition hover:text-zinc-500">[ANYTIME_IS_FINE]</button>
+            </div>
+          </div>
+        )}
+
+        {/* ── STEP 6: READY ── */}
+        {step === 'ready' && (
+          <div className="flex min-h-[80vh] flex-col justify-center py-10">
+            <div className="mb-8 text-center">
+              <div className="mb-4 flex items-center justify-center gap-2">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500" />
+                <span className="font-mono text-[9px] tracking-widest text-green-600">CONFIGURATION_COMPLETE</span>
+              </div>
+              <h2 className="font-mono text-3xl font-black tracking-tight text-zinc-100">
+                OPERATOR_<span className="text-orange-500">{firstName.toUpperCase()}</span>_READY
+              </h2>
+              <p className="mt-2 font-mono text-xs text-zinc-600">RESURGO_PERSONALISED :: AI_COACH_READY :: BEGIN_MISSION</p>
+            </div>
+
+            {/* Summary */}
+            <div className="mx-auto mb-8 w-full max-w-md space-y-px">
+              {primaryGoal && (
+                <div className="border border-zinc-900 bg-zinc-950 p-4">
+                  <p className="mb-1.5 font-mono text-[9px] tracking-widest text-zinc-600">PRIMARY_OBJECTIVE</p>
+                  <p className="font-mono text-xs text-zinc-300">{primaryGoal}</p>
+                  {primaryGoalReason && <p className="mt-1 font-mono text-[9px] text-zinc-600">WHY: {primaryGoalReason}</p>}
+                  {primaryGoalDeadline && (
+                    <span className="mt-1.5 inline-block border border-orange-900 bg-orange-950/20 px-2 py-0.5 font-mono text-[9px] text-orange-600">
+                      {DEADLINE_OPTIONS.find(d => d.id === primaryGoalDeadline)?.label.toUpperCase()}
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {selectedFocus.length > 0 && (
+                <div className="border border-zinc-900 bg-zinc-950 p-4">
+                  <p className="mb-1.5 font-mono text-[9px] tracking-widest text-zinc-600">FOCUS_VECTORS</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {selectedFocus.map(id => {
+                      const area = FOCUS_AREAS.find(a => a.id === id);
+                      return area ? (
+                        <span key={id} className="border border-zinc-800 px-2 py-0.5 font-mono text-[9px] text-zinc-500">
+                          {area.label.toUpperCase().replace(/ /g, '_')}
+                        </span>
+                      ) : null;
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {selectedHabits.length > 0 && (
+                <div className="border border-zinc-900 bg-zinc-950 p-4">
+                  <p className="mb-1.5 font-mono text-[9px] tracking-widest text-zinc-600">ACTIVATED_NODES ({selectedHabits.length})</p>
+                  <div className="flex flex-wrap gap-x-4 gap-y-0.5">
+                    {selectedHabits.slice(0, 5).map(id => {
+                      const h = HABIT_TEMPLATES.find(t => t.id === id);
+                      return h ? <span key={id} className="font-mono text-[10px] text-zinc-600">{h.name}</span> : null;
+                    })}
+                    {selectedHabits.length > 5 && <span className="font-mono text-[10px] text-zinc-700">+{selectedHabits.length - 5} more</span>}
+                  </div>
+                </div>
+              )}
+
+              <div className="border border-zinc-900 bg-zinc-950 p-4">
+                <p className="mb-1 font-mono text-[9px] tracking-widest text-zinc-600">OPERATIONAL_RHYTHM</p>
+                <p className="font-mono text-xs text-zinc-400">
+                  {TIME_OPTIONS.find(t => t.id === preferredTime)?.label.toUpperCase().replace(/ /g, '_')} ·{' '}
+                  {TIME_OPTIONS.find(t => t.id === preferredTime)?.description}
+                </p>
+              </div>
+
+              {!primaryGoal && selectedFocus.length === 0 && selectedHabits.length === 0 && (
+                <div className="border border-zinc-900 bg-zinc-950 p-4 text-center">
+                  <p className="font-mono text-xs text-zinc-700">CONFIGURE_GOALS_HABITS_FROM_DASHBOARD_ANYTIME</p>
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-col items-center gap-3">
+              <button
+                onClick={handleComplete}
+                disabled={saving}
+                className="border border-orange-800 bg-orange-950/30 px-10 py-3 font-mono text-xs tracking-widest text-orange-500 transition hover:bg-orange-950/50 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {saving ? '[LAUNCHING_WORKSPACE...]' : '[EXECUTE_MISSION]'}
+              </button>
+              <p className="font-mono text-[9px] text-zinc-700">PREFERENCES_EDITABLE_ANYTIME_IN_CONFIGURATION_MATRIX</p>
+            </div>
+          </div>
+        )}
+
       </div>
     </div>
   );

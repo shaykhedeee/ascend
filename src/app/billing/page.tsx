@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { Fragment } from 'react';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { BILLING_PLANS } from '@/lib/billing/plans';
 import {
   Check,
@@ -30,7 +31,7 @@ import {
 export const metadata: Metadata = {
   title: 'Pricing & Billing — Plans That Grow With You',
   description:
-    'Choose the perfect Ascendify plan. Free with 10 habits & AI insights, or go Pro for unlimited everything. 30-day money-back guarantee.',
+    'Choose the perfect Resurgo plan. Free with 10 habits & AI insights, or go Pro for unlimited everything. 30-day money-back guarantee.',
   robots: { index: false, follow: false },
 };
 
@@ -94,7 +95,7 @@ const COMPARISON_SECTIONS = [
 // ═══════════════════════════════════════════════════════════════════════════════
 const FAQS = [
   {
-    q: 'Can I use Ascendify for free?',
+    q: 'Can I use Resurgo for free?',
     a: 'Absolutely! The free plan includes 10 habits, 3 goals, AI insights, streak tracking, calendar view, focus timer, and mood tracking. No credit card required, no time limit.',
   },
   {
@@ -115,11 +116,11 @@ const FAQS = [
   },
   {
     q: 'Do you offer a money-back guarantee?',
-    a: "Yes! All paid plans come with a 30-day money-back guarantee. If Ascendify isn't right for you, contact support for a full refund — no questions asked.",
+    a: "Yes! All paid plans come with a 30-day money-back guarantee. If Resurgo isn't right for you, contact support for a full refund — no questions asked.",
   },
   {
     q: 'Do you offer student or team discounts?',
-    a: 'Yes! Students get 50% off Pro plans. Contact support@ascendify.app with your .edu email. Team pricing is coming soon.',
+    a: 'Yes! Students get 50% off Pro plans. Contact support@resurgo.life with your .edu email. Team pricing is coming soon.',
   },
   {
     q: 'Is my data secure?',
@@ -151,6 +152,8 @@ export default async function BillingPage() {
     return { ...plan, checkoutUrl };
   });
 
+  const RestoreArchivedCTA = dynamic(() => import('@/components/RestoreArchivedCTA'), { ssr: false });
+
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
       {/* ═══════════════════════ HEADER ═══════════════════════ */}
@@ -160,7 +163,7 @@ export default async function BillingPage() {
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-ascend-500 to-ascend-600 flex items-center justify-center">
               <Mountain className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-lg hidden sm:block">ASCENDIFY</span>
+            <span className="font-bold text-lg hidden sm:block">RESURGO</span>
           </Link>
           <div className="flex items-center gap-3">
             {user ? (
@@ -241,12 +244,16 @@ export default async function BillingPage() {
                 </p>
               </div>
               {manageUrl ? (
-                <a
-                  href={manageUrl}
-                  className="shrink-0 inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold bg-[var(--background)] border border-[var(--border)] hover:bg-[var(--surface-hover)] transition-colors"
-                >
-                  Manage subscription <ArrowRight className="w-4 h-4" />
-                </a>
+                <div className="flex items-center gap-4">
+                  <a
+                    href={manageUrl}
+                    className="shrink-0 inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold bg-[var(--background)] border border-[var(--border)] hover:bg-[var(--surface-hover)] transition-colors"
+                  >
+                    Manage subscription <ArrowRight className="w-4 h-4" />
+                  </a>
+                  {/* Client-side restore CTA; dynamic import to keep page server-rendered */}
+                  <RestoreArchivedCTA />
+                </div>
               ) : (
                 <span className="text-xs text-amber-400/80">
                   Billing portal not configured yet
@@ -363,13 +370,32 @@ export default async function BillingPage() {
                     >
                       {plan.ctaLabel}
                     </Link>
-                  ) : (
-                    <button
-                      className="block w-full text-center rounded-xl px-4 py-3 font-semibold border border-amber-500/30 text-amber-400/70 mb-6 cursor-not-allowed"
-                      disabled
+                  ) : manageUrl ? (
+                    <a
+                      href={manageUrl}
+                      className={`block w-full text-center rounded-xl px-4 py-3 font-semibold transition-all mb-6 ${
+                        isHighlighted
+                          ? 'bg-gradient-to-r from-ascend-500 to-ascend-600 text-white hover:shadow-lg hover:shadow-ascend-500/25'
+                          : isLifetime
+                          ? 'bg-gradient-to-r from-gold-400 to-orange-500 text-white hover:shadow-lg hover:shadow-gold-400/25'
+                          : 'bg-ascend-500/10 text-ascend-400 hover:bg-ascend-500/20 border border-ascend-500/30'
+                      }`}
                     >
-                      Coming soon
-                    </button>
+                      {plan.ctaLabel}
+                    </a>
+                  ) : (
+                    <a
+                      href="/help"
+                      className={`block w-full text-center rounded-xl px-4 py-3 font-semibold mb-6 ${
+                        isHighlighted
+                          ? 'bg-gradient-to-r from-ascend-500 to-ascend-600 text-white hover:from-ascend-400 hover:to-ascend-500'
+                          : isLifetime
+                          ? 'bg-gradient-to-r from-gold-400 to-orange-500 text-white hover:from-gold-300 hover:to-orange-400'
+                          : 'bg-ascend-500/10 text-ascend-400 border border-ascend-500/30 hover:bg-ascend-500/20'
+                      } transition-all`}
+                    >
+                      Contact Support
+                    </a>
                   )}
 
                   {/* Feature list */}
@@ -505,7 +531,7 @@ export default async function BillingPage() {
                 Frequently asked questions
               </h2>
               <p className="text-[var(--text-secondary)]">
-                Everything you need to know about Ascendify pricing.
+                Everything you need to know about Resurgo pricing.
               </p>
             </div>
 
@@ -536,7 +562,7 @@ export default async function BillingPage() {
             Ready to build habits that stick?
           </h2>
           <p className="text-[var(--text-secondary)] mb-8 max-w-xl mx-auto">
-            Join thousands of people using Ascendify to track habits, achieve goals, and
+            Join thousands of people using Resurgo to track habits, achieve goals, and
             transform their routines — starting today.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -562,7 +588,7 @@ export default async function BillingPage() {
       {/* Footer */}
       <footer className="border-t border-[var(--border)] py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--text-muted)]">
-          <p>&copy; {new Date().getFullYear()} Ascendify. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Resurgo. All rights reserved.</p>
           <div className="flex gap-6">
             <Link href="/privacy" className="hover:text-[var(--text-secondary)]">
               Privacy

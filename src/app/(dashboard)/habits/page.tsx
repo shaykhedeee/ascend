@@ -1,27 +1,41 @@
-'use client';
+﻿'use client';
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// Ascendify — Habits Tracker Page
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// RESURGO â€” Habits Tracker Page
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 import { useQuery, useMutation } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
+import { Id } from '../../../../convex/_generated/dataModel';
 import { useState } from 'react';
 import {
-  Sparkles,
   Plus,
-  Flame,
   Check,
   X,
   SkipForward,
-  ChevronRight,
-  TrendingUp,
 } from 'lucide-react';
 
 const FREQUENCIES = ['daily', 'weekdays', 'weekends', '3x_week', 'weekly', 'custom'] as const;
 const TIMES_OF_DAY = ['morning', 'afternoon', 'evening', 'anytime'] as const;
 const CATEGORIES = ['health', 'fitness', 'learning', 'mindfulness', 'productivity', 'social', 'creativity', 'other'] as const;
 const HABIT_TYPES = ['yes_no', 'quantity', 'duration', 'negative', 'range', 'checklist'] as const;
+
+type HabitStatsItem = {
+  streakCurrent?: number;
+  identityLabel?: string;
+};
+
+type HabitDisplayItem = HabitStatsItem & {
+  _id: string;
+  title: string;
+  habitType?: string;
+  category: string;
+  frequency: string;
+  streakLongest?: number;
+  totalCompletions?: number;
+  targetValue?: number;
+  targetUnit?: string;
+};
 
 export default function HabitsPage() {
   const habits = useQuery(api.habits.listActive);
@@ -48,11 +62,17 @@ export default function HabitsPage() {
 
   const today = new Date().toISOString().split('T')[0];
   const displayHabits = tab === 'active' ? habits : allHabits;
+  const allHabitItems = (allHabits ?? []) as Array<HabitStatsItem>;
+  const displayHabitItems = (displayHabits ?? []) as Array<HabitDisplayItem>;
+  const activeCount = habits?.length ?? 0;
+  const totalCount = allHabits?.length ?? 0;
+  const highestStreak = Math.max(0, ...allHabitItems.map((habit) => habit.streakCurrent || 0));
+  const withIdentityCount = allHabitItems.filter((habit) => Boolean(habit.identityLabel)).length;
 
   const handleToggle = async (habitId: string) => {
     setToggling(habitId);
     try {
-      await toggleComplete({ habitId: habitId as never, date: today });
+      await toggleComplete({ habitId: habitId as Id<"habits">, date: today });
     } catch (e) {
       console.error('Failed to toggle:', e);
     }
@@ -61,7 +81,7 @@ export default function HabitsPage() {
 
   const handleSkip = async (habitId: string) => {
     try {
-      await skipHabit({ habitId: habitId as never, date: today });
+      await skipHabit({ habitId: habitId as Id<"habits">, date: today });
     } catch (e) {
       console.error('Failed to skip:', e);
     }
@@ -96,228 +116,201 @@ export default function HabitsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--background)] p-4 md:p-8 max-w-5xl mx-auto">
-      {/* Header */}
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-[var(--text-primary)] flex items-center gap-2">
-            <Sparkles className="h-6 w-6 text-purple-400" /> Habits
-          </h1>
-          <p className="text-sm text-[var(--text-secondary)]">
-            {habits?.length ?? 0} active habits
-          </p>
-        </div>
-        <button
-          onClick={() => setShowCreate(true)}
-          className="flex items-center gap-2 rounded-lg bg-ascend-500 px-4 py-2 text-sm font-medium text-white hover:bg-ascend-600 transition-colors"
-        >
-          <Plus className="h-4 w-4" /> New Habit
-        </button>
-      </div>
+    <div className="min-h-screen bg-black p-4 md:p-6">
+      <div className="mx-auto max-w-6xl">
 
-      {/* Tabs */}
-      <div className="mb-6 flex gap-2">
-        {(['active', 'all'] as const).map(t => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            className={`rounded-full px-4 py-1.5 text-xs font-medium capitalize transition-colors ${
-              tab === t ? 'bg-ascend-500 text-white' : 'bg-[var(--surface)] text-[var(--text-secondary)] hover:bg-[var(--surface-hover)]'
-            }`}
-          >
-            {t}
-          </button>
-        ))}
-      </div>
-
-      {/* Habits List */}
-      {!displayHabits || displayHabits.length === 0 ? (
-        <div className="flex flex-col items-center py-20">
-          <Sparkles className="mb-4 h-12 w-12 text-[var(--text-muted)]" />
-          <h3 className="mb-2 text-lg font-semibold text-[var(--text-primary)]">No habits yet</h3>
-          <p className="mb-4 text-sm text-[var(--text-secondary)]">
-            Start building powerful habits that shape your identity.
-          </p>
-          <button
-            onClick={() => setShowCreate(true)}
-            className="flex items-center gap-2 rounded-lg bg-ascend-500 px-4 py-2 text-sm font-medium text-white"
-          >
-            <Plus className="h-4 w-4" /> Create Habit
-          </button>
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {displayHabits.map((habit) => (
-            <div
-              key={habit._id}
-              className="group rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 transition-all hover:border-ascend-500/20"
-            >
-              <div className="flex items-center gap-4">
-                {/* Toggle button */}
-                <button
-                  onClick={() => handleToggle(habit._id)}
-                  disabled={toggling === habit._id}
-                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--border)] transition-all hover:border-ascend-500 hover:bg-ascend-500/10"
-                >
-                  {toggling === habit._id ? (
-                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-ascend-500 border-t-transparent" />
-                  ) : (
-                    <Check className="h-4 w-4 text-[var(--text-muted)]" />
-                  )}
-                </button>
-
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <p className="font-semibold text-[var(--text-primary)] truncate">{habit.title}</p>
-                    {habit.habitType && habit.habitType !== 'yes_no' && (
-                      <span className="rounded-full bg-purple-500/10 px-1.5 py-0.5 text-[10px] text-purple-400 capitalize">
-                        {habit.habitType.replace('_', '/')}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-[var(--text-secondary)]">
-                    <span className="capitalize">{habit.category}</span>
-                    <span>•</span>
-                    <span className="capitalize">{habit.frequency.replace('_', ' ')}</span>
-                    {habit.identityLabel && (
-                      <>
-                        <span>•</span>
-                        <span className="text-ascend-400">&quot;I am {habit.identityLabel}&quot;</span>
-                      </>
-                    )}
-                  </div>
-                </div>
-
-                {/* Streak */}
-                <div className="flex items-center gap-3">
-                  <div className="text-right">
-                    <p className="text-lg font-bold text-ascend-500 flex items-center gap-1">
-                      <Flame className="h-4 w-4" />
-                      {habit.streakCurrent}
-                    </p>
-                    <p className="text-[10px] text-[var(--text-muted)]">
-                      Best: {habit.streakLongest}
-                    </p>
-                  </div>
-
-                  {/* Skip button */}
-                  <button
-                    onClick={() => handleSkip(habit._id)}
-                    className="rounded-lg p-2 opacity-0 group-hover:opacity-100 text-[var(--text-muted)] hover:bg-yellow-500/10 hover:text-yellow-400 transition-all"
-                    title="Skip today"
-                  >
-                    <SkipForward className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Progress bar for quantity/duration habits */}
-              {habit.targetValue && habit.targetValue > 0 && (
-                <div className="mt-3 flex items-center gap-2">
-                  <div className="flex-1 h-1.5 rounded-full bg-[var(--border)]">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-purple-500 to-ascend-500"
-                      style={{ width: `${Math.min(100, ((habit.totalCompletions || 0) / habit.targetValue) * 100)}%` }}
-                    />
-                  </div>
-                  <span className="text-[10px] text-[var(--text-secondary)]">
-                    {habit.totalCompletions || 0}/{habit.targetValue} {habit.targetUnit || ''}
-                  </span>
-                </div>
-              )}
+        {/* ── NODE TRACKER HEADER ── */}
+        <div className="mb-6 border border-zinc-900 bg-zinc-950">
+          <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
+            <span className="font-mono text-[9px] tracking-widest text-orange-600">NODE_TRACKER :: BEHAVIORAL_SUBSYSTEM</span>
+          </div>
+          <div className="flex flex-col gap-4 px-5 py-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">NODE_MANAGEMENT</h1>
+              <p className="mt-1 font-mono text-xs tracking-widest text-zinc-600">
+                IDENTITY_DRIVEN ROUTINES :: STREAK_INTEGRITY MONITORING
+              </p>
             </div>
+            <button
+              onClick={() => setShowCreate(true)}
+              className="inline-flex items-center gap-2 border border-orange-800 bg-orange-950/30 px-4 py-2 font-mono text-xs tracking-widest text-orange-500 transition hover:border-orange-600 hover:bg-orange-950/60"
+            >
+              <Plus className="h-3.5 w-3.5" /> INIT_NODE
+            </button>
+          </div>
+          <div className="grid grid-cols-2 gap-px border-t border-zinc-900 sm:grid-cols-4">
+            <NodeMetric label="ACTIVE_NODES" value={String(activeCount)} />
+            <NodeMetric label="TOTAL_NODES" value={String(totalCount)} />
+            <NodeMetric label="PEAK_UPTIME" value={`${highestStreak}D`} />
+            <NodeMetric label="ID_LINKED" value={String(withIdentityCount)} />
+          </div>
+        </div>
+
+        {/* ── TABS ── */}
+        <div className="mb-4 flex gap-px border border-zinc-900">
+          {(['active', 'all'] as const).map(t => (
+            <button
+              key={t}
+              onClick={() => setTab(t)}
+              className={`flex-1 border-b-2 px-4 py-2.5 font-mono text-[10px] tracking-widest transition ${
+                tab === t
+                  ? 'border-orange-600 bg-orange-950/20 text-orange-500'
+                  : 'border-transparent bg-zinc-950 text-zinc-600 hover:text-zinc-300'
+              }`}
+            >
+              {t === 'active' ? `ACTIVE_NODES [${activeCount}]` : `ALL_NODES [${totalCount}]`}
+            </button>
           ))}
         </div>
-      )}
 
-      {/* Create Habit Modal */}
+        {/* ── NODE LIST ── */}
+        {!displayHabits || displayHabits.length === 0 ? (
+          <div className="border border-dashed border-zinc-800 py-16 text-center">
+            <p className="font-mono text-xs tracking-widest text-zinc-600">NODE_OFFLINE</p>
+            <p className="mt-2 font-mono text-[10px] text-zinc-700">No nodes registered. Initialize first behavioral node.</p>
+            <button
+              onClick={() => setShowCreate(true)}
+              className="mt-4 border border-zinc-800 bg-zinc-900 px-4 py-2 font-mono text-[10px] tracking-widest text-zinc-500 transition hover:border-orange-900 hover:text-orange-500"
+            >
+              <Plus className="mr-1 inline h-3 w-3" /> INIT_NODE
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-px">
+            {displayHabitItems.map((habit) => (
+              <div
+                key={habit._id}
+                className="group border border-zinc-900 bg-zinc-950 p-4 transition hover:border-zinc-700 hover:bg-zinc-900"
+              >
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={() => handleToggle(habit._id)}
+                    disabled={toggling === habit._id}
+                    className="flex h-8 w-8 shrink-0 items-center justify-center border border-zinc-800 text-zinc-600 transition hover:border-orange-600 hover:text-orange-500 disabled:opacity-50"
+                  >
+                    {toggling === habit._id ? (
+                      <div className="h-3.5 w-3.5 animate-spin border border-orange-600 border-t-transparent" />
+                    ) : (
+                      <Check className="h-3.5 w-3.5" />
+                    )}
+                  </button>
+
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <p className="truncate font-mono text-sm text-zinc-200">{habit.title.toUpperCase()}</p>
+                      {habit.habitType && habit.habitType !== 'yes_no' && (
+                        <span className="border border-zinc-800 px-1.5 py-0.5 font-mono text-[9px] text-zinc-600">
+                          {habit.habitType.replace('_', '/').toUpperCase()}
+                        </span>
+                      )}
+                    </div>
+                    <div className="mt-0.5 flex items-center gap-2 font-mono text-[10px] text-zinc-600">
+                      <span>{habit.category.toUpperCase()}</span>
+                      <span>::</span>
+                      <span>{habit.frequency.replace('_', '_').toUpperCase()}</span>
+                      {habit.identityLabel && (
+                        <span className="text-orange-700">IDENTITY_{habit.identityLabel.toUpperCase().replace(/ /g, '_')}</span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="text-right">
+                      <p className="font-mono text-base font-bold text-orange-500">UPTIME_{habit.streakCurrent}D</p>
+                      <p className="font-mono text-[10px] text-zinc-600">PEAK_{habit.streakLongest}D</p>
+                    </div>
+                    <button
+                      onClick={() => handleSkip(habit._id)}
+                      className="border border-transparent p-1.5 font-mono text-[10px] text-zinc-700 transition hover:border-zinc-800 hover:text-zinc-400"
+                      title="Skip today"
+                    >
+                      <SkipForward className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                </div>
+
+                {habit.targetValue && habit.targetValue > 0 && (
+                  <div className="mt-3 flex items-center gap-2">
+                    <div className="flex-1 h-px bg-zinc-900">
+                      <div
+                        className="h-px bg-orange-600"
+                        style={{ width: `${Math.min(100, ((habit.totalCompletions || 0) / habit.targetValue) * 100)}%` }}
+                      />
+                    </div>
+                    <span className="font-mono text-[10px] text-zinc-600">
+                      {habit.totalCompletions || 0}/{habit.targetValue}{habit.targetUnit ? `_${habit.targetUnit.toUpperCase()}` : ''}
+                    </span>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+      </div>
+
       {showCreate && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl border border-[var(--border)] bg-[var(--background)] p-6 shadow-xl">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-lg font-bold text-[var(--text-primary)]">Create New Habit</h2>
-              <button onClick={() => setShowCreate(false)} className="text-[var(--text-secondary)]">
-                <X className="h-5 w-5" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
+          <div className="w-full max-w-lg border border-zinc-800 bg-zinc-950 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-zinc-900 px-5 py-3">
+              <span className="font-mono text-xs tracking-widest text-orange-500">INIT_NODE :: CREATE_BEHAVIORAL_ROUTINE</span>
+              <button onClick={() => setShowCreate(false)} className="text-zinc-600 transition hover:text-zinc-300">
+                <X className="h-4 w-4" />
               </button>
             </div>
 
-            <form onSubmit={handleCreate} className="space-y-4">
+            <form onSubmit={handleCreate} className="max-h-[80vh] overflow-y-auto p-5 space-y-4">
               <div>
-                <label className="mb-1 block text-sm font-medium text-[var(--text-primary)]">Habit Name *</label>
+                <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">NODE_TITLE *</label>
                 <input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="e.g., Meditate, Read, Exercise..."
-                  className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-ascend-500 focus:outline-none"
-                  required
-                  autoFocus
+                  placeholder="Meditate, Read, Exercise..."
+                  className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-700 focus:border-orange-800 focus:outline-none"
+                  required autoFocus
                 />
               </div>
 
               <div>
-                <label className="mb-1 block text-sm font-medium text-[var(--text-primary)]">Identity Label</label>
+                <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">IDENTITY_LABEL</label>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-[var(--text-secondary)]">I am</span>
+                  <span className="font-mono text-xs text-zinc-600">I_AM::</span>
                   <input
                     value={identityLabel}
                     onChange={(e) => setIdentityLabel(e.target.value)}
-                    placeholder="a reader, a healthy person..."
-                    className="flex-1 rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-ascend-500 focus:outline-none"
+                    placeholder="a_reader, a_healthy_person"
+                    className="flex-1 border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-700 focus:border-orange-800 focus:outline-none"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-[var(--text-primary)]">Category</label>
-                  <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value as typeof CATEGORIES[number])}
-                    className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text-primary)] focus:border-ascend-500 focus:outline-none capitalize"
-                  >
-                    {CATEGORIES.map((c) => (
-                      <option key={c} value={c}>{c}</option>
-                    ))}
+                  <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">CATEGORY</label>
+                  <select value={category} onChange={(e) => setCategory(e.target.value as typeof CATEGORIES[number])} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 focus:border-orange-800 focus:outline-none">
+                    {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-[var(--text-primary)]">Frequency</label>
-                  <select
-                    value={frequency}
-                    onChange={(e) => setFrequency(e.target.value as typeof FREQUENCIES[number])}
-                    className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text-primary)] focus:border-ascend-500 focus:outline-none"
-                  >
-                    {FREQUENCIES.map((f) => (
-                      <option key={f} value={f}>{f.replace('_', ' ')}</option>
-                    ))}
+                  <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">FREQUENCY</label>
+                  <select value={frequency} onChange={(e) => setFrequency(e.target.value as typeof FREQUENCIES[number])} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 focus:border-orange-800 focus:outline-none">
+                    {FREQUENCIES.map((f) => <option key={f} value={f}>{f.replace('_', ' ')}</option>)}
                   </select>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-[var(--text-primary)]">Time of Day</label>
-                  <select
-                    value={timeOfDay}
-                    onChange={(e) => setTimeOfDay(e.target.value as typeof TIMES_OF_DAY[number])}
-                    className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text-primary)] focus:border-ascend-500 focus:outline-none capitalize"
-                  >
-                    {TIMES_OF_DAY.map((t) => (
-                      <option key={t} value={t}>{t}</option>
-                    ))}
+                  <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">TIME_WINDOW</label>
+                  <select value={timeOfDay} onChange={(e) => setTimeOfDay(e.target.value as typeof TIMES_OF_DAY[number])} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 focus:border-orange-800 focus:outline-none">
+                    {TIMES_OF_DAY.map((t) => <option key={t} value={t}>{t}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-[var(--text-primary)]">Habit Type</label>
-                  <select
-                    value={habitType}
-                    onChange={(e) => setHabitType(e.target.value as typeof HABIT_TYPES[number])}
-                    className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text-primary)] focus:border-ascend-500 focus:outline-none"
-                  >
-                    {HABIT_TYPES.map((h) => (
-                      <option key={h} value={h}>{h.replace('_', '/')}</option>
-                    ))}
+                  <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">NODE_TYPE</label>
+                  <select value={habitType} onChange={(e) => setHabitType(e.target.value as typeof HABIT_TYPES[number])} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 focus:border-orange-800 focus:outline-none">
+                    {HABIT_TYPES.map((h) => <option key={h} value={h}>{h.replace('_', '/')}</option>)}
                   </select>
                 </div>
               </div>
@@ -325,58 +318,42 @@ export default function HabitsPage() {
               {habitType !== 'yes_no' && habitType !== 'negative' && (
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="mb-1 block text-sm font-medium text-[var(--text-primary)]">Target</label>
-                    <input
-                      type="number"
-                      value={targetValue}
-                      onChange={(e) => setTargetValue(e.target.value)}
-                      placeholder="e.g., 30"
-                      className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-ascend-500 focus:outline-none"
-                    />
+                    <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">TARGET_VALUE</label>
+                    <input type="number" value={targetValue} onChange={(e) => setTargetValue(e.target.value)} placeholder="30" className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-700 focus:border-orange-800 focus:outline-none" />
                   </div>
                   <div>
-                    <label className="mb-1 block text-sm font-medium text-[var(--text-primary)]">Unit</label>
-                    <input
-                      value={targetUnit}
-                      onChange={(e) => setTargetUnit(e.target.value)}
-                      placeholder="minutes, pages, reps..."
-                      className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-ascend-500 focus:outline-none"
-                    />
+                    <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">TARGET_UNIT</label>
+                    <input value={targetUnit} onChange={(e) => setTargetUnit(e.target.value)} placeholder="minutes, reps" className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-700 focus:border-orange-800 focus:outline-none" />
                   </div>
                 </div>
               )}
 
               <div>
-                <label className="mb-1 block text-sm font-medium text-[var(--text-primary)]">Description</label>
-                <textarea
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Why is this habit important?"
-                  rows={2}
-                  className="w-full rounded-lg border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:border-ascend-500 focus:outline-none"
-                />
+                <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">DESCRIPTION</label>
+                <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Why is this node important?" rows={2} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-700 focus:border-orange-800 focus:outline-none" />
               </div>
 
-              <div className="flex gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowCreate(false)}
-                  className="flex-1 rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--text-secondary)] hover:bg-[var(--surface)]"
-                >
-                  Cancel
+              <div className="flex gap-px pt-1">
+                <button type="button" onClick={() => setShowCreate(false)} className="flex-1 border border-zinc-800 bg-zinc-900 py-2.5 font-mono text-[10px] tracking-widest text-zinc-500 transition hover:text-zinc-300">
+                  [CANCEL]
                 </button>
-                <button
-                  type="submit"
-                  disabled={creating || !title.trim()}
-                  className="flex-1 rounded-lg bg-ascend-500 px-4 py-2 text-sm font-medium text-white hover:bg-ascend-600 disabled:opacity-50"
-                >
-                  {creating ? 'Creating...' : 'Create Habit'}
+                <button type="submit" disabled={creating || !title.trim()} className="flex-1 border border-orange-800 bg-orange-950/40 py-2.5 font-mono text-[10px] tracking-widest text-orange-500 transition hover:bg-orange-950/70 disabled:opacity-40">
+                  {creating ? 'INITIALIZING...' : '[DEPLOY_NODE]'}
                 </button>
               </div>
             </form>
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function NodeMetric({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="bg-zinc-950 px-4 py-3 transition hover:bg-zinc-900">
+      <p className="font-mono text-[9px] tracking-widest text-zinc-600">{label}</p>
+      <p className="mt-0.5 font-mono text-lg font-bold text-zinc-100">{value}</p>
     </div>
   );
 }

@@ -1,7 +1,7 @@
-# 🚀 ASCEND - AI-Powered Life Transformation System
+# 🚀 Ascendify - AI-Powered Life Transformation System
 
 <div align="center">
-  <img src="public/icons/icon.svg" alt="ASCEND Logo" width="120" height="120" />
+  <img src="public/icons/icon.svg" alt="Ascendify Logo" width="120" height="120" />
   <br />
   <strong>Rise to Your Potential</strong>
   <br />
@@ -15,7 +15,7 @@
 ### 🎯 AI Goal Decomposition
 - Transform any life goal into actionable steps
 - Automatic breakdown: Ultimate Goal → Milestones → Weekly Objectives → Daily Tasks
-- Works with or without OpenAI API (smart mock fallback)
+- Multi-provider AI: Groq, Gemini, OpenRouter (with smart fallback)
 
 ### 📊 Habit Tracking
 - Create and track daily/weekly habits
@@ -53,12 +53,15 @@
 
 - **Framework:** Next.js 14 (App Router)
 - **Language:** TypeScript
+- **Auth:** Clerk
+- **Backend/Database:** Convex (real-time)
 - **Styling:** Tailwind CSS
-- **State Management:** Zustand (localStorage persistence)
+- **State Management:** Convex queries (primary), Zustand (UI state)
 - **Charts:** Recharts
 - **Icons:** Lucide React
 - **PDF Generation:** jsPDF + jspdf-autotable
-- **AI:** OpenAI API (optional)
+- **AI:** Groq / Gemini / OpenRouter (multi-provider fallback)
+- **Payments:** Clerk Billing
 
 ---
 
@@ -108,13 +111,32 @@ AIML_API_KEY=
 
 # Billing
 BILLING_WEBHOOK_SYNC_SECRET=
-BILLING_PRO_MONTHLY_CHECKOUT_URL=
-BILLING_PRO_YEARLY_CHECKOUT_URL=
-BILLING_LIFETIME_CHECKOUT_URL=
-BILLING_PORTAL_URL=
+NEXT_PUBLIC_CLERK_CHECKOUT_PRO_MONTHLY_URL=
+NEXT_PUBLIC_CLERK_CHECKOUT_PRO_YEARLY_URL=
+NEXT_PUBLIC_CLERK_CHECKOUT_LIFETIME_URL=
+NEXT_PUBLIC_CLERK_BILLING_PORTAL_URL=
+
 ```
 
-**Note:** The app can still run without AI keys (limited/fallback AI behavior), but launch-ready billing requires Clerk + webhook + checkout URLs configured.
+**Note:** The app can still run without AI keys (limited/fallback AI behavior), but launch-ready billing requires Clerk + webhook env vars configured.
+
+### Free Tier Limits
+- 10 habits
+- 3 goals
+- AI insights
+- Focus timer
+- Mood tracking
+
+### Pro Plan (₹199/month or $12/month)
+- Unlimited habits & goals
+- Advanced analytics
+- Identity system
+- Custom themes
+- Data export
+- Priority support
+
+### Lifetime Plan (₹999 or $199 one-time)
+- Everything in Pro, forever
 
 ---
 
@@ -177,29 +199,42 @@ CMD ["node", "server.js"]
 ```
 src/
 ├── app/
-│   ├── globals.css      # Global styles & CSS variables
-│   ├── layout.tsx       # Root layout with metadata
-│   ├── page.tsx         # Main app page
-│   └── manifest.ts      # PWA manifest route
-├── components/
-│   ├── AddHabitModal.tsx    # Create new habits
-│   ├── Analytics.tsx        # Stats & charts
-│   ├── CalendarView.tsx     # Monthly calendar
-│   ├── GoalWizard.tsx       # AI goal setup
-│   ├── HabitGrid.tsx        # Habit tracking grid
-│   ├── Header.tsx           # Navigation header
-│   ├── Onboarding.tsx       # New user flow
-│   ├── SettingsModal.tsx    # App settings
-│   ├── ThemeProvider.tsx    # Theme context
-│   ├── Toast.tsx            # Notifications
-│   └── TodaysTasks.tsx      # Daily task list
-├── lib/
-│   ├── ai-goal-decomposer.ts  # AI goal breakdown
-│   ├── export.ts              # Data export utils
-│   ├── store.ts               # Zustand store
-│   └── utils.ts               # Helper functions
-└── types/
-    └── index.ts             # TypeScript types
+│   ├── globals.css          # Global styles & CSS variables
+│   ├── layout.tsx           # Root layout (Clerk/Convex providers)
+│   ├── page.tsx             # Landing page (server component)
+│   ├── (dashboard)/         # Auth-gated dashboard routes
+│   │   ├── layout.tsx       # Dashboard layout with sidebar
+│   │   ├── page.tsx         # Dashboard home
+│   │   ├── habits/          # Habit tracking
+│   │   ├── goals/           # Goal management
+│   │   ├── focus/           # Focus timer (Pomodoro/Deep Work)
+│   │   ├── calendar/        # Calendar view
+│   │   ├── analytics/       # Statistics & charts
+│   │   ├── wellness/        # Mood tracking
+│   │   └── settings/        # User settings
+│   ├── api/
+│   │   ├── ai/              # AI chat, decompose, suggestions
+│   │   ├── webhooks/        # Clerk billing webhooks
+│   │   └── chatbot/         # Kai chatbot endpoint
+│   ├── billing/             # Billing/pricing pages
+│   └── help/                # Help center
+├── components/              # Shared UI components
+├── hooks/                   # Custom React hooks
+│   ├── useStoreUser.ts      # Clerk → Convex user sync
+│   └── usePlanGating.ts     # Feature gating by plan
+├── lib/                     # Utilities & config
+│   ├── store.ts             # Zustand store (UI state)
+│   ├── plans.ts             # Plan definitions
+│   └── security.ts          # Rate limiting & CSRF
+└── types/                   # TypeScript types
+convex/                      # Convex backend
+├── schema.ts                # Database schema
+├── users.ts                 # User management
+├── goals.ts                 # Goal CRUD
+├── habits.ts                # Habit engine + streaks
+├── focusSessions.ts         # Focus timer sessions
+├── gamification.ts          # XP, levels, achievements
+└── wellness.ts              # Mood tracking
 ```
 
 ---
@@ -224,7 +259,7 @@ Edit `src/app/globals.css`:
 
 ```css
 :root {
-  --ascend-primary: #14B899;  /* Main accent color */
+  --ascend-primary: #F97316;  /* Main accent - orange */
   --gold-primary: #F59E0B;    /* Secondary accent */
   --background: #0A0A0B;      /* Dark background */
 }

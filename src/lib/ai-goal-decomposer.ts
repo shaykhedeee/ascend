@@ -19,7 +19,7 @@ import { ascendAI } from './ai-service';
 // AI PROMPT TEMPLATES
 // ─────────────────────────────────────────────────────────────────────────────────
 
-const _SYSTEM_PROMPT = `You are Ascendify AI, an expert life coach and goal-setting strategist with deep knowledge of how long goals typically take to achieve based on research and real-world data.
+const _SYSTEM_PROMPT = `You are Resurgo AI, an expert life coach and goal-setting strategist with deep knowledge of how long goals typically take to achieve based on research and real-world data.
 
 Your approach:
 1. ANALYZE the goal for feasibility and create a realistic timeline based on research

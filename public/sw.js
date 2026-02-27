@@ -2,9 +2,9 @@
 // ASCEND - Service Worker for Push Notifications & Offline Support
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'ascend-v2';
+const CACHE_NAME = 'ascend-v4';
 
-// Assets to cache for offline use
+// Assets to cache for offline use (only truly static assets)
 const STATIC_ASSETS = [
   '/manifest.json',
   '/icons/icon-192x192.png',
@@ -46,46 +46,26 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // For document navigations, use network-first to avoid serving stale shell pages.
+  // For document navigations: NEVER cache HTML pages.
+  // Stale HTML + fresh JS bundles = hydration mismatch = frozen page.
+  // Always go to network; if offline, show a simple offline message.
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request)
-        .then((response) => {
-          if (response.ok) {
-            const responseClone = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, responseClone);
-            });
-          }
-          return response;
-        })
-        .catch(async () => {
-          const cached = await caches.match(event.request);
-          if (cached) return cached;
-          return new Response('Offline', { status: 503 });
-        })
+      fetch(event.request).catch(() => {
+        return new Response(
+          '<!DOCTYPE html><html><body style="font-family:system-ui;display:flex;align-items:center;justify-content:center;min-height:100vh;background:#111;color:#fff"><h1>You are offline</h1></body></html>',
+          { status: 503, headers: { 'Content-Type': 'text/html' } }
+        );
+      })
     );
     return;
   }
 
+  // For all other requests (JS, CSS, images): use network-first
+  // This prevents stale JS bundles from breaking React hydration after deployments.
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      // Return cached version if available
-      if (cachedResponse) {
-        // Fetch fresh version in background
-        fetch(event.request).then((response) => {
-          if (response.ok) {
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, response);
-            });
-          }
-        });
-        return cachedResponse;
-      }
-
-      // Otherwise fetch from network
-      return fetch(event.request).then((response) => {
-        // Cache successful responses
+    fetch(event.request)
+      .then((response) => {
         if (response.ok) {
           const responseClone = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
@@ -93,10 +73,13 @@ self.addEventListener('fetch', (event) => {
           });
         }
         return response;
-      }).catch(() => {
+      })
+      .catch(async () => {
+        // Network failed — fall back to cache
+        const cached = await caches.match(event.request);
+        if (cached) return cached;
         return new Response('Offline', { status: 503 });
-      });
-    })
+      })
   );
 });
 

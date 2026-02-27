@@ -51,7 +51,7 @@ export function StreakFreeze({ className, variant = 'card', onUse }: StreakFreez
         setShowConfirm(false);
         addToast({
           type: 'success',
-          title: '🛡️ Streak Protected!',
+          title: 'Streak Protected',
           message: `Your ${currentStreak} day streak is safe. You have ${freezesAvailable - 1} freeze${freezesAvailable - 1 !== 1 ? 's' : ''} left.`,
         });
         onUse?.();

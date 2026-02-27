@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY — Gamification Engine (Convex)
+// RESURGO — Gamification Engine (Convex)
 // XP, levels, achievements, coins, power-ups — Part 4 of plan
 // ═══════════════════════════════════════════════════════════════════════════════
 

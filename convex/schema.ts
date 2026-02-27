@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY — Convex Database Schema
+// RESURGO — Convex Database Schema
 // AI-Powered Life Transformation System — Real-time, Type-safe, Serverless
 // Complete schema per DETAILEDPLANASCEND.md Parts 3-9
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -44,6 +44,13 @@ export default defineSchema({
     theme: v.optional(v.union(v.literal('light'), v.literal('dark'), v.literal('system'))),
     onboardingComplete: v.boolean(),
     streakFreezeCount: v.number(),
+    // ── Onboarding preferences ──
+    focusAreas: v.optional(v.array(v.string())),
+    selectedHabitTemplates: v.optional(v.array(v.string())),
+    preferredTime: v.optional(v.string()),
+    primaryGoal: v.optional(v.string()),
+    primaryGoalReason: v.optional(v.string()),
+    primaryGoalDeadline: v.optional(v.string()),
     // ── Vision & Life Design (Module 1) ──
     lifeWheelScores: v.optional(v.object({
       health: v.number(),
@@ -79,6 +86,14 @@ export default defineSchema({
       morningMotivation: v.boolean(),
       middayCheckin: v.boolean(),
       eveningWinddown: v.boolean(),
+      taskReminders: v.boolean(),
+      hydrationReminders: v.boolean(),
+      focusSessionReminders: v.boolean(),
+      sleepReminders: v.boolean(),
+      weeklyReviewReminders: v.boolean(),
+      quietHoursEnabled: v.boolean(),
+      quietHoursStart: v.string(),
+      quietHoursEnd: v.string(),
       reminderStyle: v.union(
         v.literal('gentle'),
         v.literal('supportive'),
@@ -107,6 +122,10 @@ export default defineSchema({
       v.literal('inactive'),
       v.literal('recovering')
     )),
+    // ── Billing concurrency guard ──
+    planVersion: v.optional(v.number()),     // monotonic counter, incremented on each plan change
+    planUpdatedAt: v.optional(v.number()),   // ms timestamp of last plan update for stale-event guard
+    lastBillingEventId: v.optional(v.string()), // last applied webhook event id
     createdAt: v.number(),
     updatedAt: v.number(),
   })
@@ -151,6 +170,7 @@ export default defineSchema({
     unit: v.optional(v.string()),
     decompositionStatus: v.optional(v.union(
       v.literal('pending'),
+      v.literal('in_progress'),
       v.literal('completed')
     )),
     aiConfidenceScore: v.optional(v.number()),
@@ -165,12 +185,15 @@ export default defineSchema({
     icon: v.optional(v.string()),
     visionConnection: v.optional(v.string()),
     completionDate: v.optional(v.number()),
+    // ── Downgrade preservation ──
+    archivedByDowngrade: v.optional(v.boolean()),
     createdAt: v.number(),
     updatedAt: v.number(),
   })
     .index('by_userId', ['userId'])
     .index('by_userId_status', ['userId', 'status'])
-    .index('by_parentGoalId', ['parentGoalId']),
+    .index('by_parentGoalId', ['parentGoalId'])
+    .index('by_userId_archivedByDowngrade', ['userId', 'archivedByDowngrade']),
 
   // ─────────────────────────────────────────────────────────────────────────────
   // MILESTONES — Goal decomposition intermediate steps
@@ -268,12 +291,15 @@ export default defineSchema({
     // ── Specific time ──
     specificTime: v.optional(v.string()),
     reminderEnabled: v.optional(v.boolean()),
+    // ── Downgrade preservation ──
+    archivedByDowngrade: v.optional(v.boolean()),
     createdAt: v.number(),
     updatedAt: v.number(),
   })
     .index('by_userId', ['userId'])
     .index('by_userId_active', ['userId', 'isActive'])
-    .index('by_goalId', ['goalId']),
+    .index('by_goalId', ['goalId'])
+    .index('by_userId_archivedByDowngrade', ['userId', 'archivedByDowngrade']),
 
   // ─────────────────────────────────────────────────────────────────────────────
   // HABIT LOGS — Enhanced with energy/difficulty tracking
@@ -809,4 +835,85 @@ export default defineSchema({
     .index('by_eventId', ['eventId'])
     .index('by_clerkId', ['clerkId'])
     .index('by_processedAt', ['processedAt']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // BILLING EVENTS — Expanded support/security audit trail
+  // ─────────────────────────────────────────────────────────────────────────────
+  billingEvents: defineTable({
+    userId: v.optional(v.id('users')),
+    clerkId: v.string(),
+    eventId: v.string(),
+    eventType: v.string(),
+    source: v.union(v.literal('webhook'), v.literal('system'), v.literal('manual')),
+    status: v.union(
+      v.literal('received'),
+      v.literal('applied'),
+      v.literal('ignored'),
+      v.literal('failed')
+    ),
+    plan: v.optional(v.union(v.literal('free'), v.literal('pro'), v.literal('lifetime'))),
+    reason: v.optional(v.string()),
+    details: v.optional(v.any()),
+    createdAt: v.number(),
+  })
+    .index('by_eventId', ['eventId'])
+    .index('by_clerkId_and_createdAt', ['clerkId', 'createdAt'])
+    .index('by_userId_and_createdAt', ['userId', 'createdAt'])
+    .index('by_status_and_createdAt', ['status', 'createdAt']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // CHATBOT EVENTS — Intent/conversion instrumentation
+  // ─────────────────────────────────────────────────────────────────────────────
+  chatbotEvents: defineTable({
+    clerkId: v.string(),
+    eventName: v.union(
+      v.literal('intent_detected'),
+      v.literal('cta_shown'),
+      v.literal('cta_clicked'),
+      v.literal('resolution_confirmed')
+    ),
+    intent: v.optional(v.union(
+      v.literal('greeting'),
+      v.literal('help_feature'),
+      v.literal('troubleshooting'),
+      v.literal('pricing_question'),
+      v.literal('upgrade_interest'),
+      v.literal('habit_advice'),
+      v.literal('motivation_needed'),
+      v.literal('feedback'),
+      v.literal('cancel_subscription'),
+      v.literal('unknown')
+    )),
+    source: v.union(v.literal('api'), v.literal('client'), v.literal('system')),
+    conversationId: v.optional(v.string()),
+    messageLength: v.optional(v.number()),
+    cta: v.optional(v.object({
+      label: v.string(),
+      href: v.string(),
+    })),
+    details: v.optional(v.any()),
+    createdAt: v.number(),
+  })
+    .index('by_clerkId_and_createdAt', ['clerkId', 'createdAt'])
+    .index('by_eventName_and_createdAt', ['eventName', 'createdAt'])
+    .index('by_createdAt', ['createdAt']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // CHATBOT FOLLOW-UPS — Scheduled 24h/72h checkbacks
+  // ─────────────────────────────────────────────────────────────────────────────
+  chatbotFollowUps: defineTable({
+    clerkId: v.string(),
+    intent: v.union(
+      v.literal('troubleshooting'),
+      v.literal('motivation_needed')
+    ),
+    reason: v.union(v.literal('checkback_24h'), v.literal('checkback_72h')),
+    status: v.union(v.literal('pending'), v.literal('sent'), v.literal('dismissed')),
+    conversationId: v.optional(v.string()),
+    dueAt: v.number(),
+    sentAt: v.optional(v.number()),
+    createdAt: v.number(),
+  })
+    .index('by_clerkId_and_dueAt', ['clerkId', 'dueAt'])
+    .index('by_status_and_dueAt', ['status', 'dueAt']),
 });

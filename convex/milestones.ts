@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY — Milestones Engine (Convex)
+// RESURGO — Milestones Engine (Convex)
 // Goal decomposition intermediate steps — CLIMB Framework Module 2
 // ═══════════════════════════════════════════════════════════════════════════════
 

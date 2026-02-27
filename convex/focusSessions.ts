@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY — Focus Sessions Engine (Convex)
+// RESURGO — Focus Sessions Engine (Convex)
 // Multi-method focus tracking: Pomodoro, Deep Work, Flowtime, Time Box
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -79,9 +79,7 @@ export const start = mutation({
       habitId: args.habitId,
       taskId: args.taskId,
       ambientSound: args.ambientSound,
-      completedAt: Date.now(),
-      completionStatus: undefined,
-      focusScore: undefined,
+      completedAt: 0, // Placeholder — overwritten by complete() or cancel()
     });
   },
 });
@@ -292,7 +290,9 @@ export const getStats = query({
     const uniqueDays = new Set(filtered.map((s) =>
       new Date(s.completedAt).toISOString().split('T')[0]
     ));
-    const sortedDays = Array.from(uniqueDays).sort();
+    const sortedDays: string[] = [];
+    uniqueDays.forEach((d) => sortedDays.push(d));
+    sortedDays.sort();
     let bestStreak = 0;
     let currentStreak = 0;
     for (let i = 0; i < sortedDays.length; i++) {

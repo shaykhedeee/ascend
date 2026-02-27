@@ -30,18 +30,38 @@ interface NotificationSettingsProps {
   morningTime: string;
   eveningTime: string;
   streakWarning: boolean;
+  quietHoursEnabled: boolean;
+  quietHoursStart: string;
+  quietHoursEnd: string;
+  intelligenceLevel: 'gentle' | 'balanced' | 'coaching';
+  personalizationMode: 'auto' | 'work' | 'university' | 'general';
+  scheduleProfile?: 'standard' | 'shift' | 'flexible' | 'student' | 'retired' | 'stay-at-home';
   onMorningTimeChange: (time: string) => void;
   onEveningTimeChange: (time: string) => void;
   onStreakWarningChange: (enabled: boolean) => void;
+  onQuietHoursEnabledChange: (enabled: boolean) => void;
+  onQuietHoursChange: (start: string, end: string) => void;
+  onIntelligenceLevelChange: (level: 'gentle' | 'balanced' | 'coaching') => void;
+  onPersonalizationModeChange: (mode: 'auto' | 'work' | 'university' | 'general') => void;
 }
 
 export function NotificationSettings({
   morningTime,
   eveningTime,
   streakWarning,
+  quietHoursEnabled,
+  quietHoursStart,
+  quietHoursEnd,
+  intelligenceLevel,
+  personalizationMode,
+  scheduleProfile,
   onMorningTimeChange,
   onEveningTimeChange,
   onStreakWarningChange,
+  onQuietHoursEnabledChange,
+  onQuietHoursChange,
+  onIntelligenceLevelChange,
+  onPersonalizationModeChange,
 }: NotificationSettingsProps) {
   const [permission, setPermission] = useState<NotificationPermission | 'unsupported'>('default');
   const [isRequesting, setIsRequesting] = useState(false);
@@ -68,14 +88,28 @@ export function NotificationSettings({
 
     if (result === 'granted') {
       // Schedule initial reminders
-      scheduleDailyReminders(morningTime, eveningTime, streakWarning);
+      scheduleDailyReminders(morningTime, eveningTime, streakWarning, {
+        quietHoursEnabled,
+        quietHoursStart,
+        quietHoursEnd,
+        intelligenceLevel,
+        personalizationMode,
+        scheduleProfile,
+      });
       startNotificationChecker();
     }
   };
 
   const handleSaveSettings = () => {
     if (permission === 'granted') {
-      scheduleDailyReminders(morningTime, eveningTime, streakWarning);
+      scheduleDailyReminders(morningTime, eveningTime, streakWarning, {
+        quietHoursEnabled,
+        quietHoursStart,
+        quietHoursEnd,
+        intelligenceLevel,
+        personalizationMode,
+        scheduleProfile,
+      });
     }
   };
 
@@ -221,6 +255,96 @@ export function NotificationSettings({
                 streakWarning ? "translate-x-7" : "translate-x-1"
               )} />
             </button>
+          </div>
+
+          {/* Quiet Hours */}
+          <div className="p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium text-themed">Quiet Hours</p>
+                <p className="text-sm text-themed-muted">Pause reminders overnight</p>
+              </div>
+              <button
+                onClick={() => {
+                  onQuietHoursEnabledChange(!quietHoursEnabled);
+                  handleSaveSettings();
+                }}
+                className={cn(
+                  "relative w-12 h-6 rounded-full transition-colors",
+                  quietHoursEnabled ? "bg-ascend-500" : "bg-[var(--border)]"
+                )}
+              >
+                <div className={cn(
+                  "absolute top-1 w-4 h-4 rounded-full bg-white transition-transform",
+                  quietHoursEnabled ? "translate-x-7" : "translate-x-1"
+                )} />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <input
+                type="time"
+                value={quietHoursStart}
+                onChange={(e) => {
+                  onQuietHoursChange(e.target.value, quietHoursEnd);
+                  handleSaveSettings();
+                }}
+                className="px-3 py-2 rounded-lg bg-[var(--surface)] border border-[var(--border)] text-themed text-sm focus:outline-none focus:border-ascend-500"
+                disabled={!quietHoursEnabled}
+              />
+              <input
+                type="time"
+                value={quietHoursEnd}
+                onChange={(e) => {
+                  onQuietHoursChange(quietHoursStart, e.target.value);
+                  handleSaveSettings();
+                }}
+                className="px-3 py-2 rounded-lg bg-[var(--surface)] border border-[var(--border)] text-themed text-sm focus:outline-none focus:border-ascend-500"
+                disabled={!quietHoursEnabled}
+              />
+            </div>
+          </div>
+
+          {/* Intelligence & Personalization */}
+          <div className="p-4 space-y-3">
+            <div>
+              <p className="font-medium text-themed">Notification Intelligence</p>
+              <p className="text-sm text-themed-muted">Adjust tone and timing support</p>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2">
+              {(['gentle', 'balanced', 'coaching'] as const).map((level) => (
+                <button
+                  key={level}
+                  onClick={() => {
+                    onIntelligenceLevelChange(level);
+                    handleSaveSettings();
+                  }}
+                  className={cn(
+                    "px-2 py-2 text-xs rounded-lg border transition-colors",
+                    intelligenceLevel === level
+                      ? "border-ascend-500 text-ascend-400 bg-ascend-500/10"
+                      : "border-[var(--border)] text-themed-muted hover:text-themed"
+                  )}
+                >
+                  {level}
+                </button>
+              ))}
+            </div>
+
+            <select
+              value={personalizationMode}
+              onChange={(e) => {
+                onPersonalizationModeChange(e.target.value as 'auto' | 'work' | 'university' | 'general');
+                handleSaveSettings();
+              }}
+              className="w-full px-3 py-2 rounded-lg bg-[var(--surface)] border border-[var(--border)] text-themed text-sm focus:outline-none focus:border-ascend-500"
+            >
+              <option value="auto">Auto</option>
+              <option value="work">Work schedule</option>
+              <option value="university">University schedule</option>
+              <option value="general">General</option>
+            </select>
           </div>
         </div>
       )}

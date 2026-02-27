@@ -1,14 +1,15 @@
-'use client';
+﻿'use client';
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// Ascendify — Calendar Page
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// RESURGO â€” Calendar Page
 // Monthly calendar view with habit/task completion overlays
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 import { useQuery } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
 import { useState, useMemo } from 'react';
-import { ChevronLeft, ChevronRight, Calendar as CalIcon, CheckCircle2, Circle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle2, Circle, Download } from 'lucide-react';
+import { downloadIcs, generateTasksIcs } from '@/lib/ics';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = [
@@ -44,6 +45,7 @@ export default function CalendarPage() {
   });
 
   const tasks = useQuery(api.tasks.list, { status: 'done' });
+  const allTasks = useQuery(api.tasks.list, {});
 
   // Build calendar grid
   const calendarDays = useMemo(() => {
@@ -88,109 +90,172 @@ export default function CalendarPage() {
 
   const selectedInfo = selectedDate ? completionMap[selectedDate] : null;
 
+  const handleExportIcs = () => {
+    if (!allTasks || allTasks.length === 0) return;
+
+    const exportableTasks = allTasks.filter((t) => t.scheduledDate || t.dueDate).map((t) => ({
+      _id: String(t._id),
+      title: t.title,
+      description: t.description,
+      dueDate: t.dueDate,
+      dueTime: t.dueTime,
+      scheduledDate: t.scheduledDate,
+      isRecurring: t.isRecurring,
+      recurrenceRule: t.recurrenceRule,
+    }));
+    const ics = generateTasksIcs(exportableTasks, 'RESURGO Schedule');
+    const fileName = `RESURGO-calendar-${year}-${pad(month + 1)}.ics`;
+    downloadIcs(fileName, ics);
+  };
+
   return (
-    <div className="min-h-screen bg-[var(--background)] p-4 md:p-8 max-w-4xl mx-auto">
-      <h1 className="mb-8 text-2xl font-bold text-[var(--text-primary)] flex items-center gap-2">
-        <CalIcon className="h-6 w-6 text-orange-400" /> Calendar
-      </h1>
+    <div className="min-h-screen bg-black p-4 md:p-6">
+      <div className="mx-auto max-w-4xl">
 
-      {/* Month navigation */}
-      <div className="mb-6 flex items-center justify-between">
-        <button onClick={prevMonth} className="rounded-lg p-2 text-[var(--text-secondary)] hover:bg-[var(--surface)]">
-          <ChevronLeft className="h-5 w-5" />
-        </button>
-        <div className="text-center">
-          <h2 className="text-lg font-bold text-[var(--text-primary)]">{MONTHS[month]} {year}</h2>
-          <button onClick={goToday} className="text-xs text-ascend-400 hover:underline">Today</button>
-        </div>
-        <button onClick={nextMonth} className="rounded-lg p-2 text-[var(--text-secondary)] hover:bg-[var(--surface)]">
-          <ChevronRight className="h-5 w-5" />
-        </button>
-      </div>
-
-      {/* Days of week header */}
-      <div className="mb-2 grid grid-cols-7 gap-1">
-        {DAYS.map((d) => (
-          <div key={d} className="text-center text-xs font-medium text-[var(--text-secondary)] py-1">
-            {d}
+        {/* ── MISSION_TIMELINE HEADER ── */}
+        <div className="mb-6 border border-zinc-900 bg-zinc-950">
+          <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
+            <span className="font-mono text-[9px] tracking-widest text-orange-600">
+              MISSION_TIMELINE :: TEMPORAL_VIEW
+            </span>
           </div>
-        ))}
-      </div>
-
-      {/* Calendar grid */}
-      <div className="grid grid-cols-7 gap-1 mb-6">
-        {calendarDays.map((day, i) => {
-          if (day === null) return <div key={`empty-${i}`} />;
-
-          const dateStr = `${year}-${pad(month + 1)}-${pad(day)}`;
-          const isToday = dateStr === todayStr;
-          const isSelected = dateStr === selectedDate;
-          const data = completionMap[dateStr];
-          const hasActivity = data && (data.habits > 0 || data.tasks > 0);
-
-          return (
-            <button
-              key={dateStr}
-              onClick={() => setSelectedDate(isSelected ? null : dateStr)}
-              className={`relative flex h-12 md:h-16 flex-col items-center justify-center rounded-lg text-sm transition-colors ${
-                isSelected
-                  ? 'bg-ascend-500 text-white'
-                  : isToday
-                    ? 'bg-ascend-500/20 text-ascend-400 font-bold'
-                    : 'text-[var(--text-primary)] hover:bg-[var(--surface)]'
-              }`}
-            >
-              {day}
-              {hasActivity && !isSelected && (
-                <div className="mt-0.5 flex gap-0.5">
-                  {data.habits > 0 && <div className="h-1.5 w-1.5 rounded-full bg-green-400" />}
-                  {data.tasks > 0 && <div className="h-1.5 w-1.5 rounded-full bg-blue-400" />}
-                </div>
-              )}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Legend */}
-      <div className="mb-6 flex items-center gap-4 text-xs text-[var(--text-secondary)]">
-        <span className="flex items-center gap-1">
-          <div className="h-2 w-2 rounded-full bg-green-400" /> Habits completed
-        </span>
-        <span className="flex items-center gap-1">
-          <div className="h-2 w-2 rounded-full bg-blue-400" /> Tasks completed
-        </span>
-      </div>
-
-      {/* Selected day detail */}
-      {selectedDate && (
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
-          <h3 className="mb-3 text-sm font-semibold text-[var(--text-primary)]">
-            {new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-US', {
-              weekday: 'long', month: 'long', day: 'numeric',
-            })}
-          </h3>
-
-          {selectedInfo ? (
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-green-400" />
-                <span className="text-sm text-[var(--text-primary)]">
-                  {selectedInfo.habits} habit{selectedInfo.habits !== 1 ? 's' : ''} completed
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Circle className="h-4 w-4 text-blue-400" />
-                <span className="text-sm text-[var(--text-primary)]">
-                  {selectedInfo.tasks} task{selectedInfo.tasks !== 1 ? 's' : ''} completed
-                </span>
-              </div>
+          <div className="flex items-center justify-between px-5 py-4">
+            <div>
+              <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">MISSION_TIMELINE</h1>
+              <p className="mt-1 font-mono text-xs tracking-widest text-zinc-600">
+                HABIT_COMPLETIONS :: TASK_OVERLAYS :: MONTHLY_VIEW
+              </p>
             </div>
-          ) : (
-            <p className="text-sm text-[var(--text-secondary)]">No activity on this day</p>
-          )}
+            <button
+              onClick={handleExportIcs}
+              disabled={!allTasks || allTasks.length === 0}
+              className="flex items-center gap-2 border border-zinc-800 px-3 py-2 font-mono text-[10px] tracking-widest text-zinc-500 transition hover:border-orange-800 hover:text-orange-500 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <Download className="h-3 w-3" />
+              [EXPORT_.ICS]
+            </button>
+          </div>
         </div>
-      )}
+
+        {/* ── CALENDAR PANEL ── */}
+        <div className="border border-zinc-900 bg-zinc-950">
+          {/* Month navigation */}
+          <div className="flex items-center justify-between border-b border-zinc-900 px-4 py-3">
+            <button
+              onClick={prevMonth}
+              className="border border-zinc-800 p-1.5 text-zinc-500 transition hover:border-zinc-700 hover:text-zinc-300"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <div className="text-center">
+              <h2 className="font-mono text-sm font-bold tracking-widest text-zinc-200">
+                {MONTHS[month].toUpperCase()}_{year}
+              </h2>
+              <button
+                onClick={goToday}
+                className="font-mono text-[9px] tracking-widest text-orange-600 hover:underline"
+              >
+                [TODAY]
+              </button>
+            </div>
+            <button
+              onClick={nextMonth}
+              className="border border-zinc-800 p-1.5 text-zinc-500 transition hover:border-zinc-700 hover:text-zinc-300"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+
+          <div className="p-3 md:p-4">
+            {/* Days of week header */}
+            <div className="mb-1 grid grid-cols-7 gap-px">
+              {DAYS.map((d) => (
+                <div key={d} className="py-1.5 text-center font-mono text-[9px] tracking-widest text-zinc-700">
+                  {d.toUpperCase()}
+                </div>
+              ))}
+            </div>
+
+            {/* Calendar grid */}
+            <div className="mb-4 grid grid-cols-7 gap-px bg-zinc-900">
+              {calendarDays.map((day, i) => {
+                if (day === null) return <div key={`empty-${i}`} className="bg-zinc-950" />;
+
+                const dateStr = `${year}-${pad(month + 1)}-${pad(day)}`;
+                const isToday    = dateStr === todayStr;
+                const isSelected = dateStr === selectedDate;
+                const data       = completionMap[dateStr];
+                const hasActivity = data && (data.habits > 0 || data.tasks > 0);
+
+                return (
+                  <button
+                    key={dateStr}
+                    onClick={() => setSelectedDate(isSelected ? null : dateStr)}
+                    className={`flex h-12 flex-col items-center justify-center text-sm transition md:h-14 ${
+                      isSelected
+                        ? 'bg-orange-950/50 font-bold text-orange-500'
+                        : isToday
+                          ? 'bg-zinc-900 font-bold text-orange-400'
+                          : 'bg-zinc-950 text-zinc-500 hover:bg-zinc-900 hover:text-zinc-300'
+                    }`}
+                  >
+                    <span className="font-mono text-xs">{day}</span>
+                    {hasActivity && !isSelected && (
+                      <div className="mt-0.5 flex gap-0.5">
+                        {data.habits > 0 && <div className="h-1 w-1 bg-green-500" />}
+                        {data.tasks  > 0 && <div className="h-1 w-1 bg-blue-500" />}
+                      </div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Legend */}
+            <div className="flex items-center gap-4">
+              <span className="flex items-center gap-1.5 font-mono text-[9px] tracking-widest text-zinc-700">
+                <div className="h-1.5 w-1.5 bg-green-500" /> NODES_COMPLETED
+              </span>
+              <span className="flex items-center gap-1.5 font-mono text-[9px] tracking-widest text-zinc-700">
+                <div className="h-1.5 w-1.5 bg-blue-500" /> TASKS_COMPLETED
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* ── SELECTED DAY DETAIL ── */}
+        {selectedDate && (
+          <div className="mt-4 border border-zinc-900 bg-zinc-950">
+            <div className="border-b border-zinc-900 px-4 py-2.5">
+              <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">
+                DATE_{selectedDate}
+              </span>
+            </div>
+            <div className="p-4">
+              {selectedInfo ? (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+                    <span className="font-mono text-xs text-zinc-400">
+                      {selectedInfo.habits}_NODE{selectedInfo.habits !== 1 ? 'S' : ''}_COMPLETED
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Circle className="h-3.5 w-3.5 text-blue-500" />
+                    <span className="font-mono text-xs text-zinc-400">
+                      {selectedInfo.tasks}_TASK{selectedInfo.tasks !== 1 ? 'S' : ''}_COMPLETED
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <p className="font-mono text-[10px] tracking-widest text-zinc-700">NO_ACTIVITY_RECORDED</p>
+              )}
+            </div>
+          </div>
+        )}
+
+      </div>
     </div>
   );
 }

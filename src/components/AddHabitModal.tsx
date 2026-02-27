@@ -227,7 +227,7 @@ export function AddHabitModal({ isOpen, onClose, linkedGoalId }: AddHabitModalPr
                 </div>
                 <div>
                   <h4 className="text-sm font-semibold text-gold-400 mb-1">
-                    🚀 Two-Minute Rule
+                    Two-Minute Rule
                   </h4>
                   <p className="text-xs text-white/60 leading-relaxed">
                     Make it easy to start! Scale down your habit to just 2 minutes:
@@ -238,7 +238,7 @@ export function AddHabitModal({ isOpen, onClose, linkedGoalId }: AddHabitModalPr
                     <li>• &quot;Meditate 20 min&quot; → &quot;Take 3 deep breaths&quot;</li>
                   </ul>
                   <p className="mt-2 text-xs text-ascend-400 italic">
-                    Starting is the hardest part. Once you start, momentum takes over! ⚡
+                    Starting is the hardest part. Once you start, momentum takes over.
                   </p>
                 </div>
               </div>

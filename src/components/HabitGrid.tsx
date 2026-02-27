@@ -112,7 +112,7 @@ export function HabitGrid() {
             </div>
             <div className="flex-1">
               <h4 className="text-sm font-semibold text-orange-400 mb-1 flex items-center gap-2">
-                <span>Never Miss Twice! 🔥</span>
+                <span>Never Miss Twice</span>
               </h4>
               <p className="text-xs text-white/60 leading-relaxed mb-2">
                 You missed {neverMissTwiceHabits.length === 1 ? 'a habit' : `${neverMissTwiceHabits.length} habits`} yesterday, 

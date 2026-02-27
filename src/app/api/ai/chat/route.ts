@@ -1,11 +1,12 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY - AI Chat API Route (Cost-Optimized)
-// Server-side AI endpoint using cheapest models with Atomic Habits knowledge
+// RESURGO - AI Chat API Route (Cost-Optimized)
+// Ollama-first with cloud fallback cascade
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
 import { buildAtomicHabitsSystemPrompt } from '@/lib/atomic-habits-knowledge';
+import { addSecurityHeaders, isTrustedOrigin, sanitizeString } from '@/lib/security';
 
 // ─────────────────────────────────────────────────────────────────────────────────
 // CONFIGURATION - Use cheapest models possible
@@ -16,9 +17,15 @@ const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const GOOGLE_AI_KEY = process.env.GOOGLE_AI_STUDIO_KEY;
 const GOOGLE_AI_KEY_BACKUP = process.env.GOOGLE_AI_STUDIO_KEY_BACKUP;
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const OLLAMA_BASE_URL = process.env.OLLAMA_BASE_URL ?? 'http://localhost:11434';
 
-// Model configurations - CHEAPEST options first
+// Model configurations - local-first, then cheapest cloud options
 const MODELS = {
+  // Ollama - local, zero-cost
+  ollama: {
+    free: 'dolphin-phi:latest',    // 1.6 GB — fastest local model
+    premium: 'dolphin3:latest',    // 4.9 GB — best local model
+  },
   // Groq - FREE tier, very fast
   groq: {
     free: 'llama-3.1-8b-instant',      // Fastest, cheapest
@@ -53,6 +60,11 @@ interface AIResponse {
   error?: string;
   provider?: string;
   model?: string;
+  fallback?: boolean;
+}
+
+function secureJson(body: AIResponse, status: number = 200): NextResponse {
+  return addSecurityHeaders(NextResponse.json(body, { status }));
 }
 
 // ─────────────────────────────────────────────────────────────────────────────────
@@ -80,8 +92,36 @@ function checkRateLimit(ip: string, isPremium: boolean = false): boolean {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────────
-// AI PROVIDERS (Cheapest first)
+// AI PROVIDERS (local-first, then cloud cascade)
 // ─────────────────────────────────────────────────────────────────────────────────
+
+// 0. OLLAMA - local, zero-cost (tried first if running)
+async function callOllama(messages: ChatMessage[], isPremium: boolean): Promise<{ text: string; model: string }> {
+  if (!OLLAMA_BASE_URL) throw new Error('Ollama not configured');
+  const model = isPremium ? MODELS.ollama.premium : MODELS.ollama.free;
+  const ctrl = new AbortController();
+  const tid = setTimeout(() => ctrl.abort(), 10_000);
+  try {
+    const response = await fetch(`${OLLAMA_BASE_URL}/api/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: ctrl.signal,
+      body: JSON.stringify({
+        model,
+        messages,
+        stream: false,
+        options: { temperature: 0.7, num_predict: isPremium ? 1024 : 512 },
+      }),
+    });
+    clearTimeout(tid);
+    if (!response.ok) throw new Error(`Ollama ${response.status}: ${await response.text()}`);
+    const data = await response.json() as { message?: { content?: string } };
+    return { text: data.message?.content ?? '', model };
+  } catch (err) {
+    clearTimeout(tid);
+    throw err;
+  }
+}
 
 // 1. GROQ - Primary (Fast & Free tier)
 async function callGroq(messages: ChatMessage[], isPremium: boolean): Promise<{ text: string; model: string }> {
@@ -174,8 +214,8 @@ async function callOpenRouter(messages: ChatMessage[], isPremium: boolean): Prom
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-      'HTTP-Referer': 'https://ascendify.app',
-      'X-Title': 'Ascendify AI Coach',
+      'HTTP-Referer': 'https://resurgo.life',
+      'X-Title': 'Resurgo AI Coach',
     },
     body: JSON.stringify({
       model,
@@ -201,76 +241,89 @@ async function callOpenRouter(messages: ChatMessage[], isPremium: boolean): Prom
 // MAIN API HANDLER
 // ─────────────────────────────────────────────────────────────────────────────────
 
-export async function POST(request: NextRequest): Promise<NextResponse<AIResponse>> {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
+    if (!isTrustedOrigin(request)) {
+      return secureJson({ success: false, error: 'Invalid request origin' }, 403);
+    }
+
     // ────────────────────────────────────────────────────────────────────────
     // 1) Verify authentication - prevent unauthorized API abuse
     // ────────────────────────────────────────────────────────────────────────
     const { userId } = await auth();
     if (!userId) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return secureJson({ success: false, error: 'Unauthorized' }, 401);
     }
 
     // Get client IP for rate limiting
     const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
     
     const body = await request.json();
-    const { messages, isPremium = false, context } = body as { 
+    const { messages, context } = body as {
       messages: ChatMessage[]; 
-      isPremium?: boolean;
       context?: string;
     };
 
+    // Determine premium status server-side — never trust the client
+    // Check Clerk public metadata for plan, default to free
+    const { currentUser } = await import('@clerk/nextjs/server');
+    const clerkUser = await currentUser();
+    const userPlan = (clerkUser?.publicMetadata as Record<string, unknown>)?.plan || 'free';
+    const isPremium = userPlan === 'pro' || userPlan === 'lifetime';
+
     // Rate limiting
     if (!checkRateLimit(ip, isPremium)) {
-      return NextResponse.json(
-        { success: false, error: 'Rate limit exceeded. Please try again in a minute.' },
-        { status: 429 }
-      );
+      return secureJson({ success: false, error: 'Rate limit exceeded. Please try again in a minute.' }, 429);
     }
 
     if (!messages || !Array.isArray(messages)) {
-      return NextResponse.json(
-        { success: false, error: 'Invalid request: messages array required' },
-        { status: 400 }
-      );
+      return secureJson({ success: false, error: 'Invalid request: messages array required' }, 400);
     }
+
+    const sanitizedMessages: ChatMessage[] = messages
+      .slice(-20)
+      .map((message) => ({
+        role: message.role,
+        content: sanitizeString(String(message.content || ''), { maxLength: 2000, allowNewlines: true }),
+      }));
 
     // Build system prompt with Atomic Habits knowledge
     const systemPrompt = buildAtomicHabitsSystemPrompt();
     
     const systemMessage: ChatMessage = {
       role: 'system',
-      content: context 
-        ? `${systemPrompt}\n\nCURRENT CONTEXT: ${context}`
+      content: context
+        ? `${systemPrompt}\n\nCURRENT CONTEXT: ${sanitizeString(String(context), { maxLength: 1000, allowNewlines: true })}`
         : systemPrompt,
     };
 
-    const fullMessages = [systemMessage, ...messages];
+    const fullMessages = [systemMessage, ...sanitizedMessages];
 
     let result: { text: string; model: string };
     let provider: string;
 
-    // Try providers in order of cost efficiency: Groq -> Gemini -> OpenRouter
+    // Try providers in order: Ollama (local) -> Groq -> Gemini -> OpenRouter
     try {
-      result = await callGroq(fullMessages, isPremium);
-      provider = 'groq';
-    } catch (groqError) {
-      console.warn('Groq failed, trying Gemini:', (groqError as Error).message);
+      result = await callOllama(fullMessages, isPremium);
+      provider = 'ollama';
+    } catch {
       try {
-        result = await callGemini(fullMessages, isPremium);
-        provider = 'gemini';
-      } catch (geminiError) {
-        console.warn('Gemini failed, trying OpenRouter:', (geminiError as Error).message);
-        result = await callOpenRouter(fullMessages, isPremium);
-        provider = 'openrouter';
+        result = await callGroq(fullMessages, isPremium);
+        provider = 'groq';
+      } catch (groqError) {
+        console.warn('Groq failed, trying Gemini:', (groqError as Error).message);
+        try {
+          result = await callGemini(fullMessages, isPremium);
+          provider = 'gemini';
+        } catch (geminiError) {
+          console.warn('Gemini failed, trying OpenRouter:', (geminiError as Error).message);
+          result = await callOpenRouter(fullMessages, isPremium);
+          provider = 'openrouter';
+        }
       }
     }
 
-    return NextResponse.json({
+    return secureJson({
       success: true,
       message: result.text,
       provider,
@@ -281,13 +334,14 @@ export async function POST(request: NextRequest): Promise<NextResponse<AIRespons
     
     // Return a helpful fallback message instead of error
     const fallbackResponses = [
-      "I'm having trouble connecting right now. Remember: every action is a vote for the type of person you wish to become. Keep going! 💪",
+      "I'm having trouble connecting right now. Remember: every action is a vote for the type of person you wish to become. Keep going.",
       "Connection hiccup! But here's a thought: You don't rise to your goals, you fall to your systems. Focus on the process!",
       "Technical difficulty, but don't let it stop you. Master the art of showing up—that's what matters most!",
     ];
     
-    return NextResponse.json({
-      success: true, // Return success with fallback
+    return secureJson({
+      success: true,
+      fallback: true, // Signal to the client this is a fallback, not a real AI response
       message: fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)],
       provider: 'fallback',
     });

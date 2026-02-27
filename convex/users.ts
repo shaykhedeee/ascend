@@ -1,10 +1,12 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY — User Sync & Management (Convex)
+// RESURGO — User Sync & Management (Convex)
 // Syncs Clerk users to Convex DB, manages plan status
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { mutation, query, internalMutation } from './_generated/server';
+import { mutation, query } from './_generated/server';
+import { internal } from './_generated/api';
 import { v } from 'convex/values';
+import { Id } from './_generated/dataModel';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // STORE USER — Called after Clerk sign-in to upsert user record
@@ -80,6 +82,88 @@ export const current = query({
       theme: v.optional(v.union(v.literal('light'), v.literal('dark'), v.literal('system'))),
       onboardingComplete: v.boolean(),
       streakFreezeCount: v.number(),
+      // Onboarding preferences
+      focusAreas: v.optional(v.array(v.string())),
+      selectedHabitTemplates: v.optional(v.array(v.string())),
+      preferredTime: v.optional(v.string()),
+      primaryGoal: v.optional(v.string()),
+      primaryGoalReason: v.optional(v.string()),
+      primaryGoalDeadline: v.optional(v.string()),
+      // Vision & Life Design
+      lifeWheelScores: v.optional(v.object({
+        health: v.number(),
+        career: v.number(),
+        finance: v.number(),
+        learning: v.number(),
+        relationships: v.number(),
+        creativity: v.number(),
+        mindfulness: v.number(),
+        personal_growth: v.number(),
+      })),
+      coreValues: v.optional(v.array(v.string())),
+      lifeVision: v.optional(v.string()),
+      visionBoard: v.optional(v.array(v.object({
+        id: v.string(),
+        imageUrl: v.string(),
+        caption: v.optional(v.string()),
+        domain: v.optional(v.string()),
+      }))),
+      // Schedule preferences
+      wakeTime: v.optional(v.string()),
+      sleepTime: v.optional(v.string()),
+      peakProductivityTime: v.optional(v.string()),
+      workSchedule: v.optional(v.object({
+        startTime: v.string(),
+        endTime: v.string(),
+        lunchStart: v.optional(v.string()),
+        lunchEnd: v.optional(v.string()),
+        workDays: v.array(v.number()),
+      })),
+      // Notification preferences
+      notificationPrefs: v.optional(v.object({
+        morningMotivation: v.boolean(),
+        middayCheckin: v.boolean(),
+        eveningWinddown: v.boolean(),
+        taskReminders: v.boolean(),
+        hydrationReminders: v.boolean(),
+        focusSessionReminders: v.boolean(),
+        sleepReminders: v.boolean(),
+        weeklyReviewReminders: v.boolean(),
+        quietHoursEnabled: v.boolean(),
+        quietHoursStart: v.string(),
+        quietHoursEnd: v.string(),
+        reminderStyle: v.union(
+          v.literal('gentle'),
+          v.literal('supportive'),
+          v.literal('persistent'),
+          v.literal('minimal')
+        ),
+        coachingFrequency: v.union(
+          v.literal('daily'),
+          v.literal('weekly'),
+          v.literal('struggling_only'),
+          v.literal('manual')
+        ),
+      })),
+      // Coach personality
+      coachPersonality: v.optional(v.union(
+        v.literal('supportive'),
+        v.literal('challenging'),
+        v.literal('analytical'),
+        v.literal('humorous')
+      )),
+      // Recovery state
+      lastActiveAt: v.optional(v.number()),
+      recoveryStatus: v.optional(v.union(
+        v.literal('active'),
+        v.literal('at_risk'),
+        v.literal('inactive'),
+        v.literal('recovering')
+      )),
+      // Billing concurrency guard (new fields)
+      planVersion: v.optional(v.number()),
+      planUpdatedAt: v.optional(v.number()),
+      lastBillingEventId: v.optional(v.string()),
       createdAt: v.number(),
       updatedAt: v.number(),
     }),
@@ -128,6 +212,21 @@ export const updateProfile = mutation({
 // ─────────────────────────────────────────────────────────────────────────────
 export const completeOnboarding = mutation({
   args: {
+    focusAreas: v.optional(v.array(v.string())),
+    selectedHabitTemplates: v.optional(v.array(v.string())),
+    preferredTime: v.optional(v.string()),
+    primaryGoal: v.optional(v.string()),
+    primaryGoalReason: v.optional(v.string()),
+    primaryGoalDeadline: v.optional(v.string()),
+    timezone: v.optional(v.string()),
+    coachPersonality: v.optional(v.union(
+      v.literal('supportive'),
+      v.literal('challenging'),
+      v.literal('analytical'),
+      v.literal('humorous')
+    )),
+    coachPersona: v.optional(v.string()),
+    // Legacy fields still accepted
     lifeWheelScores: v.optional(v.object({
       health: v.number(),
       career: v.number(),
@@ -143,12 +242,6 @@ export const completeOnboarding = mutation({
     wakeTime: v.optional(v.string()),
     sleepTime: v.optional(v.string()),
     peakProductivityTime: v.optional(v.string()),
-    coachPersonality: v.optional(v.union(
-      v.literal('supportive'),
-      v.literal('challenging'),
-      v.literal('analytical'),
-      v.literal('humorous')
-    )),
   },
   returns: v.null(),
   handler: async (ctx, args) => {
@@ -161,18 +254,29 @@ export const completeOnboarding = mutation({
       .unique();
     if (!user) throw new Error('User not found');
 
-    const updates: any = {
+    const updates: Record<string, unknown> = {
       onboardingComplete: true,
       updatedAt: Date.now(),
     };
 
+    // New onboarding fields
+    if (args.focusAreas) updates.focusAreas = args.focusAreas;
+    if (args.selectedHabitTemplates) updates.selectedHabitTemplates = args.selectedHabitTemplates;
+    if (args.preferredTime) updates.preferredTime = args.preferredTime;
+    if (args.primaryGoal) updates.primaryGoal = args.primaryGoal;
+    if (args.primaryGoalReason) updates.primaryGoalReason = args.primaryGoalReason;
+    if (args.primaryGoalDeadline) updates.primaryGoalDeadline = args.primaryGoalDeadline;
+    if (args.timezone) updates.timezone = args.timezone;
+    if (args.coachPersonality) updates.coachPersonality = args.coachPersonality;
+    if (args.coachPersona) updates.coachPersona = args.coachPersona;
+    
+    // Legacy fields
     if (args.lifeWheelScores) updates.lifeWheelScores = args.lifeWheelScores;
     if (args.coreValues) updates.coreValues = args.coreValues;
     if (args.lifeVision) updates.lifeVision = args.lifeVision;
     if (args.wakeTime) updates.wakeTime = args.wakeTime;
     if (args.sleepTime) updates.sleepTime = args.sleepTime;
     if (args.peakProductivityTime) updates.peakProductivityTime = args.peakProductivityTime;
-    if (args.coachPersonality) updates.coachPersonality = args.coachPersonality;
 
     await ctx.db.patch(user._id, updates);
   },
@@ -301,6 +405,14 @@ export const updateNotificationPrefs = mutation({
       morningMotivation: v.boolean(),
       middayCheckin: v.boolean(),
       eveningWinddown: v.boolean(),
+      taskReminders: v.boolean(),
+      hydrationReminders: v.boolean(),
+      focusSessionReminders: v.boolean(),
+      sleepReminders: v.boolean(),
+      weeklyReviewReminders: v.boolean(),
+      quietHoursEnabled: v.boolean(),
+      quietHoursStart: v.string(),
+      quietHoursEnd: v.string(),
       reminderStyle: v.union(
         v.literal('gentle'),
         v.literal('supportive'),
@@ -343,32 +455,67 @@ export const updatePlanFromWebhook = mutation({
     eventId: v.string(),
     eventType: v.string(),
     webhookSecret: v.string(),
+    // Optional: unix-ms timestamp from the webhook for stale-event detection
+    webhookTimestampMs: v.optional(v.number()),
   },
   returns: v.object({
     applied: v.boolean(),
     reason: v.string(),
   }),
-  handler: async (ctx, { clerkId, plan, eventId, eventType, webhookSecret }) => {
+  handler: async (ctx, { clerkId, plan, eventId, eventType, webhookSecret, webhookTimestampMs }) => {
+    const logBillingEvent = async (args: {
+      userId?: Id<'users'>;
+      status: 'received' | 'applied' | 'ignored' | 'failed';
+      reason?: string;
+      details?: unknown;
+    }) => {
+      await ctx.db.insert('billingEvents', {
+        userId: args.userId,
+        clerkId,
+        eventId,
+        eventType,
+        source: 'webhook',
+        status: args.status,
+        plan,
+        reason: args.reason,
+        details: args.details,
+        createdAt: Date.now(),
+      });
+    };
+
     const expected = process.env.BILLING_WEBHOOK_SYNC_SECRET;
     if (!expected) {
+      await logBillingEvent({
+        status: 'failed',
+        reason: 'sync_secret_missing',
+      });
       throw new Error('BILLING_WEBHOOK_SYNC_SECRET is not configured');
     }
 
-    // Use timing-safe comparison to prevent timing attacks
-    const expectedBuffer = Buffer.from(expected);
-    const receivedBuffer = Buffer.from(webhookSecret);
-    
-    try {
-      const crypto = require('crypto');
-      if (expectedBuffer.length !== receivedBuffer.length || 
-          !crypto.timingSafeEqual(expectedBuffer, receivedBuffer)) {
-        throw new Error('Unauthorized webhook plan update');
-      }
-    } catch (err: any) {
-      // timingSafeEqual throws if lengths don't match
-      if (err.message === 'Unauthorized webhook plan update') throw err;
+    // Constant-time comparison that works in Convex's V8 runtime (no Node.js Buffer/crypto)
+    if (expected.length !== webhookSecret.length) {
+      await logBillingEvent({
+        status: 'failed',
+        reason: 'sync_secret_length_mismatch',
+      });
       throw new Error('Unauthorized webhook plan update');
     }
+    let mismatch = 0;
+    for (let i = 0; i < expected.length; i++) {
+      mismatch |= expected.charCodeAt(i) ^ webhookSecret.charCodeAt(i);
+    }
+    if (mismatch !== 0) {
+      await logBillingEvent({
+        status: 'failed',
+        reason: 'sync_secret_mismatch',
+      });
+      throw new Error('Unauthorized webhook plan update');
+    }
+
+    await logBillingEvent({
+      status: 'received',
+      reason: 'accepted_for_processing',
+    });
 
     // Durable idempotency: if this webhook event has already been processed,
     // return success without re-applying mutations.
@@ -378,6 +525,10 @@ export const updatePlanFromWebhook = mutation({
       .unique();
 
     if (existingEvent) {
+      await logBillingEvent({
+        status: 'ignored',
+        reason: 'duplicate_event',
+      });
       return {
         applied: false,
         reason: 'duplicate_event',
@@ -403,16 +554,85 @@ export const updatePlanFromWebhook = mutation({
         processedAt: Date.now(),
       });
 
+      await logBillingEvent({
+        status: 'ignored',
+        reason: 'user_not_found',
+      });
+
       return {
         applied: false,
         reason: 'user_not_found',
       };
     }
 
+    const prevPlan = user.plan;
+    const now = Date.now();
+
+    // ── Stale-event guard ────────────────────────────────────────────────────
+    // If the incoming webhook is older than the last plan update we already
+    // applied, skip it to prevent out-of-order delivery from overwriting a
+    // newer plan state (e.g. upgrade webhook arrives after a later downgrade).
+    if (
+      webhookTimestampMs !== undefined &&
+      typeof user.planUpdatedAt === 'number' &&
+      webhookTimestampMs < user.planUpdatedAt
+    ) {
+      console.warn(
+        `[users.updatePlanFromWebhook] Stale event ${eventId} (ts=${webhookTimestampMs}) ` +
+        `< planUpdatedAt=${user.planUpdatedAt} — ignoring`
+      );
+
+      await ctx.db.insert('billingWebhookEvents', {
+        eventId,
+        eventType,
+        clerkId,
+        plan,
+        status: 'ignored',
+        reason: 'stale_event',
+        processedAt: now,
+      });
+
+      await logBillingEvent({
+        userId: user._id,
+        status: 'ignored',
+        reason: 'stale_event',
+        details: { webhookTimestampMs, planUpdatedAt: user.planUpdatedAt },
+      });
+
+      return { applied: false, reason: 'stale_event' };
+    }
+
     await ctx.db.patch(user._id, {
       plan,
-      updatedAt: Date.now(),
+      planVersion: (user.planVersion ?? 0) + 1,
+      planUpdatedAt: now,
+      lastBillingEventId: eventId,
+      updatedAt: now,
     });
+
+    // ── Downgrade preservation: archive excess habits/goals on free downgrade ──
+    const isDowngrade = prevPlan !== 'free' && plan === 'free';
+    const isUpgrade = prevPlan === 'free' && plan !== 'free';
+
+    if (isDowngrade) {
+      try {
+        const archivedHabitsCount = await ctx.runMutation((internal as any).habits.archiveExcessOnDowngradeInternal, { newPlan: 'free' });
+        const archivedGoalsCount = await ctx.runMutation((internal as any).goals.archiveExcessOnDowngradeInternal, { newPlan: 'free' });
+        console.log(`[Downgrade] Archived ${archivedHabitsCount ?? 0} habits and ${archivedGoalsCount ?? 0} goals for ${clerkId}`);
+      } catch (err) {
+        console.error('[Downgrade] Failed to archive excess items via internal helpers', err instanceof Error ? err.message : String(err));
+      }
+    }
+
+    if (isUpgrade) {
+      try {
+        const restoredHabits = await ctx.runMutation((internal as any).habits.restoreArchivedOnUpgradeInternal, { newPlan: plan });
+        const restoredGoals = await ctx.runMutation((internal as any).goals.restoreArchivedOnUpgradeInternal, { newPlan: plan });
+        console.log(`[Upgrade] Restored ${restoredHabits ?? 0} habits and ${restoredGoals ?? 0} goals for ${clerkId}`);
+      } catch (err) {
+        console.error('[Upgrade] Failed to restore archived items via internal helpers', err instanceof Error ? err.message : String(err));
+      }
+    }
 
     await ctx.db.insert('billingWebhookEvents', {
       eventId,
@@ -424,10 +644,113 @@ export const updatePlanFromWebhook = mutation({
       processedAt: Date.now(),
     });
 
+    await logBillingEvent({
+      userId: user._id,
+      status: 'applied',
+      reason: 'ok',
+    });
+
     return {
       applied: true,
       reason: 'ok',
     };
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BILLING AUDIT LOG — Public mutation for webhook/audit instrumentation
+// ─────────────────────────────────────────────────────────────────────────────
+export const logBillingEvent = mutation({
+  args: {
+    userId: v.optional(v.id('users')),
+    clerkId: v.string(),
+    eventId: v.string(),
+    eventType: v.string(),
+    source: v.union(v.literal('webhook'), v.literal('system'), v.literal('manual')),
+    status: v.union(
+      v.literal('received'),
+      v.literal('applied'),
+      v.literal('ignored'),
+      v.literal('failed')
+    ),
+    plan: v.optional(v.union(v.literal('free'), v.literal('pro'), v.literal('lifetime'))),
+    reason: v.optional(v.string()),
+    details: v.optional(v.any()),
+    webhookSecret: v.string(),
+  },
+  returns: v.null(),
+  handler: async (ctx, args) => {
+    const expected = process.env.BILLING_WEBHOOK_SYNC_SECRET;
+    if (!expected) {
+      throw new Error('BILLING_WEBHOOK_SYNC_SECRET is not configured');
+    }
+
+    if (expected.length !== args.webhookSecret.length) {
+      throw new Error('Unauthorized billing audit write');
+    }
+
+    let mismatch = 0;
+    for (let i = 0; i < expected.length; i++) {
+      mismatch |= expected.charCodeAt(i) ^ args.webhookSecret.charCodeAt(i);
+    }
+
+    if (mismatch !== 0) {
+      throw new Error('Unauthorized billing audit write');
+    }
+
+    await ctx.db.insert('billingEvents', {
+      userId: args.userId,
+      clerkId: args.clerkId,
+      eventId: args.eventId,
+      eventType: args.eventType,
+      source: args.source,
+      status: args.status,
+      plan: args.plan,
+      reason: args.reason,
+      details: args.details,
+      createdAt: Date.now(),
+    });
+
+    return null;
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BILLING AUDIT LOG — Clerk-facing support query
+// ─────────────────────────────────────────────────────────────────────────────
+export const getBillingEventsByClerkId = query({
+  args: {
+    clerkId: v.string(),
+    limit: v.optional(v.number()),
+  },
+  returns: v.array(
+    v.object({
+      _id: v.id('billingEvents'),
+      _creationTime: v.number(),
+      userId: v.optional(v.id('users')),
+      clerkId: v.string(),
+      eventId: v.string(),
+      eventType: v.string(),
+      source: v.union(v.literal('webhook'), v.literal('system'), v.literal('manual')),
+      status: v.union(
+        v.literal('received'),
+        v.literal('applied'),
+        v.literal('ignored'),
+        v.literal('failed')
+      ),
+      plan: v.optional(v.union(v.literal('free'), v.literal('pro'), v.literal('lifetime'))),
+      reason: v.optional(v.string()),
+      details: v.optional(v.any()),
+      createdAt: v.number(),
+    })
+  ),
+  handler: async (ctx, { clerkId, limit }) => {
+    const cappedLimit = Math.min(Math.max(limit ?? 50, 1), 200);
+    return await ctx.db
+      .query('billingEvents')
+      .withIndex('by_clerkId_and_createdAt', (q) => q.eq('clerkId', clerkId))
+      .order('desc')
+      .take(cappedLimit);
   },
 });
 

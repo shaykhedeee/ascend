@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY - AI Suggestions API Route (Cost-Optimized)
+// RESURGO - AI Suggestions API Route (Cost-Optimized)
 // Server-side AI endpoint for habit suggestions and insights using Atomic Habits
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -11,6 +11,7 @@ import {
   getRandomQuote,
   getRandomCoachingMessage,
 } from '@/lib/atomic-habits-knowledge';
+import { addSecurityHeaders, isTrustedOrigin, sanitizeString } from '@/lib/security';
 
 // ─────────────────────────────────────────────────────────────────────────────────
 // CONFIGURATION
@@ -47,6 +48,10 @@ interface SuggestionsResponse {
   quote?: { text: string; context: string };
   law?: { name: string; strategies: string[] };
   error?: string;
+}
+
+function secureJson(body: SuggestionsResponse, status: number = 200): NextResponse {
+  return addSecurityHeaders(NextResponse.json(body, { status }));
 }
 
 // ─────────────────────────────────────────────────────────────────────────────────
@@ -161,7 +166,7 @@ function getLocalCoaching(trigger?: string): string {
   // Default to identity-based coaching
   const messages = COACHING_MESSAGES.find(m => m.trigger === 'identity_building')?.messages || [];
   return messages[Math.floor(Math.random() * messages.length)] || 
-    "Every action is a vote for the type of person you wish to become. Keep building that identity! 💪";
+    "Every action is a vote for the type of person you wish to become. Keep building that identity.";
 }
 
 function getLocalQuote(tags?: string[]): { text: string; context: string } {
@@ -203,27 +208,44 @@ function getRelevantLaw(context: { habits?: { streak: number; completionRate: nu
 // MAIN API HANDLER
 // ─────────────────────────────────────────────────────────────────────────────────
 
-export async function POST(request: NextRequest): Promise<NextResponse<SuggestionsResponse>> {
+export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
+    if (!isTrustedOrigin(request)) {
+      return secureJson({ success: false, error: 'Invalid request origin' }, 403);
+    }
+
     // ────────────────────────────────────────────────────────────────────────
     // 1) Verify authentication - prevent unauthorized API abuse
     // ────────────────────────────────────────────────────────────────────────
     const { userId } = await auth();
     if (!userId) {
-      return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return secureJson({ success: false, error: 'Unauthorized' }, 401);
     }
 
     const body = await request.json() as SuggestionsRequest;
-    const { type, context, isPremium = false } = body;
+    const { type, context } = body;
+
+    const sanitizedContext = {
+      ...context,
+      goals: context?.goals?.map((goal) => sanitizeString(goal, { maxLength: 120 })) || [],
+      recentActivity: context?.recentActivity?.map((entry) => sanitizeString(entry, { maxLength: 160 })) || [],
+      identities: context?.identities?.map((identity) => sanitizeString(identity, { maxLength: 80 })) || [],
+      trigger: context?.trigger ? sanitizeString(context.trigger, { maxLength: 120 }) : undefined,
+      habits: context?.habits?.map((habit) => ({
+        name: sanitizeString(habit.name, { maxLength: 100 }),
+        streak: habit.streak,
+        completionRate: habit.completionRate,
+      })) || [],
+    };
+
+    // Determine premium status server-side — never trust the client
+    const { currentUser } = await import('@clerk/nextjs/server');
+    const clerkUser = await currentUser();
+    const userPlan = (clerkUser?.publicMetadata as Record<string, unknown>)?.plan || 'free';
+    const isPremium = userPlan === 'pro' || userPlan === 'lifetime';
 
     if (!type) {
-      return NextResponse.json(
-        { success: false, error: 'Type is required' },
-        { status: 400 }
-      );
+      return secureJson({ success: false, error: 'Type is required' }, 400);
     }
 
     const result: SuggestionsResponse = { success: true };
@@ -240,7 +262,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<Suggestio
       // LAW - No AI cost, use local knowledge base
       // ─────────────────────────────────────────────────────────────────────────
       case 'law':
-        result.law = getRelevantLaw(context);
+        result.law = getRelevantLaw(sanitizedContext);
         break;
 
       // ─────────────────────────────────────────────────────────────────────────
@@ -249,14 +271,14 @@ export async function POST(request: NextRequest): Promise<NextResponse<Suggestio
       case 'coaching':
         if (!isPremium) {
           // Free users get local coaching (no AI cost)
-          result.coachingMessage = getLocalCoaching(context.trigger);
+          result.coachingMessage = getLocalCoaching(sanitizedContext.trigger);
         } else {
           // Premium users get AI-personalized coaching
           const prompt = `Generate a personalized coaching message (1-2 sentences) for:
-Level: ${context.userLevel || 1}
-Goals: ${context.goals?.join(', ') || 'General improvement'}
-Active Habits: ${context.habits?.length || 0}
-Best Streak: ${Math.max(...(context.habits?.map(h => h.streak) || [0]))} days
+Level: ${sanitizedContext.userLevel || 1}
+Goals: ${sanitizedContext.goals?.join(', ') || 'General improvement'}
+Active Habits: ${sanitizedContext.habits?.length || 0}
+Best Streak: ${Math.max(...(sanitizedContext.habits?.map(h => h.streak) || [0]))} days
 
 Use Atomic Habits principles. Return JSON: {"message": "your message"}`;
 
@@ -265,7 +287,7 @@ Use Atomic Habits principles. Return JSON: {"message": "your message"}`;
             const parsed = parseJsonResponse(response) as { message: string };
             result.coachingMessage = parsed.message;
           } catch {
-            result.coachingMessage = getLocalCoaching(context.trigger);
+            result.coachingMessage = getLocalCoaching(sanitizedContext.trigger);
           }
         }
         break;
@@ -277,9 +299,9 @@ Use Atomic Habits principles. Return JSON: {"message": "your message"}`;
         const habitCount = isPremium ? 5 : 3;
         const prompt = `Suggest ${habitCount} specific habits based on Atomic Habits principles.
 
-User Goals: ${context.goals?.join(', ') || 'Self-improvement'}
-Current Habits: ${context.habits?.map(h => h.name).join(', ') || 'None yet'}
-Identities: ${context.identities?.join(', ') || 'Not specified'}
+User Goals: ${sanitizedContext.goals?.join(', ') || 'Self-improvement'}
+Current Habits: ${sanitizedContext.habits?.map(h => h.name).join(', ') || 'None yet'}
+Identities: ${sanitizedContext.identities?.join(', ') || 'Not specified'}
 
 Each habit should:
 - Follow the Two-Minute Rule (easy to start)
@@ -305,7 +327,7 @@ Return JSON array: ["Habit 1", "Habit 2", ...]`;
       // INSIGHTS - AI-powered analysis
       // ─────────────────────────────────────────────────────────────────────────
       case 'insights':
-        if (!context.habits || context.habits.length === 0) {
+        if (!sanitizedContext.habits || sanitizedContext.habits.length === 0) {
           result.insights = [
             "Start with just one habit—master showing up before optimizing",
             "Remember: You don't rise to your goals, you fall to your systems",
@@ -314,7 +336,7 @@ Return JSON array: ["Habit 1", "Habit 2", ...]`;
         } else {
           const insightPrompt = `Analyze this habit data and give ${isPremium ? 4 : 2} insights:
 
-${context.habits.map(h => `- ${h.name}: ${h.streak} day streak, ${h.completionRate}% completion`).join('\n')}
+${sanitizedContext.habits.map(h => `- ${h.name}: ${h.streak} day streak, ${h.completionRate}% completion`).join('\n')}
 
 Use Atomic Habits principles. Be specific and actionable.
 Return JSON array: ["Insight 1", "Insight 2", ...]`;
@@ -324,7 +346,7 @@ Return JSON array: ["Insight 1", "Insight 2", ...]`;
             result.insights = parseJsonResponse(response) as string[];
           } catch {
             // Fallback insights based on data
-            const avgStreak = context.habits.reduce((a, h) => a + h.streak, 0) / context.habits.length;
+            const avgStreak = sanitizedContext.habits.reduce((a, h) => a + h.streak, 0) / sanitizedContext.habits.length;
             result.insights = avgStreak < 7
               ? ["Focus on never missing twice—that's how habits die", "Try habit stacking: attach new habits to existing routines"]
               : ["Great consistency! Now optimize—how can you make these habits 1% better?", "Consider adding a harder challenge to avoid the boredom plateau"];
@@ -333,18 +355,15 @@ Return JSON array: ["Insight 1", "Insight 2", ...]`;
         break;
 
       default:
-        return NextResponse.json(
-          { success: false, error: 'Invalid suggestion type' },
-          { status: 400 }
-        );
+        return secureJson({ success: false, error: 'Invalid suggestion type' }, 400);
     }
 
-    return NextResponse.json(result);
+    return secureJson(result);
   } catch (error) {
     console.error('Suggestions API error:', error);
     
     // Always return something useful
-    return NextResponse.json({
+    return secureJson({
       success: true,
       coachingMessage: getLocalCoaching(),
       quote: getLocalQuote(),

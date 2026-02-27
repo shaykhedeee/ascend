@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// AscendifyIFY - Social Sharing Component
+// RESURGOIFY - Social Sharing Component
 // Share progress, streaks, and achievements on social media
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -43,26 +43,26 @@ const generateShareText = (props: SocialShareProps): string => {
   const parts: string[] = [];
   
   if (props.streakDays && props.streakDays > 0) {
-    parts.push(`🔥 ${props.streakDays}-day streak`);
+    parts.push(`Streak: ${props.streakDays} days`);
   }
   
   if (props.habitsCompleted && props.habitsCompleted > 0) {
-    parts.push(`✅ ${props.habitsCompleted} habits completed today`);
+    parts.push(`Completed today: ${props.habitsCompleted} habits`);
   }
   
   if (props.level && props.level > 1) {
-    parts.push(`⭐ Level ${props.level}`);
+    parts.push(`Level ${props.level}`);
   }
   
   if (props.goalProgress && props.goalProgress > 0) {
-    parts.push(`📈 ${props.goalProgress}% toward my goal`);
+    parts.push(`Goal progress: ${props.goalProgress}%`);
   }
   
   if (parts.length === 0) {
-    return "I'm building better habits with Ascendify! Join me on the journey.";
+    return "I'm building better habits with RESURGO! Join me on the journey.";
   }
   
-  return `${parts.join(' | ')}\n\nBuilding better habits with @AscendifyApp 🚀`;
+  return `${parts.join(' | ')}\n\nBuilding better habits with @RESURGOApp`;
 };
 
 const shareUrls = {
@@ -122,7 +122,7 @@ export function SocialShare({
     goalProgress, 
     customMessage 
   });
-  const shareUrl = typeof window !== 'undefined' ? window.location.origin : 'https://ascendify.app';
+  const shareUrl = typeof window !== 'undefined' ? window.location.origin : 'https://resurgo.life';
   const hashtags = ['habits', 'productivity', 'selfimprovement', 'goals'];
 
   const handleShare = async (platform: string) => {
@@ -131,7 +131,7 @@ export function SocialShare({
     if (platform === 'native' && navigator.share) {
       try {
         await navigator.share({
-          title: 'Ascendify Progress',
+          title: 'RESURGO Progress',
           text: shareText,
           url: shareUrl,
         });
@@ -238,7 +238,7 @@ export function SocialShare({
           <div className="w-8 h-8 rounded-lg bg-ascend-500/20 flex items-center justify-center">
             <span className="text-xs font-bold text-ascend-400">A</span>
           </div>
-          <span className="text-sm font-semibold text-themed">Ascendify Progress</span>
+          <span className="text-sm font-semibold text-themed">RESURGO Progress</span>
         </div>
         <p className="text-sm text-themed-secondary whitespace-pre-line">{shareText}</p>
       </div>
@@ -366,7 +366,7 @@ export function StreakShareCard({ streakDays, habitName }: { streakDays: number;
     <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-40 animate-slide-up">
       <div className="glass-card p-4 flex items-center gap-4 shadow-lg shadow-ascend-500/20">
         <div className="w-12 h-12 rounded-full bg-gradient-to-br from-ascend-500 to-gold-400 flex items-center justify-center">
-          <span className="text-lg font-bold">🔥</span>
+          <span className="text-lg font-bold">S</span>
         </div>
         <div>
           <p className="font-semibold text-themed">{streakDays}-Day Streak!</p>
@@ -374,7 +374,7 @@ export function StreakShareCard({ streakDays, habitName }: { streakDays: number;
         </div>
         <SocialShare 
           streakDays={streakDays} 
-          customMessage={`Just hit a ${streakDays}-day streak on "${habitName}"! 🔥\n\nBuilding better habits with @AscendifyApp`}
+          customMessage={`Just hit a ${streakDays}-day streak on "${habitName}".\n\nBuilding better habits with @RESURGOApp`}
           variant="button" 
         />
       </div>

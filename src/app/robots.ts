@@ -15,6 +15,12 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
         disallow: [
           '/api/',           // Protect API routes
+          '/(dashboard)/',   // Authenticated app shell
+          '/onboarding',     // Personal setup flow
+          '/callback',       // Auth callback routes
+          '/sign-in',
+          '/sign-up',
+          '/login',
           '/private/',       // Private pages
           '/_next/',         // Next.js internals
           '/admin/',         // Admin pages if any
@@ -30,6 +36,16 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: 'Bingbot',
         allow: '/',
         disallow: ['/api/', '/private/'],
+      },
+      {
+        userAgent: 'GPTBot',
+        allow: ['/', '/guides', '/help', '/features', '/pricing', '/about'],
+        disallow: ['/api/', '/(dashboard)/', '/onboarding', '/sign-in', '/sign-up', '/callback'],
+      },
+      {
+        userAgent: 'PerplexityBot',
+        allow: ['/', '/guides', '/help', '/features', '/pricing', '/about'],
+        disallow: ['/api/', '/(dashboard)/', '/onboarding', '/sign-in', '/sign-up', '/callback'],
       },
       // Block aggressive crawlers
       {

@@ -1,35 +1,35 @@
-import { Metadata } from 'next';
+﻿import { Metadata } from 'next';
 import Link from 'next/link';
 import { KaiChatbot } from '@/components/KaiChatbot';
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SEO METADATA
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export const metadata: Metadata = {
-  title: 'Help Center - Get Support & Learn Ascendify',
-  description: 'Find answers to all your questions about Ascendify habit tracker. Browse tutorials, FAQs, troubleshooting guides, and get instant AI support from Kai.',
+  title: 'Help Center - Get Support & Learn RESURGO',
+  description: 'Find answers to all your questions about RESURGO habit tracker. Browse tutorials, FAQs, troubleshooting guides, and get instant AI support from Kai.',
   keywords: [
-    'Ascendify help', 'habit tracker help', 'Ascendify support', 'Ascendify FAQ',
-    'how to use habit tracker', 'Ascendify tutorials', 'goal tracker help',
+    'RESURGO help', 'habit tracker help', 'RESURGO support', 'RESURGO FAQ',
+    'how to use habit tracker', 'RESURGO tutorials', 'goal tracker help',
   ],
   openGraph: {
-    title: 'Ascendify Help Center - Get Support & Learn',
+    title: 'RESURGO Help Center - Get Support & Learn',
     description: 'Find answers to all your questions. Browse tutorials, FAQs, and get instant AI support.',
     type: 'website',
   },
 };
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // HELP CENTER CATEGORIES
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const helpCategories = [
   {
     id: 'getting-started',
     title: 'Getting Started',
-    description: 'New to Ascendify? Start here to learn the basics',
-    icon: '🚀',
+    description: 'New to RESURGO? Start here to learn the basics',
+    icon: 'GS',
     articleCount: 8,
     articles: [
       'Creating your first habit',
@@ -42,8 +42,8 @@ const helpCategories = [
   {
     id: 'features',
     title: 'Features Guide',
-    description: 'Learn how to use every Ascendify feature',
-    icon: '✨',
+    description: 'Learn how to use every RESURGO feature',
+    icon: 'FG',
     articleCount: 12,
     articles: [
       'Pomodoro timer',
@@ -57,7 +57,7 @@ const helpCategories = [
     id: 'habits-goals',
     title: 'Habits & Goals',
     description: 'Master habit building with Atomic Habits principles',
-    icon: '🎯',
+    icon: 'HG',
     articleCount: 15,
     articles: [
       'The Four Laws of Behavior Change',
@@ -71,7 +71,7 @@ const helpCategories = [
     id: 'account',
     title: 'Account & Billing',
     description: 'Manage your subscription, profile, and settings',
-    icon: '👤',
+    icon: 'AC',
     articleCount: 7,
     articles: [
       'Upgrading to Pro',
@@ -85,7 +85,7 @@ const helpCategories = [
     id: 'troubleshooting',
     title: 'Troubleshooting',
     description: 'Solutions to common issues and problems',
-    icon: '🔧',
+    icon: 'TS',
     articleCount: 10,
     articles: [
       'Streaks not counting',
@@ -98,8 +98,8 @@ const helpCategories = [
   {
     id: 'api-integrations',
     title: 'Integrations',
-    description: 'Connect Ascendify with other apps and services',
-    icon: '🔗',
+    description: 'Connect RESURGO with other apps and services',
+    icon: 'IN',
     articleCount: 5,
     articles: [
       'Calendar sync',
@@ -111,33 +111,33 @@ const helpCategories = [
   },
 ];
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // POPULAR ARTICLES
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const popularArticles = [
-  { title: 'How to create your first habit', category: 'Getting Started', views: '12.5k' },
-  { title: 'Understanding the Two-Minute Rule', category: 'Habits & Goals', views: '8.3k' },
-  { title: 'Habit stacking: The complete guide', category: 'Habits & Goals', views: '7.1k' },
-  { title: 'How to upgrade to Pro', category: 'Account', views: '5.9k' },
-  { title: 'Fix: Streaks not counting correctly', category: 'Troubleshooting', views: '4.2k' },
+  { title: 'How to create your first habit', category: 'Getting Started', views: '12.5k', href: '/help/getting-started' },
+  { title: 'Understanding the Two-Minute Rule', category: 'Habits & Goals', views: '8.3k', href: '/help/habits-goals' },
+  { title: 'Habit stacking: The complete guide', category: 'Habits & Goals', views: '7.1k', href: '/help/habits-goals' },
+  { title: 'How to upgrade to Pro', category: 'Account', views: '5.9k', href: '/billing' },
+  { title: 'Fix: Streaks not counting correctly', category: 'Troubleshooting', views: '4.2k', href: '/help/troubleshooting' },
 ];
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // QUICK LINKS
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const quickLinks = [
-  { title: 'Privacy Policy', href: '/privacy', icon: '🔒' },
-  { title: 'Terms of Service', href: '/terms', icon: '📜' },
-  { title: 'Refund Policy', href: '/help/refund', icon: '💰' },
-  { title: 'Cookie Policy', href: '/help/cookies', icon: '🍪' },
-  { title: 'Contact Support', href: '/support', icon: '📧' },
+  { title: 'Privacy Policy', href: '/privacy', icon: 'PP' },
+  { title: 'Terms of Service', href: '/terms', icon: 'TS' },
+  { title: 'Refund Policy', href: '/help/refund', icon: 'RF' },
+  { title: 'Cookie Policy', href: '/help/cookies', icon: 'CK' },
+  { title: 'Contact Support', href: '/support', icon: 'CS' },
 ];
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // PAGE COMPONENT
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export default function HelpCenterPage() {
   return (
@@ -153,7 +153,7 @@ export default function HelpCenterPage() {
             How can we help you?
           </h1>
           <p className="text-lg text-[var(--text-secondary)] mb-8 max-w-2xl mx-auto">
-            Find answers, tutorials, and guides to make the most of Ascendify. 
+            Find answers, tutorials, and guides to make the most of RESURGO. 
             Or ask Kai, our AI assistant, for instant help.
           </p>
           
@@ -228,7 +228,7 @@ export default function HelpCenterPage() {
               {popularArticles.map((article, i) => (
                 <Link
                   key={i}
-                  href="#"
+                  href={article.href}
                   className="flex items-center justify-between p-4 hover:bg-white/5 transition-colors first:rounded-t-2xl last:rounded-b-2xl"
                 >
                   <div>
@@ -287,24 +287,24 @@ export default function HelpCenterPage() {
             {/* Video Tutorials */}
             <div className="glass-card p-6">
               <h3 className="font-semibold text-[var(--text-primary)] mb-4">
-                🎬 Video Tutorials
+                Video Tutorials
               </h3>
               <ul className="space-y-3">
                 <li>
-                  <Link href="#" className="flex items-center gap-3 text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors">
-                    <span className="text-lg">▶️</span>
+                  <Link href="/help/getting-started" className="flex items-center gap-3 text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors">
+                    <span className="text-lg">â–¶ï¸</span>
                     Getting Started in 5 Minutes
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="flex items-center gap-3 text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors">
-                    <span className="text-lg">▶️</span>
+                  <Link href="/help/habits-goals" className="flex items-center gap-3 text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors">
+                    <span className="text-lg">â–¶ï¸</span>
                     Mastering Habit Stacking
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="flex items-center gap-3 text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors">
-                    <span className="text-lg">▶️</span>
+                  <Link href="/help/features" className="flex items-center gap-3 text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors">
+                    <span className="text-lg">â–¶ï¸</span>
                     AI Goal Decomposition Tutorial
                   </Link>
                 </li>
@@ -320,7 +320,7 @@ export default function HelpCenterPage() {
               Ask Kai - Your AI Assistant
             </h2>
             <p className="text-[var(--text-secondary)]">
-              Get instant answers to your questions about Ascendify
+              Get instant answers to your questions about RESURGO
             </p>
           </div>
           <div className="max-w-3xl mx-auto">

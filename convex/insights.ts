@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY — AI Insights Engine (Convex)
+// RESURGO — AI Insights Engine (Convex)
 // 8 insight types with confidence scoring, feedback & interaction tracking
 // ═══════════════════════════════════════════════════════════════════════════════
 

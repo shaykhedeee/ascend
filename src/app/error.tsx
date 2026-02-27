@@ -1,12 +1,12 @@
-// ═══════════════════════════════════════════════════════════════════════════════
-// AscendifyIFY - Error Page
+// ===============================================================================
+// Resurgo - Error Page
 // Handles runtime errors gracefully with error tracking
-// ═══════════════════════════════════════════════════════════════════════════════
+// ===============================================================================
 
 'use client';
 
 import { useEffect, useState } from 'react';
-import { AlertTriangle, RefreshCw, Home, Copy, Check } from 'lucide-react';
+import { Copy, Check } from 'lucide-react';
 import { captureError } from '@/lib/sentry';
 
 interface ErrorProps {
@@ -46,64 +46,62 @@ export default function Error({ error, reset }: ErrorProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0D0D0F] flex items-center justify-center p-4">
-      <div className="max-w-md w-full text-center">
-        <div className="w-20 h-20 rounded-2xl bg-red-500/20 flex items-center justify-center mx-auto mb-6">
-          <AlertTriangle className="w-10 h-10 text-red-400" />
+    <div className="flex min-h-screen items-center justify-center bg-black p-4">
+      <div className="w-full max-w-md">
+
+        <div className="mb-6 border border-zinc-900 bg-zinc-950">
+          <div className="flex items-center gap-2 border-b border-zinc-900 px-4 py-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-red-600" />
+            <span className="font-mono text-[9px] tracking-widest text-red-600">RESURGO_OS :: RUNTIME_EXCEPTION</span>
+          </div>
+          <div className="px-4 py-4">
+            <p className="font-mono text-[9px] tracking-widest text-zinc-600">FAULT_HANDLER v2.1.0</p>
+            <h1 className="mt-1 font-mono text-xl font-bold tracking-tight text-zinc-100">UNHANDLED_ERROR_DETECTED</h1>
+            <p className="mt-1 font-mono text-xs text-zinc-600">
+              EXCEPTION_LOGGED :: DATA_INTEGRITY_MAINTAINED :: RECOVERY_OPTIONS_BELOW
+            </p>
+          </div>
         </div>
-        
-        <h1 className="text-2xl font-bold text-white mb-2">Something went wrong</h1>
-        <p className="text-white/60 mb-8">
-          We encountered an unexpected error. Don&apos;t worry, your data is safe.
-        </p>
-        
-        <div className="space-y-3">
+
+        <div className="mb-4 space-y-2">
           <button
             onClick={reset}
-            className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-[#14B899] to-[#FBBF24] 
-                     text-white font-semibold flex items-center justify-center gap-2
-                     hover:opacity-90 transition-opacity"
+            className="flex w-full items-center justify-center border border-orange-800 bg-orange-950/30 px-6 py-3 font-mono text-xs tracking-widest text-orange-500 transition hover:bg-orange-950/50"
           >
-            <RefreshCw className="w-5 h-5" />
-            Try Again
+            [RETRY_OPERATION]
           </button>
-          
           <button
             onClick={handleClearAndReload}
-            className="w-full py-3 px-6 rounded-xl bg-white/10 text-white font-medium
-                     flex items-center justify-center gap-2 hover:bg-white/20 transition-colors"
+            className="flex w-full items-center justify-center border border-zinc-800 bg-zinc-950 px-6 py-3 font-mono text-xs tracking-widest text-zinc-500 transition hover:border-zinc-700 hover:text-zinc-300"
           >
-            <Home className="w-5 h-5" />
-            Clear Data & Start Fresh
+            [CLEAR_STATE_AND_RESTART]
           </button>
         </div>
-        
-        <p className="text-white/40 text-sm mt-8">
-          If this error persists, try clearing your browser cache or contact support.
+
+        <p className="mb-4 text-center font-mono text-[9px] tracking-widest text-zinc-700">
+          PERSISTENT_ERROR &rarr; CLEAR_BROWSER_CACHE &rarr; CONTACT_SUPPORT
         </p>
 
         {errorId && (
-          <div className="mt-4 flex items-center justify-center gap-2">
-            <span className="text-white/30 text-xs">Error ID: {errorId}</span>
+          <div className="mb-4 flex items-center justify-between border border-zinc-900 bg-zinc-950 px-4 py-2">
+            <span className="font-mono text-[9px] text-zinc-700">ERR_ID: {errorId}</span>
             <button
               onClick={handleCopyErrorId}
-              className="p-1 rounded hover:bg-white/10 transition-colors"
+              className="border border-zinc-800 p-1 text-zinc-700 transition hover:border-zinc-700 hover:text-zinc-400"
               aria-label="Copy error ID"
             >
-              {copied ? (
-                <Check className="w-3 h-3 text-green-400" />
-              ) : (
-                <Copy className="w-3 h-3 text-white/40" />
-              )}
+              {copied ? <Check className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3" />}
             </button>
           </div>
         )}
-        
+
         {process.env.NODE_ENV === 'development' && error?.message && (
-          <div className="mt-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-left">
-            <p className="text-red-400 text-sm font-mono break-all">{error.message}</p>
+          <div className="border border-red-900 bg-red-950/10 p-4">
+            <p className="mb-1 font-mono text-[9px] tracking-widest text-red-700">DEV_STACK_TRACE</p>
+            <p className="break-all font-mono text-[10px] text-red-500">{error.message}</p>
           </div>
         )}
+
       </div>
     </div>
   );

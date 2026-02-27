@@ -1,22 +1,22 @@
-import { Metadata } from 'next';
+﻿import { Metadata } from 'next';
 import Link from 'next/link';
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SEO METADATA
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export const metadata: Metadata = {
-  title: 'Cookie Policy - Ascendify',
-  description: 'Ascendify cookie policy. Learn about the cookies we use to improve your experience and how to manage them.',
+  title: 'Cookie Policy - RESURGO',
+  description: 'RESURGO cookie policy. Learn about the cookies we use to improve your experience and how to manage them.',
   openGraph: {
-    title: 'Cookie Policy - Ascendify',
-    description: 'Information about cookies used on Ascendify.',
+    title: 'Cookie Policy - RESURGO',
+    description: 'Information about cookies used on RESURGO.',
   },
 };
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // COOKIE DATA
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const cookies = {
   essential: [
@@ -77,9 +77,9 @@ const cookies = {
   ],
 };
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // PAGE COMPONENT
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export default function CookiePolicyPage() {
   return (
@@ -93,7 +93,7 @@ export default function CookiePolicyPage() {
             <span className="text-[var(--text-secondary)]">Cookie Policy</span>
           </nav>
           <h1 className="text-4xl font-bold text-[var(--text-primary)] mb-2">
-            🍪 Cookie Policy
+            Cookie Policy
           </h1>
           <p className="text-[var(--text-secondary)]">
             Last updated: February 2026
@@ -113,7 +113,7 @@ export default function CookiePolicyPage() {
             <div className="glass-card p-6">
               <p className="text-[var(--text-secondary)]">
                 Cookies are small text files stored on your device when you visit a website. 
-                They help us remember your preferences, understand how you use Ascendify, and 
+                They help us remember your preferences, understand how you use RESURGO, and 
                 improve your experience. Some cookies are essential for the app to function, 
                 while others help us optimize our service.
               </p>
@@ -123,10 +123,10 @@ export default function CookiePolicyPage() {
           {/* Essential Cookies */}
           <section>
             <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-4 flex items-center gap-3">
-              <span className="text-xl">🔒</span> Essential Cookies
+              <span className="text-xl">EC</span> Essential Cookies
             </h2>
             <p className="text-[var(--text-secondary)] mb-4">
-              These cookies are necessary for Ascendify to work. You cannot opt out of these.
+              These cookies are necessary for RESURGO to work. You cannot opt out of these.
             </p>
             <div className="glass-card overflow-hidden">
               <table className="w-full">
@@ -153,7 +153,7 @@ export default function CookiePolicyPage() {
           {/* Functional Cookies */}
           <section>
             <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-4 flex items-center gap-3">
-              <span className="text-xl">⚙️</span> Functional Cookies
+              <span className="text-xl">FC</span> Functional Cookies
             </h2>
             <p className="text-[var(--text-secondary)] mb-4">
               These cookies enable enhanced functionality and personalization.
@@ -183,10 +183,10 @@ export default function CookiePolicyPage() {
           {/* Analytics Cookies */}
           <section>
             <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-4 flex items-center gap-3">
-              <span className="text-xl">📊</span> Analytics Cookies
+              <span className="text-xl">AC</span> Analytics Cookies
             </h2>
             <p className="text-[var(--text-secondary)] mb-4">
-              These cookies help us understand how users interact with Ascendify so we can improve.
+              These cookies help us understand how users interact with RESURGO so we can improve.
             </p>
             <div className="glass-card overflow-hidden">
               <table className="w-full">
@@ -213,7 +213,7 @@ export default function CookiePolicyPage() {
           {/* Marketing Cookies */}
           <section>
             <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-4 flex items-center gap-3">
-              <span className="text-xl">📢</span> Marketing Cookies
+              <span className="text-xl">MC</span> Marketing Cookies
             </h2>
             <p className="text-[var(--text-secondary)] mb-4">
               These cookies track ad campaign effectiveness. You can opt out of these.
@@ -243,7 +243,7 @@ export default function CookiePolicyPage() {
           {/* Managing Cookies */}
           <section>
             <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-4 flex items-center gap-3">
-              <span className="text-xl">🎛️</span> Managing Cookies
+              <span className="text-xl">MG</span> Managing Cookies
             </h2>
             <div className="glass-card p-6 space-y-4">
               <p className="text-[var(--text-secondary)]">
@@ -255,7 +255,7 @@ export default function CookiePolicyPage() {
                   <h4 className="font-semibold text-[var(--text-primary)] mb-2">Browser Settings</h4>
                   <p className="text-sm text-[var(--text-secondary)]">
                     Most browsers allow you to block or delete cookies through settings. 
-                    Note that blocking essential cookies may prevent Ascendify from working properly.
+                    Note that blocking essential cookies may prevent RESURGO from working properly.
                   </p>
                 </div>
                 

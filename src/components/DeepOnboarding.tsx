@@ -5,7 +5,9 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useMutation } from 'convex/react';
+import { api } from '../../convex/_generated/api';
 import { cn } from '@/lib/utils';
 import { 
   UserProfile, 
@@ -53,9 +55,98 @@ const STEPS = [
   { id: 'bad-habits', title: 'Habits to Change', icon: X },
   { id: 'good-habits', title: 'Habits to Build', icon: Flame },
   { id: 'preferences', title: 'Your Style', icon: Brain },
+  { id: 'coach', title: 'Your Coach', icon: Sparkles },
   { id: 'motivation', title: 'Your Why', icon: Heart },
   { id: 'review', title: 'Review', icon: Check },
 ] as const;
+
+// Industry-leading coach personas
+export const COACH_PERSONAS = [
+  {
+    id: 'tony-robbins',
+    name: 'Tony Robbins',
+    tagline: 'Unleash the Power Within',
+    style: 'Energetic, Motivational',
+    image: '/public/icons/coach-tony.png',
+    color: 'from-orange-500 to-yellow-400',
+  },
+  {
+    id: 'brendon-burchard',
+    name: 'Brendon Burchard',
+    tagline: 'High Performance Habits',
+    style: 'Encouraging, High-Energy',
+    image: '/public/icons/coach-brendon.png',
+    color: 'from-green-500 to-emerald-400',
+  },
+  {
+    id: 'mel-robbins',
+    name: 'Mel Robbins',
+    tagline: '5 Second Rule',
+    style: 'Direct, Action-Oriented',
+    image: '/public/icons/coach-mel.png',
+    color: 'from-pink-500 to-red-400',
+  },
+  {
+    id: 'robin-sharma',
+    name: 'Robin Sharma',
+    tagline: 'The 5AM Club',
+    style: 'Calm, Reflective',
+    image: '/public/icons/coach-robin.png',
+    color: 'from-blue-500 to-indigo-400',
+  },
+  {
+    id: 'jay-shetty',
+    name: 'Jay Shetty',
+    tagline: 'Think Like a Monk',
+    style: 'Mindful, Insightful',
+    image: '/public/icons/coach-jay.png',
+    color: 'from-purple-500 to-violet-400',
+  },
+  {
+    id: 'dr-shefali',
+    name: 'Dr. Shefali Tsabary',
+    tagline: 'Conscious Coaching',
+    style: 'Empathetic, Transformational',
+    image: '/public/icons/coach-shefali.png',
+    color: 'from-teal-500 to-cyan-400',
+  },
+];
+
+// Card component for coach selector
+function CoachCard({ coach, selected, onSelect }: {
+  coach: typeof COACH_PERSONAS[number];
+  selected: boolean;
+  onSelect: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      className={cn(
+        'relative flex flex-col items-center p-4 rounded-2xl border-2 shadow-md transition-all cursor-pointer group',
+        selected
+          ? 'border-ascend-500 bg-gradient-to-br ' + coach.color + ' text-white scale-105 shadow-lg'
+          : 'border-[var(--border)] bg-[var(--surface)] hover:border-ascend-500/60 text-themed'
+      )}
+      style={{ minWidth: 160, minHeight: 220 }}
+    >
+      <img
+        src={coach.image}
+        alt={coach.name}
+        className="w-16 h-16 rounded-full object-cover mb-3 border-4 border-white shadow"
+        style={{ background: '#fff' }}
+      />
+      <div className="font-bold text-lg mb-1">{coach.name}</div>
+      <div className="text-xs mb-2 opacity-80">{coach.tagline}</div>
+      <div className="text-xs italic opacity-70 mb-2">{coach.style}</div>
+      {selected && (
+        <div className="absolute top-2 right-2 bg-ascend-500 text-white rounded-full p-1 shadow">
+          <Check className="w-4 h-4" />
+        </div>
+      )}
+    </button>
+  );
+}
 
 type StepId = typeof STEPS[number]['id'];
 
@@ -87,15 +178,15 @@ const TIME_BLOCKS: { value: TimeBlock; label: string; icon: React.ElementType }[
 ];
 
 const CATEGORIES: { value: GoalCategory; label: string; icon: string }[] = [
-  { value: 'fitness', label: 'Fitness', icon: '💪' },
-  { value: 'health', label: 'Health', icon: '🏥' },
-  { value: 'career', label: 'Career', icon: '💼' },
-  { value: 'education', label: 'Education', icon: '📚' },
-  { value: 'finance', label: 'Finance', icon: '💰' },
-  { value: 'relationships', label: 'Relationships', icon: '❤️' },
-  { value: 'creativity', label: 'Creativity', icon: '🎨' },
-  { value: 'mindfulness', label: 'Mindfulness', icon: '🧘' },
-  { value: 'productivity', label: 'Productivity', icon: '⚡' },
+  { value: 'fitness', label: 'Fitness', icon: 'FT' },
+  { value: 'health', label: 'Health', icon: 'HL' },
+  { value: 'career', label: 'Career', icon: 'CR' },
+  { value: 'education', label: 'Education', icon: 'ED' },
+  { value: 'finance', label: 'Finance', icon: 'FN' },
+  { value: 'relationships', label: 'Relationships', icon: 'RE' },
+  { value: 'creativity', label: 'Creativity', icon: 'CV' },
+  { value: 'mindfulness', label: 'Mindfulness', icon: 'MD' },
+  { value: 'productivity', label: 'Productivity', icon: 'PD' },
 ];
 
 const DIFFICULTY_OPTIONS: { value: DifficultyPreference; label: string; description: string }[] = [
@@ -106,11 +197,11 @@ const DIFFICULTY_OPTIONS: { value: DifficultyPreference; label: string; descript
 ];
 
 const MOTIVATION_STYLES: { value: MotivationStyle; label: string; description: string }[] = [
-  { value: 'accountability', label: '👥 Accountability', description: 'Partners and community keep me on track' },
-  { value: 'rewards', label: '🎁 Rewards', description: 'I love earning rewards and recognition' },
-  { value: 'streaks', label: '🔥 Streaks', description: 'Maintaining streaks keeps me motivated' },
-  { value: 'competition', label: '🥇 Competition', description: 'I perform better with leaderboards' },
-  { value: 'self-improvement', label: '🎯 Self-Improvement', description: 'Becoming my best self drives me' },
+  { value: 'accountability', label: 'Accountability', description: 'Partners and community keep me on track' },
+  { value: 'rewards', label: 'Rewards', description: 'I love earning rewards and recognition' },
+  { value: 'streaks', label: 'Streaks', description: 'Maintaining streaks keeps me motivated' },
+  { value: 'competition', label: 'Competition', description: 'I perform better with leaderboards' },
+  { value: 'self-improvement', label: 'Self-Improvement', description: 'Becoming my best self drives me' },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────────
@@ -123,7 +214,11 @@ interface DeepOnboardingProps {
 }
 
 export function DeepOnboarding({ onComplete, onSkip }: DeepOnboardingProps) {
+  const completeOnboarding = useMutation(api.users.completeOnboarding);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState<StepId>('demographics');
+  const DRAFT_KEY = 'ascend-onboarding-draft';
   const [profile, setProfile] = useState<Partial<UserProfile>>({
     age: 25,
     ageGroup: '25-34',
@@ -166,6 +261,32 @@ export function DeepOnboarding({ onComplete, onSkip }: DeepOnboardingProps) {
 
   const updateProfile = (updates: Partial<UserProfile>) => {
     setProfile(prev => ({ ...prev, ...updates, updatedAt: new Date().toISOString() }));
+  };
+
+  // Load draft from localStorage if present
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        setProfile(prev => ({ ...prev, ...parsed }));
+      }
+    } catch (e) {
+      // ignore parse errors
+      console.warn('Failed to load onboarding draft', e);
+    }
+  }, []);
+
+  const saveDraft = () => {
+    try {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(profile));
+    } catch (e) {
+      console.warn('Failed to save onboarding draft', e);
+    }
+  };
+
+  const clearDraft = () => {
+    try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
   };
 
   const goNext = () => {
@@ -229,7 +350,9 @@ export function DeepOnboarding({ onComplete, onSkip }: DeepOnboardingProps) {
     });
   };
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
+    setLoading(true);
+    setError(null);
     // Calculate profile completeness
     let completeness = 0;
     if (profile.age) completeness += 10;
@@ -246,11 +369,58 @@ export function DeepOnboarding({ onComplete, onSkip }: DeepOnboardingProps) {
       profileCompleteness: Math.min(completeness, 100),
     };
 
-    onComplete(finalProfile);
+    // Prepare payload for Convex mutation
+    const payload: Record<string, any> = {
+      selectedHabitTemplates: finalProfile.goodHabitsToDevelop?.map(h => h.name),
+      preferredTime: finalProfile.preferredTimeBlocks?.[0],
+      primaryGoal: finalProfile.ultimateGoal?.statement,
+      primaryGoalReason: finalProfile.ultimateGoal?.whyItMatters,
+      primaryGoalDeadline: finalProfile.ultimateGoal?.targetDate,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      wakeTime: finalProfile.wakeUpTime,
+      sleepTime: finalProfile.sleepTime,
+      coachPersona: finalProfile.coachPersona,
+    };
+
+    try {
+      await completeOnboarding(payload);
+      clearDraft();
+      onComplete(finalProfile);
+    } catch (err: any) {
+      setError(err?.message || 'Failed to complete onboarding. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const renderStepContent = () => {
     switch (currentStep) {
+      case 'coach':
+        return (
+          <div className="space-y-6 animate-fade-in">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold text-themed mb-2">Choose Your Coach</h2>
+              <p className="text-themed-muted">Select the coach whose style best fits your journey. Their persona will guide your motivational messages and coaching tips.</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {COACH_PERSONAS.map(coach => (
+                <CoachCard
+                  key={coach.id}
+                  coach={coach}
+                  selected={profile.coachPersona === coach.id}
+                  onSelect={() => updateProfile({ coachPersona: coach.id })}
+                />
+              ))}
+            </div>
+            {profile.coachPersona && (
+              <div className="mt-6 text-center">
+                <span className="inline-block px-4 py-2 rounded-full bg-ascend-500/10 text-ascend-400 font-medium">
+                  Selected: {COACH_PERSONAS.find(c => c.id === profile.coachPersona)?.name}
+                </span>
+              </div>
+            )}
+          </div>
+        );
       case 'demographics':
         return (
           <div className="space-y-6 animate-fade-in">
@@ -541,7 +711,7 @@ export function DeepOnboarding({ onComplete, onSkip }: DeepOnboardingProps) {
 
             <div className="p-4 bg-[var(--surface)] rounded-xl">
               <p className="text-sm text-themed-muted">
-                💡 <strong>Tip:</strong> Focus on 1-3 habits to change at a time. 
+                <strong>Tip:</strong> Focus on 1-3 habits to change at a time. 
                 Trying to change too many at once often leads to failure.
               </p>
             </div>
@@ -601,7 +771,7 @@ export function DeepOnboarding({ onComplete, onSkip }: DeepOnboardingProps) {
 
             <div className="p-4 bg-[var(--surface)] rounded-xl">
               <p className="text-sm text-themed-muted">
-                💡 <strong>Tip:</strong> Start with 2-minute versions of habits. 
+                <strong>Tip:</strong> Start with 2-minute versions of habits. 
                 &quot;Read one page&quot; is better than &quot;Read for an hour&quot; when starting out.
               </p>
             </div>
@@ -799,9 +969,9 @@ export function DeepOnboarding({ onComplete, onSkip }: DeepOnboardingProps) {
               <div className="p-4 bg-[var(--surface)] rounded-xl">
                 <p className="text-xs text-themed-muted font-medium mb-2">SCHEDULE</p>
                 <div className="flex items-center gap-4 text-sm text-themed">
-                  <span>🌅 Wake: {profile.wakeUpTime}</span>
-                  <span>🌙 Sleep: {profile.sleepTime}</span>
-                  <span>⏰ {profile.availableHoursPerDay}h/day</span>
+                  <span>Wake: {profile.wakeUpTime}</span>
+                  <span>Sleep: {profile.sleepTime}</span>
+                  <span>{profile.availableHoursPerDay}h/day</span>
                 </div>
               </div>
 
@@ -919,23 +1089,46 @@ export function DeepOnboarding({ onComplete, onSkip }: DeepOnboardingProps) {
           )}
           
           {currentStep !== 'review' ? (
-            <button
-              onClick={goNext}
-              className="flex-1 py-3 bg-ascend-500 hover:bg-ascend-600 text-white rounded-xl 
-                       flex items-center justify-center gap-2 font-medium transition-colors"
-            >
-              Continue
-              <ArrowRight className="w-4 h-4" />
-            </button>
+            <>
+              <button
+                onClick={goNext}
+                className="flex-1 py-3 bg-ascend-500 hover:bg-ascend-600 text-white rounded-xl 
+                         flex items-center justify-center gap-2 font-medium transition-colors"
+              >
+                Continue
+                <ArrowRight className="w-4 h-4" />
+              </button>
+
+              <button
+                onClick={() => {
+                  saveDraft();
+                  if (onSkip) onSkip();
+                }}
+                className="flex-1 py-3 bg-[var(--surface)] hover:bg-[var(--surface-hover)] rounded-xl 
+                         flex items-center justify-center gap-2 text-themed transition-colors"
+              >
+                Save & Exit
+              </button>
+            </>
           ) : (
-            <button
-              onClick={handleComplete}
-              className="flex-1 py-3 bg-gradient-to-r from-ascend-500 to-ascend-600 text-white rounded-xl 
-                       flex items-center justify-center gap-2 font-bold transition-all shadow-glow-sm hover:shadow-glow-md"
-            >
-              <Sparkles className="w-5 h-5" />
-              Start My Journey
-            </button>
+            <>
+              <button
+                onClick={handleComplete}
+                className="flex-1 py-3 bg-gradient-to-r from-ascend-500 to-ascend-600 text-white rounded-xl 
+                         flex items-center justify-center gap-2 font-bold transition-all shadow-glow-sm hover:shadow-glow-md disabled:opacity-60"
+                disabled={loading}
+              >
+                {loading ? (
+                  <span className="animate-spin mr-2">⏳</span>
+                ) : (
+                  <Sparkles className="w-5 h-5" />
+                )}
+                {loading ? 'Saving...' : 'Start My Journey'}
+              </button>
+              {error && (
+                <div className="mt-2 text-red-500 text-sm text-center">{error}</div>
+              )}
+            </>
           )}
         </div>
 

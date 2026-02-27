@@ -94,7 +94,7 @@ export const BILLING_PLANS: BillingPlan[] = [
     key: 'lifetime',
     title: 'Lifetime',
     badge: 'Founder Deal',
-    description: 'Pay once, own Ascendify forever. Limited-time founder pricing.',
+    description: 'Pay once, own Resurgo forever. Limited-time founder pricing.',
     cadence: 'lifetime',
     priceUsd: 199,
     yearlyEquivalentUsd: 199,

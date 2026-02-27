@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY — Daily Plans Engine (Convex)
+// RESURGO — Daily Plans Engine (Convex)
 // Morning intentions, time blocking, evening reflections — Module 5
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -210,7 +210,7 @@ export const setEveningReflection = mutation({
       await ctx.db.insert('xpHistory', {
         userId: user._id,
         amount: xpGain,
-        source: 'daily_login',
+        source: 'other',
         description: 'Completed evening reflection',
         createdAt: Date.now(),
       });

@@ -1,12 +1,12 @@
-import { Metadata } from 'next';
+﻿import { Metadata } from 'next';
 import Link from 'next/link';
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SEO-OPTIMIZED BLOG/GUIDES HUB - Pillar Content Strategy
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export const metadata: Metadata = {
-  title: 'Habit Building Guides & Resources | Ascendify',
+  title: 'Habit Building Guides & Resources | RESURGO',
   description: 'Free guides on building habits, achieving goals, and personal development. Learn Atomic Habits principles, goal-setting frameworks, and productivity techniques.',
   keywords: [
     'habit building guide', 'how to build habits', 'atomic habits summary',
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     'how to stick to habits', 'build better habits', 'personal development',
   ],
   openGraph: {
-    title: 'Free Habit Building Guides & Resources | Ascendify',
+    title: 'Free Habit Building Guides & Resources | RESURGO',
     description: 'Master habit building with our comprehensive guides based on Atomic Habits principles.',
     type: 'website',
   },
@@ -24,9 +24,9 @@ export const metadata: Metadata = {
   },
 };
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // PILLAR PAGES DATA (for internal linking and SEO)
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const pillarPages = [
   {
@@ -34,7 +34,7 @@ const pillarPages = [
     title: 'The Complete Atomic Habits Guide',
     subtitle: 'Everything you need to know about building habits that stick',
     description: 'A comprehensive guide to Atomic Habits by James Clear. Learn the Four Laws of Behavior Change, habit stacking, the Two-Minute Rule, and more.',
-    icon: '📚',
+    icon: 'HB',
     readTime: 25,
     category: 'Habits',
     featured: true,
@@ -45,7 +45,7 @@ const pillarPages = [
     title: 'The Ultimate Goal Achievement System',
     subtitle: 'Turn dreams into daily actions with AI-powered decomposition',
     description: 'Learn how to set goals that actually work. Discover SMART goals, OKRs, goal decomposition, and how to break big goals into tiny daily habits.',
-    icon: '🎯',
+    icon: 'GS',
     readTime: 20,
     category: 'Goals',
     featured: true,
@@ -56,7 +56,7 @@ const pillarPages = [
     title: 'Productivity Habits for High Performers',
     subtitle: 'Daily routines used by successful people',
     description: 'Discover the morning routines, evening rituals, and work habits used by top performers. Backed by science and easy to implement.',
-    icon: '⚡',
+    icon: 'PR',
     readTime: 18,
     category: 'Productivity',
     featured: true,
@@ -67,7 +67,7 @@ const pillarPages = [
     title: 'Habit Tracking Statistics & Research 2026',
     subtitle: 'Data-driven insights on what works',
     description: 'Original research on habit formation success rates, streak psychology, and what the data says about building lasting habits.',
-    icon: '📊',
+    icon: 'RS',
     readTime: 15,
     category: 'Research',
     featured: false,
@@ -92,9 +92,9 @@ const categories = [
   { name: 'Research', count: 2 },
 ];
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // JSON-LD STRUCTURED DATA
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -103,10 +103,10 @@ const jsonLd = {
   'description': 'Free guides on building habits, achieving goals, and personal development.',
   'publisher': {
     '@type': 'Organization',
-    'name': 'Ascendify',
+    'name': 'RESURGO',
     'logo': {
       '@type': 'ImageObject',
-      'url': 'https://ascendify.app/icons/icon.svg',
+      'url': 'https://resurgo.life/icons/icon.svg',
     },
   },
   'mainEntity': {
@@ -114,15 +114,15 @@ const jsonLd = {
     'itemListElement': pillarPages.map((page, index) => ({
       '@type': 'ListItem',
       'position': index + 1,
-      'url': `https://ascendify.app/guides/${page.slug}`,
+      'url': `https://resurgo.life/guides/${page.slug}`,
       'name': page.title,
     })),
   },
 };
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // PAGE COMPONENT
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export default function GuidesPage() {
   return (
@@ -140,7 +140,7 @@ export default function GuidesPage() {
         
         <div className="relative max-w-5xl mx-auto">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] text-sm mb-6">
-            <span>📖</span> Free Resources
+            <span>Resources</span>
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[var(--text-primary)] mb-6">
             Build Better Habits.<br />
@@ -175,7 +175,7 @@ export default function GuidesPage() {
         {/* Featured Pillar Pages */}
         <section className="mb-16">
           <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-6">
-            📚 Comprehensive Guides
+            Comprehensive Guides
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {pillarPages.filter(p => p.featured).map((page) => (
@@ -199,7 +199,7 @@ export default function GuidesPage() {
                 <div className="flex items-center justify-between text-sm text-[var(--text-muted)]">
                   <span>{page.readTime} min read</span>
                   <span className="text-[var(--accent)] group-hover:translate-x-1 transition-transform">
-                    Read →
+                    Read â†’
                   </span>
                 </div>
               </Link>
@@ -212,7 +212,7 @@ export default function GuidesPage() {
           {/* Popular Guides */}
           <section className="lg:col-span-2">
             <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-6">
-              🔥 Most Popular
+              Most Popular
             </h2>
             <div className="space-y-4">
               {popularGuides.map((guide, i) => (
@@ -259,7 +259,7 @@ export default function GuidesPage() {
             {/* Newsletter CTA */}
             <div className="glass-card p-6 bg-gradient-to-br from-[var(--accent)]/10 to-[var(--accent-secondary)]/10">
               <h3 className="font-semibold text-[var(--text-primary)] mb-2">
-                📬 Weekly Habit Tips
+                Weekly Habit Tips
               </h3>
               <p className="text-sm text-[var(--text-secondary)] mb-4">
                 Get one actionable habit tip every week. No spam, unsubscribe anytime.
@@ -280,13 +280,13 @@ export default function GuidesPage() {
                 Ready to start tracking?
               </h3>
               <p className="text-sm text-[var(--text-secondary)] mb-4">
-                Put these guides into practice with Ascendify&apos;s AI-powered habit tracker.
+                Put these guides into practice with RESURGO&apos;s AI-powered habit tracker.
               </p>
               <Link
                 href="/"
                 className="block text-center py-2 rounded-lg bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-medium transition-colors"
               >
-                Try Ascendify Free
+                Try RESURGO Free
               </Link>
             </div>
           </aside>
@@ -295,7 +295,7 @@ export default function GuidesPage() {
         {/* FAQ Section for Featured Snippets */}
         <section className="mt-16">
           <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-6">
-            ❓ Frequently Asked Questions
+            Frequently Asked Questions
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[

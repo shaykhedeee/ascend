@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY — Tasks Engine (Convex)
+// RESURGO — Tasks Engine (Convex)
 // TickTick-style task management with goal/milestone linking & Eisenhower matrix
 // ═══════════════════════════════════════════════════════════════════════════════
 

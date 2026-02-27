@@ -172,7 +172,7 @@ export function GoalWizard({ isOpen, onClose }: GoalWizardProps) {
     addCoachMessage({
       userId: '',
       type: 'motivation',
-      title: '🚀 Your Journey Begins!',
+      title: 'Your Journey Begins',
       message: decompositionResult.motivationalMessage,
       actionItems: [
         'Review your first milestone',

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY — Habit Stacks (Convex)
+// RESURGO — Habit Stacks (Convex)
 // "After I [cue habit], I will [new habit]" — Atomic Habits stacking
 // ═══════════════════════════════════════════════════════════════════════════════
 

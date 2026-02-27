@@ -541,10 +541,10 @@ export const COACHING_MESSAGES: CoachingMessage[] = [
     trigger: 'task_completed',
     context: 'User completed a task',
     messages: [
-      "Every action is a vote for the type of person you wish to become. You just voted for being a person who follows through! 🗳️",
-      "That's the compound effect in action! 1% better today leads to 37x better in a year. 📈",
+      "Every action is a vote for the type of person you wish to become. You just voted for being a person who follows through.",
+      "That's the compound effect in action. 1% better today leads to 37x better in a year.",
       "You're building momentum. Remember: systems beat goals every time.",
-      "The professional shows up regardless of mood. You just proved you're a professional. 💪",
+      "The professional shows up regardless of mood. You just proved you're a professional.",
       "One more rep in the bank. Excellence is just repetition disguised as mastery.",
     ],
     tags: ['completion', 'encouragement', 'identity'],
@@ -554,9 +554,9 @@ export const COACHING_MESSAGES: CoachingMessage[] = [
     trigger: 'streak_milestone',
     context: 'User hit a streak milestone',
     messages: [
-      "Don't break the chain! Every day you maintain this streak, you're strengthening your new identity. 🔗",
+      "Don't break the chain. Every day you maintain this streak, you're strengthening your new identity.",
       "This streak is proof that you're becoming the person you want to be. Keep voting for that identity!",
-      "You're past the plateau of latent potential. The breakthrough is building beneath the surface! 🌱",
+      "You're past the plateau of latent potential. The breakthrough is building beneath the surface.",
       "Professionals stick to the schedule. Your streak proves you're thinking like a professional.",
     ],
     tags: ['streak', 'celebration', 'persistence'],
@@ -566,7 +566,7 @@ export const COACHING_MESSAGES: CoachingMessage[] = [
     trigger: 'missed_day',
     context: 'User missed a day',
     messages: [
-      "Remember: Missing once is an accident. Missing twice is the start of a new habit. Let's not miss twice! 🎯",
+      "Remember: Missing once is an accident. Missing twice is the start of a new habit. Let's not miss twice.",
       "The first mistake doesn't ruin you—it's the spiral of repeated mistakes that follows. Today is your chance to break that spiral.",
       "Even professionals have off days. What separates them is they never miss twice. Get back on track today!",
       "Reduce the scope, not the schedule. Can you do even a 2-minute version today? That's all it takes to maintain your identity.",
@@ -579,7 +579,7 @@ export const COACHING_MESSAGES: CoachingMessage[] = [
     trigger: 'new_habit',
     context: 'User creating a new habit',
     messages: [
-      "Let's apply the Two-Minute Rule: What version of this habit takes less than 2 minutes? Start there! ⏱️",
+      "Let's apply the Two-Minute Rule: What version of this habit takes less than 2 minutes? Start there.",
       "Remember: You're not just building a habit, you're casting votes for your new identity. Who do you want to become?",
       "Habit stacking tip: What existing habit can you attach this to? 'After I [current habit], I will [new habit].'",
       "Environment design is key! How can you make the cue for this habit impossible to miss?",
@@ -605,7 +605,7 @@ export const COACHING_MESSAGES: CoachingMessage[] = [
     trigger: 'no_visible_progress',
     context: 'User frustrated with lack of results',
     messages: [
-      "You're in the Plateau of Latent Potential. Like ice slowly heating from 25°F to 31°F—nothing visible happens until 32°F. Then it melts! 🧊",
+      "You're in the Plateau of Latent Potential. Like ice slowly heating from 25°F to 31°F—nothing visible happens until 32°F. Then it melts.",
       "Breakthrough moments are the result of many previous actions building up potential. You're accumulating that potential right now.",
       "Focus on your trajectory, not your current position. Are you moving in the right direction? That's what matters.",
       "Results are delayed, but they're coming. Habits are the compound interest of self-improvement—the returns take time to appear.",
@@ -781,7 +781,7 @@ export function getStrategies(category: string): PracticalStrategy | undefined {
  * Build AI system prompt with Atomic Habits knowledge
  */
 export function buildAtomicHabitsSystemPrompt(): string {
-  return `You are Ascendify AI Coach, an expert in habit formation based on James Clear's "Atomic Habits."
+  return `You are Resurgo AI Coach, an expert in habit formation based on James Clear's "Atomic Habits."
 
 CORE PRINCIPLES YOU TEACH:
 1. MAKE IT OBVIOUS (Cue): Use implementation intentions, habit stacking, environment design
@@ -804,7 +804,7 @@ WHEN COACHING:
 - For no visible results: Explain the Plateau of Latent Potential
 - Always connect habits to identity: "Who do you want to become?"
 
-Be concise (2-3 sentences), encouraging, and action-oriented. Use occasional emojis for warmth.`;
+Be concise (2-3 sentences), encouraging, and action-oriented. Avoid emojis and keep tone clear and practical.`;
 }
 
 /**

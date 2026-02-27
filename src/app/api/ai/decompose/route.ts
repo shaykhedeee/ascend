@@ -184,8 +184,8 @@ async function callOpenRouter(prompt: string): Promise<unknown> {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-      'HTTP-Referer': 'https://ascendify.app',
-      'X-Title': 'Ascendify Goal Decomposer',
+      'HTTP-Referer': 'https://resurgo.life',
+      'X-Title': 'Resurgo Goal Decomposer',
     },
     body: JSON.stringify({
       model: 'google/gemma-2-9b-it:free',
@@ -357,7 +357,13 @@ export async function POST(request: NextRequest): Promise<NextResponse<GoalDecom
     }
 
     const body = await request.json() as GoalDecompositionRequest;
-    const { goal, targetDate, isPremium = false } = body;
+    const { goal, targetDate } = body;
+
+    // Determine premium status server-side — never trust the client
+    const { currentUser } = await import('@clerk/nextjs/server');
+    const clerkUser = await currentUser();
+    const userPlan = (clerkUser?.publicMetadata as Record<string, unknown>)?.plan || 'free';
+    const isPremium = userPlan === 'pro' || userPlan === 'lifetime';
 
     if (!goal || typeof goal !== 'string') {
       return NextResponse.json(

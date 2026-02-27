@@ -1,9 +1,9 @@
 {
-  "name": "Ascendify - AI Habit Tracker & Goal Planner",
-  "short_name": "Ascendify",
+  "name": "Resurgo - AI Habit Tracker & Goal Planner",
+  "short_name": "Resurgo",
   "description": "Build lasting habits with AI-powered goal decomposition. Track daily habits, earn XP, level up, and achieve your goals with gamified progress tracking. Free habit tracker with analytics.",
   "start_url": "/?source=pwa",
-  "id": "/ascendify-app",
+  "id": "/resurgo-app",
   "scope": "/",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],
@@ -33,14 +33,14 @@
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Ascendify Dashboard"
+      "label": "Resurgo Dashboard"
     },
     {
       "src": "/screenshots/mobile.png",
       "sizes": "390x844",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Ascendify Mobile View"
+      "label": "Resurgo Mobile View"
     }
   ],
   "shortcuts": [
@@ -89,7 +89,7 @@
   },
   "protocol_handlers": [
     {
-      "protocol": "web+ascendify",
+      "protocol": "web+resurgo",
       "url": "/?action=%s"
     }
   ]

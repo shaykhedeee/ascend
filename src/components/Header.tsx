@@ -5,6 +5,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAscendStore } from '@/lib/store';
 import { useTheme } from '@/components/ThemeProvider';
 import { Logo } from '@/components/Logo';
@@ -34,7 +35,8 @@ interface HeaderProps {
 }
 
 export function Header({ activeTab, onTabChange, onOpenSettings, onOpenUpgrade }: HeaderProps) {
-  const { user } = useAscendStore();
+  const router = useRouter();
+  const { user, logout, hasCompletedOnboarding } = useAscendStore();
   const { theme, toggleTheme, mounted } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
@@ -72,7 +74,7 @@ export function Header({ activeTab, onTabChange, onOpenSettings, onOpenUpgrade }
             <div className="hidden sm:block">
               <h1 className="text-xl font-bold tracking-tight" 
                   style={{ color: 'var(--text-primary)' }}>
-                ASCENDIFY
+                RESURGO
               </h1>
               <p className="text-[10px] -mt-0.5" style={{ color: 'var(--text-muted)' }}>
                 Rise to your potential
@@ -191,6 +193,36 @@ export function Header({ activeTab, onTabChange, onOpenSettings, onOpenUpgrade }
               aria-label="Settings"
             >
               <Settings className="w-5 h-5 text-[var(--text-secondary)]" />
+            </button>
+
+            {/* Resume Onboarding (if incomplete) */}
+            {!hasCompletedOnboarding && (
+              <button
+                onClick={() => router.push('/onboarding')}
+                className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-lg
+                         bg-[var(--surface)] text-sm font-medium border border-[var(--border)] hover:bg-[var(--surface-hover)]"
+                title="Resume Onboarding"
+                aria-label="Resume onboarding"
+              >
+                Start
+              </button>
+            )}
+
+            {/* Sign out */}
+            <button
+              onClick={() => {
+                try {
+                  logout();
+                } catch (e) {
+                  // ignore
+                }
+                router.push('/');
+              }}
+              className="p-2.5 rounded-xl transition-colors hover:bg-[var(--surface-hover)] text-sm hidden md:inline-flex items-center"
+              title="Sign out"
+              aria-label="Sign out"
+            >
+              Sign out
             </button>
 
             {/* Mobile Menu Toggle - Hidden since we have bottom nav */}

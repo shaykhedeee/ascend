@@ -28,7 +28,7 @@ import {
 const TUTORIAL_STEPS = [
   {
     id: 'welcome',
-    title: 'Welcome to Ascendify! 🎉',
+    title: 'Welcome to Resurgo',
     description: 'Your AI-powered companion for achieving goals and building habits. Let us show you around!',
     icon: Sparkles,
     highlight: null,
@@ -84,7 +84,7 @@ const TUTORIAL_STEPS = [
   },
   {
     id: 'complete',
-    title: 'You\'re All Set! 🚀',
+    title: 'You\'re All Set',
     description: 'Start by completing today\'s tasks. Remember: small consistent steps lead to big achievements!',
     icon: Trophy,
     highlight: null,

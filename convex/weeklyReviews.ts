@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY — Weekly Reviews Engine (Convex)
+// RESURGO — Weekly Reviews Engine (Convex)
 // Auto-generated summaries & user reflections — Module 7
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -103,7 +103,7 @@ export const generate = mutation({
       (s) => s.completedAt >= new Date(weekStartDate).getTime() &&
         s.completedAt <= new Date(weekEndDate).getTime() + 86400000
     );
-    const focusTotalMinutes = weekSessions.reduce((sum, s) => sum + s.duration, 0);
+    const focusTotalMinutes = weekSessions.reduce((sum, s) => sum + (s.actualDuration ?? s.duration), 0);
 
     // Gather stats: XP
     const xpEvents = await ctx.db

@@ -3,20 +3,18 @@ import { SignIn } from '@clerk/nextjs';
 
 export default function Page() {
   return (
-    <main className="relative flex min-h-screen items-center justify-center bg-[var(--background)] px-4 py-10">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        <div className="absolute -top-20 left-1/4 h-72 w-72 rounded-full bg-ascend-500/15 blur-3xl" />
-        <div className="absolute -bottom-24 right-1/4 h-72 w-72 rounded-full bg-gold-400/10 blur-3xl" />
-      </div>
-
-      <section className="relative z-10 w-full max-w-md rounded-2xl border border-[var(--border)] bg-[var(--surface)]/90 p-4 shadow-2xl backdrop-blur md:p-6">
-        <div className="mb-4 flex items-center justify-between md:mb-6">
-          <h1 className="text-lg font-semibold text-[var(--text-primary)]">Welcome back</h1>
-          <Link href="/" className="text-sm text-ascend-400 hover:text-ascend-300">
-            ← Home
+    <main className="flex min-h-screen items-center justify-center bg-black px-4 py-10">
+      <section className="w-full max-w-md border border-zinc-900 bg-zinc-950">
+        <div className="flex items-center justify-between border-b border-zinc-900 px-4 py-2">
+          <div className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
+            <span className="font-mono text-[9px] tracking-widest text-orange-600">AUTH_TERMINAL :: SIGN_IN</span>
+          </div>
+          <Link href="/" className="font-mono text-[9px] tracking-widest text-zinc-600 transition-colors hover:text-zinc-400">
+            [← HOME]
           </Link>
         </div>
-
+        <div className="p-4 md:p-6">
         <SignIn
           routing="path"
           path="/sign-in"
@@ -24,29 +22,30 @@ export default function Page() {
           fallbackRedirectUrl="/dashboard"
           appearance={{
             variables: {
-              colorPrimary: '#F97316',
-              colorBackground: '#171412',
-              colorInputBackground: '#1C1917',
+              colorPrimary: '#EA580C',
+              colorBackground: '#09090B',
+              colorInputBackground: '#000000',
               colorInputText: '#FAFAF9',
               colorText: '#FAFAF9',
-              colorTextSecondary: '#A8A29E',
-              borderRadius: '0.75rem',
+              colorTextSecondary: '#71717A',
+              borderRadius: '0px',
             },
             elements: {
               card: 'shadow-none bg-transparent border-0 p-0',
-              headerTitle: 'text-[var(--text-primary)]',
-              headerSubtitle: 'text-[var(--text-secondary)]',
+              headerTitle: 'font-mono text-zinc-100',
+              headerSubtitle: 'font-mono text-zinc-500',
               socialButtonsBlockButton:
-                'border border-[var(--border)] bg-[var(--background-secondary)] hover:bg-[var(--surface-hover)] text-[var(--text-primary)]',
+                'border border-zinc-800 bg-black hover:bg-zinc-950 text-zinc-300 font-mono',
               formButtonPrimary:
-                'bg-gradient-to-r from-ascend-500 to-ascend-600 hover:from-ascend-400 hover:to-ascend-500 text-white',
+                'bg-orange-700 hover:bg-orange-600 text-white font-mono',
               formFieldInput:
-                'border border-[var(--border)] bg-[var(--background-secondary)] text-[var(--text-primary)]',
-              footerActionLink: 'text-ascend-400 hover:text-ascend-300',
-              identityPreviewText: 'text-[var(--text-secondary)]',
+                'border border-zinc-800 bg-black text-zinc-200 font-mono',
+              footerActionLink: 'text-orange-500 hover:text-orange-400 font-mono',
+              identityPreviewText: 'font-mono text-zinc-400',
             },
           }}
         />
+        </div>
       </section>
     </main>
   );

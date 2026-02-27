@@ -151,14 +151,14 @@ export function TimedTasks() {
     if (actualMinutes <= task.estimatedMinutes * 0.8) {
       status = 'completed_fast';
       xpEarned += task.bonusXp;
-      message = `⚡ Speed bonus! +${task.bonusXp} XP`;
+      message = `Speed bonus: +${task.bonusXp} XP`;
     } else if (actualMinutes <= task.timeLimit) {
       status = 'completed_ontime';
-      message = '✓ Completed on time!';
+      message = 'Completed on time';
     } else {
       status = 'completed_late';
       xpEarned = Math.floor(task.xpReward * 0.5); // Half XP for late
-      message = '⏰ Completed late (half XP)';
+      message = 'Completed late (half XP)';
     }
 
     updateTimedTask(taskId, { 
@@ -275,10 +275,10 @@ export function TimedTasks() {
               <span>0m</span>
               <span className="text-ascend-400 font-medium">
                 {timer.elapsedSeconds <= inProgressTask.estimatedMinutes * 60 * 0.8 
-                  ? `🎯 On track for bonus!` 
+                  ? `On track for bonus` 
                   : timer.elapsedSeconds <= inProgressTask.timeLimit * 60
-                    ? `⏱️ Still within limit`
-                    : `⚠️ Over time limit!`
+                    ? `Still within limit`
+                    : `Over time limit`
                 }
               </span>
               <span>{formatTimeLimit(timer.timeLimit)}</span>
@@ -566,7 +566,7 @@ export function HabitProgressCard({ habit }: HabitProgressCardProps) {
         <div className="flex-1">
           <h4 className="font-semibold text-themed">{habit.name}</h4>
           <p className="text-xs text-themed-muted">
-            🔥 {habit.currentStreak} day streak (best: {habit.bestStreak})
+            Streak: {habit.currentStreak} days (best: {habit.bestStreak})
           </p>
         </div>
         {habit.todayCompleted && (

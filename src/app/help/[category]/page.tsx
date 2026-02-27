@@ -21,7 +21,7 @@ const categoriesData: Record<string, {
   'getting-started': {
     title: 'Getting Started',
     description: 'New to ASCEND? Start here to learn the basics and set up your first habits and goals.',
-    icon: '🚀',
+    icon: 'GS',
     articles: [
       {
         id: 'first-habit',
@@ -161,7 +161,7 @@ Let's take a quick tour of the main areas in ASCEND.
   'features': {
     title: 'Features Guide',
     description: 'Learn how to use every ASCEND feature to maximize your productivity.',
-    icon: '✨',
+    icon: 'FG',
     articles: [
       {
         id: 'pomodoro',
@@ -236,7 +236,7 @@ Compete with friends or the global community on weekly and monthly leaderboards.
   'habits-goals': {
     title: 'Habits & Goals',
     description: 'Master habit building with proven Atomic Habits principles.',
-    icon: '🎯',
+    icon: 'HG',
     articles: [
       {
         id: 'four-laws',
@@ -315,7 +315,7 @@ Master showing up before you optimize performance. Consistency beats intensity.
   'account': {
     title: 'Account & Billing',
     description: 'Manage your subscription, profile, and settings.',
-    icon: '👤',
+    icon: 'AC',
     articles: [
       {
         id: 'upgrade-pro',
@@ -385,7 +385,7 @@ Pro users also get automatic cloud backups every 24 hours.
   'troubleshooting': {
     title: 'Troubleshooting',
     description: 'Solutions to common issues and problems.',
-    icon: '🔧',
+    icon: 'TS',
     articles: [
       {
         id: 'streaks-not-counting',

@@ -78,18 +78,18 @@ function ConfettiBurst() {
 // ─────────────────────────────────────────────────────────────────────────────────
 
 const CATEGORY_MAP: Record<string, { emoji: string; label: string }> = {
-  health: { emoji: '💚', label: 'Health' },
-  fitness: { emoji: '💪', label: 'Fitness' },
-  mindfulness: { emoji: '🧘', label: 'Mindfulness' },
-  productivity: { emoji: '⚡', label: 'Productivity' },
-  learning: { emoji: '📚', label: 'Learning' },
-  creativity: { emoji: '🎨', label: 'Creativity' },
-  social: { emoji: '🤝', label: 'Social' },
-  finance: { emoji: '💰', label: 'Finance' },
-  self_care: { emoji: '🌸', label: 'Self-Care' },
-  career: { emoji: '💼', label: 'Career' },
-  general: { emoji: '🎯', label: 'General' },
-  custom: { emoji: '✨', label: 'Custom' },
+  health: { emoji: 'HL', label: 'Health' },
+  fitness: { emoji: 'FT', label: 'Fitness' },
+  mindfulness: { emoji: 'MD', label: 'Mindfulness' },
+  productivity: { emoji: 'PD', label: 'Productivity' },
+  learning: { emoji: 'LN', label: 'Learning' },
+  creativity: { emoji: 'CV', label: 'Creativity' },
+  social: { emoji: 'SC', label: 'Social' },
+  finance: { emoji: 'FN', label: 'Finance' },
+  self_care: { emoji: 'SF', label: 'Self-Care' },
+  career: { emoji: 'CR', label: 'Career' },
+  general: { emoji: 'GN', label: 'General' },
+  custom: { emoji: 'CU', label: 'Custom' },
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────
@@ -169,7 +169,7 @@ export function DemoPlanGenerator({
             Ready to Begin Your Journey?
           </h2>
           <p className="mb-6 text-sm text-themed-secondary">
-            Create your first goal and Ascendify will generate a personalized,
+            Create your first goal and Resurgo will generate a personalized,
             AI-powered plan tailored just for you.
           </p>
 
@@ -219,7 +219,7 @@ export function DemoPlanGenerator({
               </div>
 
               <h1 className="mb-1 text-2xl font-bold text-themed sm:text-3xl">
-                Your Ascendify Journey Begins!
+                Your Resurgo Journey Begins!
               </h1>
 
               {user?.name && (

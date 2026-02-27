@@ -1,23 +1,19 @@
 'use client';
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// Ascendify — Analytics Page
+// RESURGO — Analytics Page
 // Gamification profile, habit stats, focus stats, progress charts
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { useQuery } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
-import {
-  Trophy,
-  Flame,
-  Target,
-  Zap,
-  Clock,
-  Star,
-  BarChart3,
-  TrendingUp,
-  Award,
-} from 'lucide-react';
+
+const RARITY_STYLES: Record<string, string> = {
+  legendary: 'border-yellow-900 bg-yellow-950/30 text-yellow-500',
+  epic: 'border-purple-900 bg-purple-950/30 text-purple-500',
+  rare: 'border-blue-900 bg-blue-950/30 text-blue-500',
+  common: 'border-zinc-800 text-zinc-600',
+};
 
 export default function AnalyticsPage() {
   const profile = useQuery(api.gamification.getProfile);
@@ -25,180 +21,168 @@ export default function AnalyticsPage() {
 
   if (!profile || !focusStats) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[var(--background)]">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-ascend-500 border-t-transparent" />
+      <div className="flex min-h-screen items-center justify-center bg-black">
+        <div className="border border-zinc-900 bg-zinc-950 px-8 py-6 text-center">
+          <p className="font-mono text-xs tracking-widest text-orange-600">LOADING_TELEMETRY_</p>
+          <span className="inline-block h-2 w-2 animate-blink bg-orange-600" />
+        </div>
       </div>
     );
   }
 
   const statCards = [
-    { icon: Star, label: 'Level', value: `${profile.level}`, sub: profile.levelName, color: 'text-yellow-400' },
-    { icon: Zap, label: 'Total XP', value: profile.totalXP.toLocaleString(), sub: `${profile.xpToNextLevel} to next`, color: 'text-ascend-400' },
-    { icon: Flame, label: 'Current Streak', value: `${profile.currentStreak}d`, sub: `Best: ${profile.longestStreak}d`, color: 'text-red-400' },
-    { icon: Trophy, label: 'Achievements', value: `${profile.achievements.length}`, sub: '', color: 'text-purple-400' },
-    { icon: Target, label: 'Goals Completed', value: `${profile.totalGoalsCompleted}`, sub: '', color: 'text-green-400' },
-    { icon: BarChart3, label: 'Tasks Done', value: `${profile.totalTasksCompleted}`, sub: '', color: 'text-blue-400' },
-    { icon: Clock, label: 'Focus Hours', value: `${focusStats.totalHours}h`, sub: `${focusStats.totalSessions} sessions`, color: 'text-cyan-400' },
-    { icon: TrendingUp, label: 'Habits Done', value: `${profile.totalHabitsCompleted}`, sub: '', color: 'text-emerald-400' },
+    { label: 'LEVEL',           value: `${profile.level}`,                    sub: profile.levelName?.toUpperCase()           },
+    { label: 'TOTAL_XP',        value: profile.totalXP.toLocaleString(),      sub: `${profile.xpToNextLevel}_TO_NEXT`         },
+    { label: 'CURRENT_UPTIME',  value: `${profile.currentStreak}d`,           sub: `PEAK_${profile.longestStreak}d`            },
+    { label: 'ACHIEVEMENTS',    value: `${profile.achievements.length}`,      sub: 'UNLOCKED'                                 },
+    { label: 'OBJECTIVES_DONE', value: `${profile.totalGoalsCompleted}`,      sub: ''                                         },
+    { label: 'TASKS_DONE',      value: `${profile.totalTasksCompleted}`,      sub: ''                                         },
+    { label: 'FOCUS_HOURS',     value: `${focusStats.totalHours}h`,           sub: `${focusStats.totalSessions}_SESSIONS`     },
+    { label: 'NODES_DONE',      value: `${profile.totalHabitsCompleted}`,     sub: ''                                         },
   ];
 
+  const xpPercent = Math.min(Math.round(profile.xpProgress * 100), 100);
+
   return (
-    <div className="min-h-screen bg-[var(--background)] p-4 md:p-8 max-w-6xl mx-auto">
-      <h1 className="mb-8 text-2xl font-bold text-[var(--text-primary)] flex items-center gap-2">
-        <BarChart3 className="h-6 w-6 text-orange-400" /> Analytics
-      </h1>
+    <div className="min-h-screen bg-black p-4 md:p-6">
+      <div className="mx-auto max-w-6xl">
 
-      {/* XP Progress Bar */}
-      <div className="mb-8 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
-        <div className="flex items-center justify-between mb-2">
-          <div>
-            <p className="text-lg font-bold text-[var(--text-primary)]">
-              Level {profile.level} — {profile.levelName}
+        {/* ── TELEMETRY HEADER ── */}
+        <div className="mb-6 border border-zinc-900 bg-zinc-950">
+          <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
+            <span className="font-mono text-[9px] tracking-widest text-orange-600">TELEMETRY :: GROWTH_PROFILE_READOUT</span>
+          </div>
+          <div className="px-5 py-4">
+            <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">TELEMETRY_DASHBOARD</h1>
+            <p className="mt-1 font-mono text-xs tracking-widest text-zinc-600">
+              XP_TRACKING :: BEHAVIORAL_METRICS :: FOCUS_ANALYTICS
             </p>
-            <p className="text-xs text-[var(--text-secondary)]">{profile.tier} Tier</p>
-          </div>
-          <div className="text-right">
-            <p className="text-sm font-medium text-ascend-400">{profile.totalXP.toLocaleString()} XP</p>
-            <p className="text-xs text-[var(--text-secondary)]">{profile.xpToNextLevel} to Level {profile.level + 1}</p>
           </div>
         </div>
-        <div className="h-3 w-full overflow-hidden rounded-full bg-[var(--background)]">
-          <div
-            className="h-full rounded-full bg-gradient-to-r from-ascend-500 to-ascend-400 transition-all"
-            style={{ width: `${Math.min(profile.xpProgress * 100, 100)}%` }}
-          />
-        </div>
-      </div>
 
-      {/* Stat Cards Grid */}
-      <div className="mb-8 grid gap-4 grid-cols-2 md:grid-cols-4">
-        {statCards.map(({ icon: Icon, label, value, sub, color }) => (
-          <div
-            key={label}
-            className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4"
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <Icon className={`h-4 w-4 ${color}`} />
-              <span className="text-xs text-[var(--text-secondary)]">{label}</span>
-            </div>
-            <p className="text-2xl font-bold text-[var(--text-primary)]">{value}</p>
-            {sub && <p className="text-xs text-[var(--text-secondary)] mt-0.5">{sub}</p>}
+        {/* ── XP LEVEL PANEL ── */}
+        <div className="mb-6 border border-zinc-900 bg-zinc-950">
+          <div className="flex items-center justify-between border-b border-zinc-900 px-5 py-2">
+            <span className="font-mono text-[10px] tracking-widest text-zinc-500">OPERATOR_LEVEL</span>
+            <span className="font-mono text-[10px] tracking-widest text-orange-600">{profile.tier?.toUpperCase()} ACCESS</span>
           </div>
-        ))}
-      </div>
-
-      {/* Two-column layout */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Focus Breakdown */}
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
-          <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)] flex items-center gap-1">
-            <Clock className="h-4 w-4 text-cyan-400" /> Focus Breakdown
-          </h2>
-          <div className="space-y-3">
-            <div className="flex justify-between text-sm">
-              <span className="text-[var(--text-secondary)]">Total Sessions</span>
-              <span className="font-medium text-[var(--text-primary)]">{focusStats.totalSessions}</span>
+          <div className="flex flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-orange-800 bg-orange-950/30 font-mono text-xl font-black text-orange-500">
+                {profile.level}
+              </div>
+              <div>
+                <p className="font-mono text-base font-bold tracking-wider text-zinc-100">{profile.levelName?.toUpperCase()}</p>
+                <p className="font-mono text-xs text-zinc-600">{profile.tier?.toUpperCase()} TIER</p>
+              </div>
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-[var(--text-secondary)]">Total Minutes</span>
-              <span className="font-medium text-[var(--text-primary)]">{focusStats.totalMinutes}</span>
+            <div className="text-right">
+              <p className="font-mono text-xl font-bold text-orange-500">{profile.totalXP.toLocaleString()} XP</p>
+              <p className="font-mono text-xs text-zinc-600">{profile.xpToNextLevel} TO_LEVEL_{profile.level + 1}</p>
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-[var(--text-secondary)]">Avg Session</span>
-              <span className="font-medium text-[var(--text-primary)]">{focusStats.avgMinutes} min</span>
+          </div>
+          <div className="px-5 pb-4">
+            <div className="mb-1 flex justify-between font-mono text-[10px] text-zinc-700">
+              <span>LVL_{profile.level}</span>
+              <span>{xpPercent}%</span>
+              <span>LVL_{profile.level + 1}</span>
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-[var(--text-secondary)]">Avg Focus Score</span>
-              <span className="font-bold text-ascend-400">{focusStats.avgFocusScore || '-'}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-[var(--text-secondary)]">Total Distractions</span>
-              <span className="font-medium text-red-400">{focusStats.totalDistractions}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-[var(--text-secondary)]">Best Day Streak</span>
-              <span className="font-medium text-[var(--text-primary)]">{focusStats.bestStreak} days</span>
-            </div>
-
-            {/* By type */}
-            <div className="pt-3 border-t border-[var(--border)]">
-              <p className="text-xs font-semibold text-[var(--text-secondary)] mb-2">By Method</p>
-              {Object.entries(focusStats.byType).map(([key, count]) =>
-                count > 0 ? (
-                  <div key={key} className="flex justify-between text-xs mb-1">
-                    <span className="text-[var(--text-secondary)] capitalize">{key.replace('_', ' ')}</span>
-                    <span className="text-[var(--text-primary)]">{count}</span>
-                  </div>
-                ) : null
-              )}
+            <div className="h-0.5 w-full bg-zinc-900">
+              <div className="h-0.5 bg-orange-600 transition-all duration-700" style={{ width: `${xpPercent}%` }} />
             </div>
           </div>
         </div>
 
-        {/* Habit & Goal Stats */}
-        <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
-          <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)] flex items-center gap-1">
-            <TrendingUp className="h-4 w-4 text-emerald-400" /> Habit &amp; Goal Insights
-          </h2>
-          <div className="space-y-3">
-            <div className="flex justify-between text-sm">
-              <span className="text-[var(--text-secondary)]">Habits Completed</span>
-              <span className="font-medium text-[var(--text-primary)]">{profile.totalHabitsCompleted}</span>
+        {/* ── STAT GRID ── */}
+        <div className="mb-6 grid grid-cols-2 gap-px border border-zinc-900 sm:grid-cols-4">
+          {statCards.map(({ label, value, sub }) => (
+            <div key={label} className="bg-zinc-950 px-4 py-3 transition hover:bg-zinc-900">
+              <p className="font-mono text-[9px] tracking-widest text-zinc-600">{label.replace(/ /g, '_').toUpperCase()}</p>
+              <p className="mt-0.5 font-mono text-xl font-bold text-zinc-100">{value}</p>
+              {sub && <p className="mt-0.5 font-mono text-[10px] text-zinc-600">{sub}</p>}
             </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-[var(--text-secondary)]">Current Streak</span>
-              <span className="font-medium text-ascend-400">{profile.currentStreak} days</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-[var(--text-secondary)]">Longest Streak</span>
-              <span className="font-medium text-[var(--text-primary)]">{profile.longestStreak} days</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-[var(--text-secondary)]">Goals Completed</span>
-              <span className="font-bold text-green-400">{profile.totalGoalsCompleted}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-[var(--text-secondary)]">Focus Minutes</span>
-              <span className="font-medium text-[var(--text-primary)]">{profile.totalFocusMinutes}</span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="text-[var(--text-secondary)]">Coins</span>
-              <span className="font-medium text-yellow-400">{profile.coins} 🪙</span>
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Achievements */}
-        <div className="lg:col-span-2 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
-          <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)] flex items-center gap-1">
-            <Award className="h-4 w-4 text-purple-400" /> Achievements ({profile.achievements.length})
-          </h2>
-          {profile.achievements.length === 0 ? (
-            <p className="text-sm text-[var(--text-secondary)]">No achievements unlocked yet. Keep going!</p>
-          ) : (
-            <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-              {profile.achievements.map((a) => (
-                <div key={a.id} className="flex items-start gap-3 rounded-lg bg-[var(--background)] p-3">
-                  <span className="text-2xl">{a.icon}</span>
-                  <div>
-                    <p className="text-sm font-medium text-[var(--text-primary)]">{a.name}</p>
-                    <p className="text-xs text-[var(--text-secondary)]">{a.description}</p>
-                    {a.rarity && (
-                      <span className={`mt-1 inline-block rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                        a.rarity === 'legendary' ? 'bg-yellow-500/20 text-yellow-400' :
-                        a.rarity === 'epic' ? 'bg-purple-500/20 text-purple-400' :
-                        a.rarity === 'rare' ? 'bg-blue-500/20 text-blue-400' :
-                        'bg-gray-500/20 text-gray-400'
-                      }`}>
-                        {a.rarity}
-                      </span>
-                    )}
-                  </div>
+        {/* ── DETAIL PANELS ── */}
+        <div className="mb-6 grid gap-4 lg:grid-cols-2">
+          <div className="border border-zinc-900 bg-zinc-950">
+            <div className="border-b border-zinc-900 px-4 py-2.5">
+              <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">FOCUS_TELEMETRY</span>
+            </div>
+            <div className="space-y-px p-1">
+              {(([['TOTAL_SESSIONS', focusStats.totalSessions], ['TOTAL_MINUTES', focusStats.totalMinutes], ['AVG_SESSION', `${focusStats.avgMinutes}_MIN`], ['AVG_FOCUS_SCORE', focusStats.avgFocusScore || 'N/A'], ['TOTAL_DISTRACTIONS', focusStats.totalDistractions], ['BEST_DAY_STREAK', `${focusStats.bestStreak}_DAYS`]]) as [string, string | number][]).map(([label, val]) => (
+                <div key={label} className="flex items-center justify-between px-3 py-2">
+                  <span className="font-mono text-[10px] tracking-widest text-zinc-600">{label}</span>
+                  <span className="font-mono text-xs text-zinc-200">{val}</span>
+                </div>
+              ))}
+              <div className="border-t border-zinc-900 px-3 pt-2 pb-1">
+                <p className="mb-1.5 font-mono text-[10px] tracking-widest text-zinc-600">BY_METHOD</p>
+                {Object.entries(focusStats.byType).map(([key, count]) =>
+                  (count as number) > 0 ? (
+                    <div key={key} className="flex justify-between py-0.5 font-mono text-[10px]">
+                      <span className="text-zinc-600">{key.replace('_', '_').toUpperCase()}</span>
+                      <span className="text-zinc-400">{count as number}</span>
+                    </div>
+                  ) : null
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="border border-zinc-900 bg-zinc-950">
+            <div className="border-b border-zinc-900 px-4 py-2.5">
+              <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">NODE_AND_OBJECTIVE_METRICS</span>
+            </div>
+            <div className="space-y-px p-1">
+              {(([['NODES_COMPLETED', profile.totalHabitsCompleted], ['CURRENT_UPTIME', `${profile.currentStreak}_DAYS`], ['PEAK_UPTIME', `${profile.longestStreak}_DAYS`], ['OBJECTIVES_COMPLETED', profile.totalGoalsCompleted], ['FOCUS_MINUTES', profile.totalFocusMinutes], ['COINS_EARNED', profile.coins]]) as [string, string | number][]).map(([label, val]) => (
+                <div key={label} className="flex items-center justify-between px-3 py-2">
+                  <span className="font-mono text-[10px] tracking-widest text-zinc-600">{label}</span>
+                  <span className="font-mono text-xs text-zinc-200">{val}</span>
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* ── ACHIEVEMENTS ── */}
+        <div className="border border-zinc-900 bg-zinc-950">
+          <div className="flex items-center justify-between border-b border-zinc-900 px-4 py-2.5">
+            <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">ACHIEVEMENT_LOG</span>
+            <span className="border border-orange-900 bg-orange-950/30 px-2 py-0.5 font-mono text-[9px] tracking-widest text-orange-600">
+              {profile.achievements.length}_UNLOCKED
+            </span>
+          </div>
+          {profile.achievements.length === 0 ? (
+            <div className="py-12 text-center">
+              <p className="font-mono text-xs tracking-widest text-zinc-600">NO_ACHIEVEMENTS_YET</p>
+              <p className="mt-2 font-mono text-[10px] text-zinc-700">Continue building nodes and objectives to unlock rewards.</p>
+            </div>
+          ) : (
+            <div className="grid gap-px p-1 sm:grid-cols-2 lg:grid-cols-3">
+              {profile.achievements.map((a) => {
+                const rarityClass = RARITY_STYLES[a.rarity ?? 'common'] ?? RARITY_STYLES.common;
+                return (
+                  <div key={a.id} className="flex items-start gap-3 border border-transparent p-3 transition hover:border-zinc-800 hover:bg-zinc-900">
+                    <span className="text-xl leading-none">{a.icon}</span>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate font-mono text-xs text-zinc-200">{a.name.toUpperCase()}</p>
+                      <p className="mt-0.5 line-clamp-2 font-mono text-[10px] text-zinc-600">{a.description}</p>
+                      {a.rarity && (
+                        <span className={`mt-1 inline-block border px-1.5 py-0.5 font-mono text-[9px] tracking-widest ${rarityClass}`}>
+                          {a.rarity.toUpperCase()}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           )}
         </div>
+
       </div>
     </div>
   );

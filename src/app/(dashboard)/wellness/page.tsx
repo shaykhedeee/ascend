@@ -1,15 +1,14 @@
 'use client';
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// Ascendify — Wellness Page
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// RESURGO â€” Wellness Page
 // Mood tracking, journaling, wellness check-ins
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 import { useMutation, useQuery } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
 import { useState } from 'react';
 import {
-  Heart,
   BookOpen,
   Smile,
   Meh,
@@ -99,231 +98,257 @@ export default function WellnessPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--background)] p-4 md:p-8 max-w-4xl mx-auto">
-      <h1 className="mb-8 text-2xl font-bold text-[var(--text-primary)] flex items-center gap-2">
-        <Heart className="h-6 w-6 text-pink-400" /> Wellness
-      </h1>
+    <div className="min-h-screen bg-black p-4 md:p-6">
+      <div className="mx-auto max-w-4xl">
 
-      {/* Tab toggle */}
-      <div className="mb-6 flex rounded-lg bg-[var(--surface)] p-1 w-fit">
-        <button
-          onClick={() => setTab('mood')}
-          className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
-            tab === 'mood' ? 'bg-ascend-500 text-white' : 'text-[var(--text-secondary)]'
-          }`}
-        >
-          Mood Check-in
-        </button>
-        <button
-          onClick={() => setTab('journal')}
-          className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
-            tab === 'journal' ? 'bg-ascend-500 text-white' : 'text-[var(--text-secondary)]'
-          }`}
-        >
-          Journal
-        </button>
-      </div>
-
-      {tab === 'mood' && (
-        <div className="space-y-6">
-          {/* Mood input */}
-          <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
-            <h2 className="mb-4 text-lg font-semibold text-[var(--text-primary)]">
-              How are you feeling{todayMood ? ' now' : ' today'}?
-            </h2>
-
-            {/* Score selector */}
-            <div className="mb-4 flex justify-center gap-4">
-              {[1, 2, 3, 4, 5].map((score) => {
-                const Icon = MOOD_ICONS[score] || Meh;
-                return (
-                  <button
-                    key={score}
-                    onClick={() => setMoodScore(score)}
-                    className={`flex flex-col items-center gap-1 rounded-xl p-3 transition-all ${
-                      moodScore === score
-                        ? 'bg-ascend-500/20 ring-2 ring-ascend-500 scale-110'
-                        : 'hover:bg-[var(--surface-hover)]'
-                    }`}
-                  >
-                    <Icon className={`h-8 w-8 ${MOOD_COLORS[score]}`} />
-                    <span className="text-xs text-[var(--text-secondary)]">{MOOD_LABELS[score]}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Tags */}
-            <div className="mb-4">
-              <p className="mb-2 text-xs font-medium text-[var(--text-secondary)]">How would you describe it?</p>
-              <div className="flex flex-wrap gap-2">
-                {MOOD_TAGS.map((tag) => (
-                  <button
-                    key={tag}
-                    onClick={() => toggleTag(tag)}
-                    className={`rounded-full px-3 py-1 text-xs transition-colors ${
-                      moodTags.includes(tag)
-                        ? 'bg-ascend-500 text-white'
-                        : 'bg-[var(--background)] text-[var(--text-secondary)] hover:bg-[var(--surface-hover)]'
-                    }`}
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Notes */}
-            <textarea
-              value={moodNotes}
-              onChange={(e) => setMoodNotes(e.target.value)}
-              placeholder="Any notes about how you're feeling? (optional)"
-              className="mb-4 w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] focus:border-ascend-500 focus:outline-none resize-none"
-              rows={3}
-            />
-
-            <button
-              onClick={handleMoodSubmit}
-              disabled={moodSaving}
-              className="rounded-lg bg-ascend-500 px-6 py-2 text-sm font-medium text-white hover:bg-ascend-600 disabled:opacity-50"
-            >
-              {todayMood ? 'Update Mood' : 'Log Mood'}
-            </button>
+        {/* ── BIOMETRICS HEADER ── */}
+        <div className="mb-6 border border-zinc-900 bg-zinc-950">
+          <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
+            <span className="font-mono text-[9px] tracking-widest text-orange-600">
+              BIOMETRICS :: WELLNESS_TRACKING
+            </span>
           </div>
-
-          {/* Mood history */}
-          <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
-            <h2 className="mb-4 text-sm font-semibold text-[var(--text-primary)]">Recent Moods</h2>
-            {!moodHistory || moodHistory.length === 0 ? (
-              <p className="text-sm text-[var(--text-secondary)]">No mood entries yet</p>
-            ) : (
-              <div className="space-y-3">
-                {moodHistory.slice(0, 14).map((entry) => {
-                  const Icon = MOOD_ICONS[entry.score] || Meh;
-                  return (
-                    <div key={entry._id} className="flex items-center gap-3">
-                      <Icon className={`h-5 w-5 ${MOOD_COLORS[entry.score]}`} />
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium text-[var(--text-primary)]">
-                            {MOOD_LABELS[entry.score]}
-                          </span>
-                          {entry.tags?.map((tag) => (
-                            <span key={tag} className="rounded-full bg-[var(--background)] px-2 py-0.5 text-[10px] text-[var(--text-secondary)]">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                        {entry.notes && (
-                          <p className="text-xs text-[var(--text-secondary)] mt-0.5">{entry.notes}</p>
-                        )}
-                      </div>
-                      <span className="text-xs text-[var(--text-secondary)] flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
-                        {entry.date}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+          <div className="px-5 py-4">
+            <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">BIOMETRICS</h1>
+            <p className="mt-1 font-mono text-xs tracking-widest text-zinc-600">
+              MOOD_TRACKING :: JOURNALING :: MENTAL_HEALTH_SUPPORT
+            </p>
+          </div>
+          {/* Tab strip */}
+          <div className="flex border-t border-zinc-900">
+            {(['mood', 'journal'] as const).map((t) => (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                className={`flex-1 border-b-2 px-4 py-2.5 font-mono text-[10px] tracking-widest transition ${
+                  tab === t
+                    ? 'border-orange-600 bg-orange-950/10 text-orange-500'
+                    : 'border-transparent text-zinc-600 hover:text-zinc-400'
+                }`}
+              >
+                {t === 'mood' ? 'MOOD_CHECKIN' : 'JOURNAL'}
+              </button>
+            ))}
           </div>
         </div>
-      )}
 
-      {tab === 'journal' && (
-        <div className="space-y-6">
-          {/* New entry button / form */}
-          {!showJournalForm ? (
-            <button
-              onClick={() => setShowJournalForm(true)}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[var(--border)] bg-[var(--surface)] p-4 text-sm text-[var(--text-secondary)] hover:border-ascend-500 hover:text-ascend-400 transition-colors"
-            >
-              <Plus className="h-4 w-4" /> New Journal Entry
-            </button>
-          ) : (
-            <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
-              <h2 className="mb-4 text-lg font-semibold text-[var(--text-primary)] flex items-center gap-1">
-                <BookOpen className="h-5 w-5" /> New Entry
-              </h2>
-
-              {/* Type selector */}
-              <div className="mb-4 flex flex-wrap gap-2">
-                {JOURNAL_TYPES.map((t) => (
-                  <button
-                    key={t.id}
-                    onClick={() => setJournalType(t.id as typeof journalType)}
-                    className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                      journalType === t.id
-                        ? 'bg-ascend-500 text-white'
-                        : 'bg-[var(--background)] text-[var(--text-secondary)]'
-                    }`}
-                  >
-                    {t.label}
-                  </button>
-                ))}
+        {/* ── MOOD TAB ── */}
+        {tab === 'mood' && (
+          <div className="space-y-4">
+            {/* Mood input panel */}
+            <div className="border border-zinc-900 bg-zinc-950">
+              <div className="border-b border-zinc-900 px-4 py-2.5">
+                <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">
+                  {todayMood ? 'UPDATE_TODAY_MOOD' : 'LOG_TODAY_MOOD'}
+                </span>
               </div>
-
-              <textarea
-                value={journalContent}
-                onChange={(e) => setJournalContent(e.target.value)}
-                placeholder={
-                  journalType === 'gratitude'
-                    ? 'What are you grateful for today?'
-                    : journalType === 'reflection'
-                      ? 'Reflect on your day...'
-                      : 'Write your thoughts...'
-                }
-                className="mb-4 w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-secondary)] focus:border-ascend-500 focus:outline-none resize-none"
-                rows={6}
-              />
-
-              <div className="flex gap-2">
-                <button
-                  onClick={handleJournalSubmit}
-                  disabled={!journalContent.trim() || journalSaving}
-                  className="rounded-lg bg-ascend-500 px-6 py-2 text-sm font-medium text-white hover:bg-ascend-600 disabled:opacity-50"
-                >
-                  Save Entry
-                </button>
-                <button
-                  onClick={() => { setShowJournalForm(false); setJournalContent(''); }}
-                  className="rounded-lg px-4 py-2 text-sm text-[var(--text-secondary)] hover:bg-[var(--surface-hover)]"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Journal entries list */}
-          <div className="space-y-3">
-            {!journalEntries || journalEntries.length === 0 ? (
-              <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6 text-center">
-                <BookOpen className="mx-auto mb-2 h-8 w-8 text-[var(--text-secondary)]" />
-                <p className="text-sm text-[var(--text-secondary)]">No journal entries yet. Start writing!</p>
-              </div>
-            ) : (
-              journalEntries.map((entry) => (
-                <div key={entry._id} className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-5">
-                  <div className="mb-2 flex items-center justify-between">
-                    <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                      entry.type === 'gratitude' ? 'bg-green-500/20 text-green-400' :
-                      entry.type === 'reflection' ? 'bg-blue-500/20 text-blue-400' :
-                      entry.type === 'goal_note' ? 'bg-purple-500/20 text-purple-400' :
-                      'bg-gray-500/20 text-gray-400'
-                    }`}>
-                      {entry.type ?? 'freeform'}
-                    </span>
-                    <span className="text-xs text-[var(--text-secondary)]">{entry.date}</span>
-                  </div>
-                  <p className="text-sm text-[var(--text-primary)] whitespace-pre-wrap">{entry.content}</p>
+              <div className="p-4">
+                {/* Score selectors */}
+                <p className="mb-3 font-mono text-[9px] tracking-widest text-zinc-600">SCORE_SELECTION</p>
+                <div className="mb-4 flex gap-2">
+                  {[1, 2, 3, 4, 5].map((score) => {
+                    const Icon = MOOD_ICONS[score] || Meh;
+                    return (
+                      <button
+                        key={score}
+                        onClick={() => setMoodScore(score)}
+                        className={`flex flex-1 flex-col items-center gap-1 border py-3 transition ${
+                          moodScore === score
+                            ? 'border-orange-800 bg-orange-950/30 text-orange-500'
+                            : 'border-zinc-800 text-zinc-600 hover:border-zinc-700'
+                        }`}
+                      >
+                        <Icon className={`h-5 w-5 ${MOOD_COLORS[score]}`} />
+                        <span className="font-mono text-[8px] tracking-widest">
+                          {MOOD_LABELS[score].toUpperCase().replace(' ', '_')}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
-              ))
+
+                {/* Tags */}
+                <p className="mb-2 font-mono text-[9px] tracking-widest text-zinc-600">QUALIFIER_TAGS</p>
+                <div className="mb-4 flex flex-wrap gap-1.5">
+                  {MOOD_TAGS.map((tag) => (
+                    <button
+                      key={tag}
+                      onClick={() => toggleTag(tag)}
+                      className={`border px-2.5 py-1 font-mono text-[9px] tracking-widest transition ${
+                        moodTags.includes(tag)
+                          ? 'border-orange-800 bg-orange-950/30 text-orange-500'
+                          : 'border-zinc-800 text-zinc-600 hover:border-zinc-700 hover:text-zinc-400'
+                      }`}
+                    >
+                      {tag.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Notes */}
+                <textarea
+                  value={moodNotes}
+                  onChange={(e) => setMoodNotes(e.target.value)}
+                  placeholder="OPTIONAL_NOTES..."
+                  className="mb-4 w-full resize-none border border-zinc-800 bg-black px-3 py-2 font-mono text-xs text-zinc-200 placeholder:text-zinc-700 focus:border-orange-800 focus:outline-none"
+                  rows={3}
+                />
+
+                <button
+                  onClick={handleMoodSubmit}
+                  disabled={moodSaving}
+                  className="border border-orange-800 bg-orange-950/30 px-6 py-2 font-mono text-[10px] tracking-widest text-orange-500 transition hover:bg-orange-950/60 disabled:opacity-40"
+                >
+                  {todayMood ? '[UPDATE_MOOD]' : '[LOG_MOOD]'}
+                </button>
+              </div>
+            </div>
+
+            {/* Mood history */}
+            <div className="border border-zinc-900 bg-zinc-950">
+              <div className="border-b border-zinc-900 px-4 py-2.5">
+                <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">MOOD_LOG_HISTORY</span>
+              </div>
+              {!moodHistory || moodHistory.length === 0 ? (
+                <div className="py-8 text-center">
+                  <p className="font-mono text-[10px] tracking-widest text-zinc-700">NO_ENTRIES_YET</p>
+                </div>
+              ) : (
+                <div className="space-y-px p-1">
+                  {moodHistory.slice(0, 14).map((entry) => {
+                    const Icon = MOOD_ICONS[entry.score] || Meh;
+                    return (
+                      <div key={entry._id} className="flex items-start gap-3 px-3 py-2.5 hover:bg-zinc-900">
+                        <Icon className={`mt-0.5 h-4 w-4 shrink-0 ${MOOD_COLORS[entry.score]}`} />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <span className="font-mono text-xs text-zinc-300">
+                              {MOOD_LABELS[entry.score].toUpperCase().replace(' ', '_')}
+                            </span>
+                            {entry.tags?.map((tag) => (
+                              <span key={tag} className="border border-zinc-800 px-1.5 py-0.5 font-mono text-[8px] tracking-widest text-zinc-600">
+                                {tag.toUpperCase()}
+                              </span>
+                            ))}
+                          </div>
+                          {entry.notes && (
+                            <p className="mt-0.5 font-mono text-[10px] text-zinc-600">{entry.notes}</p>
+                          )}
+                        </div>
+                        <span className="flex shrink-0 items-center gap-1 font-mono text-[9px] text-zinc-700">
+                          <Calendar className="h-3 w-3" />
+                          {entry.date}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* ── JOURNAL TAB ── */}
+        {tab === 'journal' && (
+          <div className="space-y-4">
+            {/* New entry toggle */}
+            {!showJournalForm ? (
+              <button
+                onClick={() => setShowJournalForm(true)}
+                className="flex w-full items-center justify-center gap-2 border border-dashed border-zinc-800 bg-zinc-950 py-4 font-mono text-[10px] tracking-widest text-zinc-600 transition hover:border-orange-800 hover:text-orange-600"
+              >
+                <Plus className="h-3 w-3" /> [NEW_ENTRY]
+              </button>
+            ) : (
+              <div className="border border-zinc-900 bg-zinc-950">
+                <div className="flex items-center gap-2 border-b border-zinc-900 px-4 py-2.5">
+                  <BookOpen className="h-3 w-3 text-zinc-600" />
+                  <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">NEW_JOURNAL_ENTRY</span>
+                </div>
+                <div className="p-4">
+                  {/* Type selector */}
+                  <div className="mb-4 flex flex-wrap gap-1.5">
+                    {JOURNAL_TYPES.map((t) => (
+                      <button
+                        key={t.id}
+                        onClick={() => setJournalType(t.id as typeof journalType)}
+                        className={`border px-3 py-1.5 font-mono text-[9px] tracking-widest transition ${
+                          journalType === t.id
+                            ? 'border-orange-800 bg-orange-950/30 text-orange-500'
+                            : 'border-zinc-800 text-zinc-600 hover:border-zinc-700'
+                        }`}
+                      >
+                        {t.label.toUpperCase().replace(' ', '_')}
+                      </button>
+                    ))}
+                  </div>
+
+                  <textarea
+                    value={journalContent}
+                    onChange={(e) => setJournalContent(e.target.value)}
+                    placeholder={
+                      journalType === 'gratitude'
+                        ? 'WHAT_ARE_YOU_GRATEFUL_FOR_TODAY...'
+                        : journalType === 'reflection'
+                          ? 'REFLECT_ON_YOUR_DAY...'
+                          : 'WRITE_YOUR_THOUGHTS...'
+                    }
+                    className="mb-4 w-full resize-none border border-zinc-800 bg-black px-3 py-2 font-mono text-xs text-zinc-200 placeholder:text-zinc-700 focus:border-orange-800 focus:outline-none"
+                    rows={6}
+                  />
+
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleJournalSubmit}
+                      disabled={!journalContent.trim() || journalSaving}
+                      className="border border-orange-800 bg-orange-950/30 px-6 py-2 font-mono text-[10px] tracking-widest text-orange-500 transition hover:bg-orange-950/60 disabled:opacity-40"
+                    >
+                      [SAVE_ENTRY]
+                    </button>
+                    <button
+                      onClick={() => { setShowJournalForm(false); setJournalContent(''); }}
+                      className="border border-zinc-800 px-4 py-2 font-mono text-[10px] tracking-widest text-zinc-600 transition hover:border-zinc-700 hover:text-zinc-400"
+                    >
+                      [CANCEL]
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Journal entries */}
+            {!journalEntries || journalEntries.length === 0 ? (
+              <div className="border border-zinc-900 bg-zinc-950 py-12 text-center">
+                <BookOpen className="mx-auto mb-3 h-6 w-6 text-zinc-700" />
+                <p className="font-mono text-[10px] tracking-widest text-zinc-700">NO_ENTRIES_YET</p>
+              </div>
+            ) : (
+              <div className="space-y-px">
+                {journalEntries.map((entry) => (
+                  <div key={entry._id} className="border border-zinc-900 bg-zinc-950 p-4 transition hover:bg-zinc-900">
+                    <div className="mb-2 flex items-center justify-between">
+                      <span className={`border px-2 py-0.5 font-mono text-[9px] tracking-widest ${
+                        entry.type === 'gratitude'  ? 'border-green-900 text-green-600' :
+                        entry.type === 'reflection' ? 'border-blue-900 text-blue-600' :
+                        entry.type === 'goal_note'  ? 'border-purple-900 text-purple-600' :
+                        'border-zinc-800 text-zinc-600'
+                      }`}>
+                        {(entry.type ?? 'freeform').toUpperCase().replace('_', '_')}
+                      </span>
+                      <span className="font-mono text-[9px] text-zinc-700">{entry.date}</span>
+                    </div>
+                    <p className="font-mono text-xs leading-relaxed text-zinc-400 whitespace-pre-wrap">
+                      {entry.content}
+                    </p>
+                  </div>
+                ))}
+              </div>
             )}
           </div>
-        </div>
-      )}
+        )}
+
+      </div>
     </div>
   );
 }

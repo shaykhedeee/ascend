@@ -40,6 +40,7 @@ import {
   TemplateBundle,
   HabitCategory,
   HabitFrequency,
+  GoalCategory,
 } from '@/types';
 import {
   HABIT_TEMPLATES,
@@ -78,6 +79,22 @@ const categoryMap: Record<TemplateCategory, HabitCategory> = {
   'sleep': 'health',
   'nutrition': 'health',
   'relationships': 'social',
+  'personal-growth': 'mindfulness',
+};
+
+const goalCategoryMap: Record<TemplateCategory, GoalCategory> = {
+  'health': 'health',
+  'fitness': 'fitness',
+  'productivity': 'productivity',
+  'learning': 'education',
+  'mindfulness': 'mindfulness',
+  'social': 'relationships',
+  'finance': 'finance',
+  'creative': 'creativity',
+  'career': 'career',
+  'sleep': 'health',
+  'nutrition': 'health',
+  'relationships': 'relationships',
   'personal-growth': 'mindfulness',
 };
 
@@ -345,7 +362,7 @@ function GoalTemplateCard({
           </p>
           <div className="flex flex-wrap items-center gap-2 mt-3">
             <span className="px-2 py-1 rounded-full bg-[var(--surface)] text-xs text-[var(--text-secondary)]">
-              ⏱️ {template.timeframe}
+              {template.timeframe}
             </span>
             {template.difficulty && (
               <span className={cn(
@@ -720,7 +737,7 @@ function CreateTemplateModal({
   const [name, setName] = useState(existingTemplate?.name || '');
   const [description, setDescription] = useState(existingTemplate?.description || '');
   const [category, setCategory] = useState<TemplateCategory>(existingTemplate?.category || 'productivity');
-  const [icon, setIcon] = useState(existingTemplate?.icon || '✨');
+  const [icon, setIcon] = useState(existingTemplate?.icon || 'TM');
   const [color, setColor] = useState(existingTemplate?.color || '#F97316');
   const [frequency, setFrequency] = useState<HabitFrequency>('daily');
   const [xpReward, setXpReward] = useState(15);
@@ -769,7 +786,7 @@ function CreateTemplateModal({
     setTags(tags.filter(t => t !== tag));
   };
 
-  const EMOJI_OPTIONS = ['✨', '🎯', '💪', '📚', '🧘', '💰', '🎨', '💼', '❤️', '🌟', '🚀', '🔥', '⚡', '🌱', '🏃', '🧠'];
+  const EMOJI_OPTIONS = ['TM', 'TG', 'FT', 'RD', 'MD', 'FN', 'AR', 'CR', 'HL', 'ST', 'GO', 'HT', 'PD', 'GR', 'RN', 'BR'];
   const COLOR_OPTIONS = ['#F97316', '#10B981', '#3B82F6', '#8B5CF6', '#EC4899', '#F59E0B', '#EF4444', '#22C55E'];
 
   return (
@@ -1044,7 +1061,7 @@ function CreateTemplateModal({
 // ─────────────────────────────────────────────────────────────────────────────────
 
 export function TemplateLibrary({ isOpen, onClose, type = 'all', onTemplateApplied }: TemplateLibraryProps) {
-  const { addHabit, addGoal: _addGoal } = useAscendStore();
+  const { addHabit, addGoal } = useAscendStore();
 
   // State
   const [activeTab, setActiveTab] = useState<TabType>('browse');
@@ -1179,6 +1196,28 @@ export function TemplateLibrary({ isOpen, onClose, type = 'all', onTemplateAppli
     });
 
     setDetailTemplate(null);
+    onTemplateApplied?.();
+    onClose();
+  };
+
+  const handleUseGoalTemplate = (template: GoalTemplate) => {
+    const now = new Date();
+    const targetDate = new Date(now);
+    targetDate.setDate(targetDate.getDate() + (template.timeframeDays || 90));
+    addGoal({
+      id: crypto.randomUUID(),
+      userId: '',
+      title: template.title,
+      description: template.description,
+      category: goalCategoryMap[template.category],
+      targetDate,
+      createdAt: now,
+      status: 'not_started',
+      milestones: [],
+      aiGenerated: false,
+      progressPercentage: 0,
+      progress: 0,
+    });
     onTemplateApplied?.();
     onClose();
   };
@@ -1506,10 +1545,7 @@ export function TemplateLibrary({ isOpen, onClose, type = 'all', onTemplateAppli
                       <GoalTemplateCard
                         key={goal.id}
                         template={goal}
-                        onUse={() => {
-                          // TODO: Implement goal creation from template
-                          onClose();
-                        }}
+                        onUse={() => handleUseGoalTemplate(goal)}
                         onDetails={() => setDetailTemplate({ template: goal, type: 'goal' })}
                       />
                     ))}
@@ -1708,7 +1744,7 @@ export function TemplateLibrary({ isOpen, onClose, type = 'all', onTemplateAppli
 
                 {/* Tips */}
                 <div className="p-4 rounded-lg bg-[var(--surface)] border border-[var(--border)]">
-                  <h4 className="text-sm font-medium text-[var(--text-primary)] mb-2">💡 Tips</h4>
+                  <h4 className="text-sm font-medium text-[var(--text-primary)] mb-2">Tips</h4>
                   <ul className="space-y-1 text-xs text-[var(--text-muted)]">
                     <li>• Export your templates before clearing browser data</li>
                     <li>• Share template files with friends</li>

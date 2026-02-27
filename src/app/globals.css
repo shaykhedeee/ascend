@@ -7,39 +7,42 @@
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 /* ─────────────────────────────────────────────────────────────────────────────────
-   CSS Variables - Dark Theme (Default)
+   CSS Variables – Vitality Terminal Theme
+   Palette: Pitch Black × Rust Orange × Zinc panels
    ───────────────────────────────────────────────────────────────────────────────── */
 
 :root {
-  /* Brand Colors - Orange Theme */
+  /* ── Rust / Orange accent (only for charged/active states) ── */
   --ascend-50: #FFF7ED;
   --ascend-100: #FFEDD5;
   --ascend-200: #FED7AA;
   --ascend-300: #FDBA74;
   --ascend-400: #FB923C;
-  --ascend-500: #F97316;
-  --ascend-600: #EA580C;
-  --ascend-700: #C2410C;
-  
-  /* Legacy mappings for compatibility */
-  --ascend-primary: #F97316;
+  --ascend-500: #EA580C;   /* primary rust – use sparingly */
+  --ascend-600: #C2410C;
+  --ascend-700: #9A3412;
+
+  /* Legacy compatibility */
+  --ascend-primary: #EA580C;
   --ascend-primary-light: #FB923C;
-  --ascend-primary-dark: #EA580C;
-  --gold: #FBBF24;
-  --gold-dark: #D97706;
-  
-  /* Dark theme backgrounds - Warm tinted */
-  --background: #0C0A09;
-  --background-secondary: #171412;
-  --background-tertiary: #1C1917;
-  --surface: #292524;
-  --surface-hover: #44403C;
-  --border: #44403C;
-  
-  /* Dark theme text - Warm tones */
-  --text-primary: #FAFAF9;
-  --text-secondary: #A8A29E;
-  --text-muted: #8A8580;
+  --ascend-primary-dark: #C2410C;
+  --rust: #EA580C;
+  --rust-dim: #431407;
+
+  /* ── Terminal backgrounds ── */
+  --background: #000000;            /* pitch black page bg */
+  --background-secondary: #09090B; /* zinc-950 sidebar */
+  --background-tertiary: #0D0D0F;  /* slightly lifted panel */
+  --surface: #0A0A0A;              /* card / panel bg */
+  --surface-hover: #18181B;        /* zinc-900 hover */
+  --border: #18181B;               /* zinc-900 borders (always visible) */
+  --card-hover: #1C1C1F;
+  --border-hover: #27272A;         /* zinc-800 hover border */
+
+  /* ── Terminal text ── */
+  --text-primary: #FAFAFA;         /* zinc-50 */
+  --text-secondary: #71717A;       /* zinc-500 */
+  --text-muted: #3F3F46;           /* zinc-700 */
   
   /* Glass effect */
   --glass-bg: rgba(255, 255, 255, 0.05);
@@ -142,6 +145,8 @@
   --surface: #FFFFFF;
   --surface-hover: #FFF7ED;
   --border: #FED7AA;
+  --card-hover: #FFF7ED;
+  --border-hover: #FDBA74;
   
   /* Light theme text - Warm tones */
   --text-primary: #1C1917;

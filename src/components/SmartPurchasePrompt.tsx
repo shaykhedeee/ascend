@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// AscendifyIFY - Smart Purchase Prompt Component
+// RESURGOIFY - Smart Purchase Prompt Component
 // Non-intrusive upgrade prompts that appear at strategic moments
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -48,7 +48,7 @@ const PROMPT_CONTENT: Record<PromptTrigger, {
 }> = {
   streak_milestone: {
     icon: Zap,
-    title: "You're on Fire! 🔥",
+    title: "You are building momentum",
     message: "Amazing streak! With Pro, you get Streak Freeze to protect your hard-earned progress.",
     highlight: "Never lose a streak again",
     cta: "Protect My Streaks",
@@ -56,7 +56,7 @@ const PROMPT_CONTENT: Record<PromptTrigger, {
   },
   level_up: {
     icon: Star,
-    title: "Congratulations! 🎉",
+    title: 'Congratulations',
     message: "You just leveled up! Pro members unlock exclusive achievements and badges.",
     highlight: "50+ exclusive achievements",
     cta: "Unlock All Rewards",
@@ -64,23 +64,23 @@ const PROMPT_CONTENT: Record<PromptTrigger, {
   },
   habit_limit: {
     icon: TrendingUp,
-    title: "Ready to Grow? 🌱",
-    message: "You've reached the free limit of 3 habits. Upgrade to track unlimited habits and transform faster.",
+    title: 'Ready to Grow',
+    message: "You've reached the free limit of 10 habits. Upgrade to track unlimited habits and transform faster.",
     highlight: "Unlimited habits & goals",
     cta: "Remove Limits",
     gradient: "from-ascend-500 to-emerald-500"
   },
   goal_limit: {
     icon: Brain,
-    title: "Dream Bigger! ✨",
-    message: "Free users can have 1 active goal. Upgrade to pursue all your ambitions simultaneously.",
+    title: 'Dream Bigger',
+    message: "Free users can have 3 active goals. Upgrade to pursue all your ambitions simultaneously.",
     highlight: "Unlimited AI-powered goals",
     cta: "Unlock All Goals",
     gradient: "from-blue-500 to-purple-500"
   },
   ai_feature: {
     icon: Brain,
-    title: "AI Power Awaits 🤖",
+    title: 'AI Power Awaits',
     message: "AI goal decomposition breaks down your dreams into daily actions. Upgrade to unlock this game-changer.",
     highlight: "Personal AI life coach",
     cta: "Activate AI Coach",
@@ -88,7 +88,7 @@ const PROMPT_CONTENT: Record<PromptTrigger, {
   },
   export_feature: {
     icon: Download,
-    title: "Keep Your Data 💾",
+    title: 'Keep Your Data',
     message: "Pro members can export their data as JSON or PDF. Your progress, your data, your backup.",
     highlight: "Full data ownership",
     cta: "Enable Export",
@@ -96,7 +96,7 @@ const PROMPT_CONTENT: Record<PromptTrigger, {
   },
   usage_milestone: {
     icon: Gift,
-    title: "You're Crushing It! 💪",
+    title: 'You are making strong progress',
     message: "You've completed over 100 tasks! Pro users get detailed analytics to understand their patterns.",
     highlight: "Deep insights & analytics",
     cta: "Unlock Insights",
@@ -104,9 +104,9 @@ const PROMPT_CONTENT: Record<PromptTrigger, {
   },
   gentle_reminder: {
     icon: Sparkles,
-    title: "Enjoying Ascendify?",
+    title: "Enjoying RESURGO?",
     message: "Upgrade to Pro for the full transformation experience. Support the app and unlock everything.",
-    highlight: "Starting at $5/month",
+    highlight: 'Starting at $12/month',
     cta: "See Pro Features",
     gradient: "from-ascend-500 to-gold-400"
   }

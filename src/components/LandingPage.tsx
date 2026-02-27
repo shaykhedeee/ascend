@@ -1,7 +1,7 @@
-// ═══════════════════════════════════════════════════════════════════════════════
-// AscendifyIFY - Landing Page Component
+﻿// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// RESURGOIFY - Landing Page Component
 // Premium SaaS landing page with features, pricing, testimonials
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 'use client';
 
@@ -121,7 +121,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
       name: 'Sarah Chen',
       role: 'Entrepreneur',
       avatar: 'S',
-      content: 'Ascendify helped me break down my goal of launching a startup into daily actionable tasks. I went from overwhelmed to organized in days.',
+      content: 'RESURGO helped me break down my goal of launching a startup into daily actionable tasks. I went from overwhelmed to organized in days.',
       rating: 5,
     },
     {
@@ -135,7 +135,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
       name: 'Emily Rodriguez',
       role: 'Medical Student',
       avatar: 'E',
-      content: 'I use Ascendify to manage my study goals and self-care habits. The AI decomposition feature is a game-changer for complex goals.',
+      content: 'I use RESURGO to manage my study goals and self-care habits. The AI decomposition feature is a game-changer for complex goals.',
       rating: 5,
     },
   ];
@@ -206,7 +206,13 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#0A0A0B] text-white overflow-x-hidden">
+    <div className="min-h-screen text-white overflow-x-hidden">
+      {/* Section Gradient Transitions */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-0 left-0 w-full h-[40vh] bg-gradient-to-b from-ascend-500 via-purple-500 to-transparent" />
+        <div className="absolute top-[40vh] left-0 w-full h-[30vh] bg-gradient-to-b from-purple-500 via-gold-400 to-transparent" />
+        <div className="absolute top-[70vh] left-0 w-full h-[30vh] bg-gradient-to-b from-gold-400 via-blue-500 to-[#0A0A0B]" />
+      </div>
       {/* Gradient Background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-ascend-500/10 rounded-full blur-[120px]" />
@@ -215,14 +221,14 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
       </div>
 
       {/* Navigation */}
-      <nav className="relative z-50 border-b border-white/5">
+      <nav className="relative z-50 border-b border-white/5 bg-gradient-to-r from-[#0A0A0B] via-ascend-500/10 to-[#0A0A0B]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20">
             {/* Logo - Centered Branding */}
             <div className="flex items-center gap-3">
               <Logo size="md" />
               <div className="flex flex-col">
-                <span className="text-xl font-bold tracking-tight">ASCENDIFY</span>
+                <span className="text-xl font-bold tracking-tight">RESURGO</span>
                 <span className="text-[9px] text-white/50 tracking-[0.2em] uppercase">by WEBNESS</span>
               </div>
             </div>
@@ -324,7 +330,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-16 sm:pt-24 pb-20 px-4 sm:px-6 lg:px-8">
+      <section className="relative pt-16 sm:pt-24 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-ascend-500/10 via-purple-500/10 to-transparent">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-4xl mx-auto">
             {/* Badge */}
@@ -334,39 +340,31 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight mb-6">
-              Turn Big Dreams Into
-              <span className="block mt-2 bg-gradient-to-r from-ascend-400 via-gold-400 to-ascend-400 bg-clip-text text-transparent">
-                Daily Victories
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight mb-6 animate-fade-in">
+              Achieve Your Ambitious Goals
+              <span className="block mt-2 bg-gradient-to-r from-ascend-400 via-gold-400 to-ascend-400 bg-clip-text text-transparent animate-gradient-slide">
+                One Step at a Time
               </span>
             </h1>
 
             {/* Subheadline - More specific value proposition */}
-            <p className="text-lg sm:text-xl text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed">
-              Ascendify uses AI to break down your ambitious goals into achievable daily tasks. 
-              Build habits that stick. Track progress that compounds. Achieve goals that matter.
+            <p className="text-lg sm:text-xl text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-delay">
+              Resurgo is your advanced habit and goal achievement platform. Our AI breaks down your dreams into actionable milestones, daily tasks, and personalized plans. Build habits that last, track your progress, and unlock your full potential.
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
               <button
                 onClick={onGetStarted}
-                className="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold text-lg
-                         bg-gradient-to-r from-ascend-500 to-ascend-600 hover:from-ascend-400 hover:to-ascend-500
-                         shadow-lg shadow-ascend-500/25 transition-all flex items-center justify-center gap-2
-                         focus-visible:ring-2 focus-visible:ring-ascend-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0B]
-                         active:scale-[0.98] min-h-[56px]"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold text-lg bg-gradient-to-r from-ascend-500 to-ascend-600 hover:from-ascend-400 hover:to-ascend-500 shadow-lg shadow-ascend-500/25 transition-all flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-ascend-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0B] active:scale-[0.98] min-h-[56px] animate-bounce"
+                aria-label="Get started for free"
               >
-                Start Free — No Credit Card
+                Get Started Free
                 <ArrowRight className="w-5 h-5" aria-hidden="true" />
               </button>
               <button 
                 onClick={() => setShowDemoModal(true)}
-                className="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold text-lg
-                         border border-white/10 hover:bg-white/5 transition-colors
-                         flex items-center justify-center gap-2
-                         focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0B]
-                         active:scale-[0.98] min-h-[56px]"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold text-lg border border-white/10 hover:bg-white/5 transition-colors flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0B] active:scale-[0.98] min-h-[56px] animate-fade-in-delay"
                 aria-label="Watch demo video"
               >
                 <Play className="w-5 h-5" aria-hidden="true" />
@@ -375,26 +373,26 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
             </div>
 
             {/* Trust Signals */}
-            <div className="flex flex-wrap items-center justify-center gap-6 mb-8 text-sm text-white/50">
+            <div className="flex flex-wrap items-center justify-center gap-6 mb-8 text-sm text-white/50 animate-fade-in-delay">
               <div className="flex items-center gap-2">
                 <Shield className="w-4 h-4 text-green-400" />
-                <span>100% Privacy Focused</span>
+                <span>Privacy Focused</span>
               </div>
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-blue-400" />
-                <span>Setup in 2 Minutes</span>
+                <span>Quick Setup</span>
               </div>
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 text-purple-400" />
-                <span>50,000+ Active Users</span>
+                <span>50,000+ Users</span>
               </div>
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 max-w-3xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 max-w-3xl mx-auto animate-fade-in-delay">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
-                  <p className="text-2xl sm:text-3xl font-bold text-white">{stat.value}</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-white animate-count-up" data-value={stat.value.replace('+','')}>{stat.value}</p>
                   <p className="text-sm text-white/50">{stat.label}</p>
                 </div>
               ))}
@@ -448,7 +446,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="relative py-20 sm:py-32 px-4 sm:px-6 lg:px-8">
+      <section id="features" className="relative py-20 sm:py-32 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-purple-500/10 via-gold-400/10 to-transparent">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
@@ -497,7 +495,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
               </h2>
               
               <p className="text-lg text-white/60 mb-8 leading-relaxed">
-                Traditional habit apps assume everyone thinks the same way. Ascendify is built with ADHD, 
+                Traditional habit apps assume everyone thinks the same way. RESURGO is built with ADHD, 
                 autism, and other neurodivergent minds in focus. Less overwhelm, more wins.
               </p>
 
@@ -613,7 +611,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
               
               {/* Floating celebration */}
               <div className="absolute -top-4 -right-4 px-4 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-sm font-medium shadow-lg shadow-purple-500/25 animate-float">
-                🎉 3-Day Streak!
+                3-Day Streak
               </div>
             </div>
           </div>
@@ -621,52 +619,75 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
       </section>
 
       {/* How It Works */}
-      <section className="relative py-20 sm:py-32 px-4 sm:px-6 lg:px-8 border-y border-white/5">
-        <div className="max-w-7xl mx-auto">
+      <section className="relative py-20 sm:py-32 px-4 sm:px-6 lg:px-8 border-y border-white/5 bg-gradient-to-b from-black via-[#18181b] to-black">
+        <div className="max-w-7xl mx-auto relative">
+          {/* Magic particles around CTA */}
+          <div className="absolute left-1/2 top-0 -translate-x-1/2 z-10 pointer-events-none">
+            <div className="magic-particles" />
+          </div>
           <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              How <span className="text-gold-400">ASCENDIFY</span> Works
+            <h2 className="text-4xl sm:text-5xl font-extrabold mb-4 animate-fade-in">
+              How <span className="text-gold-400">RESURGO</span> Works
             </h2>
-            <p className="text-lg text-white/60 max-w-2xl mx-auto">
-              Three simple steps to transform your life
+            <p className="text-lg text-white/70 max-w-2xl mx-auto animate-fade-in-delay">
+              Three clear steps to turn goals into consistent action
             </p>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                step: '01',
-                title: 'Set Your Ultimate Goal',
-                description: 'Tell us what you want to achieve. Whether it\'s launching a business, getting fit, or learning a new skill.',
-                icon: Target,
-              },
-              {
-                step: '02',
-                title: 'AI Creates Your Plan',
-                description: 'Our AI breaks down your goal into milestones, weekly objectives, and daily tasks tailored to your timeline.',
-                icon: Brain,
-              },
-              {
-                step: '03',
-                title: 'Track & Level Up',
-                description: 'Complete daily tasks, build habits, earn XP, and watch as your progress compounds into real results.',
-                icon: Trophy,
-              },
-            ].map((item, index) => (
-              <div key={index} className="relative text-center">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl 
-                              bg-gradient-to-br from-ascend-500/20 to-gold-400/20 mb-6">
-                  <item.icon className="w-8 h-8 text-ascend-400" />
-                </div>
-                <div className="text-xs text-ascend-400 font-semibold mb-2">STEP {item.step}</div>
-                <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                <p className="text-white/60 text-sm leading-relaxed">{item.description}</p>
-                
-                {index < 2 && (
-                  <ChevronRight className="hidden md:block absolute top-8 -right-4 w-8 h-8 text-white/10" />
-                )}
+          <div className="flex flex-col md:flex-row items-stretch justify-center gap-10 relative">
+            {/* Step 1 */}
+            <div className="flex-1 bg-gradient-to-br from-[#18181b] via-black to-[#18181b] rounded-2xl p-8 shadow-xl border border-white/10 relative animate-fade-in">
+              <div className="absolute top-0 right-0 w-16 h-16 pointer-events-none">
+                <div className="magic-particles" />
               </div>
-            ))}
+              <div className="flex items-center justify-center mb-6">
+                <Target className="w-7 h-7 text-ascend-400 animate-pulse" />
+              </div>
+              <div className="text-xs text-ascend-400 font-semibold mb-2">Step 1</div>
+              <h3 className="text-2xl font-bold mb-3">Set Your Ultimate Goal</h3>
+              <p className="text-white/70 text-base leading-relaxed">Tell us what you want to achieve. Whether it's launching a business, getting fit, or learning a new skill.</p>
+            </div>
+            {/* Animated connector */}
+            <div className="hidden md:flex items-center justify-center">
+              <div className="w-10 h-10 flex items-center justify-center">
+                <span className="block w-2 h-10 bg-gradient-to-b from-gold-400 via-ascend-400 to-purple-400 rounded-full animate-gradient-slide" />
+              </div>
+            </div>
+            {/* Step 2 */}
+            <div className="flex-1 bg-gradient-to-br from-[#18181b] via-black to-[#18181b] rounded-2xl p-8 shadow-xl border border-white/10 relative animate-fade-in-delay">
+              <div className="absolute top-0 left-0 w-16 h-16 pointer-events-none">
+                <div className="magic-particles" />
+              </div>
+              <div className="flex items-center justify-center mb-6">
+                <Brain className="w-7 h-7 text-purple-400 animate-pulse" />
+              </div>
+              <div className="text-xs text-purple-400 font-semibold mb-2">Step 2</div>
+              <h3 className="text-2xl font-bold mb-3">AI Creates Your Plan</h3>
+              <p className="text-white/70 text-base leading-relaxed">Our AI breaks down your goal into milestones, weekly objectives, and daily tasks tailored to your timeline.</p>
+            </div>
+            {/* Animated connector */}
+            <div className="hidden md:flex items-center justify-center">
+              <div className="w-10 h-10 flex items-center justify-center">
+                <span className="block w-2 h-10 bg-gradient-to-b from-purple-400 via-gold-400 to-ascend-400 rounded-full animate-gradient-slide" />
+              </div>
+            </div>
+            {/* Step 3 */}
+            <div className="flex-1 bg-gradient-to-br from-[#18181b] via-black to-[#18181b] rounded-2xl p-8 shadow-xl border border-white/10 relative animate-fade-in-delay">
+              <div className="absolute bottom-0 right-0 w-16 h-16 pointer-events-none">
+                <div className="magic-particles" />
+              </div>
+              <div className="flex items-center justify-center mb-6">
+                <Trophy className="w-7 h-7 text-gold-400 animate-pulse" />
+              </div>
+              <div className="text-xs text-gold-400 font-semibold mb-2">Step 3</div>
+              <h3 className="text-2xl font-bold mb-3">Track & Level Up</h3>
+              <p className="text-white/70 text-base leading-relaxed">Complete daily tasks, build habits, earn XP, and watch as your progress compounds into real results.</p>
+              {/* CTA with magic effect */}
+              <div className="mt-8 flex items-center justify-center relative">
+                <button onClick={onGetStarted} className="px-8 py-4 rounded-xl font-semibold text-lg bg-gradient-to-r from-gold-400 to-ascend-500 shadow-lg shadow-gold-400/25 transition-all flex items-center gap-2 animate-bounce magic-particles">
+                  Get Started Now
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -676,7 +697,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              Why Choose <span className="text-ascend-400">ASCENDIFY</span>?
+              Why Choose <span className="text-ascend-400">RESURGO</span>?
             </h2>
             <p className="text-lg text-white/60 max-w-2xl mx-auto">
               See how we compare to other popular habit tracking apps
@@ -691,7 +712,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
                   <th className="p-4 text-center">
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-ascend-500/20 to-gold-400/20 border border-ascend-500/30">
                       <Mountain className="w-4 h-4 text-ascend-400" />
-                      <span className="font-bold text-ascend-400">ASCENDIFY</span>
+                      <span className="font-bold text-ascend-400">RESURGO</span>
                     </div>
                   </th>
                   <th className="p-4 text-center text-white/50">Habitica</th>
@@ -880,43 +901,43 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
               Frequently Asked <span className="text-ascend-400">Questions</span>
             </h2>
             <p className="text-lg text-white/60 max-w-2xl mx-auto">
-              Everything you need to know about building better habits with Ascendify
+              Everything you need to know about building better habits with RESURGO
             </p>
           </div>
 
           <div className="space-y-4" itemScope itemType="https://schema.org/FAQPage">
             {[
               {
-                question: "What is Ascendify and how does it work?",
-                answer: "Ascendify is an AI-powered habit tracking app that helps you transform ambitious goals into achievable daily tasks. Our AI analyzes your goal, breaks it down into milestones, weekly objectives, and daily habits, making even the biggest dreams feel manageable. You track your progress, earn XP, level up, and watch your life transform through consistent daily action."
+                question: "What is RESURGO and how does it work?",
+                answer: "RESURGO is an AI-powered habit tracking app that helps you transform ambitious goals into achievable daily tasks. Our AI analyzes your goal, breaks it down into milestones, weekly objectives, and daily habits, making even the biggest dreams feel manageable. You track your progress, earn XP, level up, and watch your life transform through consistent daily action."
               },
               {
-                question: "is Ascendify free to use?",
-                answer: "Yes! Ascendify offers a generous free plan that includes up to 3 habits, 1 active goal, basic analytics, 7-day history, and both light and dark themes. For unlimited habits, AI goal decomposition, advanced analytics, and full history access, you can upgrade to Pro at $5/month or get lifetime access for a one-time payment of $99."
+                question: "is RESURGO free to use?",
+                answer: "Yes! RESURGO offers a generous free plan that includes up to 3 habits, 1 active goal, basic analytics, 7-day history, and both light and dark themes. For unlimited habits, AI goal decomposition, advanced analytics, and full history access, you can upgrade to Pro at $5/month or get lifetime access for a one-time payment of $99."
               },
               {
                 question: "How does AI goal decomposition work?",
                 answer: "Our AI uses advanced language models to understand your ultimate goal and create a personalized roadmap. It generates realistic milestones spread across your timeline, weekly focus areas with specific objectives, and daily actionable tasks that fit your schedule. The AI adapts recommendations based on behavioral science and habit formation research."
               },
               {
-                question: "What makes Ascendify different from other habit trackers?",
-                answer: "Unlike other habit trackers that just track streaks, Ascendify offers true AI-powered goal decomposition, gamified progress with XP and levels, intelligent habit suggestions, streak protection features, and detailed pattern analytics. We're the only habit app that thinks like a personal coach, helping you plan AND execute."
+                question: "What makes RESURGO different from other habit trackers?",
+                answer: "Unlike other habit trackers that just track streaks, RESURGO offers true AI-powered goal decomposition, gamified progress with XP and levels, intelligent habit suggestions, streak protection features, and detailed pattern analytics. We're the only habit app that thinks like a personal coach, helping you plan AND execute."
               },
               {
                 question: "Is my data private and secure?",
-                answer: "Absolutely. Your data stays on your device by default - we don't track you or sell your data. Ascendify works offline as a Progressive Web App (PWA), and you can export your data anytime. We use industry-standard encryption for any cloud features, and our AI processing is done securely with no data retention."
+                answer: "Absolutely. Your data stays on your device by default - we don't track you or sell your data. RESURGO works offline as a Progressive Web App (PWA), and you can export your data anytime. We use industry-standard encryption for any cloud features, and our AI processing is done securely with no data retention."
               },
               {
-                question: "Can I use Ascendify on multiple devices?",
-                answer: "Yes! Ascendify is a Progressive Web App (PWA) that works on any device with a modern browser - iOS, Android, Windows, Mac, or Linux. Install it on your phone's home screen for a native app experience, or use it in your browser on desktop. Pro users get cloud sync across all devices."
+                question: "Can I use RESURGO on multiple devices?",
+                answer: "Yes! RESURGO is a Progressive Web App (PWA) that works on any device with a modern browser - iOS, Android, Windows, Mac, or Linux. Install it on your phone's home screen for a native app experience, or use it in your browser on desktop. Pro users get cloud sync across all devices."
               },
               {
                 question: "How long does it take to form a new habit?",
-                answer: "Research shows habit formation takes anywhere from 18 to 254 days, with 66 days being the average. Ascendify supports you through this journey with streak tracking, AI coaching messages, progressive difficulty adjustments, and celebration milestones at 7, 21, 66, and 90 days to keep you motivated."
+                answer: "Research shows habit formation takes anywhere from 18 to 254 days, with 66 days being the average. RESURGO supports you through this journey with streak tracking, AI coaching messages, progressive difficulty adjustments, and celebration milestones at 7, 21, 66, and 90 days to keep you motivated."
               },
               {
-                question: "Can Ascendify help with fitness and health goals?",
-                answer: "Absolutely! Ascendify is perfect for fitness goals like losing weight, building muscle, running a marathon, or establishing a workout routine. The AI breaks down your fitness goal into progressive milestones and daily habits, while tracking features help you monitor workout consistency, meal habits, sleep routines, and more."
+                question: "Can RESURGO help with fitness and health goals?",
+                answer: "Absolutely! RESURGO is perfect for fitness goals like losing weight, building muscle, running a marathon, or establishing a workout routine. The AI breaks down your fitness goal into progressive milestones and daily habits, while tracking features help you monitor workout consistency, meal habits, sleep routines, and more."
               }
             ].map((faq, index) => (
               <div 
@@ -955,7 +976,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
           </div>
           
           <h2 className="text-3xl sm:text-5xl font-bold mb-6">
-            Ready to <span className="text-ascend-400">ASCENDIFY</span>?
+            Ready to <span className="text-ascend-400">RESURGO</span>?
           </h2>
           <p className="text-lg text-white/60 mb-10 max-w-2xl mx-auto">
             Join thousands of achievers who have transformed their goals into reality. 
@@ -988,25 +1009,56 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-white/5 py-12 px-4 sm:px-6 lg:px-8">
+      <footer className="border-t border-white/5 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+          {/* Footer Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-12">
+            {/* Product */}
+            <div>
+              <h4 className="text-sm font-semibold text-white mb-4">Product</h4>
+              <ul className="space-y-3 text-sm text-white/50">
+                <li><Link href="/features" className="hover:text-white transition-colors">Features</Link></li>
+                <li><Link href="/billing" className="hover:text-white transition-colors">Pricing</Link></li>
+                <li><Link href="/guides" className="hover:text-white transition-colors">Guides</Link></li>
+              </ul>
+            </div>
+            {/* Resources */}
+            <div>
+              <h4 className="text-sm font-semibold text-white mb-4">Resources</h4>
+              <ul className="space-y-3 text-sm text-white/50">
+                <li><Link href="/help" className="hover:text-white transition-colors">Help Center</Link></li>
+                <li><Link href="/support" className="hover:text-white transition-colors">Support</Link></li>
+                <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
+              </ul>
+            </div>
+            {/* Legal */}
+            <div>
+              <h4 className="text-sm font-semibold text-white mb-4">Legal</h4>
+              <ul className="space-y-3 text-sm text-white/50">
+                <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+              </ul>
+            </div>
+            {/* Company */}
+            <div>
+              <h4 className="text-sm font-semibold text-white mb-4">Company</h4>
+              <ul className="space-y-3 text-sm text-white/50">
+                <li><a href="mailto:support@resurgo.life" className="hover:text-white transition-colors">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom bar */}
+          <div className="border-t border-white/5 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-ascend-500 to-ascend-600 
                             flex items-center justify-center">
                 <Mountain className="w-4 h-4 text-white" />
               </div>
-              <span className="font-bold">ASCENDIFY</span>
+              <span className="font-bold">RESURGO</span>
             </div>
-            
-            <div className="flex items-center gap-6 text-sm text-white/50">
-              <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
-              <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
-              <Link href="/support" className="hover:text-white transition-colors">Support</Link>
-            </div>
-            
             <p className="text-sm text-white/40">
-              © 2026 Ascendifyify. All rights reserved.
+              © 2026 Resurgo. All rights reserved.
             </p>
           </div>
         </div>
@@ -1022,7 +1074,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
           <div className="relative w-full max-w-4xl bg-[#141416] rounded-2xl border border-white/10 overflow-hidden animate-fade-in">
             {/* Modal Header */}
             <div className="flex items-center justify-between p-4 border-b border-white/10">
-              <h3 className="font-semibold text-lg">See Ascendify in Action</h3>
+              <h3 className="font-semibold text-lg">See RESURGO in Action</h3>
               <button 
                 onClick={() => setShowDemoModal(false)}
                 className="p-2 hover:bg-white/5 rounded-lg transition-colors"

@@ -1,22 +1,22 @@
-import { Metadata } from 'next';
+﻿import { Metadata } from 'next';
 import Link from 'next/link';
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SEO METADATA
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export const metadata: Metadata = {
-  title: 'Refund Policy - Ascendify',
-  description: 'Ascendify refund policy. We offer a 14-day money-back guarantee for Pro subscriptions and 30-day guarantee for Lifetime purchases.',
+  title: 'Refund Policy - RESURGO',
+  description: 'RESURGO refund policy. We offer a 14-day money-back guarantee for Pro subscriptions and 30-day guarantee for Lifetime purchases.',
   openGraph: {
-    title: 'Refund Policy - Ascendify',
+    title: 'Refund Policy - RESURGO',
     description: 'Our hassle-free refund policy for Pro and Lifetime plans.',
   },
 };
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // PAGE COMPONENT
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export default function RefundPolicyPage() {
   return (
@@ -45,13 +45,13 @@ export default function RefundPolicyPage() {
           {/* Intro */}
           <section className="glass-card p-6 bg-gradient-to-r from-green-500/10 to-emerald-500/10">
             <div className="flex items-start gap-4">
-              <span className="text-3xl">💰</span>
+              <span className="text-3xl">RF</span>
               <div>
                 <h2 className="text-xl font-semibold text-[var(--text-primary)] mt-0 mb-2">
                   Our Promise
                 </h2>
                 <p className="text-[var(--text-secondary)] mb-0">
-                  We want you to be 100% satisfied with Ascendify. If it&apos;s not working for you, 
+                  We want you to be 100% satisfied with RESURGO. If it&apos;s not working for you, 
                   we&apos;ll give you a full refund - no questions asked.
                 </p>
               </div>
@@ -61,7 +61,7 @@ export default function RefundPolicyPage() {
           {/* Pro Subscription */}
           <section>
             <h2 className="text-2xl font-bold text-[var(--text-primary)] flex items-center gap-3">
-              <span className="text-2xl">⭐</span> Pro Subscription
+              <span className="text-2xl">PR</span> Pro Subscription
             </h2>
             <div className="glass-card p-6 mt-4">
               <h3 className="text-lg font-semibold text-[var(--accent)] mb-3">
@@ -73,16 +73,16 @@ export default function RefundPolicyPage() {
               </p>
               <ul className="space-y-2 text-[var(--text-secondary)]">
                 <li className="flex items-center gap-2">
-                  <span className="text-green-400">✓</span> Full refund within 14 days
+                  <span className="text-green-400">Yes</span> Full refund within 14 days
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-green-400">✓</span> No questions asked
+                  <span className="text-green-400">Yes</span> No questions asked
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-green-400">✓</span> Applies to both monthly and yearly plans
+                  <span className="text-green-400">Yes</span> Applies to both monthly and yearly plans
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-green-400">✓</span> Refund processed within 5-10 business days
+                  <span className="text-green-400">Yes</span> Refund processed within 5-10 business days
                 </li>
               </ul>
             </div>
@@ -91,7 +91,7 @@ export default function RefundPolicyPage() {
           {/* Lifetime Purchase */}
           <section>
             <h2 className="text-2xl font-bold text-[var(--text-primary)] flex items-center gap-3">
-              <span className="text-2xl">👑</span> Lifetime Purchase
+              <span className="text-2xl">LT</span> Lifetime Purchase
             </h2>
             <div className="glass-card p-6 mt-4">
               <h3 className="text-lg font-semibold text-[var(--accent)] mb-3">
@@ -99,17 +99,17 @@ export default function RefundPolicyPage() {
               </h3>
               <p className="text-[var(--text-secondary)] mb-4">
                 Lifetime purchases come with an extended 30-day refund window to give you 
-                plenty of time to evaluate the full Ascendify experience.
+                plenty of time to evaluate the full RESURGO experience.
               </p>
               <ul className="space-y-2 text-[var(--text-secondary)]">
                 <li className="flex items-center gap-2">
-                  <span className="text-green-400">✓</span> Full refund within 30 days
+                  <span className="text-green-400">Yes</span> Full refund within 30 days
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-green-400">✓</span> No questions asked
+                  <span className="text-green-400">Yes</span> No questions asked
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-green-400">✓</span> One-time exception for goodwill cases beyond 30 days
+                  <span className="text-green-400">Yes</span> One-time exception for goodwill cases beyond 30 days
                 </li>
               </ul>
             </div>
@@ -118,7 +118,7 @@ export default function RefundPolicyPage() {
           {/* How to Request */}
           <section>
             <h2 className="text-2xl font-bold text-[var(--text-primary)] flex items-center gap-3">
-              <span className="text-2xl">📝</span> How to Request a Refund
+              <span className="text-2xl">HT</span> How to Request a Refund
             </h2>
             <div className="glass-card p-6 mt-4">
               <ol className="space-y-4 text-[var(--text-secondary)]">
@@ -126,7 +126,7 @@ export default function RefundPolicyPage() {
                   <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[var(--accent)]/20 flex items-center justify-center text-[var(--accent)] font-semibold">1</span>
                   <div>
                     <strong className="text-[var(--text-primary)]">Contact Support</strong>
-                    <p>Email us at <a href="mailto:support@ascendify.app" className="text-[var(--accent)]">support@ascendify.app</a> with your account email</p>
+                    <p>Email us at <a href="mailto:support@resurgo.life" className="text-[var(--accent)]">support@resurgo.life</a> with your account email</p>
                   </div>
                 </li>
                 <li className="flex gap-4">
@@ -157,7 +157,7 @@ export default function RefundPolicyPage() {
           {/* Exceptions */}
           <section>
             <h2 className="text-2xl font-bold text-[var(--text-primary)] flex items-center gap-3">
-              <span className="text-2xl">⚠️</span> Exceptions
+              <span className="text-2xl">EX</span> Exceptions
             </h2>
             <div className="glass-card p-6 mt-4">
               <p className="text-[var(--text-secondary)] mb-4">
@@ -165,16 +165,16 @@ export default function RefundPolicyPage() {
               </p>
               <ul className="space-y-2 text-[var(--text-secondary)]">
                 <li className="flex items-center gap-2">
-                  <span className="text-red-400">✕</span> Requests made after the refund window
+                  <span className="text-red-400">No</span> Requests made after the refund window
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-red-400">✕</span> Repeated refund requests from the same user
+                  <span className="text-red-400">No</span> Repeated refund requests from the same user
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-red-400">✕</span> Purchases made with promotional credits or gift cards
+                  <span className="text-red-400">No</span> Purchases made with promotional credits or gift cards
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-red-400">✕</span> Accounts that have violated our Terms of Service
+                  <span className="text-red-400">No</span> Accounts that have violated our Terms of Service
                 </li>
               </ul>
             </div>
@@ -183,7 +183,7 @@ export default function RefundPolicyPage() {
           {/* Free Plan */}
           <section>
             <h2 className="text-2xl font-bold text-[var(--text-primary)] flex items-center gap-3">
-              <span className="text-2xl">🆓</span> Free Plan
+              <span className="text-2xl">FR</span> Free Plan
             </h2>
             <div className="glass-card p-6 mt-4">
               <p className="text-[var(--text-secondary)]">

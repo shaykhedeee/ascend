@@ -24,6 +24,7 @@ import {
   FOUR_LAWS,
   type Quote as QuoteType,
 } from '@/lib/atomic-habits-knowledge';
+import { COACH_PERSONAS } from './DeepOnboarding';
 
 // ─────────────────────────────────────────────────────────────────────────────────
 // TYPES
@@ -37,6 +38,7 @@ interface SmartCoachProps {
     missedYesterday?: boolean;
     userLevel?: number;
     recentAchievement?: string;
+    coachPersona?: string;
   };
   onGetInsights?: () => void;
   className?: string;
@@ -77,12 +79,24 @@ export function SmartCoach({ variant = 'card', context, onGetInsights, className
   const loadContent = useCallback(() => {
     const coachingContext = getCoachingContext();
     const newQuote = getRandomQuote();
-    const newCoaching = getRandomCoachingMessage(coachingContext) || 
-      "Every action is a vote for the type of person you wish to become. What will you vote for today?";
-    
+    let newCoaching = getRandomCoachingMessage(coachingContext) || 'Keep going! Every action is a vote for your future self.';
+    // Persona-driven refinement
+    if (context?.coachPersona) {
+      let touchpoint = 'tip';
+      if (coachingContext === 'task_completed') touchpoint = 'celebration';
+      if (coachingContext === 'streak_milestone') touchpoint = 'celebration';
+      if (coachingContext === 'missed_day' || coachingContext === 'low_motivation') touchpoint = 'struggle';
+      if (coachingContext === 'identity_building') touchpoint = 'morning';
+      newCoaching = getPersonaMessage(context.coachPersona, touchpoint, newCoaching);
+      const persona = COACH_PERSONAS.find(c => c.id === context.coachPersona);
+      if (persona) {
+        newCoaching = `${persona.name} (${persona.style}): ${newCoaching}`;
+      }
+    }
     setQuote(newQuote);
     setCoaching(newCoaching);
-  }, [getCoachingContext]);
+    setShowTip(Math.random() > 0.5);
+  }, [getCoachingContext, context]);
 
   useEffect(() => {
     loadContent();
@@ -422,3 +436,49 @@ export function FourLawsWidget({ highlightLaw }: { highlightLaw?: number }) {
 }
 
 export default SmartCoach;
+
+// Refined coach messaging logic for adaptive, persona-driven messages
+const COACH_MOTIVATION_TEMPLATES = {
+  'tony-robbins': {
+    morning: "Unleash the power within! Today is your day to push past limits.",
+    celebration: "Outstanding! You just proved that progress equals happiness.",
+    struggle: "Remember: It's not about resources, it's about resourcefulness. You can overcome this!",
+    tip: "Take massive action. Even a small step forward is a win.",
+  },
+  'brendon-burchard': {
+    morning: "High performance starts with intention. What's your big win today?",
+    celebration: "You showed up with excellence! Keep your habits strong.",
+    struggle: "Honor the struggle. Every challenge is a chance to grow.",
+    tip: "Clarity breeds mastery. Write down your next step.",
+  },
+  'mel-robbins': {
+    morning: "5-4-3-2-1... Go! Don't wait for motivation, act now.",
+    celebration: "You took action! That's how change happens.",
+    struggle: "You don't need to feel ready. Just start, and confidence will follow.",
+    tip: "Interrupt hesitation with action. Small moves count.",
+  },
+  'robin-sharma': {
+    morning: "Own your morning, elevate your life. Start with your most important habit.",
+    celebration: "Bravo! Early wins create lasting success.",
+    struggle: "Every setback is a setup for a comeback. Reflect, then rise.",
+    tip: "Protect your focus. The 5AM Club knows: distraction is the enemy.",
+  },
+  'jay-shetty': {
+    morning: "Think like a monk. Begin with gratitude and intention.",
+    celebration: "You practiced presence and progress. Well done!",
+    struggle: "Pause, breathe, and reconnect to your purpose.",
+    tip: "Small mindful actions lead to big results.",
+  },
+  'dr-shefali': {
+    morning: "Awaken your conscious self. Today, choose growth over comfort.",
+    celebration: "Transformation happens one choice at a time. Celebrate your progress.",
+    struggle: "Be gentle with yourself. Awareness is the first step to change.",
+    tip: "Embrace your journey. Every moment is an opportunity to evolve.",
+  },
+};
+
+function getPersonaMessage(personaId, touchpoint, fallback) {
+  const persona = COACH_MOTIVATION_TEMPLATES[personaId];
+  if (persona && persona[touchpoint]) return persona[touchpoint];
+  return fallback;
+}

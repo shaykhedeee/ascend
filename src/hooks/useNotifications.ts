@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// AscendifyIFY - Push Notifications Hook
+// ResurgoIFY - Push Notifications Hook
 // Client-side notification management: permission, scheduling, reminders
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -185,7 +185,7 @@ export function useNotifications(): UseNotificationsReturn {
 
 export const NOTIFICATION_MESSAGES = {
   morningReminder: {
-    title: 'Good morning! Time to Ascendify',
+    title: 'Good morning! Time to Resurgo',
     body: 'Start your day right. Check your habits and tasks for today.',
   },
   eveningReview: {

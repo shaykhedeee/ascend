@@ -5,6 +5,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAscendStore } from '@/lib/store';
 import { aiGoalDecomposer } from '@/lib/ai-goal-decomposer';
 import { cn, getRandomQuote, CATEGORY_ICONS, CATEGORY_LABELS } from '@/lib/utils';
@@ -74,6 +75,7 @@ const EXPERIENCE_OPTIONS = [
 ] as const;
 
 export function Onboarding() {
+  const router = useRouter();
   const { initializeUser, completeOnboarding, addGoal, addHabit, addToast } = useAscendStore();
   
   const [step, setStep] = useState<OnboardingStep>('welcome');
@@ -218,7 +220,7 @@ export function Onboarding() {
   const handleFinish = () => {
     addToast({
       type: 'success',
-      title: `Welcome to Ascendify, ${name}! 🚀`,
+      title: `Welcome to Resurgo, ${name}! 🚀`,
       message: 'Your personalized journey begins now',
       xpGained: 100,
     });
@@ -241,7 +243,7 @@ export function Onboarding() {
             <Mountain className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-themed">ASCENDIFY</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-themed">RESURGO</h1>
             <p className="text-[10px] sm:text-xs text-themed-muted">Rise to your potential</p>
           </div>
         </div>
@@ -271,7 +273,7 @@ export function Onboarding() {
                             flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-glow-md">
                 <Sparkles className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
               </div>
-              <h2 className="text-xl sm:text-2xl font-bold text-themed mb-2">Welcome to Ascendify</h2>
+              <h2 className="text-xl sm:text-2xl font-bold text-themed mb-2">Welcome to Resurgo</h2>
               <p className="text-ascend-500 font-medium mb-2 sm:mb-3 text-sm sm:text-base">Become Your Ideal Self</p>
               <p className="text-themed-secondary leading-relaxed mb-6 sm:mb-8 text-sm sm:text-base">
                 Tell us who you want to become, and AI creates your personalized
@@ -693,7 +695,7 @@ export function Onboarding() {
                 <div className="text-center mb-4 pt-2">
                   <div className="flex items-center justify-center gap-2 mb-1">
                     <Crown className="w-5 h-5 text-gold-400" />
-                    <span className="font-bold text-lg">Ascendify Pro</span>
+                    <span className="font-bold text-lg">Resurgo Pro</span>
                   </div>
                   <div className="flex items-center justify-center gap-2">
                     <span className="text-2xl font-bold text-themed">$4</span>
@@ -721,12 +723,8 @@ export function Onboarding() {
                 
                 <button 
                   onClick={() => {
-                    addToast({
-                      type: 'info',
-                      title: 'Pro Upgrade',
-                      message: 'Payment integration coming soon! Enjoy free access for now.',
-                    });
                     handleFinish();
+                    router.push('/billing');
                   }}
                   className="w-full py-3 rounded-xl font-semibold bg-gradient-to-r from-ascend-500 to-gold-400
                            hover:from-ascend-400 hover:to-gold-300 transition-all flex items-center justify-center gap-2"

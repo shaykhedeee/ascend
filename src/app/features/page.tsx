@@ -1,6 +1,6 @@
-// ═══════════════════════════════════════════════════════════════════════════════
-// AscendifyIFY - Features Page (SEO-Optimized)
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// RESURGOIFY - Features Page (SEO-Optimized)
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 import { Metadata } from 'next';
 import Link from 'next/link';
@@ -11,16 +11,16 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Features — AI Habit Tracker with Goal Decomposition',
+  title: 'Features â€” AI Habit Tracker with Goal Decomposition',
   description:
-    'Explore Ascendify features: AI goal decomposition, streak tracking, gamified XP system, smart analytics, habit stacking, weekly reviews, contribution heatmap, and more.',
+    'Explore RESURGO features: AI goal decomposition, streak tracking, gamified XP system, smart analytics, habit stacking, weekly reviews, contribution heatmap, and more.',
   keywords: [
     'habit tracker features', 'AI goal decomposition', 'habit streak tracker',
     'gamified productivity app', 'habit analytics', 'habit stacking app',
     'goal tracker with milestones', 'best habit tracking features',
   ],
   openGraph: {
-    title: 'Ascendify Features — Everything You Need to Build Better Habits',
+    title: 'RESURGO Features â€” Everything You Need to Build Better Habits',
     description: 'AI-powered goal decomposition, streak tracking, gamification, and more.',
     url: '/features',
   },
@@ -95,7 +95,7 @@ const featureCategories = [
       {
         icon: Heart,
         name: 'Identity-Based Tracking',
-        description: 'Build identity statements and collect evidence. Become "a person who exercises daily" — not just someone trying to work out.',
+        description: 'Build identity statements and collect evidence. Become "a person who exercises daily" â€” not just someone trying to work out.',
         badge: 'Pro',
       },
     ],
@@ -107,7 +107,7 @@ const featureCategories = [
       {
         icon: BarChart3,
         name: 'Smart Analytics Dashboard',
-        description: 'Daily, weekly, and monthly completion rates. Top habits, consistency trends, and improvement areas — all beautifully visualized.',
+        description: 'Daily, weekly, and monthly completion rates. Top habits, consistency trends, and improvement areas â€” all beautifully visualized.',
         badge: null,
       },
       {
@@ -119,7 +119,7 @@ const featureCategories = [
       {
         icon: Download,
         name: 'Data Export',
-        description: 'Export your data as JSON, CSV, or PDF reports. Your data belongs to you — download it anytime.',
+        description: 'Export your data as JSON, CSV, or PDF reports. Your data belongs to you â€” download it anytime.',
         badge: null,
       },
     ],
@@ -131,13 +131,13 @@ const featureCategories = [
       {
         icon: Shield,
         name: 'Privacy First',
-        description: 'Local-first architecture means your habit data never leaves your device. No tracking, no selling your data, no ads — ever.',
+        description: 'Local-first architecture means your habit data never leaves your device. No tracking, no selling your data, no ads â€” ever.',
         badge: null,
       },
       {
         icon: Wifi,
         name: 'Works Offline (PWA)',
-        description: 'Install Ascendify on any device. Full functionality even without internet. Syncs when you reconnect.',
+        description: 'Install RESURGO on any device. Full functionality even without internet. Syncs when you reconnect.',
         badge: null,
       },
       {
@@ -160,11 +160,11 @@ const featureCategories = [
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'Ascendify Features',
-  description: 'Complete feature list for the Ascendify AI-powered habit tracker.',
+  name: 'RESURGO Features',
+  description: 'Complete feature list for the RESURGO AI-powered habit tracker.',
   mainEntity: {
     '@type': 'SoftwareApplication',
-    name: 'Ascendify',
+    name: 'RESURGO',
     applicationCategory: 'LifestyleApplication',
     featureList: featureCategories.flatMap((cat) =>
       cat.features.map((f) => f.name)
@@ -187,7 +187,7 @@ export default function FeaturesPage() {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-ascend-500 to-ascend-600 flex items-center justify-center">
               <Mountain className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-lg">ASCENDIFY</span>
+            <span className="font-bold text-lg">RESURGO</span>
             <span className="text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors flex items-center gap-1">
               <ArrowLeft className="w-4 h-4" /> Back
             </span>
@@ -205,7 +205,7 @@ export default function FeaturesPage() {
             </span>
           </h1>
           <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
-            AI goal decomposition, gamified streaks, smart analytics, and more — all designed
+            AI goal decomposition, gamified streaks, smart analytics, and more â€” all designed
             to help you achieve your goals and become the person you want to be.
           </p>
         </div>
@@ -247,14 +247,14 @@ export default function FeaturesPage() {
         {/* VS Competitors */}
         <section className="mb-20">
           <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8">
-            Ascendify vs. Other Habit Trackers
+            RESURGO vs. Other Habit Trackers
           </h2>
           <div className="overflow-x-auto rounded-xl border border-[var(--border)]">
             <table className="w-full text-sm" role="table">
               <thead>
                 <tr className="border-b border-[var(--border)] bg-[var(--surface)]">
                   <th className="text-left py-4 px-5 font-semibold">Feature</th>
-                  <th className="text-center py-4 px-5 font-semibold text-ascend-400">ASCENDIFY</th>
+                  <th className="text-center py-4 px-5 font-semibold text-ascend-400">RESURGO</th>
                   <th className="text-center py-4 px-5 font-semibold text-[var(--text-muted)]">Habitica</th>
                   <th className="text-center py-4 px-5 font-semibold text-[var(--text-muted)]">Streaks</th>
                   <th className="text-center py-4 px-5 font-semibold text-[var(--text-muted)]">Todoist</th>
@@ -262,16 +262,16 @@ export default function FeaturesPage() {
               </thead>
               <tbody>
                 {[
-                  ['AI Goal Decomposition', '✓', '—', '—', '—'],
-                  ['Gamification (XP/Levels)', '✓', '✓', '—', '—'],
-                  ['Habit Stacking', '✓', '—', '—', '—'],
-                  ['Streak Tracking', '✓', '✓', '✓', '—'],
-                  ['Advanced Analytics', '✓', '—', '✓', '—'],
-                  ['Identity-Based Tracking', '✓', '—', '—', '—'],
-                  ['Privacy First / Local Data', '✓', '—', '✓', '—'],
-                  ['Works Offline (PWA)', '✓', '—', '✓', '—'],
-                  ['Free Plan', '✓', '✓', '—', '✓'],
-                  ['ADHD-Friendly Design', '✓', '—', '—', '—'],
+                  ['AI Goal Decomposition', 'âœ“', 'â€”', 'â€”', 'â€”'],
+                  ['Gamification (XP/Levels)', 'âœ“', 'âœ“', 'â€”', 'â€”'],
+                  ['Habit Stacking', 'âœ“', 'â€”', 'â€”', 'â€”'],
+                  ['Streak Tracking', 'âœ“', 'âœ“', 'âœ“', 'â€”'],
+                  ['Advanced Analytics', 'âœ“', 'â€”', 'âœ“', 'â€”'],
+                  ['Identity-Based Tracking', 'âœ“', 'â€”', 'â€”', 'â€”'],
+                  ['Privacy First / Local Data', 'âœ“', 'â€”', 'âœ“', 'â€”'],
+                  ['Works Offline (PWA)', 'âœ“', 'â€”', 'âœ“', 'â€”'],
+                  ['Free Plan', 'âœ“', 'âœ“', 'â€”', 'âœ“'],
+                  ['ADHD-Friendly Design', 'âœ“', 'â€”', 'â€”', 'â€”'],
                 ].map((row, i) => (
                   <tr key={row[0]} className={`border-b border-[var(--border)] ${i % 2 === 1 ? 'bg-[var(--surface)]/50' : ''}`}>
                     <td className="py-3 px-5 text-[var(--text-secondary)]">{row[0]}</td>

@@ -5,15 +5,15 @@ export default function manifest(): MetadataRoute.Manifest {
     // ═══════════════════════════════════════════════════════════════════════════
     // CORE PWA METADATA (App Store Optimized)
     // ═══════════════════════════════════════════════════════════════════════════
-    name: 'Ascendify - AI Habit Tracker & Goal Planner',
-    short_name: 'Ascendify',
+    name: 'Resurgo - AI Habit Tracker & Goal Planner',
+    short_name: 'Resurgo',
     description: 'Build lasting habits with AI-powered goal decomposition. Track daily habits, earn XP, level up, and achieve your goals with gamified progress tracking. Free habit tracker with analytics.',
     
     // ═══════════════════════════════════════════════════════════════════════════
     // APP CONFIGURATION
     // ═══════════════════════════════════════════════════════════════════════════
     start_url: '/?source=pwa',
-    id: '/ascendify-app',
+    id: '/Resurgo-app',
     scope: '/',
     display: 'standalone',
     display_override: ['standalone', 'minimal-ui', 'window-controls-overlay'],

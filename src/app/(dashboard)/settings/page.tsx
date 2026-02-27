@@ -1,39 +1,35 @@
-'use client';
+﻿'use client';
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// Ascendify — Settings Page
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// RESURGO â€” Settings Page
 // Profile, schedule, notifications, theme preferences
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
+import React, { useState, useEffect } from 'react';
 import { useMutation, useQuery } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
 import { useUser } from '@clerk/nextjs';
-import { useState, useEffect } from 'react';
 import {
-  Settings as SettingsIcon,
-  User,
-  Clock,
-  Bell,
-  Palette,
   Save,
-  Check,
+  Archive,
+  ArrowRight,
+  RefreshCw,
 } from 'lucide-react';
+import Link from 'next/link';
 
 function SettingsSection({
-  icon: Icon,
   title,
   children,
 }: {
-  icon: React.ComponentType<{ className?: string }>;
   title: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6 mb-6">
-      <h2 className="mb-4 text-base font-semibold text-[var(--text-primary)] flex items-center gap-2">
-        <Icon className="h-4 w-4 text-ascend-400" /> {title}
-      </h2>
-      {children}
+    <div className="mb-4 border border-zinc-900 bg-zinc-950">
+      <div className="border-b border-zinc-900 px-4 py-2.5">
+        <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">{title}</span>
+      </div>
+      <div className="p-4">{children}</div>
     </div>
   );
 }
@@ -44,6 +40,10 @@ export default function SettingsPage() {
   const updateProfile = useMutation(api.users.updateProfile);
   const updateSchedule = useMutation(api.users.updateSchedule);
   const updateNotifPrefs = useMutation(api.users.updateNotificationPrefs);
+
+  // Archived items (downgrade preservation)
+  const archivedHabits = useQuery(api.habits.listArchivedByDowngrade) ?? [];
+  const archivedGoals = useQuery(api.goals.listArchivedByDowngrade) ?? [];
 
   // Profile fields
   const [name, setName] = useState('');
@@ -61,6 +61,14 @@ export default function SettingsPage() {
   const [morningMotivation, setMorningMotivation] = useState(true);
   const [middayCheckin, setMiddayCheckin] = useState(true);
   const [eveningWinddown, setEveningWinddown] = useState(true);
+  const [taskReminders, setTaskReminders] = useState(true);
+  const [hydrationReminders, setHydrationReminders] = useState(false);
+  const [focusSessionReminders, setFocusSessionReminders] = useState(true);
+  const [sleepReminders, setSleepReminders] = useState(true);
+  const [weeklyReviewReminders, setWeeklyReviewReminders] = useState(true);
+  const [quietHoursEnabled, setQuietHoursEnabled] = useState(true);
+  const [quietHoursStart, setQuietHoursStart] = useState('22:00');
+  const [quietHoursEnd, setQuietHoursEnd] = useState('06:00');
   const [reminderStyle, setReminderStyle] = useState<'gentle' | 'supportive' | 'persistent' | 'minimal'>('supportive');
   const [coachingFrequency, setCoachingFrequency] = useState<'daily' | 'weekly' | 'struggling_only' | 'manual'>('daily');
   const [notifSaved, setNotifSaved] = useState(false);
@@ -68,18 +76,34 @@ export default function SettingsPage() {
   // Initialize from current user
   useEffect(() => {
     if (currentUser) {
+      const u = currentUser as Record<string, unknown>;
       setName(currentUser.name ?? clerkUser?.fullName ?? '');
       setTimezone(currentUser.timezone ?? Intl.DateTimeFormat().resolvedOptions().timeZone);
-      setTheme((currentUser as any).theme ?? 'dark');
-      setWakeTime((currentUser as any).wakeTime ?? '07:00');
-      setSleepTime((currentUser as any).sleepTime ?? '23:00');
-      setPeakTime((currentUser as any).peakProductivityTime ?? 'morning');
+      setTheme((u.theme as 'light' | 'dark' | 'system') ?? 'dark');
+      setWakeTime((u.wakeTime as string) ?? '07:00');
+      setSleepTime((u.sleepTime as string) ?? '23:00');
+      setPeakTime((u.peakProductivityTime as string) ?? 'morning');
 
-      const prefs = (currentUser as any).notificationPrefs;
+      const prefs = u.notificationPrefs as {
+        morningMotivation?: boolean; middayCheckin?: boolean; eveningWinddown?: boolean;
+        taskReminders?: boolean; hydrationReminders?: boolean; focusSessionReminders?: boolean;
+        sleepReminders?: boolean; weeklyReviewReminders?: boolean; quietHoursEnabled?: boolean;
+        quietHoursStart?: string; quietHoursEnd?: string;
+        reminderStyle?: 'gentle' | 'supportive' | 'persistent' | 'minimal';
+        coachingFrequency?: 'daily' | 'weekly' | 'struggling_only' | 'manual';
+      } | undefined;
       if (prefs) {
         setMorningMotivation(prefs.morningMotivation ?? true);
         setMiddayCheckin(prefs.middayCheckin ?? true);
         setEveningWinddown(prefs.eveningWinddown ?? true);
+        setTaskReminders(prefs.taskReminders ?? true);
+        setHydrationReminders(prefs.hydrationReminders ?? false);
+        setFocusSessionReminders(prefs.focusSessionReminders ?? true);
+        setSleepReminders(prefs.sleepReminders ?? true);
+        setWeeklyReviewReminders(prefs.weeklyReviewReminders ?? true);
+        setQuietHoursEnabled(prefs.quietHoursEnabled ?? true);
+        setQuietHoursStart(prefs.quietHoursStart ?? '22:00');
+        setQuietHoursEnd(prefs.quietHoursEnd ?? '06:00');
         setReminderStyle(prefs.reminderStyle ?? 'supportive');
         setCoachingFrequency(prefs.coachingFrequency ?? 'daily');
       }
@@ -117,6 +141,14 @@ export default function SettingsPage() {
           morningMotivation,
           middayCheckin,
           eveningWinddown,
+          taskReminders,
+          hydrationReminders,
+          focusSessionReminders,
+          sleepReminders,
+          weeklyReviewReminders,
+          quietHoursEnabled,
+          quietHoursStart,
+          quietHoursEnd,
           reminderStyle,
           coachingFrequency,
         },
@@ -130,188 +162,292 @@ export default function SettingsPage() {
 
   if (!currentUser) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[var(--background)]">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-ascend-500 border-t-transparent" />
+      <div className="flex min-h-screen items-center justify-center bg-black">
+        <div className="border border-zinc-900 bg-zinc-950 px-8 py-6 text-center">
+          <p className="font-mono text-xs tracking-widest text-orange-600">LOADING_CONFIGURATION_</p>
+          <span className="inline-block h-2 w-2 animate-blink bg-orange-600" />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[var(--background)] p-4 md:p-8 max-w-3xl mx-auto">
-      <h1 className="mb-8 text-2xl font-bold text-[var(--text-primary)] flex items-center gap-2">
-        <SettingsIcon className="h-6 w-6 text-orange-400" /> Settings
-      </h1>
+    <div className="min-h-screen bg-black p-4 md:p-6">
+      <div className="mx-auto max-w-3xl">
 
-      {/* Profile */}
-      <SettingsSection icon={User} title="Profile">
-        <div className="space-y-4">
-          <div>
-            <label className="mb-1 block text-xs font-medium text-[var(--text-secondary)]">Display Name</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm text-[var(--text-primary)] focus:border-ascend-500 focus:outline-none"
-            />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-medium text-[var(--text-secondary)]">Email</label>
-            <p className="text-sm text-[var(--text-secondary)]">{clerkUser?.primaryEmailAddress?.emailAddress ?? '-'}</p>
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-medium text-[var(--text-secondary)]">Timezone</label>
-            <select
-              value={timezone}
-              onChange={(e) => setTimezone(e.target.value)}
-              className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm text-[var(--text-primary)] focus:border-ascend-500 focus:outline-none"
-            >
-              {Intl.supportedValuesOf('timeZone').map((tz) => (
-                <option key={tz} value={tz}>{tz}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-medium text-[var(--text-secondary)]">Plan</label>
-            <span className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${
-              currentUser.plan === 'lifetime' ? 'bg-purple-500/20 text-purple-400' :
-              currentUser.plan === 'pro' ? 'bg-ascend-500/20 text-ascend-400' :
-              'bg-gray-500/20 text-gray-400'
-            }`}>
-              {currentUser.plan?.toUpperCase() ?? 'FREE'}
+        {/* ── CONFIGURATION_MATRIX HEADER ── */}
+        <div className="mb-6 border border-zinc-900 bg-zinc-950">
+          <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
+            <span className="font-mono text-[9px] tracking-widest text-orange-600">
+              CONFIGURATION_MATRIX :: SYSTEM_PREFERENCES
             </span>
           </div>
-          <button
-            onClick={handleSaveProfile}
-            className="flex items-center gap-2 rounded-lg bg-ascend-500 px-4 py-2 text-sm font-medium text-white hover:bg-ascend-600"
-          >
-            {profileSaved ? <><Check className="h-4 w-4" /> Saved!</> : <><Save className="h-4 w-4" /> Save Profile</>}
-          </button>
+          <div className="px-5 py-4">
+            <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">CONFIGURATION_MATRIX</h1>
+            <p className="mt-1 font-mono text-xs tracking-widest text-zinc-600">
+              PROFILE &gt; SCHEDULE &gt; NOTIFICATIONS &gt; APPEARANCE
+            </p>
+          </div>
         </div>
-      </SettingsSection>
 
-      {/* Theme */}
-      <SettingsSection icon={Palette} title="Appearance">
-        <div className="flex gap-3">
-          {(['dark', 'light', 'system'] as const).map((t) => (
+        {/* ── PROFILE SECTION ── */}
+        <SettingsSection title="OPERATOR_PROFILE">
+          <div className="space-y-4">
+            <div>
+              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">DISPLAY_NAME</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-xs text-zinc-200 focus:border-orange-800 focus:outline-none"
+              />
+            </div>
+            <div>
+              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">EMAIL_ADDRESS</label>
+              <p className="font-mono text-xs text-zinc-500">{clerkUser?.primaryEmailAddress?.emailAddress ?? 'N/A'}</p>
+            </div>
+            <div>
+              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">TIMEZONE</label>
+              <select
+                value={timezone}
+                onChange={(e) => setTimezone(e.target.value)}
+                className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-xs text-zinc-200 focus:border-orange-800 focus:outline-none"
+              >
+                {Intl.supportedValuesOf('timeZone').map((tz) => (
+                  <option key={tz} value={tz}>{tz}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">ACCESS_TIER</label>
+              <span className={`inline-block border px-2.5 py-0.5 font-mono text-[9px] tracking-widest ${
+                currentUser.plan === 'lifetime' ? 'border-purple-900 text-purple-500' :
+                currentUser.plan === 'pro'      ? 'border-orange-900 text-orange-500' :
+                'border-zinc-800 text-zinc-600'
+              }`}>
+                {(currentUser.plan?.toUpperCase() ?? 'FREE') + '_TIER'}
+              </span>
+            </div>
             <button
-              key={t}
-              onClick={() => setTheme(t)}
-              className={`rounded-lg px-4 py-2 text-sm font-medium capitalize transition-colors ${
-                theme === t
-                  ? 'bg-ascend-500 text-white'
-                  : 'bg-[var(--background)] text-[var(--text-secondary)] hover:bg-[var(--surface-hover)]'
-              }`}
+              onClick={handleSaveProfile}
+              className="flex items-center gap-2 border border-orange-800 bg-orange-950/30 px-5 py-2 font-mono text-[10px] tracking-widest text-orange-500 transition hover:bg-orange-950/60"
             >
-              {t}
+              <Save className="h-3 w-3" />
+              {profileSaved ? '[SAVED_OK]' : '[SAVE_PROFILE]'}
             </button>
-          ))}
-        </div>
-      </SettingsSection>
-
-      {/* Schedule */}
-      <SettingsSection icon={Clock} title="Schedule">
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="mb-1 block text-xs font-medium text-[var(--text-secondary)]">Wake Time</label>
-              <input
-                type="time"
-                value={wakeTime}
-                onChange={(e) => setWakeTime(e.target.value)}
-                className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm text-[var(--text-primary)] focus:border-ascend-500 focus:outline-none"
-              />
-            </div>
-            <div>
-              <label className="mb-1 block text-xs font-medium text-[var(--text-secondary)]">Sleep Time</label>
-              <input
-                type="time"
-                value={sleepTime}
-                onChange={(e) => setSleepTime(e.target.value)}
-                className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm text-[var(--text-primary)] focus:border-ascend-500 focus:outline-none"
-              />
-            </div>
           </div>
-          <div>
-            <label className="mb-1 block text-xs font-medium text-[var(--text-secondary)]">Peak Productivity</label>
-            <select
-              value={peakTime}
-              onChange={(e) => setPeakTime(e.target.value)}
-              className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm text-[var(--text-primary)] focus:border-ascend-500 focus:outline-none"
-            >
-              <option value="morning">Morning</option>
-              <option value="afternoon">Afternoon</option>
-              <option value="evening">Evening</option>
-              <option value="late_night">Late Night</option>
-            </select>
-          </div>
-          <button
-            onClick={handleSaveSchedule}
-            className="flex items-center gap-2 rounded-lg bg-ascend-500 px-4 py-2 text-sm font-medium text-white hover:bg-ascend-600"
-          >
-            {scheduleSaved ? <><Check className="h-4 w-4" /> Saved!</> : <><Save className="h-4 w-4" /> Save Schedule</>}
-          </button>
-        </div>
-      </SettingsSection>
+        </SettingsSection>
 
-      {/* Notifications */}
-      <SettingsSection icon={Bell} title="Notifications">
-        <div className="space-y-4">
-          {[
-            { label: 'Morning Motivation', value: morningMotivation, setter: setMorningMotivation },
-            { label: 'Midday Check-in', value: middayCheckin, setter: setMiddayCheckin },
-            { label: 'Evening Wind-down', value: eveningWinddown, setter: setEveningWinddown },
-          ].map(({ label, value, setter }) => (
-            <div key={label} className="flex items-center justify-between">
-              <span className="text-sm text-[var(--text-primary)]">{label}</span>
+        {/* ── APPEARANCE SECTION ── */}
+        <SettingsSection title="APPEARANCE_MODE">
+          <div className="flex gap-2">
+            {(['dark', 'light', 'system'] as const).map((t) => (
               <button
-                onClick={() => setter(!value)}
-                className={`relative h-6 w-11 rounded-full transition-colors ${
-                  value ? 'bg-ascend-500' : 'bg-[var(--border)]'
+                key={t}
+                onClick={() => setTheme(t)}
+                className={`border px-4 py-2 font-mono text-[10px] tracking-widest transition ${
+                  theme === t
+                    ? 'border-orange-800 bg-orange-950/30 text-orange-500'
+                    : 'border-zinc-800 text-zinc-600 hover:border-zinc-700'
                 }`}
               >
-                <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-transform ${
-                  value ? 'left-[22px]' : 'left-0.5'
-                }`} />
+                {t.toUpperCase()}
               </button>
+            ))}
+          </div>
+        </SettingsSection>
+
+        {/* ── SCHEDULE SECTION ── */}
+        <SettingsSection title="DAILY_SCHEDULE">
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">WAKE_TIME</label>
+                <input
+                  type="time"
+                  value={wakeTime}
+                  onChange={(e) => setWakeTime(e.target.value)}
+                  className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-xs text-zinc-200 focus:border-orange-800 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">SLEEP_TIME</label>
+                <input
+                  type="time"
+                  value={sleepTime}
+                  onChange={(e) => setSleepTime(e.target.value)}
+                  className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-xs text-zinc-200 focus:border-orange-800 focus:outline-none"
+                />
+              </div>
             </div>
-          ))}
-
-          <div>
-            <label className="mb-1 block text-xs font-medium text-[var(--text-secondary)]">Reminder Style</label>
-            <select
-              value={reminderStyle}
-              onChange={(e) => setReminderStyle(e.target.value as typeof reminderStyle)}
-              className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm text-[var(--text-primary)] focus:border-ascend-500 focus:outline-none"
+            <div>
+              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">PEAK_PRODUCTIVITY_WINDOW</label>
+              <select
+                value={peakTime}
+                onChange={(e) => setPeakTime(e.target.value)}
+                className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-xs text-zinc-200 focus:border-orange-800 focus:outline-none"
+              >
+                <option value="morning">MORNING</option>
+                <option value="afternoon">AFTERNOON</option>
+                <option value="evening">EVENING</option>
+                <option value="late_night">LATE_NIGHT</option>
+              </select>
+            </div>
+            <button
+              onClick={handleSaveSchedule}
+              className="flex items-center gap-2 border border-orange-800 bg-orange-950/30 px-5 py-2 font-mono text-[10px] tracking-widest text-orange-500 transition hover:bg-orange-950/60"
             >
-              <option value="gentle">Gentle</option>
-              <option value="supportive">Supportive</option>
-              <option value="persistent">Persistent</option>
-              <option value="minimal">Minimal</option>
-            </select>
+              <Save className="h-3 w-3" />
+              {scheduleSaved ? '[SAVED_OK]' : '[SAVE_SCHEDULE]'}
+            </button>
           </div>
+        </SettingsSection>
 
-          <div>
-            <label className="mb-1 block text-xs font-medium text-[var(--text-secondary)]">Coaching Frequency</label>
-            <select
-              value={coachingFrequency}
-              onChange={(e) => setCoachingFrequency(e.target.value as typeof coachingFrequency)}
-              className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm text-[var(--text-primary)] focus:border-ascend-500 focus:outline-none"
+        {/* ── NOTIFICATIONS SECTION ── */}
+        <SettingsSection title="NOTIFICATION_PREFS">
+          <div className="space-y-3">
+            {[
+              { label: 'MORNING_MOTIVATION',   value: morningMotivation,     setter: setMorningMotivation     },
+              { label: 'MIDDAY_CHECKIN',        value: middayCheckin,          setter: setMiddayCheckin          },
+              { label: 'EVENING_WINDDOWN',      value: eveningWinddown,        setter: setEveningWinddown        },
+              { label: 'TASK_REMINDERS',        value: taskReminders,          setter: setTaskReminders          },
+              { label: 'HYDRATION_NUDGES',      value: hydrationReminders,     setter: setHydrationReminders     },
+              { label: 'FOCUS_SESSION_NUDGES',  value: focusSessionReminders,  setter: setFocusSessionReminders  },
+              { label: 'SLEEP_REMINDERS',       value: sleepReminders,         setter: setSleepReminders         },
+              { label: 'WEEKLY_REVIEW_REMIND',  value: weeklyReviewReminders,  setter: setWeeklyReviewReminders  },
+              { label: 'QUIET_HOURS',           value: quietHoursEnabled,      setter: setQuietHoursEnabled      },
+            ].map(({ label, value, setter }) => (
+              <div key={label} className="flex items-center justify-between">
+                <span className="font-mono text-[10px] tracking-widest text-zinc-500">{label}</span>
+                <button
+                  onClick={() => setter(!value)}
+                  className={`h-5 w-9 border transition ${
+                    value ? 'border-orange-800 bg-orange-950/50' : 'border-zinc-800 bg-zinc-950'
+                  }`}
+                  aria-pressed={value}
+                >
+                  <span className={`block h-3 w-3 border border-zinc-600 bg-zinc-400 transition-all ${
+                    value ? 'ml-[18px] border-orange-600 bg-orange-500' : 'ml-0.5'
+                  }`} />
+                </button>
+              </div>
+            ))}
+
+            {quietHoursEnabled && (
+              <div className="grid grid-cols-2 gap-4 border border-zinc-800 bg-black p-3">
+                <div>
+                  <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">QUIET_START</label>
+                  <input
+                    type="time"
+                    value={quietHoursStart}
+                    onChange={(e) => setQuietHoursStart(e.target.value)}
+                    className="w-full border border-zinc-800 bg-zinc-950 px-3 py-2 font-mono text-xs text-zinc-200 focus:border-orange-800 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">QUIET_END</label>
+                  <input
+                    type="time"
+                    value={quietHoursEnd}
+                    onChange={(e) => setQuietHoursEnd(e.target.value)}
+                    className="w-full border border-zinc-800 bg-zinc-950 px-3 py-2 font-mono text-xs text-zinc-200 focus:border-orange-800 focus:outline-none"
+                  />
+                </div>
+              </div>
+            )}
+
+            <div>
+              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">REMINDER_STYLE</label>
+              <select
+                value={reminderStyle}
+                onChange={(e) => setReminderStyle(e.target.value as typeof reminderStyle)}
+                className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-xs text-zinc-200 focus:border-orange-800 focus:outline-none"
+              >
+                <option value="gentle">GENTLE</option>
+                <option value="supportive">SUPPORTIVE</option>
+                <option value="persistent">PERSISTENT</option>
+                <option value="minimal">MINIMAL</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="mb-1 block font-mono text-[9px] tracking-widest text-zinc-600">COACHING_FREQUENCY</label>
+              <select
+                value={coachingFrequency}
+                onChange={(e) => setCoachingFrequency(e.target.value as typeof coachingFrequency)}
+                className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-xs text-zinc-200 focus:border-orange-800 focus:outline-none"
+              >
+                <option value="daily">DAILY</option>
+                <option value="weekly">WEEKLY</option>
+                <option value="struggling_only">WHEN_STRUGGLING</option>
+                <option value="manual">MANUAL_ONLY</option>
+              </select>
+            </div>
+
+            <button
+              onClick={handleSaveNotifs}
+              className="flex items-center gap-2 border border-orange-800 bg-orange-950/30 px-5 py-2 font-mono text-[10px] tracking-widest text-orange-500 transition hover:bg-orange-950/60"
             >
-              <option value="daily">Daily</option>
-              <option value="weekly">Weekly</option>
-              <option value="struggling_only">When Struggling</option>
-              <option value="manual">Manual Only</option>
-            </select>
+              <Save className="h-3 w-3" />
+              {notifSaved ? '[SAVED_OK]' : '[SAVE_NOTIFICATIONS]'}
+            </button>
           </div>
+        </SettingsSection>
 
-          <button
-            onClick={handleSaveNotifs}
-            className="flex items-center gap-2 rounded-lg bg-ascend-500 px-4 py-2 text-sm font-medium text-white hover:bg-ascend-600"
-          >
-            {notifSaved ? <><Check className="h-4 w-4" /> Saved!</> : <><Save className="h-4 w-4" /> Save Notifications</>}
-          </button>
-        </div>
-      </SettingsSection>
+        {/* ── ARCHIVED ITEMS ── */}
+        {(archivedHabits.length > 0 || archivedGoals.length > 0) && (
+          <SettingsSection title="ARCHIVED_ITEMS">
+            <p className="mb-3 font-mono text-[10px] text-zinc-600">
+              These items were archived on plan downgrade. Upgrade to restore.
+            </p>
+
+            {archivedHabits.length > 0 && (
+              <div className="mb-3">
+                <p className="mb-1.5 font-mono text-[9px] tracking-widest text-zinc-700">
+                  NODES ({archivedHabits.length})
+                </p>
+                <div className="space-y-px">
+                  {(archivedHabits as { _id: string; title: string; category: string }[]).map((h) => (
+                    <div key={h._id} className="flex items-center gap-2 border border-zinc-900 bg-black px-3 py-2">
+                      <Archive className="h-3 w-3 shrink-0 text-zinc-700" />
+                      <span className="flex-1 truncate font-mono text-[10px] text-zinc-500">{h.title}</span>
+                      <span className="font-mono text-[9px] text-zinc-700">{h.category?.toUpperCase()}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {archivedGoals.length > 0 && (
+              <div className="mb-3">
+                <p className="mb-1.5 font-mono text-[9px] tracking-widest text-zinc-700">
+                  OBJECTIVES ({archivedGoals.length})
+                </p>
+                <div className="space-y-px">
+                  {(archivedGoals as { _id: string; title: string; category: string }[]).map((g) => (
+                    <div key={g._id} className="flex items-center gap-2 border border-zinc-900 bg-black px-3 py-2">
+                      <Archive className="h-3 w-3 shrink-0 text-zinc-700" />
+                      <span className="flex-1 truncate font-mono text-[10px] text-zinc-500">{g.title}</span>
+                      <span className="font-mono text-[9px] text-zinc-700">{g.category?.toUpperCase()}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <Link
+              href="/billing"
+              className="inline-flex items-center gap-2 border border-orange-800 bg-orange-950/30 px-4 py-2 font-mono text-[10px] tracking-widest text-orange-500 transition hover:bg-orange-950/60"
+            >
+              <RefreshCw className="h-3 w-3" />
+              [UPGRADE_TO_RESTORE]
+              <ArrowRight className="h-3 w-3" />
+            </Link>
+          </SettingsSection>
+        )}
+
+      </div>
     </div>
   );
 }

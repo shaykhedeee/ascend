@@ -1,13 +1,13 @@
-import { Metadata } from 'next';
+﻿import { Metadata } from 'next';
 import Link from 'next/link';
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // SEO-OPTIMIZED PILLAR PAGE - Atomic Habits Complete Guide
 // High-value content for ranking and E-E-A-T
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export const metadata: Metadata = {
-  title: 'The Complete Atomic Habits Guide (2026) | Ascendify',
+  title: 'The Complete Atomic Habits Guide (2026) | RESURGO',
   description: 'Master Atomic Habits by James Clear. Learn the Four Laws of Behavior Change, habit stacking, the Two-Minute Rule, identity-based habits, and how to break bad habits. Free comprehensive guide.',
   keywords: [
     'atomic habits', 'atomic habits summary', 'atomic habits guide',
@@ -22,16 +22,16 @@ export const metadata: Metadata = {
     type: 'article',
     publishedTime: '2026-01-01T00:00:00Z',
     modifiedTime: '2026-02-01T00:00:00Z',
-    authors: ['Ascendify Team'],
+    authors: ['RESURGO Team'],
   },
   alternates: {
     canonical: '/guides/atomic-habits-guide',
   },
 };
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // JSON-LD STRUCTURED DATA
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -40,21 +40,21 @@ const jsonLd = {
   'description': 'Master Atomic Habits by James Clear. Learn the Four Laws of Behavior Change and how to build habits that stick.',
   'author': {
     '@type': 'Organization',
-    'name': 'Ascendify',
+    'name': 'RESURGO',
   },
   'publisher': {
     '@type': 'Organization',
-    'name': 'Ascendify',
+    'name': 'RESURGO',
     'logo': {
       '@type': 'ImageObject',
-      'url': 'https://ascendify.app/icons/icon.svg',
+      'url': 'https://resurgo.life/icons/icon.svg',
     },
   },
   'datePublished': '2026-01-01',
   'dateModified': '2026-02-01',
   'mainEntityOfPage': {
     '@type': 'WebPage',
-    '@id': 'https://ascendify.app/guides/atomic-habits-guide',
+    '@id': 'https://resurgo.life/guides/atomic-habits-guide',
   },
 };
 
@@ -97,9 +97,9 @@ const faqSchema = {
   ],
 };
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // TABLE OF CONTENTS
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const tableOfContents = [
   { id: 'intro', title: 'Introduction: Why Tiny Changes Matter' },
@@ -117,9 +117,9 @@ const tableOfContents = [
   { id: 'faq', title: 'Frequently Asked Questions' },
 ];
 
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // PAGE COMPONENT
-// ═══════════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 export default function AtomicHabitsGuidePage() {
   return (
@@ -147,7 +147,7 @@ export default function AtomicHabitsGuidePage() {
           </nav>
 
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-4xl">📚</span>
+            <span className="text-4xl">AH</span>
             <span className="px-3 py-1 rounded-full bg-[var(--accent)]/10 text-[var(--accent)] text-sm">
               Comprehensive Guide
             </span>
@@ -168,9 +168,9 @@ export default function AtomicHabitsGuidePage() {
               </svg>
               25 min read
             </span>
-            <span>•</span>
+            <span>â€¢</span>
             <span>Updated February 2026</span>
-            <span>•</span>
+            <span>â€¢</span>
             <span>125K+ reads</span>
           </div>
         </div>
@@ -209,7 +209,7 @@ export default function AtomicHabitsGuidePage() {
             {/* Key Takeaway Box - for Featured Snippets */}
             <div className="glass-card p-6 bg-gradient-to-r from-[var(--accent)]/10 to-[var(--accent-secondary)]/10 mb-8 not-prose">
               <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
-                ⚡ Key Takeaway
+                Key Takeaway
               </h2>
               <p className="text-[var(--text-secondary)]">
                 <strong>Small habits compound into remarkable results.</strong> Instead of trying to achieve 
@@ -251,7 +251,7 @@ export default function AtomicHabitsGuidePage() {
               </div>
               <p className="text-[var(--text-secondary)]">
                 This is the mathematics of tiny gains. While a 1% improvement isn&apos;t noticeable in the 
-                moment, it compounds dramatically over time. The same is true in reverse—1% worse every 
+                moment, it compounds dramatically over time. The same is true in reverseâ€”1% worse every 
                 day leads to decline.
               </p>
               <p className="text-[var(--text-secondary)]">
@@ -317,18 +317,18 @@ export default function AtomicHabitsGuidePage() {
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6 not-prose">
                 {[
-                  { law: '1st Law', good: 'Make it obvious', bad: 'Make it invisible', icon: '👁️' },
-                  { law: '2nd Law', good: 'Make it attractive', bad: 'Make it unattractive', icon: '💝' },
-                  { law: '3rd Law', good: 'Make it easy', bad: 'Make it difficult', icon: '🎯' },
-                  { law: '4th Law', good: 'Make it satisfying', bad: 'Make it unsatisfying', icon: '🏆' },
+                  { law: '1st Law', good: 'Make it obvious', bad: 'Make it invisible', icon: 'C1' },
+                  { law: '2nd Law', good: 'Make it attractive', bad: 'Make it unattractive', icon: 'C2' },
+                  { law: '3rd Law', good: 'Make it easy', bad: 'Make it difficult', icon: 'C3' },
+                  { law: '4th Law', good: 'Make it satisfying', bad: 'Make it unsatisfying', icon: 'C4' },
                 ].map((item, i) => (
                   <div key={i} className="glass-card p-4">
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-xl">{item.icon}</span>
                       <span className="font-semibold text-[var(--text-primary)]">{item.law}</span>
                     </div>
-                    <p className="text-sm text-green-400 mb-1">✓ {item.good}</p>
-                    <p className="text-sm text-red-400">✕ {item.bad}</p>
+                    <p className="text-sm text-green-400 mb-1">Good: {item.good}</p>
+                    <p className="text-sm text-red-400">Avoid: {item.bad}</p>
                   </div>
                 ))}
               </div>
@@ -423,8 +423,8 @@ export default function AtomicHabitsGuidePage() {
                 </p>
               </div>
               <p className="text-[var(--text-secondary)]">
-                Habit stacking takes adASCENDIFY of the momentum you already have. By linking a new 
-                behavior to an old one, you don&apos;t need to find a new trigger—you use your existing 
+                Habit stacking takes advantage of the momentum you already have. By linking a new 
+                behavior to an old one, you don&apos;t need to find a new triggerâ€”you use your existing 
                 routines.
               </p>
               <h3 className="text-xl font-semibold text-[var(--text-primary)] mt-6">Examples:</h3>
@@ -519,10 +519,10 @@ export default function AtomicHabitsGuidePage() {
               {/* CTA */}
               <div className="glass-card p-6 my-8 not-prose bg-gradient-to-r from-[var(--accent)]/20 to-[var(--accent-secondary)]/20">
                 <h3 className="font-semibold text-[var(--text-primary)] mb-2">
-                  🚀 Ready to Apply Atomic Habits?
+                  Ready to Apply Atomic Habits?
                 </h3>
                 <p className="text-[var(--text-secondary)] mb-4">
-                  Ascendify uses these principles to help you build habits that stick. Our AI 
+                  RESURGO uses these principles to help you build habits that stick. Our AI 
                   automatically applies habit stacking, the Two-Minute Rule, and identity-based 
                   habits to your goals.
                 </p>
@@ -530,7 +530,7 @@ export default function AtomicHabitsGuidePage() {
                   href="/"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-medium transition-colors"
                 >
-                  Try Ascendify Free
+                  Try RESURGO Free
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
@@ -559,7 +559,7 @@ export default function AtomicHabitsGuidePage() {
                   },
                   {
                     q: 'How long does it take to form a habit?',
-                    a: 'Research shows it takes an average of 66 days to form a new habit, though this can range from 18 to 254 days. The key is consistency over perfection—never miss twice in a row.',
+                    a: 'Research shows it takes an average of 66 days to form a new habit, though this can range from 18 to 254 days. The key is consistency over perfectionâ€”never miss twice in a row.',
                   },
                   {
                     q: 'What is habit stacking?',
@@ -581,10 +581,10 @@ export default function AtomicHabitsGuidePage() {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {[
-                  { title: 'Habit Stacking: The Complete Guide', slug: 'habit-stacking', icon: '📚' },
-                  { title: 'Breaking Bad Habits', slug: 'breaking-bad-habits', icon: '🔓' },
-                  { title: 'The Two-Minute Rule Explained', slug: 'two-minute-rule', icon: '⏱️' },
-                  { title: 'Identity-Based Habits', slug: 'identity-habits', icon: '🎭' },
+                  { title: 'Habit Stacking: The Complete Guide', slug: 'habit-stacking', icon: 'HS' },
+                  { title: 'Breaking Bad Habits', slug: 'breaking-bad-habits', icon: 'BB' },
+                  { title: 'The Two-Minute Rule Explained', slug: 'two-minute-rule', icon: '2M' },
+                  { title: 'Identity-Based Habits', slug: 'identity-habits', icon: 'IB' },
                 ].map((guide) => (
                   <Link
                     key={guide.slug}

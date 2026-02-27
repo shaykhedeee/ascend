@@ -23,6 +23,10 @@
 2. ~~**Run `npm audit fix`** - Address any dependency vulnerabilities~~ ✅ (7 remain, require breaking changes)
 3. **Integrate new UI components** - Replace old buttons/modals with new design system
 4. ~~**Mobile Experience** - Add swipe gestures, pull-to-refresh, haptic feedback~~ ✅
+5. **Add Sign-out / Logout entry points** - Header + Account modal/button
+6. **Handle missed onboarding** - Resume CTA on home/header and safeguard incomplete flows
+7. **Improve Account page** - Add comprehensive profile, subscription, security, and sign-out
+8. **Home page UI polish** - Improve hero, CTAs, and dashboard onboarding hints
 
 ### Short-term (Next Week)
 1. ~~**Landing Page Enhancement** - Animated hero, trust badges, feature comparison~~ ✅
@@ -242,7 +246,7 @@
 - [ ] Set up social media accounts
 
 #### Payment & Monetization
-- [ ] Set up Stripe account
+- [ ] Set up PayU account (INR gateway)
 - [ ] Configure pricing tiers
 - [ ] Test payment flows
 - [ ] Set up subscription webhooks
@@ -375,8 +379,8 @@
 
 ### Competitive Advantages
 1. **AI Goal Decomposition** - Unique in market
-2. **Privacy-First** - All data local by default
-3. **Generous Free Tier** - Unlimited habits
+2. **Cloud-Powered** - Data stored securely in Convex
+3. **Generous Free Tier** - 10 habits, 3 goals, AI insights
 4. **Beautiful UX** - Modern glassmorphism design
 5. **Gamification** - XP, levels, achievements
 6. **Mental Health Focus** - Wellness center, gentle mode

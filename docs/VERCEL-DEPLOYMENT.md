@@ -1,4 +1,4 @@
-# ASCEND - Vercel Deployment Guide
+# Ascendify - Vercel Deployment Guide
 
 ## 🚀 Quick Deploy to Vercel
 
@@ -12,18 +12,35 @@
 Add these variables in Vercel project settings:
 
 ```env
+# Clerk Authentication (REQUIRED)
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_...
+CLERK_SECRET_KEY=sk_live_...
+CLERK_WEBHOOK_SECRET=whsec_...
+
+# Convex Backend (REQUIRED)
+CONVEX_DEPLOYMENT=prod:your-project
+NEXT_PUBLIC_CONVEX_URL=https://your-project.convex.cloud
+
 # AI Providers (at least one required)
 GROQ_API_KEY=your_groq_api_key
-GOOGLE_AI_API_KEY=your_gemini_api_key
+GOOGLE_AI_STUDIO_KEY=your_gemini_api_key
+GOOGLE_AI_STUDIO_KEY_BACKUP=your_backup_gemini_key
 OPENROUTER_API_KEY=your_openrouter_api_key
 AIML_API_KEY=your_aiml_api_key
 
-# Site Configuration
-NEXT_PUBLIC_SITE_URL=https://your-domain.vercel.app
+# PayU Payments (INR gateway)
+PAYU_MERCHANT_KEY=your_payu_key
+PAYU_MERCHANT_SALT=your_payu_salt
+PAYU_MODE=production
 
-# Optional: Stripe Payments
-STRIPE_SECRET_KEY=your_stripe_secret
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_public
+# Billing
+BILLING_WEBHOOK_SYNC_SECRET=your_billing_sync_secret
+NEXT_PUBLIC_CLERK_CHECKOUT_PRO_MONTHLY_URL=
+NEXT_PUBLIC_CLERK_CHECKOUT_LIFETIME_URL=
+NEXT_PUBLIC_CLERK_BILLING_PORTAL_URL=
+
+# Site Configuration
+NEXT_PUBLIC_APP_URL=https://your-domain.vercel.app
 
 # Optional: Google Analytics
 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
@@ -86,7 +103,7 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 ### Recommended Tools
 - **Vercel Analytics**: Built-in (enable in project settings)
 - **Uptime Monitoring**: UptimeRobot (free tier available)
-- **Error Tracking**: Built-in error tracking (see /lib/sentry.ts)
+- **Error Tracking**: Use Vercel's built-in error logs and Convex dashboard logs
 
 ### Performance Monitoring
 1. Enable Vercel Speed Insights

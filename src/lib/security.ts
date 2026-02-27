@@ -5,6 +5,37 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 
+const APP_ORIGIN = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL;
+
+function normalizeOrigin(origin: string): string {
+  return origin.replace(/\/$/, '').toLowerCase();
+}
+
+export function isTrustedOrigin(request: NextRequest): boolean {
+  const origin = request.headers.get('origin');
+  if (!origin) return true;
+
+  const allowedOrigins = new Set<string>([
+    APP_ORIGIN,
+    process.env.NEXT_PUBLIC_SITE_URL,
+    process.env.NEXT_PUBLIC_APP_URL,
+  ].filter(Boolean).map((value) => normalizeOrigin(value as string)));
+
+  const requestOrigin = normalizeOrigin(origin);
+  if (allowedOrigins.has(requestOrigin)) {
+    return true;
+  }
+
+  const host = request.headers.get('host');
+  if (host) {
+    const expectedHttp = normalizeOrigin(`http://${host}`);
+    const expectedHttps = normalizeOrigin(`https://${host}`);
+    return requestOrigin === expectedHttp || requestOrigin === expectedHttps;
+  }
+
+  return false;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────────
 // RATE LIMITING
 // ─────────────────────────────────────────────────────────────────────────────────
@@ -374,27 +405,34 @@ export function withSecurity(
   return async (request: NextRequest): Promise<NextResponse> => {
     // Method check
     if (!allowedMethods.includes(request.method)) {
-      return NextResponse.json(
+      return addSecurityHeaders(NextResponse.json(
         { error: 'Method not allowed' },
         { status: 405 }
-      );
+      ));
     }
     
     // Rate limiting
     if (enableRateLimit) {
       const { allowed, retryAfter } = rateLimit(request);
       if (!allowed && retryAfter) {
-        return rateLimitResponse(retryAfter);
+        return addSecurityHeaders(rateLimitResponse(retryAfter));
       }
+    }
+
+    if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(request.method) && !isTrustedOrigin(request)) {
+      return addSecurityHeaders(NextResponse.json(
+        { error: 'Invalid request origin' },
+        { status: 403 }
+      ));
     }
     
     // CSRF validation for state-changing requests
     if (enableCSRF && ['POST', 'PUT', 'PATCH', 'DELETE'].includes(request.method)) {
       if (!validateCSRFToken(request)) {
-        return NextResponse.json(
+        return addSecurityHeaders(NextResponse.json(
           { error: 'Invalid CSRF token' },
           { status: 403 }
-        );
+        ));
       }
     }
     
@@ -403,13 +441,14 @@ export function withSecurity(
     
     // Call the actual handler
     try {
-      return await handler(request);
+      const response = await handler(request);
+      return addSecurityHeaders(response);
     } catch (error) {
       console.error('API Error:', error);
-      return NextResponse.json(
+      return addSecurityHeaders(NextResponse.json(
         { error: 'Internal server error' },
         { status: 500 }
-      );
+      ));
     }
   };
 }
@@ -425,15 +464,19 @@ export const SECURITY_HEADERS: Record<string, string> = {
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
   'X-XSS-Protection': '1; mode=block',
+  'X-DNS-Prefetch-Control': 'off',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Cross-Origin-Opener-Policy': 'same-origin',
+  'Cross-Origin-Resource-Policy': 'same-origin',
+  'Origin-Agent-Cluster': '?1',
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
   'Content-Security-Policy': [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+    "script-src 'self' 'unsafe-inline'",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: https:",
     "font-src 'self' data:",
-    "connect-src 'self' https://api.openai.com https://api.puter.com",
+    "connect-src 'self' https://api.openai.com https://api.puter.com https://api.groq.com https://generativelanguage.googleapis.com https://openrouter.ai https://*.convex.cloud wss://*.convex.cloud",
     "frame-ancestors 'none'",
   ].join('; '),
 };

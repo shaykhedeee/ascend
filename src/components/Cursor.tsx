@@ -20,12 +20,41 @@ export function CustomCursor() {
     const checkDevice = () => {
       setIsMobile(window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window);
     };
-    
     checkDevice();
     window.addEventListener('resize', checkDevice);
-    
     return () => window.removeEventListener('resize', checkDevice);
   }, []);
+
+  // Scroll by dragging with cursor
+  useEffect(() => {
+    if (isMobile) return;
+    let isDragging = false;
+    let lastY = 0;
+    const handleMouseDown = (e: MouseEvent) => {
+      if (e.button === 1 || e.button === 0) {
+        isDragging = true;
+        lastY = e.clientY;
+      }
+    };
+    const handleMouseUp = () => {
+      isDragging = false;
+    };
+    const handleMouseMove = (e: MouseEvent) => {
+      if (isDragging) {
+        const deltaY = e.clientY - lastY;
+        window.scrollBy({ top: -deltaY, behavior: 'smooth' });
+        lastY = e.clientY;
+      }
+    };
+    document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      document.removeEventListener('mousedown', handleMouseDown);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [isMobile]);
 
   const updatePosition = useCallback((e: MouseEvent) => {
     setPosition({ x: e.clientX, y: e.clientY });
@@ -57,6 +86,9 @@ export function CustomCursor() {
     const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
 
+    // Only hide native cursor AFTER hydration succeeds and listeners are attached
+    document.body.classList.add('custom-cursor-active');
+
     document.addEventListener('mousemove', updatePosition);
     document.addEventListener('mousedown', handleMouseDown);
     document.addEventListener('mouseup', handleMouseUp);
@@ -64,6 +96,7 @@ export function CustomCursor() {
     document.documentElement.addEventListener('mouseenter', handleMouseEnter);
 
     return () => {
+      document.body.classList.remove('custom-cursor-active');
       document.removeEventListener('mousemove', updatePosition);
       document.removeEventListener('mousedown', handleMouseDown);
       document.removeEventListener('mouseup', handleMouseUp);
@@ -85,22 +118,21 @@ export function CustomCursor() {
           !isVisible && "opacity-0"
         )}
         style={{
-          transform: `translate(${position.x - 5}px, ${position.y - 5}px)`,
+          transform: `translate(${position.x - 8}px, ${position.y - 8}px)`,
         }}
       >
         <div 
           className={cn(
-            "w-2.5 h-2.5 rounded-full bg-ascend-500",
+            "w-4 h-4 rounded-full bg-gradient-to-r from-ascend-500 via-yellow-400 to-purple-400",
             "transition-transform duration-150 ease-out",
             isClicking && "scale-75",
             isPointer && "scale-0"
           )}
           style={{
-            boxShadow: '0 0 10px rgba(249, 115, 22, 0.5)',
+            boxShadow: '0 0 16px 4px rgba(249, 115, 22, 0.5)',
           }}
         />
       </div>
-      
       {/* Cursor ring */}
       <div
         className={cn(
@@ -109,13 +141,13 @@ export function CustomCursor() {
           !isVisible && "opacity-0"
         )}
         style={{
-          transform: `translate(${position.x - 20}px, ${position.y - 20}px)`,
+          transform: `translate(${position.x - 24}px, ${position.y - 24}px)`,
           transition: 'transform 0.15s ease-out, opacity 0.2s',
         }}
       >
         <div 
           className={cn(
-            "w-10 h-10 rounded-full border-2 border-ascend-500/40",
+            "w-12 h-12 rounded-full border-2 border-ascend-500/40",
             "transition-all duration-200 ease-out",
             isPointer && "scale-150 border-ascend-500/60 bg-ascend-500/10",
             isClicking && "scale-90 border-ascend-500"
@@ -123,14 +155,17 @@ export function CustomCursor() {
         />
       </div>
 
-      {/* Hide default cursor globally */}
+      {/* Hide default cursor only on body when custom cursor is active.
+          Uses a class so the cursor stays visible until hydration succeeds. */}
       <style jsx global>{`
-        * {
+        body.custom-cursor-active,
+        body.custom-cursor-active * {
           cursor: none !important;
         }
         
         @media (pointer: coarse), (hover: none) {
-          * {
+          body.custom-cursor-active,
+          body.custom-cursor-active * {
             cursor: auto !important;
           }
         }

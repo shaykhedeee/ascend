@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY — Recovery & Comeback Engine (Convex)
+// RESURGO — Recovery & Comeback Engine (Convex)
 // Anti-fragile streaks, recovery detection, comeback protocol — Module 8
 // ═══════════════════════════════════════════════════════════════════════════════
 

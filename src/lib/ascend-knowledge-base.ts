@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// AscendifyIFY - Complete Knowledge Base for AI Chatbot
-// Everything the AI needs to know about Ascendify to help users and convert sales
+// Resurgo - Complete Knowledge Base for AI Chatbot
+// Everything the AI needs to know about Resurgo to help users and convert sales
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // ─────────────────────────────────────────────────────────────────────────────────
@@ -8,7 +8,7 @@
 // ─────────────────────────────────────────────────────────────────────────────────
 
 export const PRODUCT_INFO = {
-  name: 'Ascendify',
+  name: 'Resurgo',
   tagline: 'AI-Powered Habit Tracker & Goal Achievement App',
   description: 'Transform your goals into daily wins with AI-powered decomposition, gamified tracking, and Atomic Habits principles.',
   mission: 'Help people build lasting habits and achieve their biggest goals through science-backed methods and intelligent automation.',
@@ -76,13 +76,13 @@ export const PRICING = {
     priceDisplay: 'Free forever',
     description: 'Perfect for getting started with habit tracking',
     limits: {
-      habits: 3,
-      goals: 1,
+      habits: 10,
+      goals: 3,
       aiRequests: 10,
     },
     features: [
-      'Up to 3 active habits',
-      '1 active goal with AI decomposition',
+      'Up to 10 active habits',
+      'Up to 3 active goals',
       'Basic habit stacking',
       'Streak tracking',
       'Basic gamification (XP & levels)',
@@ -101,10 +101,10 @@ export const PRICING = {
   },
   pro: {
     name: 'Pro',
-    price: 9,
-    priceYearly: 89,
-    priceDisplay: '$9/month or $89/year',
-    savingsYearly: '$19 saved annually',
+    price: 12,
+    priceYearly: 96,
+    priceDisplay: '$12/month or $96/year',
+    savingsYearly: '$48 saved annually',
     description: 'For serious goal-achievers who want AI-powered growth',
     limits: {
       habits: 'unlimited',
@@ -165,7 +165,7 @@ export const FAQ = {
     },
     {
       q: 'What is the Two-Minute Rule?',
-      a: 'James Clear\'s Two-Minute Rule states: "When you start a new habit, it should take less than two minutes to do." Ascendify applies this by giving you "gateway" versions of tasks. Want to read more? Start with "read one page." Want to exercise? Start with "put on workout clothes."',
+      a: 'James Clear\'s Two-Minute Rule states: "When you start a new habit, it should take less than two minutes to do." Resurgo applies this by giving you "gateway" versions of tasks. Want to read more? Start with "read one page." Want to exercise? Start with "put on workout clothes."',
     },
   ],
   
@@ -176,7 +176,7 @@ export const FAQ = {
     },
     {
       q: 'What is the Identity System?',
-      a: 'Instead of focusing on goals, Ascendify helps you focus on identity - who you want to become. Each habit completion is a vote for your new identity. "I want to lose weight" becomes "I am becoming a healthy person." This subtle shift dramatically improves long-term success.',
+      a: 'Instead of focusing on goals, Resurgo helps you focus on identity - who you want to become. Each habit completion is a vote for your new identity. "I want to lose weight" becomes "I am becoming a healthy person." This subtle shift dramatically improves long-term success.',
     },
     {
       q: 'How does XP and leveling work?',
@@ -199,15 +199,15 @@ export const FAQ = {
     },
     {
       q: 'Is there a refund policy?',
-      a: 'Yes! We offer a 14-day money-back guarantee for Pro subscriptions. If Ascendify isn\'t working for you, contact support@ascendify.app within 14 days for a full refund. Lifetime purchases have a 30-day guarantee.',
+      a: 'Yes! We offer a 14-day money-back guarantee for Pro subscriptions. If Resurgo isn\'t working for you, contact support@resurgo.life within 14 days for a full refund. Lifetime purchases have a 30-day guarantee.',
     },
     {
       q: 'How is my data protected?',
       a: 'Your data is encrypted at rest and in transit. We never sell your data to third parties. You can export or delete all your data at any time. We\'re GDPR compliant and take privacy seriously.',
     },
     {
-      q: 'Can I use Ascendify offline?',
-      a: 'Yes! Ascendify is a Progressive Web App (PWA). Install it on your home screen and use it offline. Your data syncs automatically when you\'re back online.',
+      q: 'Can I use Resurgo offline?',
+      a: 'Yes! Resurgo is a Progressive Web App (PWA). Install it on your home screen and use it offline. Your data syncs automatically when you\'re back online.',
     },
   ],
   
@@ -226,7 +226,7 @@ export const FAQ = {
     },
     {
       q: 'Notifications aren\'t working',
-      a: 'Make sure notifications are enabled in Settings > Notifications AND in your device/browser settings. For iOS, you may need to add Ascendify to your home screen first.',
+      a: 'Make sure notifications are enabled in Settings > Notifications AND in your device/browser settings. For iOS, you may need to add Resurgo to your home screen first.',
     },
   ],
 };
@@ -271,7 +271,7 @@ export const SALES_TRIGGERS = {
 
 export const CHATBOT_PERSONA = {
   name: 'Kai',
-  fullName: 'Kai, Ascendify AI Assistant',
+  fullName: 'Kai, Resurgo AI Assistant',
   personality: 'Friendly, knowledgeable, supportive, and gently motivating. Uses casual but professional tone. Celebrates wins, shows empathy for struggles, and gives actionable advice.',
   
   principles: [
@@ -285,9 +285,9 @@ export const CHATBOT_PERSONA = {
   ],
   
   greetings: [
-    'Hey! I\'m Kai, your Ascendify assistant. How can I help you today?',
-    'Hi there! I\'m Kai. Whether you need help with habits, goals, or anything Ascendify-related, I\'m here for you.',
-    'Welcome! I\'m Kai, and I\'m here to help you make the most of Ascendify. What\'s on your mind?',
+    'Hey! I\'m Kai, your Resurgo assistant. How can I help you today?',
+    'Hi there! I\'m Kai. Whether you need help with habits, goals, or anything Resurgo-related, I\'m here for you.',
+    'Welcome! I\'m Kai, and I\'m here to help you make the most of Resurgo. What\'s on your mind?',
   ],
   
   encouragements: [
@@ -349,10 +349,13 @@ export function buildChatbotSystemPrompt(userContext?: {
   currentStreak?: number;
   daysActive?: number;
   recentActivity?: string;
+  completionRatio7d?: number;
+  recentMisses7d?: number;
+  streakTrend?: 'up' | 'flat' | 'down';
 }): string {
   const ctx = userContext || {};
   
-  return `You are ${CHATBOT_PERSONA.name}, the AI assistant for Ascendify - an AI-powered habit tracker and goal achievement app.
+  return `You are ${CHATBOT_PERSONA.name}, the AI assistant for Resurgo - an AI-powered habit tracker and goal achievement app.
 
 PERSONALITY: ${CHATBOT_PERSONA.personality}
 
@@ -360,7 +363,7 @@ YOUR CORE PRINCIPLES:
 ${CHATBOT_PERSONA.principles.map((p, i) => `${i + 1}. ${p}`).join('\n')}
 
 PRODUCT KNOWLEDGE:
-- Ascendify uses Atomic Habits principles by James Clear
+- Resurgo uses Atomic Habits principles by James Clear
 - Key features: ${PRODUCT_INFO.keyFeatures.slice(0, 5).map(f => f.name).join(', ')}
 - Free plan: ${PRICING.free.limits.habits} habits, ${PRICING.free.limits.goals} goal, ${PRICING.free.limits.aiRequests} AI messages/month
 - Pro plan: $${PRICING.pro.price}/month - unlimited everything + advanced analytics + priority AI
@@ -371,6 +374,9 @@ ${ctx.plan ? `USER CONTEXT:
 - Active habits: ${ctx.habitsCount || 'unknown'}
 - Current streak: ${ctx.currentStreak || 0} days
 - Days active: ${ctx.daysActive || 'unknown'}
+${typeof ctx.completionRatio7d === 'number' ? `- 7-day completion ratio: ${ctx.completionRatio7d}%` : ''}
+${typeof ctx.recentMisses7d === 'number' ? `- Recent misses (7d): ${ctx.recentMisses7d}` : ''}
+${ctx.streakTrend ? `- Streak trend: ${ctx.streakTrend}` : ''}
 ${ctx.recentActivity ? `- Recent: ${ctx.recentActivity}` : ''}
 ` : ''}
 
@@ -409,6 +415,16 @@ export type UserIntent =
   | 'cancel_subscription'
   | 'unknown';
 
+export interface ChatQuickAction {
+  label: string;
+  prompt: string;
+}
+
+export interface ChatCta {
+  label: string;
+  href: string;
+}
+
 export function detectIntent(message: string): UserIntent {
   const lower = message.toLowerCase();
   
@@ -432,7 +448,7 @@ export function detectIntent(message: string): UserIntent {
     return 'upgrade_interest';
   }
   
-  if (/(motivation|struggling|hard|difficult|can't stick|keep failing)/i.test(lower)) {
+  if (/(motivation|struggling|hard|difficult|can't stick|keep failing|missed|missing|fell off|off track)/i.test(lower)) {
     return 'motivation_needed';
   }
   
@@ -461,7 +477,7 @@ export function getQuickResponse(intent: UserIntent): string | null {
       return CHATBOT_PERSONA.greetings[Math.floor(Math.random() * CHATBOT_PERSONA.greetings.length)];
     
     case 'pricing_question':
-      return `Here's our pricing:\n\n**Free**: Up to 3 habits, 1 goal, 10 AI messages/month\n\n**Pro** ($9/mo or $89/yr): Unlimited everything, advanced analytics, full AI coaching\n\n**Lifetime** ($199 once): Everything in Pro, forever!\n\nWhat would you like to know more about?`;
+      return `Here's our pricing:\n\n**Free**: Up to 10 habits, 3 goals, AI-powered insights\n\n**Pro Monthly** ($12/mo): Unlimited habits & goals, AI coaching, advanced analytics\n\n**Pro Yearly** ($96/yr): Same Pro power at $8/mo effective (save $48/yr)\n\n**Lifetime** ($199 once): Everything in Pro, forever!\n\nWhat would you like to know more about?`;
     
     case 'cancel_subscription':
       return `I'm sorry to hear you're considering canceling. You can cancel anytime from Settings > Subscription > Manage. Your access continues until the billing period ends.\n\nBefore you go - is there something that isn't working for you? I'd love to help if I can.`;
@@ -469,4 +485,68 @@ export function getQuickResponse(intent: UserIntent): string | null {
     default:
       return null;
   }
+}
+
+export function getFollowUpSuggestions(
+  intent: UserIntent,
+  plan: 'free' | 'pro' | 'lifetime' = 'free'
+): ChatQuickAction[] {
+  const common: ChatQuickAction[] = [
+    { label: 'Atomic Habits tip', prompt: 'Give me one Atomic Habits tip for today' },
+    { label: 'Plan my day', prompt: 'Help me plan my top 3 priorities for today' },
+  ];
+
+  switch (intent) {
+    case 'pricing_question':
+    case 'upgrade_interest':
+      return [
+        { label: 'Compare plans', prompt: 'Compare free vs pro in simple terms' },
+        { label: 'Best plan for me', prompt: 'Which plan is best for my usage?' },
+        ...(plan === 'free'
+          ? [{ label: 'Unlock Pro value', prompt: 'Show me what I unlock with Pro' }]
+          : []),
+      ];
+
+    case 'habit_advice':
+      return [
+        { label: 'Build consistency', prompt: 'How do I stay consistent this week?' },
+        { label: 'Habit stacking ideas', prompt: 'Suggest 3 habit stacking examples for me' },
+        ...common,
+      ];
+
+    case 'motivation_needed':
+      return [
+        { label: 'Tiny next step', prompt: 'Give me the smallest next step I can do now' },
+        { label: 'Recovery plan', prompt: 'I missed yesterday. Give me a recovery plan' },
+        ...common,
+      ];
+
+    case 'troubleshooting':
+      return [
+        { label: 'Troubleshoot AI', prompt: 'My AI features are not responding. Help me fix it' },
+        { label: 'Fix notifications', prompt: 'My reminders are not working. How do I fix it?' },
+      ];
+
+    default:
+      return [
+        { label: 'Set up my first habit', prompt: 'Help me create my first habit in Resurgo' },
+        { label: 'How goals work', prompt: 'How does AI goal decomposition work?' },
+        ...common,
+      ];
+  }
+}
+
+export function getIntentCta(
+  intent: UserIntent,
+  plan: 'free' | 'pro' | 'lifetime' = 'free'
+): ChatCta | null {
+  if ((intent === 'pricing_question' || intent === 'upgrade_interest') && plan === 'free') {
+    return { label: 'View plans', href: '/pricing' };
+  }
+
+  if (intent === 'troubleshooting') {
+    return { label: 'Open help center', href: '/help' };
+  }
+
+  return null;
 }

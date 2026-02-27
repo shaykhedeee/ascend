@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY — Coach Messages Engine (Convex)
+// RESURGO — Coach Messages Engine (Convex)
 // AI Coach interaction history — Module 9
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -41,7 +41,7 @@ const coachMessageDoc = v.object({
 // ─────────────────────────────────────────────────────────────────────────────
 export const send = mutation({
   args: {
-    role: v.union(v.literal('coach'), v.literal('user')),
+    role: v.optional(v.literal('user')), // Only users can send via public mutation; coach messages are created by AI actions
     content: v.string(),
     touchpoint: v.optional(v.union(
       v.literal('morning'),
@@ -59,12 +59,92 @@ export const send = mutation({
 
     return await ctx.db.insert('coachMessages', {
       userId: user._id,
-      role: args.role,
+      role: 'user',
       content: args.content,
       touchpoint: args.touchpoint,
       context: args.context,
       createdAt: Date.now(),
     });
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SEND + AUTO REPLY (templated personal coach response)
+// ─────────────────────────────────────────────────────────────────────────────
+export const sendWithAutoReply = mutation({
+  args: {
+    content: v.string(),
+    touchpoint: v.optional(v.union(
+      v.literal('morning'),
+      v.literal('midday'),
+      v.literal('evening'),
+      v.literal('on_demand'),
+      v.literal('intervention'),
+      v.literal('celebration')
+    )),
+    context: v.optional(v.string()),
+  },
+  returns: v.object({
+    userMessageId: v.id('coachMessages'),
+    coachMessageId: v.id('coachMessages'),
+  }),
+  handler: async (ctx, args) => {
+    const user = await getAuthUser(ctx);
+
+    const userMessageId = await ctx.db.insert('coachMessages', {
+      userId: user._id,
+      role: 'user',
+      content: args.content,
+      touchpoint: args.touchpoint,
+      context: args.context,
+      createdAt: Date.now(),
+    });
+
+    const lower = args.content.toLowerCase();
+    const isStruggle = /stuck|overwhelm|overwhelmed|anxious|tired|burnout|can't|cannot/.test(lower);
+    const isPlanning = /plan|today|week|schedule|priorit|focus/.test(lower);
+    const isHabit = /habit|streak|routine/.test(lower);
+
+    const profileFocus = user.focusAreas?.slice(0, 2).join(', ');
+    const profileGoal = user.primaryGoal;
+    const peakTime = user.peakProductivityTime;
+
+    let coachReply = 'Great check-in. Let\'s pick one meaningful action you can complete in the next 15 minutes.';
+
+    if (isStruggle) {
+      coachReply = 'You\'re not behind — you\'re human. Let\'s reduce scope: pick one tiny win now, then we\'ll reassess momentum after that.';
+    } else if (isPlanning) {
+      coachReply = 'Solid planning instinct. Pick your top 3 priorities: one must-do, one progress task, and one quick win. Time-block the must-do first.';
+    } else if (isHabit) {
+      coachReply = 'Consistency beats intensity. Keep today\'s habit version small enough that skipping feels harder than doing it.';
+    }
+
+    if (profileGoal && /goal|plan|priority|focus/.test(lower)) {
+      coachReply += ` Keep your main objective in sight: ${profileGoal}.`;
+    }
+
+    if (peakTime && /schedule|time|today|week/.test(lower)) {
+      coachReply += ` Try to place your hardest task in your ${peakTime.replace('_', ' ')} window.`;
+    }
+
+    if (profileFocus) {
+      coachReply += ` We\'ll optimize around your focus areas: ${profileFocus}.`;
+    }
+
+    if (user.plan === 'free') {
+      coachReply += ' Pro tip: keep habits focused and measurable so your weekly review is easier.';
+    }
+
+    const coachMessageId = await ctx.db.insert('coachMessages', {
+      userId: user._id,
+      role: 'coach',
+      content: coachReply,
+      touchpoint: args.touchpoint ?? 'on_demand',
+      context: args.context,
+      createdAt: Date.now(),
+    });
+
+    return { userMessageId, coachMessageId };
   },
 });
 

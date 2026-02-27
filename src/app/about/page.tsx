@@ -1,21 +1,21 @@
-// ═══════════════════════════════════════════════════════════════════════════════
-// AscendifyIFY - About Page (SEO-Optimized)
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// RESURGOIFY - About Page (SEO-Optimized)
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { Mountain, ArrowLeft, Heart, Zap, Shield, Users, BookOpen, Globe } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'About Ascendify — Our Mission to Help You Build Better Habits',
+  title: 'About RESURGO â€” Our Mission to Help You Build Better Habits',
   description:
-    'Learn about Ascendify, the AI-powered habit tracker built on behavioral science. Our mission: make self-improvement accessible, private, and genuinely effective.',
+    'Learn about RESURGO, the AI-powered habit tracker built on behavioral science. Our mission: make self-improvement accessible, private, and genuinely effective.',
   keywords: [
-    'about ascendify app', 'habit tracker mission', 'who made ascendify',
+    'about RESURGO app', 'habit tracker mission', 'who made RESURGO',
     'productivity app team', 'habit science app',
   ],
   openGraph: {
-    title: 'About Ascendify — Built for Achievers',
+    title: 'About RESURGO â€” Built for Achievers',
     description: 'The story behind the AI habit tracker that\'s helping 50K+ people build better lives.',
     url: '/about',
   },
@@ -31,7 +31,7 @@ const values = [
   {
     icon: BookOpen,
     title: 'Science-Backed',
-    description: 'Every feature is grounded in behavioral science — from Atomic Habits\' identity-based approach to BJ Fogg\'s Tiny Habits method.',
+    description: 'Every feature is grounded in behavioral science â€” from Atomic Habits\' identity-based approach to BJ Fogg\'s Tiny Habits method.',
   },
   {
     icon: Heart,
@@ -51,31 +51,31 @@ const values = [
   {
     icon: Zap,
     title: 'AI That Helps',
-    description: 'Our AI doesn\'t just track — it decomposes goals, coaches you through plateaus, and adapts to your progress patterns.',
+    description: 'Our AI doesn\'t just track â€” it decomposes goals, coaches you through plateaus, and adapts to your progress patterns.',
   },
 ];
 
 const milestones = [
-  { year: '2024', event: 'Ascendify concept born — frustrated with habit trackers that just show checkboxes' },
-  { year: '2024', event: 'AI goal decomposition engine built — turning big dreams into daily tasks' },
+  { year: '2024', event: 'RESURGO concept born â€” frustrated with habit trackers that just show checkboxes' },
+  { year: '2024', event: 'AI goal decomposition engine built â€” turning big dreams into daily tasks' },
   { year: '2025', event: 'Gamification system with 15 levels, achievements, and streak celebrations' },
   { year: '2025', event: 'Wellness features: mood tracking, breathing exercises, gentle mode' },
   { year: '2026', event: 'Smart Coach, contribution heatmap, weekly reviews, and CSV export' },
-  { year: '2026', event: 'Launch — helping thousands build habits that actually stick' },
+  { year: '2026', event: 'Launch â€” helping thousands build habits that actually stick' },
 ];
 
 // JSON-LD
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'AboutPage',
-  name: 'About Ascendify',
-  description: 'Learn about Ascendify, the AI-powered habit tracker.',
+  name: 'About RESURGO',
+  description: 'Learn about RESURGO, the AI-powered habit tracker.',
   mainEntity: {
     '@type': 'Organization',
-    name: 'Ascendify',
+    name: 'RESURGO',
     description: 'AI-powered habit tracking and goal achievement platform',
     foundingDate: '2024',
-    url: 'https://ascendify.app',
+    url: 'https://resurgo.life',
     knowsAbout: [
       'Habit Formation', 'Behavioral Science', 'Goal Setting',
       'Gamification', 'AI Goal Decomposition', 'Productivity',
@@ -98,7 +98,7 @@ export default function AboutPage() {
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-ascend-500 to-ascend-600 flex items-center justify-center">
               <Mountain className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-lg">ASCENDIFY</span>
+            <span className="font-bold text-lg">RESURGO</span>
             <span className="text-[var(--text-muted)] group-hover:text-[var(--text-primary)] transition-colors flex items-center gap-1">
               <ArrowLeft className="w-4 h-4" /> Back
             </span>
@@ -116,7 +116,7 @@ export default function AboutPage() {
             </span>
           </h1>
           <p className="text-lg text-[var(--text-secondary)] max-w-2xl mx-auto leading-relaxed">
-            Most habit trackers are just glorified checkboxes. Ascendify is different — it&apos;s an AI-powered
+            Most habit trackers are just glorified checkboxes. RESURGO is different â€” it&apos;s an AI-powered
             system built on behavioral science that turns your biggest goals into daily wins you can
             actually complete.
           </p>
@@ -128,12 +128,12 @@ export default function AboutPage() {
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold mb-4">The Problem We Solve</h2>
               <p className="text-[var(--text-secondary)] mb-4 leading-relaxed">
-                You set a goal — &quot;get fit,&quot; &quot;learn a new language,&quot; &quot;launch a side project.&quot;
+                You set a goal â€” &quot;get fit,&quot; &quot;learn a new language,&quot; &quot;launch a side project.&quot;
                 But then what? The goal feels overwhelming, you don&apos;t know where to start, and after
                 a few days of motivation you&apos;re back to square one.
               </p>
               <p className="text-[var(--text-secondary)] leading-relaxed">
-                Ascendify solves this by using AI to decompose your goal into a concrete roadmap — milestones,
+                RESURGO solves this by using AI to decompose your goal into a concrete roadmap â€” milestones,
                 weekly objectives, and daily tasks. Then it wraps everything in a gamified system that makes
                 showing up feel genuinely rewarding.
               </p>
@@ -141,14 +141,14 @@ export default function AboutPage() {
             <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-8">
               <div className="space-y-6">
                 <div>
-                  <p className="text-sm font-semibold text-red-400 mb-1">Without Ascendify</p>
-                  <p className="text-[var(--text-secondary)]">&quot;I want to get fit&quot; → overwhelm → procrastination → guilt → quit</p>
+                  <p className="text-sm font-semibold text-red-400 mb-1">Without RESURGO</p>
+                  <p className="text-[var(--text-secondary)]">&quot;I want to get fit&quot; â†’ overwhelm â†’ procrastination â†’ guilt â†’ quit</p>
                 </div>
                 <div className="border-t border-[var(--border)] pt-6">
                   <p className="text-sm font-semibold text-ascend-400 mb-1">With ASCEND</p>
                   <p className="text-[var(--text-secondary)]">
-                    &quot;I want to get fit&quot; → AI creates 6-month roadmap → today: &quot;15-min walk after lunch&quot;
-                    → earn 10 XP → 7-day streak → 🎉
+                    &quot;I want to get fit&quot; â†’ AI creates 6-month roadmap â†’ today: &quot;15-min walk after lunch&quot;
+                    â†’ earn 10 XP â†’ 7-day streak â†’ ðŸŽ‰
                   </p>
                 </div>
               </div>
@@ -198,7 +198,7 @@ export default function AboutPage() {
               { value: '50K+', label: 'Active Users' },
               { value: '2M+', label: 'Habits Tracked' },
               { value: '500K+', label: 'Goals Set' },
-              { value: '4.9★', label: 'User Rating' },
+              { value: '4.9â˜…', label: 'User Rating' },
             ].map((stat) => (
               <div key={stat.label}>
                 <p className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-ascend-400 to-gold-400 bg-clip-text text-transparent">
@@ -214,7 +214,7 @@ export default function AboutPage() {
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-3">Join the movement</h2>
           <p className="text-[var(--text-secondary)] mb-6">
-            Start building habits that stick — free, private, and powered by AI.
+            Start building habits that stick â€” free, private, and powered by AI.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link

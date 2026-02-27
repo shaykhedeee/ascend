@@ -120,7 +120,7 @@ export function Sidebar({
           <Logo size="md" />
           {!collapsed && (
             <div className="text-center">
-              <h1 className="text-lg font-bold text-themed tracking-tight">Ascendify</h1>
+              <h1 className="text-lg font-bold text-themed tracking-tight">Resurgo</h1>
               <p className="text-[9px] text-themed-muted tracking-[0.2em] uppercase">by WEBNESS</p>
             </div>
           )}

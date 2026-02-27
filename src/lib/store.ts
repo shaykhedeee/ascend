@@ -253,6 +253,7 @@ interface AscendStore {
   // Initialize
   initializeUser: (name: string) => void;
   completeOnboarding: () => void;
+  updateNotificationSettings: (updates: Partial<User['preferences']['notifications']>) => void;
   
   // Plan Management
   upgradePlan: (plan: 'pro' | 'lifetime') => void;
@@ -297,6 +298,11 @@ const defaultUser: User = {
       streakAtRisk: true,
       achievements: true,
       weeklyReport: true,
+      quietHoursEnabled: true,
+      quietHoursStart: '22:00',
+      quietHoursEnd: '06:00',
+      intelligenceLevel: 'balanced',
+      personalizationMode: 'auto',
     },
     dailyResetTime: '00:00',
     motivationalQuotes: true,
@@ -362,6 +368,11 @@ export const useAscendStore = create<AscendStore>()(
               streakAtRisk: true,
               achievements: true,
               weeklyReport: true,
+              quietHoursEnabled: true,
+              quietHoursStart: '22:00',
+              quietHoursEnd: '06:00',
+              intelligenceLevel: 'balanced',
+              personalizationMode: 'auto',
             },
             dailyResetTime: '00:00',
             motivationalQuotes: true,
@@ -382,6 +393,21 @@ export const useAscendStore = create<AscendStore>()(
       },
       
       completeOnboarding: () => set({ hasCompletedOnboarding: true }),
+
+      updateNotificationSettings: (updates) => {
+        set((state) => ({
+          user: {
+            ...state.user,
+            preferences: {
+              ...state.user.preferences,
+              notifications: {
+                ...state.user.preferences.notifications,
+                ...updates,
+              },
+            },
+          },
+        }));
+      },
       
       // ─── Plan Management ──────────────────────────────────────────────────────
       upgradePlan: (plan: 'pro' | 'lifetime') => {
@@ -817,7 +843,7 @@ export const useAscendStore = create<AscendStore>()(
         if (leveledUp) {
           addToast({
             type: 'success',
-            title: `🎊 Level Up! Level ${newLevel}`,
+            title: `Level Up: ${newLevel}`,
             message: `You are now a ${newTitle}!`,
             xpGained: amount,
           });
@@ -1525,7 +1551,7 @@ export const useAscendStore = create<AscendStore>()(
         }));
         get().addToast({
           type: 'achievement',
-          title: `🎁 ${token.name} Earned!`,
+          title: `${token.name} Earned`,
           message: token.description,
         });
       },
@@ -1538,7 +1564,7 @@ export const useAscendStore = create<AscendStore>()(
         }));
         get().addToast({
           type: 'success',
-          title: 'Reward Used! 🎉',
+          title: 'Reward Used',
           message: 'Enjoy your well-deserved reward!',
         });
       },
@@ -1576,7 +1602,7 @@ export const useAscendStore = create<AscendStore>()(
           if (streak) {
             get().addToast({
               type: 'achievement',
-              title: '🌟 7-Day Mood Streak!',
+              title: '7-Day Mood Streak',
               message: 'You\'ve tracked your mood for a week straight!',
             });
             get().addXP(50, '7-day mood tracking streak');
@@ -1624,7 +1650,7 @@ export const useAscendStore = create<AscendStore>()(
         get().addXP(10, 'Gratitude practice');
         get().addToast({
           type: 'success',
-          title: '✨ Gratitude Logged',
+          title: 'Gratitude Logged',
           message: 'Taking time to appreciate the good things matters!',
         });
       },
@@ -1668,7 +1694,7 @@ export const useAscendStore = create<AscendStore>()(
           set((state) => ({ streakFreezeCount: state.streakFreezeCount - 1 }));
           get().addToast({
             type: 'info',
-            title: '🛡️ Streak Freeze Used',
+            title: 'Streak Freeze Used',
             message: gentleModeSettings.softerLanguage 
               ? 'Life happens! Your progress is protected.'
               : `${streakFreezeCount - 1} freezes remaining.`,
@@ -1684,7 +1710,7 @@ export const useAscendStore = create<AscendStore>()(
         }));
         get().addToast({
           type: 'achievement',
-          title: '🛡️ Streak Freeze Earned!',
+          title: 'Streak Freeze Earned',
           message: 'Great consistency! You earned a streak freeze.',
         });
       },

@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
+import '@/lib/env'; // Env validation — runs at startup (server-side)
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { GoogleAnalytics } from '@/lib/analytics';
 import { CustomCursor } from '@/components/Cursor';
@@ -24,8 +26,8 @@ export const metadata: Metadata = {
   // PRIMARY SEO METADATA
   // ═══════════════════════════════════════════════════════════════════════════
   title: {
-    default: 'Ascendify | AI-Powered Habit Tracker & Goal Achievement App',
-    template: '%s | Ascendify - Smart Habit Tracker',
+    default: 'Resurgo | AI-Powered Habit Tracker & Goal Achievement App',
+    template: '%s | Resurgo - Smart Habit Tracker',
   },
   description: 'Build better habits with AI-powered goal decomposition. Track habits, achieve goals, and level up your life with gamified progress tracking. Free habit tracker app with smart analytics.',
   keywords: [
@@ -34,7 +36,8 @@ export const metadata: Metadata = {
     // Long-tail Keywords  
     'AI habit tracker', 'smart goal setting app', 'gamified habit tracker',
     'daily habit tracker free', 'best habit tracking app 2026',
-    'habit tracker with streaks', 'goal decomposition tool', 'ascendify',
+    'habit tracker with streaks', 'goal decomposition tool', 'resurgo',
+    'resurgo.life',
     'life operating system', 'goal decomposition engine',
     // Related Terms
     'productivity app', 'self improvement app', 'personal development',
@@ -43,9 +46,9 @@ export const metadata: Metadata = {
     'how to build good habits', 'track my daily habits',
     'app to help achieve goals', 'free habit tracker',
   ],
-  authors: [{ name: 'Ascendify Team', url: siteUrl }],
-  creator: 'Ascendify',
-  publisher: 'Ascendify',
+  authors: [{ name: 'Resurgo Team', url: siteUrl }],
+  creator: 'Resurgo',
+  publisher: 'Resurgo',
   
   // ═══════════════════════════════════════════════════════════════════════════
   // CANONICAL & ALTERNATE URLs
@@ -65,7 +68,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'Ascendify',
+    title: 'Resurgo',
     startupImage: [
       {
         url: '/icons/splash-1170x2532.png',
@@ -73,7 +76,7 @@ export const metadata: Metadata = {
       },
     ],
   },
-  applicationName: 'Ascendify',
+  applicationName: 'Resurgo',
   
   // ═══════════════════════════════════════════════════════════════════════════
   // OPEN GRAPH (FACEBOOK, LINKEDIN, ETC.)
@@ -82,22 +85,22 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: siteUrl,
-    siteName: 'Ascendify',
-    title: 'Ascendify | AI-Powered Habit Tracker & Goal Achievement',
+    siteName: 'Resurgo',
+    title: 'Resurgo | AI-Powered Habit Tracker & Goal Achievement',
     description: 'Build lasting habits with AI goal decomposition. Track progress, earn XP, and level up your life. Join 50K+ users achieving their goals.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Ascendify - AI-Powered Habit Tracker with gamified progress tracking',
+        alt: 'Resurgo - AI-Powered Habit Tracker with gamified progress tracking',
         type: 'image/png',
       },
       {
         url: '/og-image-square.png',
         width: 1200,
         height: 1200,
-        alt: 'Ascendify Habit Tracker App',
+        alt: 'Resurgo Habit Tracker App',
         type: 'image/png',
       },
     ],
@@ -108,13 +111,13 @@ export const metadata: Metadata = {
   // ═══════════════════════════════════════════════════════════════════════════
   twitter: {
     card: 'summary_large_image',
-    site: '@ascendifyapp',
-    creator: '@ascendifyapp',
-    title: 'Ascendify | AI Habit Tracker That Makes Goals Achievable',
+    site: '@resurgolife',
+    creator: '@resurgolife',
+    title: 'Resurgo | AI Habit Tracker That Makes Goals Achievable',
     description: 'Transform big goals into daily wins. AI-powered decomposition + gamified tracking = unstoppable progress. Try free!',
     images: {
       url: '/twitter-image.png',
-      alt: 'Ascendify - Build Better Habits with AI',
+      alt: 'Resurgo - Build Better Habits with AI',
     },
   },
   
@@ -156,7 +159,7 @@ export const metadata: Metadata = {
   other: {
     'mobile-web-app-capable': 'yes',
     'apple-mobile-web-app-capable': 'yes',
-    'msapplication-TileColor': '#14B899',
+    'msapplication-TileColor': '#F97316',
     'msapplication-config': '/browserconfig.xml',
   },
 };
@@ -164,7 +167,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#14B899' },
+    { media: '(prefers-color-scheme: dark)', color: '#F97316' },
   ],
   width: 'device-width',
   initialScale: 1,
@@ -183,7 +186,7 @@ const jsonLd = {
     // Software Application Schema
     {
       '@type': 'SoftwareApplication',
-      'name': 'Ascendify',
+      'name': 'Resurgo',
       'applicationCategory': 'LifestyleApplication',
       'applicationSubCategory': 'Productivity',
       'operatingSystem': 'Web, iOS, Android',
@@ -193,11 +196,11 @@ const jsonLd = {
           'price': '0',
           'priceCurrency': 'USD',
           'name': 'Free Plan',
-          'description': 'Basic habit tracking with up to 3 habits',
+          'description': 'Basic habit tracking with up to 10 habits',
         },
         {
           '@type': 'Offer',
-          'price': '9',
+          'price': '12',
           'priceCurrency': 'USD',
           'name': 'Pro Plan',
           'priceValidUntil': '2026-12-31',
@@ -205,19 +208,12 @@ const jsonLd = {
         },
         {
           '@type': 'Offer',
-          'price': '149',
+          'price': '199',
           'priceCurrency': 'USD',
           'name': 'Lifetime Access',
           'description': 'One-time payment for lifetime access to all features',
         },
       ],
-      'aggregateRating': {
-        '@type': 'AggregateRating',
-        'ratingValue': '4.9',
-        'ratingCount': '2847',
-        'bestRating': '5',
-        'worstRating': '1',
-      },
       'description': 'AI-powered habit tracker with goal decomposition, gamified progress tracking, and detailed analytics.',
       'featureList': [
         'AI Goal Decomposition',
@@ -234,29 +230,49 @@ const jsonLd = {
     // Organization Schema
     {
       '@type': 'Organization',
-      'name': 'Ascendify',
+      'name': 'Resurgo',
       'url': siteUrl,
       'logo': `${siteUrl}/icons/icon.svg`,
-      'sameAs': [
-        'https://twitter.com/ascendifyapp',
-        'https://linkedin.com/company/ascendifyapp',
-        'https://instagram.com/ascendifyapp',
-      ],
       'contactPoint': {
         '@type': 'ContactPoint',
         'contactType': 'customer support',
-        'email': 'support@ascendify.app',
+        'email': 'support@resurgo.life',
       },
     },
-    // WebSite Schema for Sitelinks Search Box
+    // WebSite Schema
     {
       '@type': 'WebSite',
-      'name': 'Ascendify',
+      'name': 'Resurgo',
       'url': siteUrl,
+      'inLanguage': 'en-US',
       'potentialAction': {
         '@type': 'SearchAction',
-        'target': `${siteUrl}/search?q={search_term_string}`,
+        'target': `${siteUrl}/guides?q={search_term_string}`,
         'query-input': 'required name=search_term_string',
+      },
+    },
+    // Web Page Schema for answer engines
+    {
+      '@type': 'WebPage',
+      'name': 'Resurgo Habit Tracker',
+      'url': siteUrl,
+      'description': 'AI-powered habit tracker with guided goal decomposition, streak support, and actionable coaching.',
+      'isPartOf': {
+        '@type': 'WebSite',
+        'url': siteUrl,
+      },
+      'about': [
+        'Habit tracking',
+        'Goal setting',
+        'Behavior change',
+        'Productivity',
+      ],
+      'speakable': {
+        '@type': 'SpeakableSpecification',
+        'xpath': [
+          '/html/head/title',
+          '/html/head/meta[@name="description"]',
+        ],
       },
     },
     // FAQ Schema for common questions
@@ -265,18 +281,18 @@ const jsonLd = {
       'mainEntity': [
         {
           '@type': 'Question',
-          'name': 'What is Ascendify?',
+          'name': 'What is Resurgo?',
           'acceptedAnswer': {
             '@type': 'Answer',
-            'text': 'Ascendify is an AI-powered habit tracking app that helps you break down big goals into achievable daily tasks. It features gamified progress tracking with XP and levels, detailed analytics, and privacy-first design.',
+            'text': 'Resurgo is an AI-powered habit tracking app that helps you break down big goals into achievable daily tasks. It features gamified progress tracking with XP and levels, detailed analytics, and privacy-first design.',
           },
         },
         {
           '@type': 'Question',
-          'name': 'Is Ascendify free to use?',
+          'name': 'Is Resurgo free to use?',
           'acceptedAnswer': {
             '@type': 'Answer',
-            'text': 'Yes! Ascendify offers a free plan with up to 3 habits and basic analytics. Pro plans start at $9/month for unlimited features, and lifetime access is available for a one-time payment of $149.',
+            'text': 'Yes! Resurgo offers a free plan with up to 10 habits and basic analytics. Pro plans start at $12/month for unlimited features, and lifetime access is available for a one-time payment of $199.',
           },
         },
         {
@@ -309,7 +325,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon.svg" />
         {/* Font loaded via next/font - no render-blocking link needed */}
         {/* Puter.js for FREE AI - No API key needed! */}
-        <script src="https://js.puter.com/v2/" async />
+        <Script src="https://js.puter.com/v2/" strategy="afterInteractive" />
         {/* Prevent flash of wrong theme */}
         <script
           dangerouslySetInnerHTML={{
@@ -329,15 +345,25 @@ export default function RootLayout({
               (function() {
                 try {
                   var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-                  if (!isLocal || !('serviceWorker' in navigator)) return;
+                  
+                  // On localhost: unregister all SW and clear caches entirely
+                  if (isLocal && 'serviceWorker' in navigator) {
+                    navigator.serviceWorker.getRegistrations().then(function(regs) {
+                      return Promise.all(regs.map(function(reg) { return reg.unregister(); }));
+                    }).catch(function() {});
 
-                  navigator.serviceWorker.getRegistrations().then(function(regs) {
-                    return Promise.all(regs.map(function(reg) { return reg.unregister(); }));
-                  }).catch(function() {});
+                    if ('caches' in window) {
+                      caches.keys().then(function(keys) {
+                        return Promise.all(keys.map(function(key) { return caches.delete(key); }));
+                      }).catch(function() {});
+                    }
+                  }
 
-                  if ('caches' in window) {
+                  // On all hosts: clear old (non-current) SW caches to prevent stale pages
+                  if (!isLocal && 'caches' in window) {
+                    var CURRENT_CACHE = 'ascend-v4';
                     caches.keys().then(function(keys) {
-                      return Promise.all(keys.map(function(key) { return caches.delete(key); }));
+                      return Promise.all(keys.filter(function(k) { return k !== CURRENT_CACHE; }).map(function(k) { return caches.delete(k); }));
                     }).catch(function() {});
                   }
                 } catch (e) {}
@@ -347,23 +373,23 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
-        <ClerkProviderWrapper>
-          {/* Error Tracking */}
-          <ErrorTrackingInit />
-          
-          {/* Google Analytics */}
-          <GoogleAnalytics />
-          
-          {/* Custom Cursor - Desktop Only */}
-          <CustomCursor />
+        {/* Error Tracking */}
+        <ErrorTrackingInit />
 
-          <ThemeProvider>
-            <AccessibilityProvider>
-              <ConvexClientProvider>
+        {/* Google Analytics */}
+        <GoogleAnalytics />
+
+        {/* Custom Cursor - Desktop Only */}
+        <CustomCursor />
+
+        <ClerkProviderWrapper>
+          <ConvexClientProvider>
+            <ThemeProvider>
+              <AccessibilityProvider>
                 {children}
-              </ConvexClientProvider>
-            </AccessibilityProvider>
-          </ThemeProvider>
+              </AccessibilityProvider>
+            </ThemeProvider>
+          </ConvexClientProvider>
         </ClerkProviderWrapper>
       </body>
     </html>

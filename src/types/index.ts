@@ -46,6 +46,11 @@ export interface NotificationSettings {
   streakAtRisk: boolean;
   achievements: boolean;
   weeklyReport: boolean;
+  quietHoursEnabled: boolean;
+  quietHoursStart: string; // "22:00"
+  quietHoursEnd: string; // "06:00"
+  intelligenceLevel: 'gentle' | 'balanced' | 'coaching';
+  personalizationMode: 'auto' | 'work' | 'university' | 'general';
 }
 
 export interface UserStats {
@@ -191,7 +196,7 @@ export interface WeeklyMilestone {
   reward: WeeklyReward;
   reflectionPrompts: string[];
   achievementUnlock?: string; // Badge/achievement unlocked
-  celebrationMessage: string; // "🎉 You completed Week 3!"
+  celebrationMessage: string; // "You completed Week 3!"
 }
 
 export interface WeeklyReward {
@@ -695,15 +700,15 @@ export interface IdentityEvidence {
 }
 
 export const IDENTITY_ARCHETYPES: IdentityArchetype[] = [
-  { id: 'athlete', name: 'Athlete', statement: 'I am someone who moves my body every day', description: 'Physical fitness and sports', icon: '🏃‍♂️', color: '#EF4444', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
-  { id: 'scholar', name: 'Scholar', statement: 'I am someone who learns something new every day', description: 'Continuous learning and growth', icon: '📚', color: '#3B82F6', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
-  { id: 'creator', name: 'Creator', statement: 'I am someone who creates and builds', description: 'Creative expression and making', icon: '🎨', color: '#8B5CF6', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
-  { id: 'mindful', name: 'Mindful Being', statement: 'I am someone who practices presence', description: 'Meditation and mindfulness', icon: '🧘', color: '#14B8A6', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
-  { id: 'healthy', name: 'Healthy Person', statement: 'I am someone who nourishes my body', description: 'Nutrition and wellness', icon: '💪', color: '#22C55E', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
-  { id: 'leader', name: 'Leader', statement: 'I am someone who takes initiative', description: 'Leadership and responsibility', icon: '💼', color: '#F59E0B', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
-  { id: 'writer', name: 'Writer', statement: 'I am someone who writes regularly', description: 'Writing and journaling', icon: '✍️', color: '#EC4899', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
-  { id: 'growth', name: 'Growth Mindset', statement: 'I am someone who embraces challenges', description: 'Personal development', icon: '🌱', color: '#10B981', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
-  { id: 'wealth', name: 'Wealth Builder', statement: 'I am someone who builds financial freedom', description: 'Finance and investing', icon: '💰', color: '#FBBF24', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
+  { id: 'athlete', name: 'Athlete', statement: 'I am someone who moves my body every day', description: 'Physical fitness and sports', icon: 'AT', color: '#EF4444', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
+  { id: 'scholar', name: 'Scholar', statement: 'I am someone who learns something new every day', description: 'Continuous learning and growth', icon: 'SC', color: '#3B82F6', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
+  { id: 'creator', name: 'Creator', statement: 'I am someone who creates and builds', description: 'Creative expression and making', icon: 'CR', color: '#8B5CF6', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
+  { id: 'mindful', name: 'Mindful Being', statement: 'I am someone who practices presence', description: 'Meditation and mindfulness', icon: 'MD', color: '#14B8A6', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
+  { id: 'healthy', name: 'Healthy Person', statement: 'I am someone who nourishes my body', description: 'Nutrition and wellness', icon: 'HL', color: '#22C55E', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
+  { id: 'leader', name: 'Leader', statement: 'I am someone who takes initiative', description: 'Leadership and responsibility', icon: 'LD', color: '#F59E0B', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
+  { id: 'writer', name: 'Writer', statement: 'I am someone who writes regularly', description: 'Writing and journaling', icon: 'WR', color: '#EC4899', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
+  { id: 'growth', name: 'Growth Mindset', statement: 'I am someone who embraces challenges', description: 'Personal development', icon: 'GR', color: '#10B981', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
+  { id: 'wealth', name: 'Wealth Builder', statement: 'I am someone who builds financial freedom', description: 'Finance and investing', icon: 'WB', color: '#FBBF24', linkedHabits: [], evidenceCount: 0, evidence: [], level: 'emerging', isActive: false },
 ];
 
 export const IDENTITY_THRESHOLDS = {
@@ -963,14 +968,14 @@ export interface PlanLimits {
 
 export const PLAN_LIMITS: Record<UserPlan, PlanLimits> = {
   free: {
-    maxHabits: 5,
-    maxGoals: 1,
+    maxHabits: 10,
+    maxGoals: 3,
     maxStacks: 0,
     historyDays: 7,
-    hasAI: false,
+    hasAI: true,
     hasAdvancedAnalytics: false,
     hasDataExport: false,
-    hasPomodoro: false,
+    hasPomodoro: true,
     hasIdentitySystem: false,
     hasHabitStacking: false,
   },
@@ -1145,7 +1150,7 @@ export const REWARD_MILESTONES: RewardMilestone[] = [
       type: 'cheat_day',
       name: 'Earned Break',
       description: 'Take a guilt-free day off. You\'ve earned it!',
-      icon: '🎉',
+      icon: 'BR',
       earnedAt: new Date(),
       isUsed: false,
     },
@@ -1158,7 +1163,7 @@ export const REWARD_MILESTONES: RewardMilestone[] = [
       type: 'streak_shield',
       name: 'Streak Shield',
       description: 'Protect your streak if you miss a day',
-      icon: '🛡️',
+      icon: 'SH',
       earnedAt: new Date(),
       isUsed: false,
     },
@@ -1171,7 +1176,7 @@ export const REWARD_MILESTONES: RewardMilestone[] = [
       type: 'xp_boost',
       name: '2x XP Day',
       description: 'Double XP for all tasks completed today',
-      icon: '⚡',
+      icon: 'XP',
       earnedAt: new Date(),
       isUsed: false,
     },
@@ -1184,7 +1189,7 @@ export const REWARD_MILESTONES: RewardMilestone[] = [
       type: 'rest_day',
       name: 'Wellness Day',
       description: 'AI suggests a recovery-focused day with lighter tasks',
-      icon: '🧘',
+      icon: 'WL',
       earnedAt: new Date(),
       isUsed: false,
     },
@@ -1414,52 +1419,52 @@ export type TaskBarrier =
 export const TASK_BARRIERS: Record<TaskBarrier, { label: string; icon: string; suggestion: string }> = {
   boring: { 
     label: "It's boring", 
-    icon: '😴', 
+    icon: 'SL', 
     suggestion: "Try pairing it with something enjoyable (music, podcast, treat after)." 
   },
   too_big: { 
     label: "It feels too big", 
-    icon: '🏔️', 
+    icon: 'BG', 
     suggestion: "Let's break it into tiny steps. What's the smallest first action?" 
   },
   dont_know_start: { 
     label: "I don't know where to start", 
-    icon: '🤷', 
+    icon: 'ST', 
     suggestion: "Just do anything for 2 minutes. Starting is the hardest part." 
   },
   perfectionism: { 
     label: "It won't be perfect", 
-    icon: '✨', 
+    icon: 'PF', 
     suggestion: "Done is better than perfect. You can improve it later." 
   },
   avoiding_feelings: { 
     label: "I'm avoiding something", 
-    icon: '😰', 
+    icon: 'AV', 
     suggestion: "What feeling comes up when you think about this? It's okay to feel it." 
   },
   low_energy: { 
     label: "I don't have the energy", 
-    icon: '🔋', 
+    icon: 'EN', 
     suggestion: "Can we shrink this to a 2-minute version? Or save it for a better time?" 
   },
   overwhelmed: { 
     label: "I'm overwhelmed", 
-    icon: '🌊', 
+    icon: 'OV', 
     suggestion: "Take 3 deep breaths first. Then pick just ONE tiny thing." 
   },
   fear_of_failure: { 
     label: "I'm afraid I'll fail", 
-    icon: '😟', 
+    icon: 'FF', 
     suggestion: "What if 'trying' is the success? You're already winning by caring." 
   },
   unclear: { 
     label: "It's not clear what to do", 
-    icon: '❓', 
+    icon: 'UN', 
     suggestion: "Let's clarify: What specific action would move this forward?" 
   },
   other: { 
     label: "Something else", 
-    icon: '💭', 
+    icon: 'OT', 
     suggestion: "That's okay. Be gentle with yourself. What would help right now?" 
   },
 };

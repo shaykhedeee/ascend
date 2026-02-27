@@ -33,7 +33,7 @@ interface SettingsModalProps {
 }
 
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
-  const { user, habits, habitEntries, goals, addToast, logout } = useAscendStore();
+  const { user, habits, habitEntries, goals, addToast, logout, updateNotificationSettings } = useAscendStore();
   const [activeTab, setActiveTab] = useState<'profile' | 'notifications' | 'data' | 'danger'>('profile');
   const [isExporting, setIsExporting] = useState(false);
   const [showResetConfirm, setShowResetConfirm] = useState(false);
@@ -295,14 +295,39 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   morningTime={user.preferences?.notifications?.morningReminder || '07:00'}
                   eveningTime={user.preferences?.notifications?.eveningReminder || '21:00'}
                   streakWarning={user.preferences?.notifications?.streakAtRisk ?? true}
+                  quietHoursEnabled={user.preferences?.notifications?.quietHoursEnabled ?? true}
+                  quietHoursStart={user.preferences?.notifications?.quietHoursStart || '22:00'}
+                  quietHoursEnd={user.preferences?.notifications?.quietHoursEnd || '06:00'}
+                  intelligenceLevel={user.preferences?.notifications?.intelligenceLevel || 'balanced'}
+                  personalizationMode={user.preferences?.notifications?.personalizationMode || 'auto'}
+                  scheduleProfile={user.profile?.workSchedule}
                   onMorningTimeChange={(time) => {
+                    updateNotificationSettings({ morningReminder: time });
                     addToast({ type: 'success', title: 'Updated', message: `Morning reminder set to ${time}` });
                   }}
                   onEveningTimeChange={(time) => {
+                    updateNotificationSettings({ eveningReminder: time });
                     addToast({ type: 'success', title: 'Updated', message: `Evening reminder set to ${time}` });
                   }}
                   onStreakWarningChange={(enabled) => {
+                    updateNotificationSettings({ streakAtRisk: enabled });
                     addToast({ type: 'success', title: 'Updated', message: `Streak warning ${enabled ? 'enabled' : 'disabled'}` });
+                  }}
+                  onQuietHoursEnabledChange={(enabled) => {
+                    updateNotificationSettings({ quietHoursEnabled: enabled });
+                    addToast({ type: 'success', title: 'Updated', message: `Quiet hours ${enabled ? 'enabled' : 'disabled'}` });
+                  }}
+                  onQuietHoursChange={(start, end) => {
+                    updateNotificationSettings({ quietHoursStart: start, quietHoursEnd: end });
+                    addToast({ type: 'success', title: 'Updated', message: `Quiet hours set to ${start} - ${end}` });
+                  }}
+                  onIntelligenceLevelChange={(level) => {
+                    updateNotificationSettings({ intelligenceLevel: level });
+                    addToast({ type: 'success', title: 'Updated', message: `Notification intelligence set to ${level}` });
+                  }}
+                  onPersonalizationModeChange={(mode) => {
+                    updateNotificationSettings({ personalizationMode: mode });
+                    addToast({ type: 'success', title: 'Updated', message: `Personalization mode set to ${mode}` });
                   }}
                 />
               </div>

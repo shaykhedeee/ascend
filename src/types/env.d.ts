@@ -18,11 +18,6 @@ declare namespace NodeJS {
     BILLING_LIFETIME_CHECKOUT_URL?: string;
     BILLING_PORTAL_URL?: string;
 
-    // Payments
-    PAYU_MERCHANT_KEY?: string;
-    PAYU_MERCHANT_SALT?: string;
-    NEXT_PUBLIC_PAYU_MODE?: 'test' | 'live';
-
     // AI server-side keys
     GROQ_API_KEY?: string;
     GOOGLE_AI_STUDIO_KEY?: string;

@@ -6,6 +6,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAscendStore } from '@/lib/store';
 import { cn } from '@/lib/utils';
 import { BADGES, getRarityColor } from '@/lib/rewards';
@@ -30,7 +31,8 @@ interface ProfileModalProps {
 }
 
 export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
-  const { user, habits, goals } = useAscendStore();
+  const router = useRouter();
+  const { user, habits, goals, logout } = useAscendStore();
   const [activeTab, setActiveTab] = useState<'overview' | 'badges' | 'stats'>('overview');
   
   if (!isOpen) return null;
@@ -224,6 +226,17 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                   <div className="flex items-center justify-between">
                     <span className="text-themed-secondary text-sm">Active Habits</span>
                     <span className="text-themed font-medium">{activeHabits.length}</span>
+                  </div>
+                  <div className="pt-3 border-t border-[var(--border)]">
+                    <button
+                      onClick={() => {
+                        try { logout(); } catch (e) {}
+                        router.push('/');
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 font-medium"
+                    >
+                      Sign out
+                    </button>
                   </div>
                 </div>
               </div>

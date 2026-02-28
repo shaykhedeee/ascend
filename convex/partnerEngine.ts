@@ -256,7 +256,6 @@ export const applyPartnerActions = mutation({
               streakLongest: 0,
               habitType: 'yes_no',
               difficultyLevel: 1,
-              source: 'ai_generated',
               createdAt: now,
               updatedAt: now,
             } as any);
@@ -323,7 +322,6 @@ export const applyPartnerActions = mutation({
               status: goalStatus,
               progress: 0,
               whyImportant: g.why ?? undefined,
-              source: 'ai_generated',
               createdAt: now,
               updatedAt: now,
             } as any);

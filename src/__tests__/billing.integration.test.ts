@@ -3,14 +3,14 @@
 // End-to-End QA Testing: Signup → Payment → Webhook → Feature Gating
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { describe, it, expect, beforeAll, afterAll, beforeEach } from '@jest/globals';
+import { describe, it, expect, beforeEach } from '@jest/globals';
 
 /* ═══════════════════════════════════════════════════════════════════════════════
    TEST SUITE 1: USER SIGNUP FLOW & INITIAL PLAN ASSIGNMENT
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 describe('TC-001: Free Plan Auto-Assignment on Signup', () => {
-  let testUserId: string;
+  let _testUserId: string;
   let clerkId: string;
 
   beforeEach(() => {

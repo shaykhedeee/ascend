@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery, useAction } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
+import { Id } from '../../../../convex/_generated/dataModel';
 import { useState, FormEvent } from 'react';
 import { Briefcase, TrendingUp, Plus, Trash2, CheckCircle, Zap, ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -65,7 +66,7 @@ export default function BusinessPage() {
   const handleGenerate = async (goalId: string) => {
     setGeneratingFor(goalId);
     try {
-      await generateTasks({ goalId: goalId as string });
+      await generateTasks({ goalId: goalId as Id<'businessGoals'> });
     } finally {
       setGeneratingFor(null);
     }

@@ -5,7 +5,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAscendStore } from '@/lib/store';
 import { aiClient } from '@/lib/ai-client';
 import { cn } from '@/lib/utils';
@@ -39,7 +39,7 @@ export function AIInsights({ className }: AIInsightsProps) {
   const [error, setError] = useState<string | null>(null);
 
   // Calculate habit stats for AI analysis
-  const getHabitData = () => {
+  const getHabitData = useCallback(() => {
     const activeHabits = habits.filter(h => h.isActive);
     const last30Days = Array.from({ length: 30 }, (_, i) => {
       const date = new Date();
@@ -80,9 +80,9 @@ export function AIInsights({ className }: AIInsightsProps) {
         worstDay: DAYS_OF_WEEK[worstDayIdx],
       };
     });
-  };
+  }, [habits, habitEntries]);
 
-  const analyzePatterns = async () => {
+  const analyzePatterns = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
@@ -125,7 +125,7 @@ export function AIInsights({ className }: AIInsightsProps) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [getHabitData]);
 
   useEffect(() => {
     analyzePatterns();

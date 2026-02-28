@@ -38,10 +38,12 @@ interface AIMilestoneResponse {
   weekNumber: number;
   estimatedHours?: number;
   weeklyObjectives: AIWeeklyObjectiveResponse[];
+  weeklyFocus?: string[];
 }
 
 interface AIHabitResponse {
   title: string;
+  name?: string;
   description: string;
   frequency?: string;
   category?: string;
@@ -52,6 +54,16 @@ interface AIGoalPlanResponse {
   suggestedHabits?: AIHabitResponse[];
   summary?: string;
   estimatedTotalHours?: number;
+  estimatedSuccessRate?: number;
+  keyRisks?: string[];
+  motivationalMessage?: string;
+}
+
+// Lightweight template type used by getMilestoneTemplates (no AI response fields needed)
+interface MilestoneTemplate {
+  title: string;
+  description: string;
+  weeklyFocus: string[];
 }
 
 // ─────────────────────────────────────────────────────────────────────────────────
@@ -230,7 +242,7 @@ export class AIGoalDecomposer {
     
     try {
       // Try real AI first (Groq/Gemini)
-      const aiResponse = await ascendAI.decomposeGoal(
+      const rawAiResponse = await ascendAI.decomposeGoal(
         request.ultimateGoal,
         request.category,
         request.targetDate,
@@ -240,7 +252,7 @@ export class AIGoalDecomposer {
           difficulty: request.preferredDifficulty,
         }
       );
-      
+      const aiResponse = rawAiResponse as AIGoalPlanResponse;
       console.log('AI Goal Decomposer: Real AI response received');
       const result = this.transformToResponse(aiResponse, request, totalWeeks);
       return result;
@@ -284,10 +296,10 @@ export class AIGoalDecomposer {
           description: t.description,
           scheduledDate: addDays(weekStart, tIndex % 7),
           estimatedMinutes: t.estimatedMinutes || 30,
-          priority: t.priority || 'medium',
-          status: 'pending',
-          xpReward: this.calculateTaskXp(t.difficulty || 'medium'),
-          difficulty: t.difficulty || 'medium',
+          priority: (t.priority as DailyTask['priority']) || 'medium',
+          status: 'pending' as const,
+          xpReward: this.calculateTaskXp((t.difficulty as 'easy' | 'medium' | 'hard') || 'medium'),
+          difficulty: (t.difficulty as 'easy' | 'medium' | 'hard') || 'medium',
         }));
 
         return {
@@ -319,22 +331,22 @@ export class AIGoalDecomposer {
     });
 
     const suggestedHabits: Partial<Habit>[] = (aiResponse.suggestedHabits || []).map((h: AIHabitResponse) => ({
-      name: h.name,
+      name: h.name ?? h.title,
       description: h.description,
-      category: h.category || 'custom',
-      frequency: { type: h.frequency === 'daily' ? 'daily' : 'specific_days' },
+      category: (h.category || 'custom') as Habit['category'],
+      frequency: (h.frequency === 'daily' ? 'daily' : 'custom') as 'daily' | 'custom',
       monthlyGoal: h.frequency === 'daily' ? 25 : 15,
-      icon: this.getCategoryIcon(h.category),
-      color: this.getCategoryColor(h.category),
+      icon: this.getCategoryIcon(h.category ?? 'custom'),
+      color: this.getCategoryColor(h.category ?? 'custom'),
     }));
 
     return {
       goalId,
-      summary: aiResponse.summary,
+      summary: aiResponse.summary ?? `Your personalized plan for "${_request.ultimateGoal}" is ready.`,
       milestones,
-      estimatedSuccessRate: aiResponse.estimatedSuccessRate || 80,
-      keyRisks: aiResponse.keyRisks || [],
-      motivationalMessage: aiResponse.motivationalMessage || 'You\'ve got this! Every journey begins with a single step.',
+      estimatedSuccessRate: aiResponse.estimatedSuccessRate ?? 80,
+      keyRisks: aiResponse.keyRisks ?? [],
+      motivationalMessage: aiResponse.motivationalMessage ?? 'You\'ve got this! Every journey begins with a single step.',
       suggestedHabits,
     };
   }
@@ -361,6 +373,7 @@ export class AIGoalDecomposer {
         const objectiveId = this.generateId();
         const absoluteWeek = Math.floor((totalWeeks / milestonesCount) * mIndex) + wIndex + 1;
         const weekStart = addDays(today, (absoluteWeek - 1) * 7);
+        const focusList = template.weeklyFocus ?? ['Progress', 'Review', 'Practice', 'Refinement'];
 
         const dailyTasks: DailyTask[] = Array.from({ length: 5 }, (_, tIndex) => ({
           id: this.generateId(),
@@ -369,17 +382,17 @@ export class AIGoalDecomposer {
           description: this.getTaskDescription(request.category, tIndex),
           scheduledDate: addDays(weekStart, tIndex),
           estimatedMinutes: this.getTaskDuration(request.preferredDifficulty),
-          priority: tIndex === 0 ? 'high' : tIndex < 3 ? 'medium' : 'low',
-          status: 'pending',
+          priority: (tIndex === 0 ? 'high' : tIndex < 3 ? 'medium' : 'low') as DailyTask['priority'],
+          status: 'pending' as const,
           xpReward: this.calculateTaskXp(tIndex === 0 ? 'hard' : 'medium'),
-          difficulty: tIndex === 0 ? 'hard' : 'medium',
+          difficulty: (tIndex === 0 ? 'hard' : 'medium') as 'easy' | 'medium' | 'hard',
         }));
 
         return {
           id: objectiveId,
           milestoneId,
-          title: `Week ${absoluteWeek}: ${template.weeklyFocus[wIndex % template.weeklyFocus.length]}`,
-          description: `Focus on ${template.weeklyFocus[wIndex % template.weeklyFocus.length].toLowerCase()} to build momentum.`,
+          title: `Week ${absoluteWeek}: ${focusList[wIndex % focusList.length]}`,
+          description: `Focus on ${focusList[wIndex % focusList.length].toLowerCase()} to build momentum.`,
           weekNumber: absoluteWeek,
           startDate: weekStart,
           endDate: endOfWeek(weekStart),
@@ -503,8 +516,8 @@ export class AIGoalDecomposer {
     return preview;
   }
 
-  private getMilestoneTemplates(category: GoalCategory, _goal: string): AIMilestoneResponse[] {
-    const templates: Record<GoalCategory, AIMilestoneResponse[]> = {
+  private getMilestoneTemplates(category: GoalCategory, _goal: string): MilestoneTemplate[] {
+    const templates: Record<GoalCategory, MilestoneTemplate[]> = {
       fitness: [
         { title: 'Foundation Building', description: 'Establish baseline fitness and build consistent exercise habits', weeklyFocus: ['Baseline Assessment', 'Form Practice', 'Endurance Building', 'Recovery Optimization'] },
         { title: 'Strength Development', description: 'Progressive overload and technique refinement', weeklyFocus: ['Strength Training', 'Cardio Integration', 'Flexibility Work', 'Performance Testing'] },

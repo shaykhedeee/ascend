@@ -3,7 +3,7 @@
 // Pixelated terminal aesthetic with data visualization
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { TrendingUp, TrendingDown, Target, Brain, Zap, ChartBar } from 'lucide-react';
+import { TrendingUp, TrendingDown, Target, Brain, Zap, BarChart2 as ChartBar } from 'lucide-react';
 
 // ─── PIXELATED STAT CARD ─────────────────────────────────────────────────────
 

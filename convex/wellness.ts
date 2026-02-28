@@ -160,3 +160,44 @@ export const getJournalEntries = query({
     return limit ? entries.slice(0, limit) : entries;
   },
 });
+
+// ───────────────────────────────────────────────────────────────────────────
+// LOG MOOD FROM AI COACH (alias for logMood — Living System)
+// ───────────────────────────────────────────────────────────────────────────
+export const logMoodFromAI = mutation({
+  args: {
+    score: v.number(),
+    notes: v.optional(v.string()),
+    tags: v.optional(v.array(v.string())),
+    date: v.optional(v.string()),
+  },
+  returns: v.id('moodEntries'),
+  handler: async (ctx, args) => {
+    const user = await getAuthUser(ctx);
+    const today = args.date ?? new Date().toISOString().slice(0, 10);
+
+    // Upsert: update existing entry for today
+    const existing = await ctx.db
+      .query('moodEntries')
+      .withIndex('by_userId_date', (q: any) => q.eq('userId', user._id).eq('date', today))
+      .unique();
+
+    if (existing) {
+      await ctx.db.patch(existing._id, {
+        score: args.score,
+        notes: args.notes,
+        tags: args.tags,
+      });
+      return existing._id;
+    }
+
+    return await ctx.db.insert('moodEntries', {
+      userId: user._id,
+      date: today,
+      score: args.score,
+      notes: args.notes,
+      tags: args.tags,
+      createdAt: Date.now(),
+    });
+  },
+});

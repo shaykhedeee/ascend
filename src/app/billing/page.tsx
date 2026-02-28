@@ -100,7 +100,7 @@ const FAQS = [
   },
   {
     q: 'What payment methods do you accept?',
-    a: 'We accept all major credit and debit cards (Visa, Mastercard, Amex, Discover) through our secure payment provider. All transactions are encrypted and PCI-compliant.',
+    a: 'We accept all major credit/debit cards (Visa, Mastercard, Amex) via Dodo Payments — our Merchant of Record. Dodo handles all taxes, VAT, and compliance automatically. All transactions are encrypted and PCI-compliant.',
   },
   {
     q: 'Can I switch plans at any time?',
@@ -143,7 +143,7 @@ function CellValue({ value }: { value: boolean | string }) {
 export default async function BillingPage() {
   const { userId } = await auth();
   const user = userId ? await currentUser() : null;
-  const manageUrl = process.env.NEXT_PUBLIC_CLERK_BILLING_PORTAL_URL || '';
+  const manageUrl = process.env.NEXT_PUBLIC_DODO_CUSTOMER_PORTAL_URL || '';
 
   const plans = BILLING_PLANS.map((plan) => {
     const checkoutUrl = plan.clerkCheckoutUrlEnv

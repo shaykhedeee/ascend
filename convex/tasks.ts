@@ -500,3 +500,73 @@ export const bulkCreate = mutation({
     return ids;
   },
 });
+
+// ───────────────────────────────────────────────────────────────────────────
+// CREATE TASK FROM AI COACH (Living System)
+// ───────────────────────────────────────────────────────────────────────────
+export const createFromAI = mutation({
+  args: {
+    title: v.string(),
+    description: v.optional(v.string()),
+    priority: v.union(v.literal('low'), v.literal('medium'), v.literal('high'), v.literal('urgent')),
+    dueDate: v.optional(v.string()),
+    energyRequired: v.optional(v.union(v.literal('low'), v.literal('medium'), v.literal('high'))),
+    tags: v.optional(v.array(v.string())),
+  },
+  returns: v.id('tasks'),
+  handler: async (ctx, args) => {
+    const user = await getAuthUser(ctx);
+    const xpValue = args.priority === 'urgent' ? 20 : args.priority === 'high' ? 15 : args.priority === 'medium' ? 10 : 5;
+    return await ctx.db.insert('tasks', {
+      userId: user._id,
+      title: args.title,
+      description: args.description,
+      priority: args.priority,
+      status: 'todo',
+      dueDate: args.dueDate,
+      energyRequired: args.energyRequired,
+      tags: args.tags,
+      subtasks: [],
+      source: 'ai_generated',
+      xpValue,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    });
+  },
+});
+
+// ───────────────────────────────────────────────────────────────────────────
+// UPDATE TASK BY TITLE MATCH (Living System)
+// ───────────────────────────────────────────────────────────────────────────
+export const updateByTitle = mutation({
+  args: {
+    titleMatch: v.string(),
+    priority: v.optional(v.union(v.literal('low'), v.literal('medium'), v.literal('high'), v.literal('urgent'))),
+    dueDate: v.optional(v.string()),
+    completed: v.optional(v.boolean()),
+  },
+  returns: v.union(v.id('tasks'), v.null()),
+  handler: async (ctx, args) => {
+    const user = await getAuthUser(ctx);
+    const tasks = await ctx.db
+      .query('tasks')
+      .withIndex('by_userId', (q: any) => q.eq('userId', user._id))
+      .filter((q: any) => q.eq(q.field('status'), 'todo'))
+      .collect();
+
+    // Fuzzy match: find task whose title contains the search string (case-insensitive)
+    const needle = args.titleMatch.toLowerCase();
+    const match = tasks.find((t: any) =>
+      t.title.toLowerCase().includes(needle) || needle.includes(t.title.toLowerCase().slice(0, 10))
+    );
+    if (!match) return null;
+
+    const patch: Record<string, unknown> = { updatedAt: Date.now() };
+    if (args.priority !== undefined) patch.priority = args.priority;
+    if (args.dueDate !== undefined) patch.dueDate = args.dueDate;
+    if (args.completed !== undefined) patch.status = args.completed ? 'completed' : 'todo';
+
+    await ctx.db.patch(match._id, patch);
+    return match._id;
+  },
+});

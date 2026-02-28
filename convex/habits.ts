@@ -760,3 +760,38 @@ export const getArchivedDowngradeCount = query({
     return archived.length;
   },
 });
+
+// ───────────────────────────────────────────────────────────────────────────
+// CREATE HABIT FROM AI COACH (Living System)
+// ───────────────────────────────────────────────────────────────────────────
+export const createFromAI = mutation({
+  args: {
+    title: v.string(),
+    description: v.optional(v.string()),
+    frequency: v.union(
+      v.literal('daily'), v.literal('weekdays'), v.literal('weekends'),
+      v.literal('3x_week'), v.literal('weekly')
+    ),
+    timeOfDay: v.union(v.literal('morning'), v.literal('afternoon'), v.literal('evening'), v.literal('anytime')),
+    category: v.optional(v.string()),
+    identityLabel: v.optional(v.string()),
+    cueDescription: v.optional(v.string()),
+    estimatedMinutes: v.optional(v.number()),
+  },
+  returns: v.id('habits'),
+  handler: async (ctx, args) => {
+    const user = await getAuthUser(ctx);
+    return await checkAndCreateHabit(ctx, user._id, {
+      title: args.title,
+      description: args.description,
+      category: args.category ?? 'personal_growth',
+      frequency: args.frequency,
+      timeOfDay: args.timeOfDay,
+      identityLabel: args.identityLabel,
+      cueDescription: args.cueDescription,
+      estimatedMinutes: args.estimatedMinutes,
+      habitType: 'yes_no',
+      difficultyLevel: 1,
+    });
+  },
+});

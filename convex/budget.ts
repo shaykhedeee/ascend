@@ -236,3 +236,30 @@ export const listFinancialGoals = query({
       .collect();
   },
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LOG EXPENSE FROM AI COACH (Living System)
+// ─────────────────────────────────────────────────────────────────────────────
+export const logExpenseFromAI = mutation({
+  args: {
+    amount: v.number(),
+    currency: v.optional(v.string()),
+    category: v.optional(v.string()),
+    description: v.optional(v.string()),
+    date: v.optional(v.string()),
+  },
+  returns: v.id('transactions'),
+  handler: async (ctx, args) => {
+    const user = await getAuthUser(ctx);
+    return await ctx.db.insert('transactions', {
+      userId: user._id,
+      type: 'expense',
+      amount: args.amount,
+      currency: args.currency ?? 'USD',
+      category: args.category ?? 'general',
+      description: args.description ?? 'AI-logged expense',
+      date: args.date ?? new Date().toISOString().slice(0, 10),
+      createdAt: Date.now(),
+    });
+  },
+});

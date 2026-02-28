@@ -776,3 +776,87 @@ export const updatePlan = internalMutation({
     });
   },
 });
+
+// ───────────────────────────────────────────────────────────────────────────
+// SET EMERGENCY MODE (AI-triggered from Living System)
+// ───────────────────────────────────────────────────────────────────────────
+export const setEmergencyMode = mutation({
+  args: {
+    active: v.boolean(),
+    reason: v.optional(v.string()),
+  },
+  returns: v.null(),
+  handler: async (ctx, { active, reason }) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Not authenticated');
+
+    const user = await ctx.db
+      .query('users')
+      .withIndex('by_clerkId', (q) => q.eq('clerkId', identity.subject))
+      .unique();
+    if (!user) throw new Error('User not found');
+
+    await ctx.db.patch(user._id, {
+      emergencyMode: active,
+      emergencyModeReason: active ? (reason ?? 'AI-detected overwhelm') : undefined,
+      emergencyModeActivatedAt: active ? Date.now() : undefined,
+      updatedAt: Date.now(),
+    });
+  },
+});
+
+// ───────────────────────────────────────────────────────────────────────────
+// UPDATE AI SUMMARY MEMORY (rolling memory patch from coach sessions)
+// ───────────────────────────────────────────────────────────────────────────
+export const updateSummaryMemory = mutation({
+  args: { patch: v.string() },
+  returns: v.null(),
+  handler: async (ctx, { patch }) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Not authenticated');
+
+    const user = await ctx.db
+      .query('users')
+      .withIndex('by_clerkId', (q) => q.eq('clerkId', identity.subject))
+      .unique();
+    if (!user) throw new Error('User not found');
+
+    await ctx.db.patch(user._id, {
+      summaryMemory: patch.slice(0, 200), // cap at 200 chars
+      updatedAt: Date.now(),
+    });
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Section 25 — Onboarding Archetype
+// ─────────────────────────────────────────────────────────────────────────────
+export const setArchetype = mutation({
+  args: {
+    archetype: v.string(),
+    confidence: v.number(),
+    secondaryArchetype: v.union(v.string(), v.null()),
+    onboardingData: v.string(), // JSON-serialised OnboardingData
+  },
+  returns: v.null(),
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Not authenticated');
+
+    const user = await ctx.db
+      .query('users')
+      .withIndex('by_clerkId', (q) => q.eq('clerkId', identity.subject))
+      .unique();
+    if (!user) throw new Error('User not found');
+
+    await ctx.db.patch(user._id, {
+      archetype: args.archetype,
+      archetypeConfidence: args.confidence,
+      secondaryArchetype: args.secondaryArchetype ?? undefined,
+      onboardingData: args.onboardingData,
+      onboardingComplete: true,
+      updatedAt: Date.now(),
+    });
+  },
+});
+

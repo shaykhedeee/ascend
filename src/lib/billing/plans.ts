@@ -55,7 +55,7 @@ export const BILLING_PLANS: BillingPlan[] = [
     priceUsd: 12,
     yearlyEquivalentUsd: 144,
     ctaLabel: 'Start Pro Monthly',
-    clerkCheckoutUrlEnv: 'NEXT_PUBLIC_CLERK_CHECKOUT_PRO_MONTHLY_URL',
+    clerkCheckoutUrlEnv: 'NEXT_PUBLIC_DODO_CHECKOUT_PRO_MONTHLY',
     featureBullets: [
       'Unlimited habits & goals',
       'Unlimited focus sessions',
@@ -81,7 +81,7 @@ export const BILLING_PLANS: BillingPlan[] = [
     yearlyEquivalentUsd: 96,
     highlighted: true,
     ctaLabel: 'Start Pro Yearly',
-    clerkCheckoutUrlEnv: 'NEXT_PUBLIC_CLERK_CHECKOUT_PRO_YEARLY_URL',
+    clerkCheckoutUrlEnv: 'NEXT_PUBLIC_DODO_CHECKOUT_PRO_YEARLY',
     featureBullets: [
       'Everything in Pro Monthly',
       'Billed at $8/mo (save $48/yr)',
@@ -99,7 +99,7 @@ export const BILLING_PLANS: BillingPlan[] = [
     priceUsd: 199,
     yearlyEquivalentUsd: 199,
     ctaLabel: 'Get Lifetime Access',
-    clerkCheckoutUrlEnv: 'NEXT_PUBLIC_CLERK_CHECKOUT_LIFETIME_URL',
+    clerkCheckoutUrlEnv: 'NEXT_PUBLIC_DODO_CHECKOUT_LIFETIME',
     featureBullets: [
       'Everything in Pro — forever',
       'No recurring charges, ever',

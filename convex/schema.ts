@@ -140,6 +140,17 @@ export default defineSchema({
       v.literal('PHOENIX'),
       v.literal('NOVA'),
     )),
+    // ── Emergency mode (AI-triggered) ──
+    emergencyMode: v.optional(v.boolean()),
+    emergencyModeReason: v.optional(v.string()),
+    emergencyModeActivatedAt: v.optional(v.number()),
+    // ── AI coach memory ──
+    summaryMemory: v.optional(v.string()), // Short rolling AI memory string
+    // ── User archetype (Section 25 — onboarding segmentation) ──
+    archetype: v.optional(v.string()),          // UserArchetype enum value
+    archetypeConfidence: v.optional(v.number()),
+    secondaryArchetype: v.optional(v.string()),
+    onboardingData: v.optional(v.string()),     // JSON of onboarding answers
     createdAt: v.number(),
     updatedAt: v.number(),
   })
@@ -1200,4 +1211,31 @@ export default defineSchema({
   })
     .index('by_referrerId', ['referrerId'])
     .index('by_code', ['code']),
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // PSYCH PROFILES — Psychology Engine (OCEAN + CBT + SDT)
+  // Stores AI-inferred coaching style per user. NEVER shown to user.
+  // Built gradually over 30+ interactions. Private, deletable (GDPR).
+  // ───────────────────────────────────────────────────────────────────────────
+  psychProfiles: defineTable({
+    userId: v.id('users'),
+    profileData: v.string(),    // JSON-serialised PsychProfile
+    interactionCount: v.number(),
+    lastUpdated: v.number(),
+  })
+    .index('by_user', ['userId']),
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // VISION BOARDS — AI-generated personalized vision boards (Section 24)
+  // ───────────────────────────────────────────────────────────────────────────
+  visionBoards: defineTable({
+    userId: v.id('users'),
+    config: v.string(),   // JSON-serialised VisionBoardConfig (includes images)
+    version: v.number(),
+    isActive: v.boolean(),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index('by_user', ['userId'])
+    .index('by_user_active', ['userId', 'isActive']),
 });

@@ -1,8 +1,19 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Changelog — Resurgo',
-  description: 'Product updates, new features, and improvements to Resurgo.',
+  title: 'Changelog — Resurgo Product Updates, New Features & Improvements',
+  description: 'See every update to Resurgo — new features, improvements, and bug fixes. From v1.0 launch to v1.4 with AI coaching, business goals, referral system, and more.',
+  keywords: [
+    'Resurgo changelog', 'Resurgo updates', 'product updates', 'new features',
+    'Resurgo version history', 'habit tracker updates', 'release notes',
+  ],
+  openGraph: {
+    title: 'Resurgo Changelog — Product Updates & Release Notes',
+    description: 'Every update, improvement, and fix — all logged. See what is new in Resurgo.',
+    type: 'website',
+    url: 'https://resurgo.life/changelog',
+  },
+  alternates: { canonical: 'https://resurgo.life/changelog' },
 };
 
 const RELEASES = [

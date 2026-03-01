@@ -9,32 +9,32 @@ import { ScrollToTop } from '@/components/ScrollToTop';
 const VALUE_PILLARS = [
   {
     id: 'AI Goal Breakdown',
-    description: 'Turn a big goal into milestones, weekly actions, and daily tasks in seconds.',
+    description: 'Enter your goal and the AI creates milestones, weekly targets, and daily tasks in seconds. No planning needed.',
     status: 'Live',
   },
   {
     id: 'Habit System',
-    description: 'Track streaks, completion patterns, and consistency with zero busywork.',
+    description: 'Build habits that stick. Track streaks, completion rates, and consistency patterns with zero busywork.',
     status: 'Live',
   },
   {
     id: 'Focus Engine',
-    description: 'Run Pomodoro, Deep Work, or custom sessions with distraction logging.',
+    description: 'Run Pomodoro, Deep Work, or Flowtime sessions. Log distractions, play ambient sounds, and track focus hours.',
     status: 'Live',
   },
   {
     id: 'AI Coaching',
-    description: 'Get clear, actionable coaching based on your goals and recent progress.',
+    description: 'Chat with 6 AI coaches. Get advice tailored to your goals, progress, and challenges. Available 24/7.',
     status: 'Live',
   },
   {
     id: 'Unified Dashboard',
-    description: 'Goals, habits, tasks, wellness, and planning in one clean interface.',
+    description: 'Goals, habits, tasks, wellness, budget, and planning — all in one clean interface. No app-switching.',
     status: 'Live',
   },
   {
     id: 'Safe Data',
-    description: 'Your data is secure, synced, and preserved across plan changes.',
+    description: 'Your data is encrypted, synced in real-time, and preserved across plan changes. Privacy-first design.',
     status: 'Secure',
   },
 ];
@@ -72,29 +72,39 @@ const TESTIMONIALS = [
 
 const FAQS = [
   {
-    question: 'What is Resurgo in one sentence?',
+    question: 'What is Resurgo and how does it work?',
     answer:
-      'Resurgo is an AI-powered habit and goal platform that helps you plan clearly, execute daily, and stay consistent long term.',
+      'Resurgo is an AI-powered habit tracker and goal planner. You set a goal, the AI breaks it into milestones and daily tasks, and you track your progress with habits, focus sessions, and AI coaching. It works on desktop and mobile as a Progressive Web App.',
   },
   {
-    question: 'How long does onboarding take?',
+    question: 'How long does it take to get started?',
     answer:
-      'Most people finish setup in under two minutes. You choose your focus, define your goal, and get a personalized execution plan.',
+      'Most people finish setup in under two minutes. Pick your focus area, define one goal, and get a personalized plan you can start following today.',
   },
   {
-    question: 'Can I use it free forever?',
+    question: 'Is Resurgo really free?',
     answer:
-      'Yes. The free plan is available forever with core tracking features. Upgrade only when you need advanced AI and analytics.',
+      'Yes. The free plan includes habit tracking, goal setting, focus timers, and daily AI coaching messages. There is no time limit. Upgrade to Pro only when you want unlimited features and advanced analytics.',
   },
   {
-    question: 'Will I lose data if I change plans?',
+    question: 'Will I lose my data if I change plans?',
     answer:
-      'No. Your historical data stays preserved and accessible. Plan changes never wipe your progress.',
+      'No. Your habit history, streak data, goals, and journal entries are preserved when you upgrade or downgrade. Nothing gets deleted.',
   },
   {
-    question: 'Is Resurgo mobile-friendly?',
+    question: 'Can I use Resurgo on my phone?',
     answer:
-      'Yes. Resurgo is responsive and installable as a PWA on modern phones and tablets.',
+      'Yes. Resurgo is a responsive Progressive Web App. Install it from your browser to your home screen on iOS or Android. You can also use the Telegram bot for quick habit check-ins on the go.',
+  },
+  {
+    question: 'What focus timer modes are available?',
+    answer:
+      'Resurgo includes Pomodoro (25/5), Deep Work (90 min), Flowtime (flexible), and custom timers. Each session tracks your focus time, logs distractions, and saves data to your analytics dashboard.',
+  },
+  {
+    question: 'How does AI coaching work?',
+    answer:
+      'Choose from 6 AI coach personas — Marcus, Aurora, Titan, Sage, Phoenix, or Nova. Each has a different coaching style. The AI gives you advice based on your goals, recent progress, and challenges.',
   },
 ];
 
@@ -305,19 +315,19 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
               <div>
                 <h1 className="font-mono text-4xl font-bold leading-tight tracking-tight text-zinc-100 sm:text-5xl lg:text-6xl">
                   Build better habits.
-                  <span className="block text-orange-500">Achieve goals with less friction.</span>
+                  <span className="block text-orange-500">Achieve any goal with AI.</span>
                 </h1>
                 <div className="mt-3 flex items-center gap-3">
-                  <span className="font-mono text-sm tracking-widest text-zinc-300">[RESURGO_v1.0]</span>
+                  <span className="font-mono text-sm tracking-widest text-zinc-300">[RESURGO_v1.4]</span>
                   <span className="hidden font-mono text-sm text-zinc-400 md:block">
-                    AI habit tracker + goal planner + focus coach in one app
+                    Free AI habit tracker + goal planner + focus timer + wellness tracker
                   </span>
                 </div>
 
                 <p className="mt-8 max-w-2xl font-mono text-base leading-relaxed text-zinc-300">
                   Resurgo helps you go from <span className="text-zinc-100">overwhelmed</span> to{' '}
-                  <span className="text-zinc-100">organized</span>. Set one clear goal, get an AI roadmap,
-                  and execute daily with habits, tasks, and focus sessions.
+                  <span className="text-zinc-100">organized</span>. Set one clear goal, get an AI-generated roadmap,
+                  and execute daily with habits, tasks, focus sessions, and coaching — all in one app.
                 </p>
 
                 <div className="mt-6 grid gap-2 text-sm sm:grid-cols-2">
@@ -438,10 +448,10 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
             <div className="mb-10 flex items-end justify-between gap-6">
               <div>
                 <p className="font-mono text-[10px] tracking-widest text-orange-600">CORE_CAPABILITIES</p>
-                <h2 className="mt-2 font-mono text-3xl font-bold text-zinc-100 sm:text-4xl">Everything in one place</h2>
+                <h2 className="mt-2 font-mono text-3xl font-bold text-zinc-100 sm:text-4xl">All your productivity tools in one place</h2>
               </div>
               <p className="max-w-md font-mono text-sm leading-relaxed text-zinc-300">
-                You don&apos;t need separate apps for goals, habits, planning, and focus. Resurgo unifies the flow.
+                Stop switching between apps for goals, habits, planning, focus, and wellness. Resurgo combines everything into a single workflow.
               </p>
             </div>
 
@@ -643,10 +653,10 @@ export function LandingPageV2(_props: LandingPageProps = {}) {
                 START FREE TODAY
               </p>
               <h2 className="mt-3 font-mono text-3xl font-bold text-zinc-100 sm:text-4xl">
-                Ready to become more consistent?
+                Ready to build habits that actually stick?
               </h2>
               <p className="mx-auto mt-4 max-w-xl font-mono text-sm leading-relaxed text-zinc-300">
-                Set up your account, define one goal, and begin your first execution cycle in under 2 minutes.
+                Create your free account, set one goal, and start your first day in under 2 minutes. No credit card needed.
               </p>
               <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                 <Link

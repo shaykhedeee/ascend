@@ -10,11 +10,21 @@ import type { Metadata } from 'next';
 import { LandingPageV2 as LandingPage } from '@/components/LandingPageV2';
 
 export const metadata: Metadata = {
-  title: 'AI Habit Tracker & Goal Planner | Resurgo',
+  title: 'Resurgo — Free AI Habit Tracker & Goal Planner | Build Better Habits',
   description:
-    'Resurgo is an AI-powered habit tracker and goal planner that helps you break goals into clear daily actions. Start free, onboard in under 2 minutes, and stay consistent.',
+    'Resurgo is a free AI habit tracker that breaks your goals into daily tasks. Track habits, build streaks, get AI coaching, and stay consistent. Set up in under 2 minutes.',
   alternates: {
     canonical: '/',
+  },
+  openGraph: {
+    title: 'Resurgo — Free AI Habit Tracker & Goal Planner',
+    description: 'Break goals into daily tasks. Track habits, build streaks, and get AI coaching. Free to start.',
+    type: 'website',
+    url: '/',
+  },
+  twitter: {
+    title: 'Resurgo — Free AI Habit Tracker & Goal Planner',
+    description: 'Break goals into daily tasks, build streaks, and get AI coaching. Start free.',
   },
 };
 

@@ -6,8 +6,23 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Pricing — Resurgo',
-  description: 'Simple, honest pricing. Start free. Upgrade when you are ready.',
+  title: 'Pricing — Resurgo Habit Tracker Plans | Free, Pro & Lifetime',
+  description:
+    'Compare Resurgo pricing plans. Start free with core habit tracking. Upgrade to Pro at $4.99/month for unlimited features, AI coaching, and analytics. Lifetime access for $49.99.',
+  keywords: [
+    'Resurgo pricing', 'habit tracker pricing', 'Resurgo Pro', 'Resurgo free plan',
+    'AI habit tracker cost', 'Resurgo lifetime deal', 'habit tracker subscription',
+    'productivity app pricing', 'Resurgo plans comparison',
+  ],
+  alternates: {
+    canonical: '/pricing',
+  },
+  openGraph: {
+    title: 'Pricing — Resurgo Habit Tracker | Free, Pro & Lifetime Plans',
+    description: 'Start free. Upgrade to Pro at $4.99/month or get Lifetime access for $49.99. Compare all Resurgo plans.',
+    type: 'website',
+    url: '/pricing',
+  },
 };
 
 const TIERS = [
@@ -88,26 +103,96 @@ const FAQ_PRICING = [
     a: 'Yes. The Free tier requires no card. You can upgrade any time from Settings → Billing.',
   },
   {
-    q: 'What happens when I hit Free limits?',
-    a: 'You will see a prompt to upgrade. Your existing data is never deleted — you just cannot add more until you upgrade.',
+    q: 'What happens when I hit Free plan limits?',
+    a: 'You will see a prompt to upgrade. Your existing data is never deleted — you just cannot add more until you upgrade or remove items.',
   },
   {
     q: 'Do you offer refunds?',
-    a: 'Yes — 7-day money-back guarantee on all paid plans. Email support@resurgo.life within 7 days of your first charge.',
+    a: 'Yes — 7-day money-back guarantee on all paid plans. Email support@resurgo.life within 7 days of your first charge for a full refund.',
   },
   {
     q: 'Can I switch between plans?',
-    a: 'Absolutely. Upgrade or downgrade at any time from Settings → Billing. Prorated credits applied automatically.',
+    a: 'Yes. Upgrade or downgrade at any time. Changes take effect at the end of your current billing period. No data is lost.',
   },
   {
     q: 'Is the Lifetime deal a limited offer?',
-    a: 'Yes. Lifetime pricing will increase as the platform grows. Current $49.99 is the early-adopter rate.',
+    a: 'Yes. Lifetime pricing will increase as the platform grows. The current $49.99 is the early-adopter rate and includes all future features forever.',
+  },
+  {
+    q: 'What payment methods do you accept?',
+    a: 'Resurgo accepts credit cards, debit cards, and other payment methods supported by our payment processor. All transactions are encrypted and secure.',
+  },
+  {
+    q: 'Do Pro Yearly subscribers get the same features as monthly?',
+    a: 'Yes. Pro Yearly and Pro Monthly include the exact same features. The yearly plan simply saves you 50% compared to paying monthly.',
   },
 ];
+
+// JSON-LD Product + Offer structured data for rich snippets
+const pricingJsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'SoftwareApplication',
+      'name': 'Resurgo',
+      'applicationCategory': 'ProductivityApplication',
+      'operatingSystem': 'Web, iOS, Android',
+      'offers': [
+        {
+          '@type': 'Offer',
+          'name': 'Free Plan',
+          'price': '0',
+          'priceCurrency': 'USD',
+          'description': 'Core habit tracking, 3 goals, focus timer, 10 AI messages/day',
+        },
+        {
+          '@type': 'Offer',
+          'name': 'Pro Monthly',
+          'price': '4.99',
+          'priceCurrency': 'USD',
+          'priceValidUntil': '2026-12-31',
+          'description': 'Unlimited habits, goals, AI coaching, analytics, API access',
+        },
+        {
+          '@type': 'Offer',
+          'name': 'Pro Yearly',
+          'price': '29.99',
+          'priceCurrency': 'USD',
+          'priceValidUntil': '2026-12-31',
+          'description': 'Everything in Pro billed yearly — save 50%',
+        },
+        {
+          '@type': 'Offer',
+          'name': 'Lifetime Access',
+          'price': '49.99',
+          'priceCurrency': 'USD',
+          'description': 'All Pro features forever. One-time payment, no recurring fees.',
+        },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      'mainEntity': FAQ_PRICING.map((faq) => ({
+        '@type': 'Question',
+        'name': faq.q,
+        'acceptedAnswer': {
+          '@type': 'Answer',
+          'text': faq.a,
+        },
+      })),
+    },
+  ],
+};
 
 export default function PricingPage() {
   return (
     <main className="min-h-screen bg-black">
+      {/* JSON-LD Pricing + FAQ Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingJsonLd) }}
+      />
+
       <div className="mx-auto max-w-5xl px-4 py-16 md:py-24">
         {/* Header */}
         <div className="mb-14 border border-zinc-900 bg-zinc-950">
@@ -119,10 +204,10 @@ export default function PricingPage() {
           </div>
           <div className="p-10 text-center">
             <h1 className="font-mono text-4xl font-bold tracking-tight text-zinc-100">
-              Simple, honest pricing.
+              Simple, honest pricing for your habit tracker.
             </h1>
             <p className="mt-3 font-mono text-base text-zinc-400">
-              Start free. No credit card required. Upgrade only when you need to.
+              Start free with core habit tracking. Upgrade to Pro for unlimited features, AI coaching, and analytics. No hidden fees.
             </p>
           </div>
         </div>
@@ -221,10 +306,10 @@ export default function PricingPage() {
         {/* Bottom CTA */}
         <div className="mt-14 border border-orange-900/40 bg-orange-950/10 p-10 text-center">
           <h2 className="font-mono text-2xl font-bold text-zinc-100">
-            Ready to rise again?
+            Start building better habits today
           </h2>
           <p className="mt-2 font-mono text-sm text-zinc-400">
-            Join thousands of people who stopped drifting and started building.
+            Join thousands of people who set clear goals, build consistent habits, and track real progress.
           </p>
           <Link
             href="/sign-up"

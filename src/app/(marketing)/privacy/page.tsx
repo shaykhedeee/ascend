@@ -1,7 +1,19 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — Resurgo',
+  title: 'Privacy Policy — Resurgo | How We Protect Your Data',
+  description: 'Resurgo privacy policy. Learn what data we collect, what we never sell, how we store it securely (EU-West-1, SOC2, TLS 1.3), and your rights to access, export, or delete your data.',
+  keywords: [
+    'Resurgo privacy policy', 'data privacy', 'habit tracker privacy', 'GDPR',
+    'data protection', 'Resurgo data security', 'privacy first app',
+  ],
+  openGraph: {
+    title: 'Privacy Policy — Resurgo',
+    description: 'Your data, your rules. Learn exactly what we collect, how we store it, and your rights.',
+    type: 'website',
+    url: 'https://resurgo.life/privacy',
+  },
+  alternates: { canonical: 'https://resurgo.life/privacy' },
 };
 
 export default function PrivacyPage() {
@@ -15,7 +27,7 @@ export default function PrivacyPage() {
           </div>
           <div className="p-6">
             <h1 className="font-mono text-2xl font-bold text-zinc-100">Privacy Policy</h1>
-            <p className="mt-1 font-mono text-xs text-zinc-400">Your data, your rules. Here's exactly what we collect.</p>
+            <p className="mt-1 font-mono text-xs text-zinc-400">Your data, your rules. Here&apos;s exactly what we collect and how we protect it.</p>
           </div>
         </div>
         <div className="space-y-5 font-mono text-sm text-zinc-400">

@@ -7,17 +7,26 @@ import { KaiChatbot } from '@/components/KaiChatbot';
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export const metadata: Metadata = {
-  title: 'Help Center - Get Support & Learn RESURGO',
-  description: 'Find answers to all your questions about RESURGO habit tracker. Browse tutorials, FAQs, troubleshooting guides, and get instant AI support from Kai.',
+  title: 'Help Center — Resurgo | Tutorials, FAQs & AI Support',
+  description: 'Find answers to all your questions about Resurgo habit tracker. Browse tutorials, FAQs, troubleshooting guides, and get instant AI support from Kai. Learn habits, goals, focus sessions, and more.',
   keywords: [
-    'RESURGO help', 'habit tracker help', 'RESURGO support', 'RESURGO FAQ',
-    'how to use habit tracker', 'RESURGO tutorials', 'goal tracker help',
+    'Resurgo help', 'habit tracker help', 'Resurgo support', 'Resurgo FAQ',
+    'how to use habit tracker', 'Resurgo tutorials', 'goal tracker help',
+    'Resurgo getting started', 'habit stacking guide', 'focus timer help',
+    'AI coaching help', 'Resurgo troubleshooting', 'productivity app help',
   ],
   openGraph: {
-    title: 'RESURGO Help Center - Get Support & Learn',
-    description: 'Find answers to all your questions. Browse tutorials, FAQs, and get instant AI support.',
+    title: 'Resurgo Help Center — Tutorials, FAQs & AI Support',
+    description: 'Find answers, browse tutorials, and get instant AI support from Kai.',
     type: 'website',
+    url: 'https://resurgo.life/help',
   },
+  twitter: {
+    card: 'summary',
+    title: 'Resurgo Help Center',
+    description: 'Tutorials, FAQs, troubleshooting guides, and AI support.',
+  },
+  alternates: { canonical: 'https://resurgo.life/help' },
 };
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -140,8 +149,29 @@ const quickLinks = [
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export default function HelpCenterPage() {
+  const helpJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Resurgo Help Center',
+    description: 'Find answers, tutorials, and guides for the Resurgo productivity platform.',
+    url: 'https://resurgo.life/help',
+    mainEntity: {
+      '@type': 'FAQPage',
+      mainEntity: [
+        { '@type': 'Question', name: 'How do I create my first habit in Resurgo?', acceptedAnswer: { '@type': 'Answer', text: 'Go to the Habits tab, click Add Habit, enter a name, set frequency (daily or weekly), and save. Your streak tracking starts immediately.' } },
+        { '@type': 'Question', name: 'What is habit stacking?', acceptedAnswer: { '@type': 'Answer', text: 'Habit stacking links a new habit to an existing one. Example: After I pour my morning coffee, I will meditate for 2 minutes. This creates powerful chains of behavior.' } },
+        { '@type': 'Question', name: 'How does the focus timer work?', acceptedAnswer: { '@type': 'Answer', text: 'Resurgo offers Pomodoro (25/5), Deep Work (90 min), and Flowtime modes. Start a session, track distractions, and earn XP for focused work.' } },
+        { '@type': 'Question', name: 'How do I contact Resurgo support?', acceptedAnswer: { '@type': 'Answer', text: 'Email support@resurgo.life or visit the Support page. Response time is within 24 hours, Monday to Friday.' } },
+      ],
+    },
+  };
+
   return (
     <div className="min-h-screen bg-[var(--background)]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(helpJsonLd) }}
+      />
       {/* Hero Section */}
       <section className="relative py-20 px-4 overflow-hidden">
         {/* Background gradient */}

@@ -186,7 +186,7 @@ export default function SettingsPage() {
           <div className="px-5 py-4">
             <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">Settings</h1>
             <p className="mt-1 font-mono text-xs tracking-widest text-zinc-400">
-              Profile � Schedule � Notifications � Appearance
+              Profile · Schedule · Notifications · Appearance · Data
             </p>
           </div>
         </div>
@@ -446,6 +446,70 @@ export default function SettingsPage() {
             </Link>
           </SettingsSection>
         )}
+
+        {/* -- QUICK LINKS -- */}
+        <SettingsSection title="QUICK_LINKS">
+          <div className="grid grid-cols-2 gap-2">
+            {[
+              { label: 'BILLING_&_PLAN', href: '/billing', desc: 'Manage subscription' },
+              { label: 'INTEGRATIONS', href: '/integrations', desc: 'API keys & webhooks' },
+              { label: 'HELP_CENTER', href: '/help', desc: 'Guides & tutorials' },
+              { label: 'API_DOCS', href: '/docs', desc: 'Developer reference' },
+              { label: 'SUPPORT', href: '/support', desc: 'Contact & FAQ' },
+              { label: 'REFERRALS', href: '/referrals', desc: 'Invite & earn rewards' },
+            ].map(({ label, href, desc }) => (
+              <Link
+                key={label}
+                href={href}
+                className="flex items-center justify-between border border-zinc-800 px-3 py-2.5 transition hover:border-zinc-700 hover:bg-zinc-900"
+              >
+                <div>
+                  <p className="font-mono text-[9px] tracking-widest text-zinc-400">{label}</p>
+                  <p className="font-mono text-[10px] text-zinc-500">{desc}</p>
+                </div>
+                <ArrowRight className="h-3 w-3 text-zinc-600" />
+              </Link>
+            ))}
+          </div>
+        </SettingsSection>
+
+        {/* -- DATA & ACCOUNT -- */}
+        <SettingsSection title="DATA_&_ACCOUNT">
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-mono text-[10px] tracking-widest text-zinc-400">EXPORT_DATA</p>
+                <p className="font-mono text-[10px] text-zinc-500">Download all your data as JSON</p>
+              </div>
+              <button className="border border-zinc-800 px-4 py-2 font-mono text-[10px] tracking-widest text-zinc-400 transition hover:border-zinc-700 hover:text-zinc-200">
+                [EXPORT]
+              </button>
+            </div>
+            <div className="border-t border-zinc-900 pt-3 flex items-center justify-between">
+              <div>
+                <p className="font-mono text-[10px] tracking-widest text-red-400">DELETE_ACCOUNT</p>
+                <p className="font-mono text-[10px] text-zinc-500">Permanently delete your account and all data</p>
+              </div>
+              <button className="border border-red-900/50 px-4 py-2 font-mono text-[10px] tracking-widest text-red-400/70 transition hover:border-red-800 hover:bg-red-950/20 hover:text-red-400">
+                [DELETE]
+              </button>
+            </div>
+          </div>
+        </SettingsSection>
+
+        {/* -- APP INFO -- */}
+        <div className="mb-4 border border-dashed border-zinc-900 p-4 text-center">
+          <p className="font-mono text-[9px] tracking-widest text-zinc-500">
+            RESURGO v1.4.0 &middot; NEXT.JS 14 &middot; CONVEX &middot; CLERK
+          </p>
+          <p className="mt-1 font-mono text-[9px] text-zinc-600">
+            <Link href="/changelog" className="hover:text-zinc-400 transition">View changelog</Link>
+            {' · '}
+            <Link href="/privacy" className="hover:text-zinc-400 transition">Privacy</Link>
+            {' · '}
+            <Link href="/terms" className="hover:text-zinc-400 transition">Terms</Link>
+          </p>
+        </div>
 
       </div>
     </div>

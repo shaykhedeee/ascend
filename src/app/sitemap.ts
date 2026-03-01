@@ -34,6 +34,45 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     // ─────────────────────────────────────────────────────────────────────────
+    // BLOG (High SEO Value - Content Marketing)
+    // ─────────────────────────────────────────────────────────────────────────
+    {
+      url: `${siteUrl}/blog`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
+      url: `${siteUrl}/blog/habit-science-why-streaks-work`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/blog/procrastination-is-not-laziness`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/blog/ai-coaching-vs-human-coaching`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/blog/goal-tracking-systems-compared`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/blog/deep-work-in-the-age-of-notifications`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    // ─────────────────────────────────────────────────────────────────────────
     // HELP CENTER
     // ─────────────────────────────────────────────────────────────────────────
     {
@@ -100,6 +139,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${siteUrl}/faq`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/docs`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${siteUrl}/contact`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/changelog`,
+      lastModified: currentDate,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
       url: `${siteUrl}/about`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
@@ -115,28 +178,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${siteUrl}/billing`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
-      url: `${siteUrl}/callback`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.3,
-    },
-    {
-      url: `${siteUrl}/login`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.3,
-    },
-    {
-      url: `${siteUrl}/sign-in`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly',
-      priority: 0.3,
+      priority: 0.5,
     },
     {
       url: `${siteUrl}/sign-up`,
+      lastModified: currentDate,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${siteUrl}/sign-in`,
       lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.3,

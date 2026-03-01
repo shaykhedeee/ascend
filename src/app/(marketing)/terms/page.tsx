@@ -1,7 +1,19 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service — Resurgo',
+  title: 'Terms of Service — Resurgo | User Agreement',
+  description: 'Resurgo terms of service. Read our user agreement covering account usage, billing, subscriptions, intellectual property, data privacy, and liability.',
+  keywords: [
+    'Resurgo terms of service', 'user agreement', 'terms and conditions',
+    'Resurgo legal', 'subscription terms', 'refund policy',
+  ],
+  openGraph: {
+    title: 'Terms of Service — Resurgo',
+    description: 'Read our terms of service covering accounts, billing, subscriptions, and more.',
+    type: 'website',
+    url: 'https://resurgo.life/terms',
+  },
+  alternates: { canonical: 'https://resurgo.life/terms' },
 };
 
 export default function TermsPage() {

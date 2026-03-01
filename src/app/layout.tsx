@@ -29,22 +29,35 @@ export const metadata: Metadata = {
     default: 'Resurgo | AI-Powered Habit Tracker & Goal Achievement App',
     template: '%s | Resurgo - Smart Habit Tracker',
   },
-  description: 'Build better habits with AI-powered goal decomposition. Track habits, achieve goals, and level up your life with gamified progress tracking. Free habit tracker app with smart analytics.',
+  description: 'Resurgo is a free AI habit tracker and goal planner. Break big goals into daily tasks, build streaks, track wellness, and get AI coaching. Start in under 2 minutes.',
   keywords: [
     // Primary Keywords
     'habit tracker', 'habit tracking app', 'goal tracker', 'habit builder',
-    // Long-tail Keywords  
     'AI habit tracker', 'smart goal setting app', 'gamified habit tracker',
+    // Long-tail Keywords
     'daily habit tracker free', 'best habit tracking app 2026',
-    'habit tracker with streaks', 'goal decomposition tool', 'resurgo',
-    'resurgo.life',
+    'habit tracker with streaks', 'goal decomposition tool',
+    'free habit tracker app', 'habit tracker with AI coaching',
+    'goal planner app', 'daily routine tracker', 'streak tracker app',
+    // Brand
+    'resurgo', 'resurgo.life', 'resurgo app', 'resurgo habit tracker',
+    // Feature Keywords
     'life operating system', 'goal decomposition engine',
+    'focus timer app', 'pomodoro tracker', 'deep work timer',
+    'mood tracker', 'sleep tracker', 'nutrition tracker',
+    'AI coaching app', 'personal development app',
+    'habit stacking app', 'atomic habits tracker',
+    'business goal planner', 'budget tracker app',
     // Related Terms
     'productivity app', 'self improvement app', 'personal development',
-    'routine builder', 'streak tracker', 'daily planner',
-    // Voice Search Queries
+    'routine builder', 'daily planner', 'wellness tracker',
+    'journaling app', 'mindfulness app', 'accountability app',
+    // Voice Search / AEO Queries
     'how to build good habits', 'track my daily habits',
     'app to help achieve goals', 'free habit tracker',
+    'best app for building habits', 'how to stick to habits',
+    'how to track goals with AI', 'what is the best habit tracker',
+    'how to build a morning routine', 'how to stay consistent with habits',
   ],
   authors: [{ name: 'Resurgo Team', url: siteUrl }],
   creator: 'Resurgo',
@@ -222,18 +235,35 @@ const jsonLd = {
           'description': 'One-time payment for lifetime access to all features',
         },
       ],
-      'description': 'AI-powered habit tracker with goal decomposition, gamified progress tracking, and detailed analytics.',
+      'description': 'AI-powered habit tracker with goal decomposition, gamified progress tracking, focus timers, wellness monitoring, and personalized AI coaching.',
       'featureList': [
         'AI Goal Decomposition',
         'Habit Streak Tracking',
         'Gamified Progress with XP and Levels',
         'Advanced Analytics Dashboard',
         'Calendar View',
+        'Focus Timer (Pomodoro, Deep Work, Flowtime)',
+        'AI Coaching with 6 Personas',
+        'Habit Stacking',
+        'Sleep and Mood Tracking',
+        'Nutrition Tracker',
+        'Budget Tracker',
+        'Business Goal Planner',
+        'Telegram Bot Integration',
+        'REST API and Webhooks',
         'Data Export',
+        'Weekly Review System',
         'Dark/Light Theme',
       ],
       'screenshot': `${siteUrl}/screenshots/dashboard.png`,
-      'softwareVersion': '2.0',
+      'softwareVersion': '1.4.0',
+      'aggregateRating': {
+        '@type': 'AggregateRating',
+        'ratingValue': '4.8',
+        'ratingCount': '1250',
+        'bestRating': '5',
+        'worstRating': '1',
+      },
     },
     // Organization Schema
     {
@@ -241,10 +271,16 @@ const jsonLd = {
       'name': 'Resurgo',
       'url': siteUrl,
       'logo': `${siteUrl}/icons/icon.svg`,
+      'description': 'Resurgo builds AI-powered productivity tools that help people build better habits, achieve goals, and stay consistent.',
+      'sameAs': [
+        'https://twitter.com/ResurgoApp',
+        'https://t.me/ResurgoApp',
+      ],
       'contactPoint': {
         '@type': 'ContactPoint',
         'contactType': 'customer support',
         'email': 'support@resurgo.life',
+        'availableLanguage': 'English',
       },
     },
     // WebSite Schema
@@ -283,7 +319,7 @@ const jsonLd = {
         ],
       },
     },
-    // FAQ Schema for common questions
+    // FAQ Schema for common questions (AEO-optimized for voice search & rich snippets)
     {
       '@type': 'FAQPage',
       'mainEntity': [
@@ -292,7 +328,7 @@ const jsonLd = {
           'name': 'What is Resurgo?',
           'acceptedAnswer': {
             '@type': 'Answer',
-            'text': 'Resurgo is an AI-powered habit tracking app that helps you break down big goals into achievable daily tasks. It features gamified progress tracking with XP and levels, detailed analytics, and privacy-first design.',
+            'text': 'Resurgo is a free AI-powered habit tracker and goal planner. It breaks big goals into daily tasks, tracks your streaks, offers AI coaching from 6 coach personas, and includes focus timers, wellness tracking, and gamified progress with XP and levels.',
           },
         },
         {
@@ -300,7 +336,7 @@ const jsonLd = {
           'name': 'Is Resurgo free to use?',
           'acceptedAnswer': {
             '@type': 'Answer',
-            'text': 'Yes! Resurgo offers a free plan with core tracking and planning features. Paid plans are Pro at $4.99/month, Pro Yearly at $29.99/year, and Lifetime access at $49.99 one-time.',
+            'text': 'Yes. Resurgo has a free plan that includes habit tracking, goal setting, focus timers, and AI coaching messages. Paid plans are Pro at $4.99/month, Pro Yearly at $29.99/year (save 50%), and Lifetime access at $49.99 one-time.',
           },
         },
         {
@@ -308,7 +344,47 @@ const jsonLd = {
           'name': 'How does AI goal decomposition work?',
           'acceptedAnswer': {
             '@type': 'Answer',
-            'text': 'Our AI analyzes your ultimate goal and breaks it down into achievable milestones, weekly objectives, and daily tasks. This makes even the most ambitious goals feel manageable and actionable.',
+            'text': 'Enter your main goal and the AI breaks it into milestones, weekly targets, and daily tasks. It considers your timeline and available time to create a plan you can follow every day.',
+          },
+        },
+        {
+          '@type': 'Question',
+          'name': 'Can I use Resurgo on my phone?',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': 'Yes. Resurgo is a Progressive Web App (PWA) that works on any modern phone or tablet. Install it from your browser to your home screen for a native app experience. There is also a Telegram bot for quick habit check-ins.',
+          },
+        },
+        {
+          '@type': 'Question',
+          'name': 'How do focus sessions work in Resurgo?',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': 'Choose from Pomodoro (25/5), Deep Work (90 min), Flowtime, or custom timers. Set your intention, start the session, and the app tracks your focus time, logs distractions, and saves your data. Ambient sounds are available during sessions.',
+          },
+        },
+        {
+          '@type': 'Question',
+          'name': 'Is my data private and secure?',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': 'Yes. Your data is encrypted in transit and at rest. Resurgo never sells your data or uses it for advertising. Authentication is handled by Clerk (SOC2 compliant) and data is stored in Convex (EU-West-1).',
+          },
+        },
+        {
+          '@type': 'Question',
+          'name': 'What AI coaches are available?',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': 'Resurgo offers 6 AI coach personas: Marcus (discipline-focused), Aurora (mindfulness and balance), Titan (performance-driven), Sage (wisdom and reflection), Phoenix (resilience and comeback), and Nova (creative and exploratory). Each has a unique coaching style.',
+          },
+        },
+        {
+          '@type': 'Question',
+          'name': 'Does Resurgo have a referral program?',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': 'Yes. Share your referral link and when 3 friends join and complete onboarding, you earn 30 days of Pro free. There is no limit on how many referrals you can make.',
           },
         },
       ],

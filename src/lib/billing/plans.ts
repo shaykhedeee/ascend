@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY — Billing Plans (Research-backed)
+// RESURGO.life — Billing Plans
 // Central pricing + feature matrix used by billing and pricing surfaces.
+// Pricing: $4.99/mo | $29.99/yr | $49.99 lifetime (raise lifetime to $99 after 100 users)
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export type BillingCadence = 'monthly' | 'yearly' | 'lifetime';
@@ -20,73 +21,69 @@ export interface BillingPlan {
   featureBullets: string[];
 }
 
-// Research basis (2026):
-// - Todoist Pro ~ $4/mo billed yearly (price-sensitive mass market)
-// - Sunsama $20-$25/mo (premium high-touch positioning)
-// - Motion ~$19-$29/seat/mo (AI-heavy productivity)
-// - Habitify ~₹100/mo annual (~$1.2/mo regional low-cost strategy)
-// Positioning chosen: "premium-but-accessible" at $12 monthly / $8 annual effective.
+// Pricing strategy (2026):
+// - Free forever plan with 3-goal / 5-dump-per-day / 10-AI-message-per-day limits
+// - Pro Monthly $4.99/mo — accessible pricing to undercut $12-$25 competitors
+// - Pro Annual  $29.99/yr ($2.50/mo effective) — 50% discount drives conversions
+// - Lifetime    $49.99 one-time — raise to $99 after first 100 users
+// Target: ADHD users, developers, productivity-seekers priced-out of $20+/mo apps
 export const BILLING_PLANS: BillingPlan[] = [
   {
     key: 'free',
     title: 'Free',
-    description: 'Everything you need to start building habits — no credit card required.',
+    description: 'Start getting organized. No credit card. No BS.',
     cadence: 'monthly',
     priceUsd: 0,
     ctaLabel: 'Get Started Free',
     featureBullets: [
-      'Up to 10 active habits',
       'Up to 3 active goals',
-      'AI-powered insights & suggestions',
-      'Streak tracking & reminders',
-      'Calendar view',
-      'Focus timer (basic)',
-      'Mood tracking',
-      '7-day analytics history',
+      '5 brain dumps per day',
+      '10 AI coach messages per day',
+      'Basic habit tracking',
+      'Telegram notifications (basic)',
+      'Emergency Mode (always free)',
       'Community support',
     ],
   },
   {
     key: 'pro_monthly',
     title: 'Pro',
-    badge: 'Flexible',
-    description: 'Unlock full power — unlimited everything with AI coaching.',
+    badge: 'Most Flexible',
+    description: 'Unlimited everything. All 6 AI coaches. Full Telegram power.',
     cadence: 'monthly',
-    priceUsd: 12,
-    yearlyEquivalentUsd: 144,
+    priceUsd: 4.99,
+    yearlyEquivalentUsd: 59.88,
     ctaLabel: 'Start Pro Monthly',
     clerkCheckoutUrlEnv: 'NEXT_PUBLIC_DODO_CHECKOUT_PRO_MONTHLY',
     featureBullets: [
-      'Unlimited habits & goals',
-      'Unlimited focus sessions',
-      'AI goal decomposition engine',
-      'AI adaptive coaching & smart nudges',
-      'Advanced analytics & long-range trends',
-      'Contribution heatmap',
-      'Weekly review wizard',
-      'Habit stacking builder',
-      'Identity-based habit system',
-      'Custom habit templates',
-      'Data export (CSV & PDF)',
-      'Priority email support',
+      'Unlimited goals & habits',
+      'Unlimited brain dumps',
+      'Unlimited AI coach messages',
+      'All 6 AI coach personas',
+      'Advanced analytics & patterns',
+      'Budget & wellness tracking',
+      'Weekly AI review (auto-generated)',
+      'Full Telegram integration',
+      'Vision board generator',
+      'Data export (CSV)',
+      'Priority support',
     ],
   },
   {
     key: 'pro_yearly',
     title: 'Pro Yearly',
-    badge: 'Best Value — Save 33%',
-    description: 'Same Pro power, billed yearly at $8/mo effective — our most popular plan.',
+    badge: 'Best Value — Save 50%',
+    description: 'Same Pro power, billed yearly at $2.50/mo effective.',
     cadence: 'yearly',
-    priceUsd: 96,
-    yearlyEquivalentUsd: 96,
+    priceUsd: 29.99,
+    yearlyEquivalentUsd: 29.99,
     highlighted: true,
     ctaLabel: 'Start Pro Yearly',
     clerkCheckoutUrlEnv: 'NEXT_PUBLIC_DODO_CHECKOUT_PRO_YEARLY',
     featureBullets: [
       'Everything in Pro Monthly',
-      'Billed at $8/mo (save $48/yr)',
+      '$2.50/mo effective (vs $4.99 monthly)',
       'Priority roadmap voting',
-      'Annual performance review toolkit',
       'Early access to new features',
     ],
   },
@@ -94,19 +91,19 @@ export const BILLING_PLANS: BillingPlan[] = [
     key: 'lifetime',
     title: 'Lifetime',
     badge: 'Founder Deal',
-    description: 'Pay once, own Resurgo forever. Limited-time founder pricing.',
+    description: 'Pay once. Use forever. Price goes up after 100 users.',
     cadence: 'lifetime',
-    priceUsd: 199,
-    yearlyEquivalentUsd: 199,
+    priceUsd: 49.99,
+    yearlyEquivalentUsd: 49.99,
     ctaLabel: 'Get Lifetime Access',
     clerkCheckoutUrlEnv: 'NEXT_PUBLIC_DODO_CHECKOUT_LIFETIME',
     featureBullets: [
       'Everything in Pro — forever',
       'No recurring charges, ever',
       'Lifetime updates included',
-      'Founder badge & early feature channel',
-      'Priority concierge onboarding',
-      'Exclusive founder community access',
+      'Founder badge',
+      'Direct founder access',
+      'Price increases to $99 after 100 users',
     ],
   },
 ];

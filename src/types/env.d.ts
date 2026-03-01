@@ -46,7 +46,22 @@ declare namespace NodeJS {
 
     // Telegram Bot
     TELEGRAM_BOT_TOKEN?: string;
-    TELEGRAM_WEBHOOK_SECRET?: string;  // Optional X-Telegram-Bot-Api-Secret-Token for webhook verification
+    TELEGRAM_WEBHOOK_SECRET?: string;
+    NEXT_PUBLIC_TELEGRAM_BOT_USERNAME?: string;
+
+    // HuggingFace (vision board image generation)
+    HF_ACCESS_TOKEN?: string;
+
+    // Dodo Payments
+    DODO_API_KEY?: string;
+    DODO_WEBHOOK_SECRET?: string;
+    DODO_PRODUCT_ID_PRO_MONTHLY?: string;
+    DODO_PRODUCT_ID_PRO_YEARLY?: string;
+    DODO_PRODUCT_ID_LIFETIME?: string;
+    NEXT_PUBLIC_DODO_CHECKOUT_PRO_MONTHLY?: string;
+    NEXT_PUBLIC_DODO_CHECKOUT_PRO_YEARLY?: string;
+    NEXT_PUBLIC_DODO_CHECKOUT_LIFETIME?: string;
+    NEXT_PUBLIC_DODO_CUSTOMER_PORTAL_URL?: string;
   }
 }
 

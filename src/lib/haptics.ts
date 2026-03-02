@@ -1,7 +1,9 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCENDIFY - Haptic Feedback Utilities
-// Vibration API wrapper for mobile haptic feedback
+// RESURGO — Haptic Feedback System
+// Native Capacitor Haptics on Android, Web Vibration API fallback on browsers.
 // ═══════════════════════════════════════════════════════════════════════════════
+
+import { isNativeApp } from './platform';
 
 // ─────────────────────────────────────────────────────────────────────────────────
 // TYPES
@@ -15,18 +17,39 @@ export interface HapticConfig {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────────
-// VIBRATION PATTERNS (in milliseconds)
+// VIBRATION PATTERNS (in milliseconds) — Web fallback
 // ─────────────────────────────────────────────────────────────────────────────────
 
 const VIBRATION_PATTERNS: Record<HapticPattern, number | number[]> = {
   light: 10,
   medium: 25,
   heavy: 50,
-  success: [10, 50, 20], // Short-pause-medium
-  warning: [30, 30, 30], // Three short pulses
-  error: [50, 100, 50, 100, 50], // Long error pattern
-  selection: 5, // Very light tap
+  success: [10, 50, 20],
+  warning: [30, 30, 30],
+  error: [50, 100, 50, 100, 50],
+  selection: 5,
 };
+
+// ─────────────────────────────────────────────────────────────────────────────────
+// LAZY-LOADED CAPACITOR HAPTICS
+// ─────────────────────────────────────────────────────────────────────────────────
+
+let _hapticsPlugin: typeof import('@capacitor/haptics').Haptics | null = null;
+let _hapticsEnum: typeof import('@capacitor/haptics') | null = null;
+let _hapticsLoaded = false;
+
+async function loadCapacitorHaptics() {
+  if (_hapticsLoaded) return;
+  _hapticsLoaded = true;
+  if (!isNativeApp()) return;
+  try {
+    const mod = await import('@capacitor/haptics');
+    _hapticsPlugin = mod.Haptics;
+    _hapticsEnum = mod;
+  } catch {
+    // Capacitor Haptics not available
+  }
+}
 
 // ─────────────────────────────────────────────────────────────────────────────────
 // HAPTIC FEEDBACK CLASS
@@ -35,127 +58,137 @@ const VIBRATION_PATTERNS: Record<HapticPattern, number | number[]> = {
 class HapticFeedback {
   private enabled: boolean = true;
   private isSupported: boolean = false;
-  
+
   constructor() {
-    // Check if Vibration API is supported
     this.isSupported = typeof window !== 'undefined' && 'vibrate' in navigator;
+    // Pre-load Capacitor haptics on native
+    if (typeof window !== 'undefined') {
+      loadCapacitorHaptics();
+    }
   }
-  
-  /**
-   * Enable or disable haptic feedback
-   */
+
   setEnabled(enabled: boolean): void {
     this.enabled = enabled;
   }
-  
-  /**
-   * Check if haptic feedback is enabled and supported
-   */
+
   canVibrate(): boolean {
-    return this.enabled && this.isSupported;
+    return this.enabled && (this.isSupported || !!_hapticsPlugin);
   }
-  
+
   /**
-   * Trigger a haptic feedback pattern
+   * Trigger haptic feedback — uses native Capacitor Haptics when available,
+   * falls back to Web Vibration API.
    */
   vibrate(pattern: HapticPattern | number | number[]): boolean {
-    if (!this.canVibrate()) {
-      return false;
+    if (!this.enabled) return false;
+
+    // Resolve pattern to vibration array
+    const vibrationPattern = typeof pattern === 'string'
+      ? VIBRATION_PATTERNS[pattern]
+      : pattern;
+
+    // Try native Capacitor haptics first
+    if (_hapticsPlugin && _hapticsEnum && typeof pattern === 'string') {
+      this._nativeHaptic(pattern);
+      return true;
     }
-    
-    try {
-      const vibrationPattern = typeof pattern === 'string'
-        ? VIBRATION_PATTERNS[pattern]
-        : pattern;
-      
-      return navigator.vibrate(vibrationPattern);
-    } catch {
-      return false;
+
+    // Web Vibration fallback
+    if (this.isSupported) {
+      try {
+        return navigator.vibrate(vibrationPattern);
+      } catch {
+        return false;
+      }
+    }
+
+    return false;
+  }
+
+  /**
+   * Native Capacitor haptic feedback (fire-and-forget).
+   */
+  private _nativeHaptic(pattern: HapticPattern): void {
+    if (!_hapticsPlugin || !_hapticsEnum) return;
+    const { ImpactStyle, NotificationType } = _hapticsEnum;
+
+    switch (pattern) {
+      case 'light':
+        _hapticsPlugin.impact({ style: ImpactStyle.Light });
+        break;
+      case 'medium':
+        _hapticsPlugin.impact({ style: ImpactStyle.Medium });
+        break;
+      case 'heavy':
+        _hapticsPlugin.impact({ style: ImpactStyle.Heavy });
+        break;
+      case 'success':
+        _hapticsPlugin.notification({ type: NotificationType.Success });
+        break;
+      case 'warning':
+        _hapticsPlugin.notification({ type: NotificationType.Warning });
+        break;
+      case 'error':
+        _hapticsPlugin.notification({ type: NotificationType.Error });
+        break;
+      case 'selection':
+        _hapticsPlugin.selectionStart();
+        _hapticsPlugin.selectionChanged();
+        _hapticsPlugin.selectionEnd();
+        break;
     }
   }
-  
-  /**
-   * Stop any ongoing vibration
-   */
+
   stop(): void {
     if (this.isSupported) {
       navigator.vibrate(0);
     }
   }
-  
-  // ─────────────────────────────────────────────────────────────────────────────
-  // CONVENIENCE METHODS
-  // ─────────────────────────────────────────────────────────────────────────────
-  
-  /**
-   * Light tap feedback (for selections, toggles)
-   */
-  light(): boolean {
-    return this.vibrate('light');
-  }
-  
-  /**
-   * Medium tap feedback (for confirmations)
-   */
-  medium(): boolean {
-    return this.vibrate('medium');
-  }
-  
-  /**
-   * Heavy tap feedback (for important actions)
-   */
-  heavy(): boolean {
-    return this.vibrate('heavy');
-  }
-  
-  /**
-   * Success feedback (for completed actions)
-   */
-  success(): boolean {
-    return this.vibrate('success');
-  }
-  
-  /**
-   * Warning feedback (for alerts)
-   */
-  warning(): boolean {
-    return this.vibrate('warning');
-  }
-  
-  /**
-   * Error feedback (for errors)
-   */
-  error(): boolean {
-    return this.vibrate('error');
-  }
-  
-  /**
-   * Selection feedback (very light, for UI selections)
-   */
-  selection(): boolean {
-    return this.vibrate('selection');
-  }
-  
-  /**
-   * Custom vibration pattern
-   */
-  custom(pattern: number[]): boolean {
-    return this.vibrate(pattern);
-  }
-  
-  /**
-   * Impact feedback with intensity
-   */
+
+  // ─── Convenience methods ───────────────────────────────────────────────────
+
+  light(): boolean { return this.vibrate('light'); }
+  medium(): boolean { return this.vibrate('medium'); }
+  heavy(): boolean { return this.vibrate('heavy'); }
+  success(): boolean { return this.vibrate('success'); }
+  warning(): boolean { return this.vibrate('warning'); }
+  error(): boolean { return this.vibrate('error'); }
+  selection(): boolean { return this.vibrate('selection'); }
+
+  custom(pattern: number[]): boolean { return this.vibrate(pattern); }
+
   impact(intensity: 'light' | 'medium' | 'heavy' = 'medium'): boolean {
     return this.vibrate(intensity);
   }
-  
-  /**
-   * Notification feedback
-   */
+
   notification(type: 'success' | 'warning' | 'error' = 'success'): boolean {
     return this.vibrate(type);
   }
+
+  /**
+   * Celebration pattern — level up, milestone reached, streak milestone.
+   * Fires a rapid burst of escalating haptics.
+   */
+  async celebration(): Promise<void> {
+    if (!this.enabled) return;
+
+    if (_hapticsPlugin && _hapticsEnum) {
+      const { ImpactStyle } = _hapticsEnum;
+      await _hapticsPlugin.impact({ style: ImpactStyle.Light });
+      await _delay(60);
+      await _hapticsPlugin.impact({ style: ImpactStyle.Medium });
+      await _delay(60);
+      await _hapticsPlugin.impact({ style: ImpactStyle.Heavy });
+      await _delay(100);
+      await _hapticsPlugin.impact({ style: ImpactStyle.Heavy });
+    } else if (this.isSupported) {
+      navigator.vibrate([10, 60, 20, 60, 30, 100, 30]);
+    }
+  }
+}
+
+function _delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // ─────────────────────────────────────────────────────────────────────────────────

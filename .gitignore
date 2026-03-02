@@ -31,3 +31,12 @@ build-output.txt
 clerk-nextjs/
 convex/_generated/
 .vercel
+
+# Capacitor Android (generated — rebuild via `npm run android:build`)
+android/
+# Keep the APK download folder tracked (but not the APK binary itself)
+public/downloads/*.apk
+
+# Signing keys (NEVER commit)
+*.keystore
+*.jks

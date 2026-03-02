@@ -1848,3 +1848,67 @@ body.custom-cursor-active .cursor-not-allowed {
 .pb-safe {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   NATIVE APP — Capacitor-specific overrides
+   Applied when NativePushInitializer adds .native-app to <html>
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* Prevent rubber-band overscroll in WebView */
+.native-app {
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Expand content to fill status bar area when in immersive mode */
+.native-app body {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Disable text selection on navigation elements (feels more native) */
+.native-app nav,
+.native-app button,
+.native-app [role="button"],
+.native-app [role="tab"],
+.native-app .no-select {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Active states for tappable elements — fast feedback */
+.native-app button:active,
+.native-app [role="button"]:active,
+.native-app a:active {
+  transform: scale(0.97);
+  transition: transform 0.1s ease;
+}
+
+/* Smooth keyboard slide-up compensation */
+.native-app {
+  --keyboard-offset: 0px;
+}
+.native-app .keyboard-aware {
+  padding-bottom: var(--keyboard-offset);
+  transition: padding-bottom 0.2s ease;
+}
+
+/* Hide scrollbars in native for cleaner look */
+.native-app ::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* Ensure inputs don't zoom on focus (Android WebView) */
+.native-app input,
+.native-app textarea,
+.native-app select {
+  font-size: 16px !important;
+}
+
+/* Faster touch response */
+.native-app * {
+  touch-action: manipulation;
+}

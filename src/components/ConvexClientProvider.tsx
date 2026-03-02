@@ -11,7 +11,10 @@
 import { ConvexProviderWithClerk } from 'convex/react-clerk';
 import { ConvexReactClient } from 'convex/react';
 import { useAuth } from '@clerk/nextjs';
-import React, { Component, ReactNode } from 'react';
+import React, { Component, ReactNode, Suspense, lazy } from 'react';
+
+// Lazy-load native push initializer — only loads in Capacitor WebView
+const NativePushInitializer = lazy(() => import('./NativePushInitializer'));
 
 // ── Convex client (safe to instantiate at module level) ──────────────────────
 const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
@@ -57,6 +60,9 @@ export default function ConvexClientProvider({
     <ConvexErrorBoundary>
       <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
         {children}
+        <Suspense fallback={null}>
+          <NativePushInitializer />
+        </Suspense>
       </ConvexProviderWithClerk>
     </ConvexErrorBoundary>
   );

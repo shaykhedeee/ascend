@@ -129,6 +129,10 @@ export default defineSchema({
     // ── Telegram integration ──
     telegramChatId: v.optional(v.string()),  // Telegram chat ID after /start auth flow
     telegramLinked: v.optional(v.boolean()), // true after user has completed link flow
+    // ── Native push (FCM) ──
+    fcmToken: v.optional(v.string()),             // Firebase Cloud Messaging device token
+    fcmTokenUpdatedAt: v.optional(v.number()),    // Timestamp of last token update
+    pushEnabled: v.optional(v.boolean()),          // Whether native push is active
     // ── Referral ──
     referralCode: v.optional(v.string()),    // unique code for referral tracking
     // ── Coach selection ──

@@ -66,6 +66,25 @@ export default function IntegrationsPage() {
   return (
     <div className="min-h-screen bg-black p-4 md:p-6">
       <div className="mx-auto max-w-3xl">
+        {/* Telegram Deprecation Banner */}
+        <div className="mb-4 rounded-lg border border-amber-700/40 bg-amber-950/30 px-5 py-3">
+          <div className="flex items-start gap-3">
+            <span className="mt-0.5 text-lg">📱</span>
+            <div>
+              <p className="font-mono text-xs font-semibold text-amber-400 tracking-wide">
+                TELEGRAM BOT → ANDROID APP MIGRATION
+              </p>
+              <p className="mt-1 text-xs text-amber-200/70 leading-relaxed">
+                We&apos;re replacing the Telegram bot with a dedicated Android app featuring native push
+                notifications. The bot will continue working for 30 days.{' '}
+                <a href="/download" className="text-emerald-400 underline underline-offset-2 hover:text-emerald-300">
+                  Download the app →
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Header */}
         <div className="mb-5 border border-zinc-900 bg-zinc-950">
           <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">

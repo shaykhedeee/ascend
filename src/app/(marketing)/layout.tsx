@@ -23,6 +23,7 @@ const FOOTER_SECTIONS = [
     links: [
       { href: '/features', label: 'Features' },
       { href: '/pricing', label: 'Pricing' },
+      { href: '/download', label: 'Android App' },
       { href: '/changelog', label: 'Changelog' },
       { href: '/docs', label: 'API Docs' },
     ],

@@ -6,7 +6,7 @@
 
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { LogoMark } from '@/components/Logo';
 import { ScrollToTop } from '@/components/ScrollToTop';
 
 const NAV_LINKS = [
@@ -54,14 +54,7 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
         <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4 sm:px-6">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5">
-            <Image
-              src="/icons/pixel-logo.svg"
-              alt="RESURGO logo"
-              width={28}
-              height={28}
-              className="h-7 w-7"
-              style={{ imageRendering: 'pixelated' }}
-            />
+            <LogoMark className="h-7 w-7" />
             <span className="font-mono text-sm font-bold tracking-widest text-orange-500">
               RESURGO.life
             </span>
@@ -130,14 +123,7 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
             {/* Brand column */}
             <div className="space-y-4">
               <Link href="/" className="flex items-center gap-2">
-                <Image
-                  src="/icons/pixel-logo.svg"
-                  alt="RESURGO logo"
-                  width={32}
-                  height={32}
-                  className="h-8 w-8"
-                  style={{ imageRendering: 'pixelated' }}
-                />
+                <LogoMark className="h-8 w-8" />
                 <span className="font-mono text-base font-bold text-orange-500">RESURGO.life</span>
               </Link>
               <p className="font-mono text-xs leading-relaxed text-zinc-500">

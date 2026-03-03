@@ -1062,11 +1062,14 @@ function LandingPageV2() {
       {/* ────────────────── FOOTER ────────────────── */}
       <footer className="border-t-2 border-zinc-800 bg-black px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="font-pixel text-[0.55rem] tracking-widest text-orange-600">RESURGO</p>
-            <p className="mt-1 font-pixel text-[0.55rem] tracking-widest text-zinc-400">
-              BUILD BETTER HABITS. ACHIEVE BIG GOALS.
-            </p>
+          <div className="flex items-center gap-3">
+            <LogoMark className="h-7 w-7" />
+            <div>
+              <p className="font-pixel text-[0.55rem] tracking-widest text-orange-600">RESURGO</p>
+              <p className="mt-1 font-pixel text-[0.55rem] tracking-widest text-zinc-400">
+                BUILD BETTER HABITS. ACHIEVE BIG GOALS.
+              </p>
+            </div>
           </div>
           <div className="flex flex-wrap items-center gap-4 font-pixel text-[0.35rem] tracking-widest text-zinc-400">
             {[

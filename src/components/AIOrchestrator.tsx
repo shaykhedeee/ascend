@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO — AI Orchestrator Panel
@@ -277,14 +277,14 @@ export function AIOrchestrator() {
             <button
               onClick={handleSubmit}
               disabled={!prompt.trim() || isProcessing}
-              className="flex-1 border-2 border-orange-600 bg-orange-600 py-3 font-pixel text-[0.4rem] tracking-widest text-black transition hover:bg-orange-500 active:translate-y-[1px] disabled:opacity-30 disabled:cursor-not-allowed shadow-[3px_3px_0px_rgba(0,0,0,0.8)]"
+              className="flex-1 border-2 border-orange-600 bg-orange-600 py-3 font-pixel text-[0.6rem] tracking-widest text-black transition hover:bg-orange-500 active:translate-y-[1px] disabled:opacity-30 disabled:cursor-not-allowed shadow-[3px_3px_0px_rgba(0,0,0,0.8)]"
             >
               {isProcessing ? `${phase.toUpperCase()}...` : 'ORCHESTRATE →'}
             </button>
             {(result || phase === 'error') && (
               <button
                 onClick={handleReset}
-                className="border-2 border-zinc-700 bg-zinc-900 px-6 py-3 font-pixel text-[0.4rem] tracking-widest text-zinc-400 transition hover:border-zinc-500 hover:text-zinc-200"
+                className="border-2 border-zinc-700 bg-zinc-900 px-6 py-3 font-pixel text-[0.6rem] tracking-widest text-zinc-400 transition hover:border-zinc-500 hover:text-zinc-200"
               >
                 RESET
               </button>
@@ -391,11 +391,11 @@ export function AIOrchestrator() {
                     <div key={st.id} className="p-4">
                       <div className="flex items-center gap-2 mb-2">
                         <span className="text-base">{TASK_TYPE_ICONS[st.type] ?? '📎'}</span>
-                        <span className="font-pixel text-[0.4rem] tracking-widest text-zinc-200">
+                        <span className="font-pixel text-[0.6rem] tracking-widest text-zinc-200">
                           {st.title}
                         </span>
                         <span className="font-terminal text-xs text-zinc-600">({st.type})</span>
-                        <span className={cn('font-pixel text-[0.3rem] tracking-widest ml-auto', PROVIDER_COLORS[st.provider] ?? 'text-zinc-400')}>
+                        <span className={cn('font-pixel text-[0.55rem] tracking-widest ml-auto', PROVIDER_COLORS[st.provider] ?? 'text-zinc-400')}>
                           {st.provider.toUpperCase()} / {st.model}
                         </span>
                         <span className="font-terminal text-xs text-zinc-600">{st.durationMs}ms</span>
@@ -424,7 +424,7 @@ export function AIOrchestrator() {
       {/* ── Error State ── */}
       {phase === 'error' && !result && (
         <div className="border-2 border-red-900 bg-red-950/20 p-6">
-          <p className="font-pixel text-[0.4rem] tracking-widest text-red-500 mb-2">ORCHESTRATION FAILED</p>
+          <p className="font-pixel text-[0.6rem] tracking-widest text-red-500 mb-2">ORCHESTRATION FAILED</p>
           <p className="font-terminal text-sm text-red-400">{errorMsg}</p>
           <button
             onClick={handleReset}
@@ -443,7 +443,7 @@ export function AIOrchestrator() {
 function StatBadge({ label, value }: { label: string; value: string }) {
   return (
     <div className="border border-zinc-800 bg-zinc-950 px-3 py-1.5 flex items-center gap-2">
-      <span className="font-pixel text-[0.3rem] tracking-widest text-zinc-600">{label}</span>
+      <span className="font-pixel text-[0.55rem] tracking-widest text-zinc-600">{label}</span>
       <span className="font-terminal text-sm text-orange-400">{value}</span>
     </div>
   );

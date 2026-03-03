@@ -97,7 +97,7 @@ export default function ChangelogPage() {
         <div className="mb-10 border border-zinc-900 bg-zinc-950">
           <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
             <span className="h-1.5 w-1.5 rounded-full bg-orange-600" />
-            <span className="font-mono text-[9px] tracking-widest text-orange-600">RESURGO :: CHANGELOG</span>
+            <span className="font-mono text-[11px] tracking-widest text-orange-600">RESURGO :: CHANGELOG</span>
           </div>
           <div className="p-6">
             <h1 className="font-mono text-2xl font-bold text-zinc-100">Product Changelog</h1>
@@ -111,16 +111,16 @@ export default function ChangelogPage() {
               <div className="flex items-center justify-between border-b border-zinc-900 px-5 py-3">
                 <div className="flex items-center gap-3">
                   <span className="font-mono text-lg font-bold text-zinc-100">v{release.version}</span>
-                  <span className={`border px-2 py-0.5 font-mono text-[8px] tracking-widest ${releaseTypeColor[release.type] || 'text-zinc-500 border-zinc-800'}`}>
+                  <span className={`border px-2 py-0.5 font-mono text-xs tracking-widest ${releaseTypeColor[release.type] || 'text-zinc-500 border-zinc-800'}`}>
                     {release.type}
                   </span>
                 </div>
-                <span className="font-mono text-[9px] text-zinc-400">{release.date}</span>
+                <span className="font-mono text-[11px] text-zinc-400">{release.date}</span>
               </div>
               <ul className="divide-y divide-zinc-900/50">
                 {release.changes.map((change, i) => (
                   <li key={i} className="flex items-center gap-3 px-5 py-3">
-                    <span className={`shrink-0 border px-1.5 py-0.5 font-mono text-[7px] tracking-widest ${typeColors[change.type] || 'text-zinc-400 border-zinc-800'}`}>
+                    <span className={`shrink-0 border px-1.5 py-0.5 font-mono text-xs tracking-widest ${typeColors[change.type] || 'text-zinc-400 border-zinc-800'}`}>
                       {change.type}
                     </span>
                     <span className="font-mono text-xs text-zinc-400">{change.text}</span>

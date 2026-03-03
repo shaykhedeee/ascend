@@ -160,7 +160,7 @@ export function MobileNav({ activeTab, onTabChange, onAddClick }: MobileNavProps
                   )}
                 </div>
                 <span className={cn(
-                  "text-[10px] font-medium transition-colors",
+                  "text-xs font-medium transition-colors",
                   isActive ? "text-ascend-500" : "text-[var(--text-muted)]"
                 )}>
                   {item.label}

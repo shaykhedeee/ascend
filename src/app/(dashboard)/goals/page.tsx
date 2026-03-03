@@ -108,7 +108,7 @@ export default function GoalsPage() {
         <div className="mb-6 border border-zinc-900 bg-zinc-950">
           <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
-            <span className="font-mono text-[9px] tracking-widest text-orange-600">CORE_OBJECTIVES :: STRATEGIC_PLANNING</span>
+            <span className="font-mono text-[11px] tracking-widest text-orange-600">CORE_OBJECTIVES :: STRATEGIC_PLANNING</span>
           </div>
           <div className="flex flex-col gap-4 px-5 py-4 md:flex-row md:items-center md:justify-between">
             <div>
@@ -134,7 +134,7 @@ export default function GoalsPage() {
         <div className="mb-4 flex flex-wrap gap-px">
           <button
             onClick={() => setFilterDomain(null)}
-            className={`border px-3 py-1.5 font-mono text-[10px] tracking-widest transition ${
+            className={`border px-3 py-1.5 font-mono text-xs tracking-widest transition ${
               !filterDomain ? 'border-orange-800 bg-orange-950/20 text-orange-500' : 'border-zinc-900 bg-zinc-950 text-zinc-400 hover:text-zinc-300'
             }`}
           >
@@ -147,7 +147,7 @@ export default function GoalsPage() {
               <button
                 key={domain}
                 onClick={() => setFilterDomain(filterDomain === domain ? null : domain)}
-                className={`border px-3 py-1.5 font-mono text-[10px] tracking-widest transition ${
+                className={`border px-3 py-1.5 font-mono text-xs tracking-widest transition ${
                   filterDomain === domain ? 'border-orange-800 bg-orange-950/20 text-orange-500' : 'border-zinc-900 bg-zinc-950 text-zinc-400 hover:text-zinc-300'
                 }`}
               >
@@ -161,8 +161,8 @@ export default function GoalsPage() {
         {allGoals.length === 0 && (
           <div className="border border-dashed border-zinc-800 py-16 text-center">
             <p className="font-mono text-xs tracking-widest text-zinc-400">No goals defined yet</p>
-            <p className="mt-2 font-mono text-[10px] text-zinc-400">Define a core objective to drive your habits and tasks.</p>
-            <button onClick={() => setShowCreate(true)} className="mt-4 inline-flex items-center gap-1 border border-zinc-800 bg-zinc-900 px-4 py-2 font-mono text-[10px] tracking-widest text-zinc-500 transition hover:border-orange-900 hover:text-orange-500">
+            <p className="mt-2 font-mono text-xs text-zinc-400">Define a core objective to drive your habits and tasks.</p>
+            <button onClick={() => setShowCreate(true)} className="mt-4 inline-flex items-center gap-1 border border-zinc-800 bg-zinc-900 px-4 py-2 font-mono text-xs tracking-widest text-zinc-500 transition hover:border-orange-900 hover:text-orange-500">
               <Plus className="h-3 w-3" /> DEFINE_OBJECTIVE
             </button>
           </div>
@@ -173,7 +173,7 @@ export default function GoalsPage() {
           <section className="mb-6">
             <div className="mb-3 flex items-center gap-2">
               <span className="h-1 w-1 rounded-full bg-orange-600" />
-              <span className="font-mono text-[10px] tracking-widest text-orange-500">ACTIVE_OBJECTIVES [{activeGoals.length}]</span>
+              <span className="font-mono text-xs tracking-widest text-orange-500">ACTIVE_OBJECTIVES [{activeGoals.length}]</span>
             </div>
             <div className="grid gap-px md:grid-cols-2">
               {activeGoals.map((goal) => (
@@ -188,7 +188,7 @@ export default function GoalsPage() {
           <section>
             <div className="mb-3 flex items-center gap-2">
               <span className="h-1 w-1 rounded-full bg-zinc-600" />
-              <span className="font-mono text-[10px] tracking-widest text-zinc-400">COMPLETED_OBJECTIVES [{completedGoals.length}]</span>
+              <span className="font-mono text-xs tracking-widest text-zinc-400">COMPLETED_OBJECTIVES [{completedGoals.length}]</span>
             </div>
             <div className="grid gap-px md:grid-cols-2">
               {completedGoals.map((goal) => (
@@ -211,38 +211,38 @@ export default function GoalsPage() {
             </div>
             <form onSubmit={handleCreate} className="max-h-[80vh] overflow-y-auto p-5 space-y-4">
               <div>
-                <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">OBJECTIVE_TITLE *</label>
+                <label className="mb-1 block font-mono text-xs tracking-widest text-zinc-500">OBJECTIVE_TITLE *</label>
                 <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g., Run a marathon, Learn Spanish..." className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-400 focus:border-orange-800 focus:outline-none" required autoFocus />
               </div>
               <div>
-                <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">DESCRIPTION</label>
+                <label className="mb-1 block font-mono text-xs tracking-widest text-zinc-500">DESCRIPTION</label>
                 <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="What does success look like?" rows={2} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-400 focus:border-orange-800 focus:outline-none" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">LIFE_DOMAIN</label>
+                  <label className="mb-1 block font-mono text-xs tracking-widest text-zinc-500">LIFE_DOMAIN</label>
                   <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 focus:border-orange-800 focus:outline-none">
                     {LIFE_DOMAINS.map((d) => <option key={d} value={d}>{d.replace('_', ' ')}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">OBJECTIVE_TYPE</label>
+                  <label className="mb-1 block font-mono text-xs tracking-widest text-zinc-500">OBJECTIVE_TYPE</label>
                   <select value={goalType} onChange={(e) => setGoalType(e.target.value as typeof GOAL_TYPES[number])} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 focus:border-orange-800 focus:outline-none">
                     {GOAL_TYPES.map((t) => <option key={t} value={t}>{t.replace('_', ' ')}</option>)}
                   </select>
                 </div>
               </div>
               <div>
-                <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">TARGET_DATE</label>
+                <label className="mb-1 block font-mono text-xs tracking-widest text-zinc-500">TARGET_DATE</label>
                 <input type="date" value={targetDate} onChange={(e) => setTargetDate(e.target.value)} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 focus:border-orange-800 focus:outline-none" />
               </div>
               <div>
-                <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">WHY_IMPORTANT</label>
+                <label className="mb-1 block font-mono text-xs tracking-widest text-zinc-500">WHY_IMPORTANT</label>
                 <textarea value={whyImportant} onChange={(e) => setWhyImportant(e.target.value)} placeholder="Your motivation will anchor execution..." rows={2} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-400 focus:border-orange-800 focus:outline-none" />
               </div>
               <div className="flex gap-px pt-1">
-                <button type="button" onClick={() => setShowCreate(false)} className="flex-1 border border-zinc-800 bg-zinc-900 py-2.5 font-mono text-[10px] tracking-widest text-zinc-500 transition hover:text-zinc-300">[CANCEL]</button>
-                <button type="submit" disabled={creating || !title.trim()} className="flex-1 border border-orange-800 bg-orange-950/40 py-2.5 font-mono text-[10px] tracking-widest text-orange-500 transition hover:bg-orange-950/70 disabled:opacity-40">
+                <button type="button" onClick={() => setShowCreate(false)} className="flex-1 border border-zinc-800 bg-zinc-900 py-2.5 font-mono text-xs tracking-widest text-zinc-500 transition hover:text-zinc-300">[CANCEL]</button>
+                <button type="submit" disabled={creating || !title.trim()} className="flex-1 border border-orange-800 bg-orange-950/40 py-2.5 font-mono text-xs tracking-widest text-orange-500 transition hover:bg-orange-950/70 disabled:opacity-40">
                   {creating ? 'DEFINING...' : '[DEPLOY_OBJECTIVE]'}
                 </button>
               </div>
@@ -257,7 +257,7 @@ export default function GoalsPage() {
 function ObjMetric({ label, value }: { label: string; value: string }) {
   return (
     <div className="bg-zinc-950 px-4 py-3 transition hover:bg-zinc-900">
-          <p className="font-mono text-[9px] tracking-widest text-zinc-400">{label}</p>
+          <p className="font-mono text-[11px] tracking-widest text-zinc-400">{label}</p>
       <p className="mt-0.5 font-mono text-lg font-bold text-zinc-100">{value}</p>
     </div>
   );
@@ -286,7 +286,7 @@ function GoalCard({ goal }: { goal: GoalItem }) {
             {goal.title.toUpperCase()}
           </p>
           {goal.description && (
-            <p className="mt-1 line-clamp-1 font-mono text-[10px] text-zinc-400">{goal.description}</p>
+            <p className="mt-1 line-clamp-1 font-mono text-xs text-zinc-400">{goal.description}</p>
           )}
         </div>
         <span className={`shrink-0 font-mono text-base font-bold ${isComplete ? 'text-zinc-500' : 'text-orange-500'}`}>
@@ -297,16 +297,16 @@ function GoalCard({ goal }: { goal: GoalItem }) {
         <div className="h-px bg-orange-600 transition-all duration-700" style={{ width: `${Math.min(progress, 100)}%` }} />
       </div>
       <div className="flex flex-wrap items-center gap-2">
-        <span className={`border px-2 py-0.5 font-mono text-[9px] tracking-widest ${chipClass}`}>
+        <span className={`border px-2 py-0.5 font-mono text-[11px] tracking-widest ${chipClass}`}>
           {domainKey.replace('_', '_').toUpperCase()}
         </span>
         {goal.goalType && (
-          <span className="border border-zinc-800 px-2 py-0.5 font-mono text-[9px] tracking-widest text-zinc-400">
+          <span className="border border-zinc-800 px-2 py-0.5 font-mono text-[11px] tracking-widest text-zinc-400">
             {goal.goalType.replace('_', '_').toUpperCase()}
           </span>
         )}
         {goal.targetDate && (
-          <span className="ml-auto flex items-center gap-1 font-mono text-[10px] text-zinc-400">
+          <span className="ml-auto flex items-center gap-1 font-mono text-xs text-zinc-400">
             <Clock className="h-3 w-3" /> {formatDate(goal.targetDate)}
           </span>
         )}

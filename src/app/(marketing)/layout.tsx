@@ -1,4 +1,4 @@
-// ─────────────────────────────────────────────────────────────────────────────
+﻿// ─────────────────────────────────────────────────────────────────────────────
 // RESURGO.life — Marketing Section Layout
 // Wraps all /about, /features, /docs, /changelog, /blog, /faq, /contact pages
 // with consistent terminal-style navigation + footer + scroll-to-top.
@@ -99,7 +99,7 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
 
         {/* Terminal sub-bar */}
         <div className="border-t border-zinc-900 bg-zinc-950 px-5 py-1">
-          <span className="font-mono text-[10px] tracking-widest text-zinc-400">
+          <span className="font-mono text-xs tracking-widest text-zinc-400">
             RESURGO.life :: {new Date().getFullYear()} :: ALL_SYSTEMS_NOMINAL
           </span>
         </div>
@@ -149,7 +149,7 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
                   href="https://twitter.com/resurgolife"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border border-zinc-800 px-3 py-1.5 font-mono text-[10px] text-zinc-500 transition hover:border-zinc-600 hover:text-zinc-300"
+                  className="border border-zinc-800 px-3 py-1.5 font-mono text-xs text-zinc-500 transition hover:border-zinc-600 hover:text-zinc-300"
                 >
                   𝕏 Twitter
                 </a>
@@ -157,7 +157,7 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
                   href="https://t.me/ResurgoApp"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="border border-zinc-800 px-3 py-1.5 font-mono text-[10px] text-zinc-500 transition hover:border-zinc-600 hover:text-zinc-300"
+                  className="border border-zinc-800 px-3 py-1.5 font-mono text-xs text-zinc-500 transition hover:border-zinc-600 hover:text-zinc-300"
                 >
                   ✈ Telegram
                 </a>
@@ -167,7 +167,7 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
             {/* Link columns */}
             {FOOTER_SECTIONS.map(({ heading, links }) => (
               <div key={heading} className="space-y-3">
-                <p className="font-mono text-[10px] font-bold tracking-widest text-zinc-400">
+                <p className="font-mono text-xs font-bold tracking-widest text-zinc-400">
                   {heading.toUpperCase()}
                 </p>
                 <ul className="space-y-2">
@@ -188,10 +188,10 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
 
           {/* Bottom bar */}
           <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-zinc-900 pt-6 sm:flex-row">
-            <p className="font-mono text-[10px] text-zinc-400">
+            <p className="font-mono text-xs text-zinc-400">
               © {new Date().getFullYear()} RESURGO.life. All rights reserved.
             </p>
-            <p className="font-mono text-[10px] text-zinc-500">
+            <p className="font-mono text-xs text-zinc-500">
               Built with ❤ in TypeScript. Running on Vercel + Convex.
             </p>
           </div>

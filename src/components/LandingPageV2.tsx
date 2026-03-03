@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -489,7 +489,7 @@ function LandingPageV2() {
             {/* Badge */}
             <div className="mb-6 inline-flex items-center gap-2 border-2 border-zinc-800 bg-black px-3 py-1.5 shadow-[2px_2px_0px_rgba(0,0,0,0.6)]">
               <span className="h-2 w-2 animate-pulse bg-orange-600" />
-              <span className="font-pixel text-[0.4rem] tracking-widest text-zinc-500">
+              <span className="font-pixel text-[0.6rem] tracking-widest text-zinc-500">
                 ONE APP. EVERY TOOL YOU NEED TO ACHIEVE YOUR GOALS.
               </span>
             </div>
@@ -502,7 +502,7 @@ function LandingPageV2() {
                   <span className="block text-orange-500">Start executing.<span className="animate-blink">_</span></span>
                 </h1>
                 <div className="mt-3 flex items-center gap-3">
-                  <span className="font-pixel text-[0.4rem] tracking-widest text-zinc-400">[RESURGO_v1.4]</span>
+                  <span className="font-pixel text-[0.6rem] tracking-widest text-zinc-400">[RESURGO_v1.4]</span>
                   <span className="hidden font-terminal text-base text-zinc-500 md:block">
                     AI habit tracker + goal planner + focus engine + wellness system
                   </span>
@@ -573,7 +573,7 @@ function LandingPageV2() {
               {/* Right — terminal preview */}
               <div className="border-2 border-zinc-800 bg-black shadow-[4px_4px_0px_rgba(0,0,0,0.7)]">
                 <div className="flex items-center justify-between border-b-2 border-zinc-800 px-4 py-2">
-                  <span className="font-pixel text-[0.4rem] tracking-widest text-orange-500">COMMAND_CTR</span>
+                  <span className="font-pixel text-[0.6rem] tracking-widest text-orange-500">COMMAND_CTR</span>
                   <span className="font-pixel text-[0.35rem] tracking-widest text-zinc-500">CYCLE: ACTIVE</span>
                 </div>
                 <div className="space-y-px p-4">
@@ -629,7 +629,7 @@ function LandingPageV2() {
         {/* ────────────────── BRAND STORY ────────────────── */}
         <section className="border-t-2 border-zinc-800 bg-black px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-4xl text-center">
-            <p className="font-pixel text-[0.4rem] tracking-widest text-orange-600">OUR_STORY</p>
+            <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">OUR_STORY</p>
             <h2 className="mt-3 font-pixel text-lg text-zinc-100 sm:text-xl">
               Why we built Resurgo
             </h2>
@@ -671,7 +671,7 @@ function LandingPageV2() {
                 },
               ].map((item) => (
                 <div key={item.label} className="bg-black p-5">
-                  <p className="font-pixel text-[0.4rem] tracking-widest text-orange-500">{item.label}</p>
+                  <p className="font-pixel text-[0.6rem] tracking-widest text-orange-500">{item.label}</p>
                   <p className="mt-2 font-terminal text-base leading-relaxed text-zinc-300">{item.value}</p>
                 </div>
               ))}
@@ -683,7 +683,7 @@ function LandingPageV2() {
         <section className="border-t-2 border-zinc-800 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-6xl">
             <div className="mb-10 text-center">
-              <p className="font-pixel text-[0.4rem] tracking-widest text-orange-600">THE_FRAMEWORK</p>
+              <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">THE_FRAMEWORK</p>
               <h2 className="mt-2 font-pixel text-lg text-zinc-100 sm:text-xl">
                 How Resurgo helps you achieve any goal
               </h2>
@@ -715,7 +715,7 @@ function LandingPageV2() {
         <section id="how-it-works" className="border-t-2 border-zinc-800 bg-black px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-6xl">
             <div className="mb-10 text-center">
-              <p className="font-pixel text-[0.4rem] tracking-widest text-orange-500">GETTING_STARTED</p>
+              <p className="font-pixel text-[0.6rem] tracking-widest text-orange-500">GETTING_STARTED</p>
               <h2 className="mt-2 font-pixel text-lg text-zinc-100 sm:text-xl">
                 Get started in 3 simple steps
               </h2>
@@ -741,7 +741,7 @@ function LandingPageV2() {
           <div className="mx-auto max-w-7xl">
             <div className="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="font-pixel text-[0.4rem] tracking-widest text-orange-600">CORE_CAPABILITIES</p>
+                <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">CORE_CAPABILITIES</p>
                 <h2 className="mt-2 font-pixel text-lg text-zinc-100 sm:text-xl">
                   Everything you need, nothing you don&apos;t
                 </h2>
@@ -756,7 +756,7 @@ function LandingPageV2() {
               {CORE_FEATURES.map((spec) => (
                 <article key={spec.id} className="bg-black p-5 transition hover:bg-zinc-900">
                   <div className="flex items-center justify-between">
-                    <span className="font-pixel text-[0.4rem] tracking-widest text-orange-600">{spec.id}</span>
+                    <span className="font-pixel text-[0.6rem] tracking-widest text-orange-600">{spec.id}</span>
                     <span
                       className={cn(
                         'border-2 px-2 py-0.5 font-pixel text-[0.35rem] tracking-widest',
@@ -768,7 +768,7 @@ function LandingPageV2() {
                       {spec.status}
                     </span>
                   </div>
-                  <h3 className="mt-2 font-pixel text-[0.5rem] text-zinc-200">{spec.title}</h3>
+                  <h3 className="mt-2 font-pixel text-[0.65rem] text-zinc-200">{spec.title}</h3>
                   <p className="mt-2 font-terminal text-base leading-relaxed text-zinc-400">{spec.description}</p>
                 </article>
               ))}
@@ -780,7 +780,7 @@ function LandingPageV2() {
         <section id="coaches" className="border-t-2 border-zinc-800 bg-black px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-6xl">
             <div className="mb-10 text-center">
-              <p className="font-pixel text-[0.4rem] tracking-widest text-orange-600">AI_COACHING_ENGINE</p>
+              <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">AI_COACHING_ENGINE</p>
               <h2 className="mt-2 font-pixel text-lg text-zinc-100 sm:text-xl">
                 6 AI coaches. Pick your style.
               </h2>
@@ -794,7 +794,7 @@ function LandingPageV2() {
                 <article key={coach.name} className="relative bg-black p-5 transition hover:bg-zinc-900/60">
                   {/* Free / Pro badge */}
                   <div className="flex items-center justify-between">
-                    <span className="font-pixel text-[0.5rem] tracking-widest text-zinc-100">{coach.name}</span>
+                    <span className="font-pixel text-[0.65rem] tracking-widest text-zinc-100">{coach.name}</span>
                     <span
                       className={cn(
                         'border-2 px-2 py-0.5 font-pixel text-[0.35rem] tracking-widest',
@@ -832,9 +832,9 @@ function LandingPageV2() {
                   )}
                 >
                   {plan.highlight && (
-                    <p className="mb-3 font-pixel text-[0.4rem] tracking-widest text-orange-500">&#9733; MOST POPULAR</p>
+                    <p className="mb-3 font-pixel text-[0.6rem] tracking-widest text-orange-500">&#9733; MOST POPULAR</p>
                   )}
-                  <p className="font-pixel text-[0.5rem] tracking-widest text-zinc-300">{plan.tier}</p>
+                  <p className="font-pixel text-[0.65rem] tracking-widest text-zinc-300">{plan.tier}</p>
                   <p className="mt-3 font-pixel text-sm text-zinc-100">
                     {plan.price}
                     <span className="font-terminal text-base text-zinc-400"> {plan.period}</span>
@@ -929,10 +929,10 @@ function LandingPageV2() {
                   </p>
                   <div className="mt-4 flex items-center justify-between">
                     <div>
-                      <p className="font-pixel text-[0.4rem] text-zinc-400">{t.name}</p>
-                      <p className="font-pixel text-[0.3rem] tracking-widest text-zinc-500">{t.role}</p>
+                      <p className="font-pixel text-[0.6rem] text-zinc-400">{t.name}</p>
+                      <p className="font-pixel text-[0.55rem] tracking-widest text-zinc-500">{t.role}</p>
                     </div>
-                    <span className="border-2 border-green-900/60 px-2 py-0.5 font-pixel text-[0.3rem] tracking-widest text-green-600">
+                    <span className="border-2 border-green-900/60 px-2 py-0.5 font-pixel text-[0.55rem] tracking-widest text-green-600">
                       {t.outcome}
                     </span>
                   </div>
@@ -1019,7 +1019,7 @@ function LandingPageV2() {
               </span>
             </div>
             <div className="px-6 py-12 text-center sm:px-10">
-              <p className="font-pixel text-[0.4rem] tracking-widest text-orange-600">YOUR_NEXT_MOVE</p>
+              <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">YOUR_NEXT_MOVE</p>
               <h2 className="mt-3 font-pixel text-lg text-zinc-100 sm:text-xl">
                 Ready to build habits that actually stick?
               </h2>
@@ -1037,18 +1037,18 @@ function LandingPageV2() {
                 <a
                   href="/resurgo.apk"
                   download
-                  className="inline-flex min-h-[48px] items-center justify-center gap-2 border-2 border-zinc-800 px-8 font-pixel text-[0.4rem] tracking-widest text-zinc-500 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] transition hover:border-zinc-600 hover:text-zinc-300 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+                  className="inline-flex min-h-[48px] items-center justify-center gap-2 border-2 border-zinc-800 px-8 font-pixel text-[0.6rem] tracking-widest text-zinc-500 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] transition hover:border-zinc-600 hover:text-zinc-300 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
                 >
                   [ DOWNLOAD_APK ]
                 </a>
                 <Link
                   href="/pricing"
-                  className="inline-flex min-h-[48px] items-center justify-center border-2 border-zinc-800 px-8 font-pixel text-[0.4rem] tracking-widest text-zinc-500 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] transition hover:border-zinc-600 hover:text-zinc-300 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+                  className="inline-flex min-h-[48px] items-center justify-center border-2 border-zinc-800 px-8 font-pixel text-[0.6rem] tracking-widest text-zinc-500 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] transition hover:border-zinc-600 hover:text-zinc-300 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
                 >
                   [ VIEW_ACCESS_TIERS ]
                 </Link>
               </div>
-              <div className="mt-6 flex flex-wrap items-center justify-center gap-4 font-pixel text-[0.3rem] tracking-widest text-zinc-400">
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-4 font-pixel text-[0.55rem] tracking-widest text-zinc-400">
                 <span>&gt; NO_CREDIT_CARD_REQUIRED</span>
                 <span>&gt; CLEAR_ONBOARDING_FLOW</span>
                 <span>&gt; MOBILE_READY</span>
@@ -1064,7 +1064,7 @@ function LandingPageV2() {
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="font-pixel text-[0.55rem] tracking-widest text-orange-600">RESURGO</p>
-            <p className="mt-1 font-pixel text-[0.3rem] tracking-widest text-zinc-400">
+            <p className="mt-1 font-pixel text-[0.55rem] tracking-widest text-zinc-400">
               BUILD BETTER HABITS. ACHIEVE BIG GOALS.
             </p>
           </div>

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO — Evening Debrief Component
@@ -122,7 +122,7 @@ export function EveningDebrief({ onComplete, userName, tasksCompleted, habitsCom
     return (
       <div className="border border-violet-900 bg-violet-950/20 p-6 text-center animate-fade-in">
         <Moon className="mx-auto h-6 w-6 text-violet-400 mb-2" />
-        <p className="font-pixel text-[0.5rem] tracking-widest text-violet-400">EVENING_DEBRIEF_COMPLETE</p>
+        <p className="font-pixel text-[0.65rem] tracking-widest text-violet-400">EVENING_DEBRIEF_COMPLETE</p>
         <p className="mt-2 font-terminal text-sm text-zinc-400">Day logged. Rest up — tomorrow awaits.</p>
       </div>
     );
@@ -134,7 +134,7 @@ export function EveningDebrief({ onComplete, userName, tasksCompleted, habitsCom
       <div className="flex items-center justify-between border-b border-zinc-800 px-4 py-2.5">
         <div className="flex items-center gap-2">
           <Moon className="h-3.5 w-3.5 text-violet-500" />
-          <span className="font-pixel text-[0.4rem] tracking-widest text-violet-400">EVENING_DEBRIEF</span>
+          <span className="font-pixel text-[0.6rem] tracking-widest text-violet-400">EVENING_DEBRIEF</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="font-terminal text-xs text-zinc-500">Step {stepIndex + 1}/{steps.length - 1}</span>
@@ -165,7 +165,7 @@ export function EveningDebrief({ onComplete, userName, tasksCompleted, habitsCom
                   }`}
                 >
                   <Star className={`h-5 w-5 ${dayRating === opt.value ? '' : 'text-zinc-600'}`} />
-                  <span className="font-pixel text-[0.3rem] tracking-widest text-zinc-400">{opt.label.toUpperCase()}</span>
+                  <span className="font-pixel text-[0.55rem] tracking-widest text-zinc-400">{opt.label.toUpperCase()}</span>
                 </button>
               ))}
             </div>
@@ -196,7 +196,7 @@ export function EveningDebrief({ onComplete, userName, tasksCompleted, habitsCom
                   }`}
                 >
                   <span className="text-xl">{opt.emoji}</span>
-                  <span className="font-pixel text-[0.3rem] tracking-widest text-zinc-400">{opt.label.toUpperCase()}</span>
+                  <span className="font-pixel text-[0.55rem] tracking-widest text-zinc-400">{opt.label.toUpperCase()}</span>
                 </button>
               ))}
             </div>
@@ -298,13 +298,13 @@ export function EveningDebrief({ onComplete, userName, tasksCompleted, habitsCom
               <div className="mt-4 grid grid-cols-2 gap-2">
                 {tasksCompleted !== undefined && (
                   <div className="border border-zinc-800 bg-zinc-900/50 p-2 text-center">
-                    <p className="font-pixel text-[0.3rem] tracking-widest text-zinc-500">TASKS_DONE</p>
+                    <p className="font-pixel text-[0.55rem] tracking-widest text-zinc-500">TASKS_DONE</p>
                     <p className="font-terminal text-xl text-zinc-200">{tasksCompleted}</p>
                   </div>
                 )}
                 {habitsCompleted !== undefined && (
                   <div className="border border-zinc-800 bg-zinc-900/50 p-2 text-center">
-                    <p className="font-pixel text-[0.3rem] tracking-widest text-zinc-500">HABITS_DONE</p>
+                    <p className="font-pixel text-[0.55rem] tracking-widest text-zinc-500">HABITS_DONE</p>
                     <p className="font-terminal text-xl text-zinc-200">{habitsCompleted}</p>
                   </div>
                 )}
@@ -325,7 +325,7 @@ export function EveningDebrief({ onComplete, userName, tasksCompleted, habitsCom
           <div className="animate-fade-in">
             <div className="flex items-center gap-2 mb-3">
               <Moon className="h-3.5 w-3.5 text-violet-500" />
-              <span className="font-pixel text-[0.4rem] tracking-widest text-violet-400">AI_EVENING_REFLECTION</span>
+              <span className="font-pixel text-[0.6rem] tracking-widest text-violet-400">AI_EVENING_REFLECTION</span>
             </div>
 
             {isGenerating ? (

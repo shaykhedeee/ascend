@@ -132,7 +132,7 @@ export default function BudgetPage() {
         <div className="border border-zinc-900 bg-zinc-950">
           <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-600" />
-            <span className="font-mono text-[9px] tracking-widest text-green-600">RESURGO :: FINANCE_MODULE</span>
+            <span className="font-mono text-[11px] tracking-widest text-green-600">RESURGO :: FINANCE_MODULE</span>
           </div>
           <div className="flex items-center justify-between px-5 py-4">
             <div>
@@ -150,7 +150,7 @@ export default function BudgetPage() {
               />
               <button
                 onClick={() => setShowAddTx(true)}
-                className="flex items-center gap-1.5 border border-green-800 bg-green-950/30 px-4 py-1.5 font-mono text-[10px] tracking-widest text-green-500 transition hover:bg-green-950/60"
+                className="flex items-center gap-1.5 border border-green-800 bg-green-950/30 px-4 py-1.5 font-mono text-xs tracking-widest text-green-500 transition hover:bg-green-950/60"
               >
                 <Plus className="h-3 w-3" /> ADD_TX
               </button>
@@ -164,7 +164,7 @@ export default function BudgetPage() {
                 key={t}
                 onClick={() => setTab(t)}
                 className={cn(
-                  'border-r border-zinc-900 px-5 py-2.5 font-mono text-[9px] tracking-widest transition',
+                  'border-r border-zinc-900 px-5 py-2.5 font-mono text-[11px] tracking-widest transition',
                   tab === t ? 'bg-zinc-900 text-green-500' : 'text-zinc-400 hover:text-zinc-300'
                 )}
               >
@@ -187,7 +187,7 @@ export default function BudgetPage() {
               ].map(({ label, value, icon: Icon, color, border }) => (
                 <div key={label} className={cn('border bg-zinc-950 p-4', border)}>
                   <div className="flex items-center justify-between">
-                    <p className="font-mono text-[9px] tracking-widest text-zinc-400">{label}</p>
+                    <p className="font-mono text-[11px] tracking-widest text-zinc-400">{label}</p>
                     <Icon className={cn('h-3.5 w-3.5', color)} />
                   </div>
                   <p className={cn('mt-2 font-mono text-lg font-bold', color)}>{value}</p>
@@ -199,7 +199,7 @@ export default function BudgetPage() {
             {summary && summary.byCategory.length > 0 && (
               <div className="border border-zinc-900 bg-zinc-950">
                 <div className="border-b border-zinc-900 px-4 py-2">
-                  <p className="font-mono text-[9px] tracking-widest text-zinc-400">SPENDING_BY_CATEGORY</p>
+                  <p className="font-mono text-[11px] tracking-widest text-zinc-400">SPENDING_BY_CATEGORY</p>
                 </div>
                 <div className="divide-y divide-zinc-900">
                   {summary.byCategory.map((cat: CategorySummary) => {
@@ -207,14 +207,14 @@ export default function BudgetPage() {
                       ? Math.round((cat.amount / summary.totalExpenses) * 100) : 0;
                     return (
                       <div key={cat.category} className="flex items-center gap-3 px-4 py-2.5">
-                        <p className="w-28 shrink-0 font-mono text-[10px] text-zinc-400">{cat.category}</p>
+                        <p className="w-28 shrink-0 font-mono text-xs text-zinc-400">{cat.category}</p>
                         <div className="flex-1">
                           <div className="h-1 bg-zinc-900">
                             <div className="h-full bg-red-600" style={{ width: `${pct}%` }} />
                           </div>
                         </div>
-                        <p className="w-16 text-right font-mono text-[10px] text-zinc-400">{fmt(cat.amount)}</p>
-                        <p className="w-10 text-right font-mono text-[9px] text-zinc-400">{pct}%</p>
+                        <p className="w-16 text-right font-mono text-xs text-zinc-400">{fmt(cat.amount)}</p>
+                        <p className="w-10 text-right font-mono text-[11px] text-zinc-400">{pct}%</p>
                       </div>
                     );
                   })}
@@ -228,14 +228,14 @@ export default function BudgetPage() {
         {tab === 'transactions' && (
           <div className="border border-zinc-900 bg-zinc-950">
             <div className="border-b border-zinc-900 px-4 py-2">
-              <p className="font-mono text-[9px] tracking-widest text-zinc-400">
+              <p className="font-mono text-[11px] tracking-widest text-zinc-400">
                 TRANSACTIONS — {month} ({transactions?.length ?? 0} entries)
               </p>
             </div>
             {(!transactions || transactions.length === 0) ? (
               <div className="py-12 text-center">
                 <p className="font-mono text-xs tracking-widest text-zinc-400">NO_TRANSACTIONS_RECORDED</p>
-                <p className="mt-2 font-mono text-[10px] text-zinc-400">Add your first transaction to begin tracking.</p>
+                <p className="mt-2 font-mono text-xs text-zinc-400">Add your first transaction to begin tracking.</p>
               </div>
             ) : (
               <div className="divide-y divide-zinc-900">
@@ -247,7 +247,7 @@ export default function BudgetPage() {
                     )} />
                     <div className="min-w-0 flex-1">
                       <p className="font-mono text-[11px] text-zinc-300">{tx.description}</p>
-                      <p className="font-mono text-[9px] text-zinc-400">{tx.category} · {tx.date}</p>
+                      <p className="font-mono text-[11px] text-zinc-400">{tx.category} · {tx.date}</p>
                     </div>
                     <p className={cn(
                       'font-mono text-sm font-bold',
@@ -274,7 +274,7 @@ export default function BudgetPage() {
             <div className="flex justify-end">
               <button
                 onClick={() => setShowAddGoal(true)}
-                className="flex items-center gap-1.5 border border-green-800 bg-green-950/30 px-4 py-1.5 font-mono text-[10px] tracking-widest text-green-500 transition hover:bg-green-950/60"
+                className="flex items-center gap-1.5 border border-green-800 bg-green-950/30 px-4 py-1.5 font-mono text-xs tracking-widest text-green-500 transition hover:bg-green-950/60"
               >
                 <Plus className="h-3 w-3" /> ADD_GOAL
               </button>
@@ -293,13 +293,13 @@ export default function BudgetPage() {
                     <div className="flex items-start justify-between">
                       <div>
                         <p className="font-mono text-sm font-bold text-zinc-200">{g.title}</p>
-                        <p className="mt-0.5 font-mono text-[9px] text-zinc-400">
+                        <p className="mt-0.5 font-mono text-[11px] text-zinc-400">
                           {fmt(g.currentAmount)} / {fmt(g.targetAmount)} · {pct}% complete
                           {g.deadline && ` · Due ${g.deadline}`}
                         </p>
                       </div>
                       <span className={cn(
-                        'font-mono text-[9px] tracking-widest px-2 py-0.5 border',
+                        'font-mono text-[11px] tracking-widest px-2 py-0.5 border',
                         g.status === 'completed' ? 'border-green-800 text-green-500' :
                         g.status === 'active' ? 'border-amber-800 text-amber-500' : 'border-zinc-800 text-zinc-500'
                       )}>
@@ -313,7 +313,7 @@ export default function BudgetPage() {
                       <input
                         type="number"
                         placeholder="Update amount..."
-                        className="h-7 w-36 border border-zinc-800 bg-black px-2 font-mono text-[10px] text-zinc-300 focus:border-green-800 focus:outline-none"
+                        className="h-7 w-36 border border-zinc-800 bg-black px-2 font-mono text-xs text-zinc-300 focus:border-green-800 focus:outline-none"
                         onBlur={(e) => {
                           const val = parseFloat(e.target.value);
                           if (!isNaN(val)) {
@@ -325,7 +325,7 @@ export default function BudgetPage() {
                       {g.status === 'active' && (
                         <button
                           onClick={() => updateFinancialGoal({ goalId: g._id as Id<'financialGoals'>, status: 'completed' })}
-                          className="border border-green-900 px-3 font-mono text-[9px] text-green-600 hover:bg-green-950/30"
+                          className="border border-green-900 px-3 font-mono text-[11px] text-green-600 hover:bg-green-950/30"
                         >
                           MARK_DONE
                         </button>
@@ -343,7 +343,7 @@ export default function BudgetPage() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
             <div className="w-full max-w-md border border-zinc-800 bg-zinc-950">
               <div className="flex items-center justify-between border-b border-zinc-900 px-4 py-3">
-                <p className="font-mono text-[10px] tracking-widest text-zinc-400">ADD_TRANSACTION</p>
+                <p className="font-mono text-xs tracking-widest text-zinc-400">ADD_TRANSACTION</p>
                 <button onClick={() => setShowAddTx(false)} className="text-zinc-400 hover:text-zinc-300">
                   <X className="h-4 w-4" />
                 </button>
@@ -356,7 +356,7 @@ export default function BudgetPage() {
                       type="button"
                       onClick={() => { setTxType(t); setTxCategory(''); }}
                       className={cn(
-                        'flex-1 border py-2 font-mono text-[10px] tracking-widest transition',
+                        'flex-1 border py-2 font-mono text-xs tracking-widest transition',
                         txType === t
                           ? t === 'expense' ? 'border-red-800 bg-red-950/30 text-red-500' : 'border-green-800 bg-green-950/30 text-green-500'
                           : 'border-zinc-800 text-zinc-400 hover:text-zinc-300'
@@ -399,7 +399,7 @@ export default function BudgetPage() {
                 />
                 <button
                   type="submit" disabled={addingTx}
-                  className="w-full border border-green-800 bg-green-950/30 py-2.5 font-mono text-[10px] tracking-widest text-green-500 transition hover:bg-green-950/60 disabled:opacity-50"
+                  className="w-full border border-green-800 bg-green-950/30 py-2.5 font-mono text-xs tracking-widest text-green-500 transition hover:bg-green-950/60 disabled:opacity-50"
                 >
                   {addingTx ? 'SAVING_' : '[SAVE_TRANSACTION]'}
                 </button>
@@ -413,7 +413,7 @@ export default function BudgetPage() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
             <div className="w-full max-w-md border border-zinc-800 bg-zinc-950">
               <div className="flex items-center justify-between border-b border-zinc-900 px-4 py-3">
-                <p className="font-mono text-[10px] tracking-widest text-zinc-400">ADD_FINANCIAL_GOAL</p>
+                <p className="font-mono text-xs tracking-widest text-zinc-400">ADD_FINANCIAL_GOAL</p>
                 <button onClick={() => setShowAddGoal(false)} className="text-zinc-400 hover:text-zinc-300">
                   <X className="h-4 w-4" />
                 </button>
@@ -442,7 +442,7 @@ export default function BudgetPage() {
                 />
                 <button
                   type="submit" disabled={addingGoal}
-                  className="w-full border border-green-800 bg-green-950/30 py-2.5 font-mono text-[10px] tracking-widest text-green-500 transition hover:bg-green-950/60 disabled:opacity-50"
+                  className="w-full border border-green-800 bg-green-950/30 py-2.5 font-mono text-xs tracking-widest text-green-500 transition hover:bg-green-950/60 disabled:opacity-50"
                 >
                   {addingGoal ? 'SAVING_' : '[CREATE_GOAL]'}
                 </button>

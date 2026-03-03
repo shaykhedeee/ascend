@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO - Global Search (Command Palette)
 // Notion-style Cmd+K search across all habits, goals, tasks, and commands
 // Enhanced with Fuse.js for fuzzy search
@@ -396,7 +396,7 @@ export function GlobalSearch({ isOpen, onClose, onNavigate }: GlobalSearchProps)
               autoComplete="off"
             />
             <div className="flex items-center gap-1 text-xs text-[var(--text-muted)]">
-              <kbd className="px-1.5 py-0.5 bg-[var(--surface)] rounded text-[10px]">ESC</kbd>
+              <kbd className="px-1.5 py-0.5 bg-[var(--surface)] rounded text-xs">ESC</kbd>
               <span>to close</span>
             </div>
           </div>
@@ -635,12 +635,12 @@ export function GlobalSearch({ isOpen, onClose, onNavigate }: GlobalSearchProps)
           <div className="px-4 py-2 border-t border-[var(--border)] flex items-center justify-between text-xs text-[var(--text-muted)]">
             <div className="flex items-center gap-3">
               <span className="flex items-center gap-1">
-                <kbd className="px-1.5 py-0.5 bg-[var(--surface)] rounded text-[10px]">↑</kbd>
-                <kbd className="px-1.5 py-0.5 bg-[var(--surface)] rounded text-[10px]">↓</kbd>
+                <kbd className="px-1.5 py-0.5 bg-[var(--surface)] rounded text-xs">↑</kbd>
+                <kbd className="px-1.5 py-0.5 bg-[var(--surface)] rounded text-xs">↓</kbd>
                 <span>navigate</span>
               </span>
               <span className="flex items-center gap-1">
-                <kbd className="px-1.5 py-0.5 bg-[var(--surface)] rounded text-[10px]">↵</kbd>
+                <kbd className="px-1.5 py-0.5 bg-[var(--surface)] rounded text-xs">↵</kbd>
                 <span>select</span>
               </span>
             </div>

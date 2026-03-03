@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO - Empty State Components
 // Beautiful empty state illustrations and messaging
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -160,7 +160,7 @@ export function EmptyState({
         {displayActionLabel && onAction && (
           <button
             onClick={onAction}
-            className="mt-3 font-pixel text-[0.5rem] uppercase tracking-wider text-ascend-400 hover:text-ascend-300"
+            className="mt-3 font-pixel text-[0.65rem] uppercase tracking-wider text-ascend-400 hover:text-ascend-300"
           >
             [{displayActionLabel}]
           </button>
@@ -189,7 +189,7 @@ export function EmptyState({
       </div>
 
       {/* Content */}
-      <h3 className="font-pixel text-[0.7rem] uppercase tracking-wider text-[var(--text-primary)] mb-2">
+      <h3 className="font-pixel text-sm uppercase tracking-wider text-[var(--text-primary)] mb-2">
         {displayTitle}
       </h3>
       <p className="font-terminal text-lg text-[var(--text-muted)] max-w-sm mb-6 leading-relaxed">
@@ -263,7 +263,7 @@ export function EmptyGoals({ onAction, className }: SpecializedEmptyStateProps) 
       <div className="mt-6 p-4 bg-purple-950/20 border-2 border-purple-500/30 max-w-sm" style={{ borderRadius: '2px' }}>
         <div className="flex items-center gap-2 mb-2">
           <Sparkles className="w-4 h-4 text-purple-400" />
-          <span className="font-pixel text-[0.5rem] uppercase tracking-wider text-purple-400">AI-Powered</span>
+          <span className="font-pixel text-[0.65rem] uppercase tracking-wider text-purple-400">AI-Powered</span>
         </div>
         <p className="font-terminal text-sm text-[var(--text-muted)]">
           Our AI will automatically break down your goal into milestones and daily tasks.
@@ -400,7 +400,7 @@ export function IllustratedEmptyState({
       <div className="mb-6 animate-float">
         {illustrations[illustration]}
       </div>
-      <h3 className="font-pixel text-[0.7rem] uppercase tracking-wider text-[var(--text-primary)] mb-2">
+      <h3 className="font-pixel text-sm uppercase tracking-wider text-[var(--text-primary)] mb-2">
         {title}
       </h3>
       <p className="font-terminal text-lg text-[var(--text-muted)] max-w-sm mb-6">

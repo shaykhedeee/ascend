@@ -121,7 +121,7 @@ export function Sidebar({
           {!collapsed && (
             <div className="text-center">
               <h1 className="text-lg font-bold text-themed tracking-tight">Resurgo</h1>
-              <p className="text-[9px] text-themed-muted tracking-[0.2em] uppercase">by WEBNESS</p>
+              <p className="text-[11px] text-themed-muted tracking-[0.2em] uppercase">by WEBNESS</p>
             </div>
           )}
         </div>
@@ -157,7 +157,7 @@ export function Sidebar({
                   {user.name.charAt(0).toUpperCase()}
                 </div>
                 <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gold-400 
-                              flex items-center justify-center text-[10px] font-bold text-black
+                              flex items-center justify-center text-xs font-bold text-black
                               border-2 border-[var(--surface)]">
                   {user.gamification.level}
                 </div>
@@ -222,7 +222,7 @@ export function Sidebar({
         {navSections.map((section) => (
           <div key={section.title}>
             {!collapsed && (
-              <p className="px-3 mb-2 text-[10px] font-semibold uppercase tracking-wider text-themed-muted">
+              <p className="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-themed-muted">
                 {section.title}
               </p>
             )}

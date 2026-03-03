@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO - Goal Countdown Widget
 // Visual countdown to goal deadline with calendar view
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -422,7 +422,7 @@ export function GoalProgressWidget({
           <div className="text-2xl font-bold text-ascend-400">
             {Math.max(0, differenceInDays(new Date(goal.targetDate), new Date()))}
           </div>
-          <div className="text-[10px] text-themed-muted uppercase">Days Left</div>
+          <div className="text-xs text-themed-muted uppercase">Days Left</div>
         </div>
         <div className="flex-1">
           <div className="h-2 rounded-full bg-[var(--border)] overflow-hidden">

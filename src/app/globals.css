@@ -533,9 +533,11 @@ h6 { font-size: 0.875rem; }
     border: 2px solid var(--ascend-primary-dark);
     box-shadow: 3px 3px 0px var(--ascend-primary-dark);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-family: var(--font-pixel, 'Press Start 2P', monospace);
-    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    font-family: var(--font-inter, 'Inter'), system-ui, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.25;
   }
   
   .btn-primary:hover:not(:disabled) {
@@ -561,8 +563,11 @@ h6 { font-size: 0.875rem; }
     color: var(--text-primary);
     box-shadow: 3px 3px 0px var(--border);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    font-family: var(--font-inter, 'Inter'), system-ui, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.25;
   }
   
   .btn-secondary:hover:not(:disabled) {
@@ -610,8 +615,11 @@ h6 { font-size: 0.875rem; }
     border: 2px solid #DC2626;
     box-shadow: 3px 3px 0px #991B1B;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    font-family: var(--font-inter, 'Inter'), system-ui, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.25;
   }
   
   .btn-danger:hover:not(:disabled) {
@@ -637,8 +645,11 @@ h6 { font-size: 0.875rem; }
     color: var(--ascend-primary);
     box-shadow: 3px 3px 0px var(--ascend-primary-dark);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    font-family: var(--font-inter, 'Inter'), system-ui, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.25;
   }
   
   .btn-outline:hover:not(:disabled) {
@@ -1923,19 +1934,19 @@ body.custom-cursor-active .cursor-not-allowed {
 }
 .text-pixel-sm {
   font-family: var(--font-pixel, 'Press Start 2P'), monospace;
-  font-size: 0.55rem;
-  line-height: 1.6;
+  font-size: 0.65rem;
+  line-height: 1.8;
   letter-spacing: 0.03em;
 }
 .text-pixel-md {
   font-family: var(--font-pixel, 'Press Start 2P'), monospace;
-  font-size: 0.7rem;
-  line-height: 1.5;
+  font-size: 0.75rem;
+  line-height: 1.6;
 }
 .text-pixel-lg {
   font-family: var(--font-pixel, 'Press Start 2P'), monospace;
-  font-size: 0.9rem;
-  line-height: 1.4;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 .text-terminal {
   font-family: var(--font-vt323, 'VT323'), ui-monospace, monospace;
@@ -2142,9 +2153,11 @@ body.custom-cursor-active .cursor-not-allowed {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 0;
-  font-size: 0.7rem;
-  font-family: var(--font-pixel, 'Press Start 2P'), monospace;
+  font-size: 0.75rem;
+  font-family: var(--font-inter, 'Inter'), system-ui, sans-serif;
+  font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* Override all rounded corners globally for pixel feel */

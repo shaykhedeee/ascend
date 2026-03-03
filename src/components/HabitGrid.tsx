@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO - Habit Tracking Grid Component
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -141,7 +141,7 @@ export function HabitGrid() {
                   </span>
                 )}
               </div>
-              <p className="mt-2 text-[10px] text-white/40 italic">
+              <p className="mt-2 text-xs text-white/40 italic">
                 &quot;Missing once is an accident. Missing twice is the start of a new habit.&quot; – James Clear
               </p>
             </div>
@@ -291,7 +291,7 @@ export function HabitGrid() {
                     <div className="flex items-center justify-center gap-1.5">
                       <div 
                         className={cn(
-                          "flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold",
+                          "flex items-center gap-1 px-1.5 py-0.5 rounded text-xs font-semibold",
                           stats.percentage >= 80 && "bg-green-500/20 text-green-400",
                           stats.percentage >= 60 && stats.percentage < 80 && "bg-yellow-500/20 text-yellow-400",
                           stats.percentage >= 40 && stats.percentage < 60 && "bg-orange-500/20 text-orange-400",

@@ -81,14 +81,14 @@ export default function AdaptiveDifficultyWidget() {
           </div>
           <div className="text-left">
             <div className="flex items-center gap-2">
-              <span className="font-pixel text-[0.4rem] tracking-widest" style={{ color: assessment.color }}>
+              <span className="font-pixel text-[0.6rem] tracking-widest" style={{ color: assessment.color }}>
                 {assessment.label}_ZONE
               </span>
               <span className="font-terminal text-xs text-zinc-500">
                 {assessment.score}/100
               </span>
             </div>
-            <p className="font-terminal text-[10px] text-zinc-500 mt-0.5">
+            <p className="font-terminal text-xs text-zinc-500 mt-0.5">
               {getZoneDescription(assessment.zone)}
             </p>
           </div>
@@ -138,9 +138,9 @@ export default function AdaptiveDifficultyWidget() {
               <div className="absolute top-0 h-full w-px bg-emerald-500/50" style={{ left: '50%' }} />
             </div>
             <div className="flex justify-between mt-1">
-              <span className="font-terminal text-[8px] text-zinc-700">UNDER</span>
-              <span className="font-terminal text-[8px] text-emerald-600">OPTIMAL</span>
-              <span className="font-terminal text-[8px] text-zinc-700">OVER</span>
+              <span className="font-terminal text-xs text-zinc-700">UNDER</span>
+              <span className="font-terminal text-xs text-emerald-600">OPTIMAL</span>
+              <span className="font-terminal text-xs text-zinc-700">OVER</span>
             </div>
           </div>
 
@@ -220,7 +220,7 @@ function AdjustmentCard({
     <div className="border border-zinc-900 bg-black px-3 py-2">
       <div className="flex items-center gap-1.5 mb-1">
         <Icon className="h-3 w-3" style={{ color }} />
-        <span className="font-pixel text-[0.3rem] tracking-widest text-zinc-600">{label}</span>
+        <span className="font-pixel text-[0.55rem] tracking-widest text-zinc-600">{label}</span>
       </div>
       <p className="font-terminal text-sm" style={{ color }}>{value}</p>
     </div>
@@ -253,7 +253,7 @@ function RecommendationCard({ rec }: { rec: DifficultyRecommendation }) {
             {config.badge}
           </span>
         </div>
-        <p className="font-terminal text-[10px] text-zinc-500 leading-relaxed">{rec.description}</p>
+        <p className="font-terminal text-xs text-zinc-500 leading-relaxed">{rec.description}</p>
       </div>
     </div>
   );

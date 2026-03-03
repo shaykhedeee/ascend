@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState, useMemo } from 'react';
 import { differenceInDays, format } from 'date-fns';
@@ -371,7 +371,7 @@ export function DemoPlanGenerator({
                                     {wo.title}
                                   </span>
                                   {wo.dailyTasks && wo.dailyTasks.length > 0 && (
-                                    <span className="ml-auto flex-shrink-0 text-[10px] text-themed-muted">
+                                    <span className="ml-auto flex-shrink-0 text-xs text-themed-muted">
                                       {wo.dailyTasks.length} task
                                       {wo.dailyTasks.length !== 1 ? 's' : ''}
                                     </span>

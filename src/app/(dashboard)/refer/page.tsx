@@ -50,7 +50,7 @@ export default function ReferralPage() {
         <div className="mb-5 border border-zinc-900 bg-zinc-950">
           <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
-            <span className="font-mono text-[9px] tracking-widest text-orange-600">GROWTH :: REFERRAL_SYSTEM</span>
+            <span className="font-mono text-[11px] tracking-widest text-orange-600">GROWTH :: REFERRAL_SYSTEM</span>
           </div>
           <div className="px-5 py-6 text-center">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center border border-orange-900 bg-orange-950/20">
@@ -83,7 +83,7 @@ export default function ReferralPage() {
                   </button>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-[9px] text-zinc-400">CODE:</span>
+                  <span className="font-mono text-[11px] text-zinc-400">CODE:</span>
                   <span className="border border-orange-900 bg-orange-950/20 px-3 py-1 font-mono text-sm font-bold tracking-widest text-orange-500">
                     {referralCode}
                   </span>
@@ -111,7 +111,7 @@ export default function ReferralPage() {
               <button key={id} onClick={() => shareVia(id)} disabled={!referralLink}
                 className="flex flex-col items-center gap-1.5 py-4 transition hover:bg-zinc-900 disabled:opacity-40">
                 <span className="text-xl">{emoji}</span>
-                <span className="font-mono text-[8px] tracking-widest text-zinc-500">{label}</span>
+                <span className="font-mono text-xs tracking-widest text-zinc-500">{label}</span>
               </button>
             ))}
           </div>
@@ -126,7 +126,7 @@ export default function ReferralPage() {
               { label: 'REWARDS_EARNED', value: Math.floor(myReferrals.completed / 3), color: 'text-orange-500' },
             ].map(({ label, value, color }) => (
               <div key={label} className="border border-zinc-900 bg-zinc-950 p-4 text-center">
-                <p className="font-mono text-[8px] tracking-widest text-zinc-400">{label}</p>
+                <p className="font-mono text-xs tracking-widest text-zinc-400">{label}</p>
                 <p className={cn('mt-2 font-mono text-2xl font-bold', color)}>{value}</p>
               </div>
             ))}
@@ -146,7 +146,7 @@ export default function ReferralPage() {
               'Get 30 days of Pro features per 3 successful referrals',
             ].map((step, i) => (
               <div key={i} className="flex items-start gap-3">
-                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border border-orange-900 font-mono text-[9px] font-bold text-orange-600">
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border border-orange-900 font-mono text-[11px] font-bold text-orange-600">
                   {i + 1}
                 </span>
                 <span className="font-mono text-[11px] text-zinc-400">{step}</span>
@@ -161,7 +161,7 @@ export default function ReferralPage() {
             "Know someone who needs to get their shit together?<br />
             Send them this link. It might change their life."
           </p>
-          <p className="mt-2 font-mono text-[9px] tracking-widest text-zinc-400">— Resurgo</p>
+          <p className="mt-2 font-mono text-[11px] tracking-widest text-zinc-400">— Resurgo</p>
         </div>
       </div>
     </div>

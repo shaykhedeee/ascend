@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO - Pixel Art Logo Component
 // 8-bit ascending arrow on pixel grid — consistent across all contexts
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -130,7 +130,7 @@ export function Logo({
             RESURGO
           </h1>
           <span 
-            className="text-[7px] text-zinc-500 tracking-[0.15em] uppercase mt-1"
+            className="text-xs text-zinc-500 tracking-[0.15em] uppercase mt-1"
             style={{ fontFamily: 'var(--font-pixel, "Press Start 2P"), monospace' }}
           >
             by WEBNESS

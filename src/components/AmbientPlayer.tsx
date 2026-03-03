@@ -117,7 +117,7 @@ export default function AmbientPlayer({ minimal = false }: AmbientPlayerProps) {
           ))}
         </div>
         {activeSound && (
-          <button onClick={stopSound} className="border border-zinc-800 px-1.5 py-1 font-mono text-[8px] text-zinc-400 hover:border-zinc-700">■</button>
+          <button onClick={stopSound} className="border border-zinc-800 px-1.5 py-1 font-mono text-xs text-zinc-400 hover:border-zinc-700">■</button>
         )}
       </div>
     );
@@ -133,13 +133,13 @@ export default function AmbientPlayer({ minimal = false }: AmbientPlayerProps) {
           {activeSound && (
             <span className="flex items-center gap-1">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500" />
-              <span className="font-mono text-[9px] text-green-500">
+              <span className="font-mono text-[11px] text-green-500">
                 {SOUNDS.find((s) => s.id === activeSound)?.label.toUpperCase()}
               </span>
             </span>
           )}
         </div>
-        <span className="font-mono text-[9px] text-zinc-400">{isOpen ? '▲' : '▼'}</span>
+        <span className="font-mono text-[11px] text-zinc-400">{isOpen ? '▲' : '▼'}</span>
       </button>
 
       {isOpen && (
@@ -151,7 +151,7 @@ export default function AmbientPlayer({ minimal = false }: AmbientPlayerProps) {
                   activeSound === id ? 'border-orange-800 bg-orange-950/20 text-orange-500' : 'border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:text-zinc-400'
                 )}>
                 <span className="text-xl">{emoji}</span>
-                <span className="font-mono text-[8px] tracking-widest">{label.toUpperCase()}</span>
+                <span className="font-mono text-xs tracking-widest">{label.toUpperCase()}</span>
               </button>
             ))}
           </div>
@@ -167,7 +167,7 @@ export default function AmbientPlayer({ minimal = false }: AmbientPlayerProps) {
 
           {activeSound && (
             <button onClick={stopSound}
-              className="flex w-full items-center justify-center gap-1.5 border border-zinc-800 py-1.5 font-mono text-[9px] tracking-widest text-zinc-400 transition hover:border-zinc-700">
+              className="flex w-full items-center justify-center gap-1.5 border border-zinc-800 py-1.5 font-mono text-[11px] tracking-widest text-zinc-400 transition hover:border-zinc-700">
               <Square className="h-3 w-3" /> [STOP_SOUND]
             </button>
           )}

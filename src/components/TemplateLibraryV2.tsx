@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO - Enhanced Template Library V2
 // Pre-built templates + Custom templates + Import/Export
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -263,7 +263,7 @@ function HabitTemplateCard({
 
       {/* Popular Badge */}
       {template.popular && (
-        <div className="absolute top-2 left-2 flex items-center gap-1 px-2 py-0.5 rounded-full bg-gold-400/20 text-gold-400 text-[10px] font-medium">
+        <div className="absolute top-2 left-2 flex items-center gap-1 px-2 py-0.5 rounded-full bg-gold-400/20 text-gold-400 text-xs font-medium">
           <Star className="w-3 h-3 fill-gold-400" />
           Popular
         </div>
@@ -1602,7 +1602,7 @@ export function TemplateLibrary({ isOpen, onClose, type = 'all', onTemplateAppli
                                 {template.name}
                               </h4>
                               <span className={cn(
-                                "px-1.5 py-0.5 rounded text-[10px] font-medium",
+                                "px-1.5 py-0.5 rounded text-xs font-medium",
                                 template.type === 'habit' ? "bg-ascend-500/20 text-ascend-500" : "bg-gold-400/20 text-gold-400"
                               )}>
                                 {template.type}

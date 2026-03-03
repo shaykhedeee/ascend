@@ -169,7 +169,7 @@ export default function FocusPage() {
         <div className="mb-6 border border-zinc-900 bg-zinc-950">
           <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
-            <span className="font-mono text-[9px] tracking-widest text-orange-600">
+            <span className="font-mono text-[11px] tracking-widest text-orange-600">
               DEEP_WORK_PROTOCOL :: FOCUS_ENGINE
             </span>
           </div>
@@ -190,7 +190,7 @@ export default function FocusPage() {
               ['ALL_TIME_SESSIONS',  stats?.totalSessions ?? 0],
             ] as [string, number][]).map(([label, val]) => (
               <div key={label} className="bg-zinc-950 px-4 py-3 transition hover:bg-zinc-900">
-                <p className="font-mono text-[9px] tracking-widest text-zinc-400">{label}</p>
+                <p className="font-mono text-[11px] tracking-widest text-zinc-400">{label}</p>
                 <p className="mt-0.5 font-mono text-xl font-bold text-zinc-100">{val}</p>
               </div>
             ))}
@@ -208,7 +208,7 @@ export default function FocusPage() {
                   <button
                     key={m.label}
                     onClick={() => setMethodIdx(i)}
-                    className={`border px-3 py-1.5 font-mono text-[10px] tracking-widest transition-all ${
+                    className={`border px-3 py-1.5 font-mono text-xs tracking-widest transition-all ${
                       methodIdx === i
                         ? 'border-orange-800 bg-orange-950/30 text-orange-500'
                         : 'border-zinc-800 text-zinc-400 hover:border-zinc-700 hover:text-zinc-400'
@@ -229,7 +229,7 @@ export default function FocusPage() {
                   onChange={(e) => setCustomMinutes(Math.max(1, parseInt(e.target.value) || 1))}
                   className="w-16 bg-transparent font-mono text-center text-sm text-zinc-100 focus:outline-none"
                 />
-                <span className="font-mono text-[10px] tracking-widest text-zinc-400">MINUTES</span>
+                <span className="font-mono text-xs tracking-widest text-zinc-400">MINUTES</span>
               </div>
             )}
 
@@ -253,7 +253,7 @@ export default function FocusPage() {
                     ? formatTime(secondsLeft)
                     : formatTime((method.id === 'custom' ? customMinutes : method.work) * 60)}
                 </p>
-                <p className={`mt-1 font-mono text-[10px] tracking-widest ${
+                <p className={`mt-1 font-mono text-xs tracking-widest ${
                   state === 'working' ? 'text-orange-500'
                   : state === 'break'  ? 'text-green-500'
                   : state === 'paused' ? 'text-yellow-500'
@@ -328,7 +328,7 @@ export default function FocusPage() {
 
             {/* Distraction counter */}
             {isActive && distractionCount > 0 && (
-              <p className="mt-6 border border-red-900 bg-red-950/30 px-4 py-1.5 font-mono text-[10px] tracking-widest text-red-500">
+              <p className="mt-6 border border-red-900 bg-red-950/30 px-4 py-1.5 font-mono text-xs tracking-widest text-red-500">
                 {distractionCount}_DISTRACTION{distractionCount !== 1 ? 'S' : ''}_LOGGED
               </p>
             )}
@@ -345,13 +345,13 @@ export default function FocusPage() {
               </div>
               {!todaySessions || todaySessions.length === 0 ? (
                 <div className="py-8 text-center">
-                  <p className="font-mono text-[10px] tracking-widest text-zinc-400">NO_SESSIONS_YET</p>
+                  <p className="font-mono text-xs tracking-widest text-zinc-400">NO_SESSIONS_YET</p>
                 </div>
               ) : (
                 <div className="space-y-px p-1">
                   {todaySessions.map((s) => (
                     <div key={s._id} className="flex items-center justify-between px-3 py-2 hover:bg-zinc-900">
-                      <span className="font-mono text-[10px] tracking-widest text-zinc-400">
+                      <span className="font-mono text-xs tracking-widest text-zinc-400">
                         {s.type.toUpperCase()}
                       </span>
                       <span className="font-mono text-xs font-bold text-zinc-300">
@@ -377,7 +377,7 @@ export default function FocusPage() {
                   ['BEST_STREAK',     `${stats?.bestStreak  ?? 0}_DAYS`],
                 ] as [string, string | number][]).map(([label, val]) => (
                   <div key={label} className="flex items-center justify-between px-3 py-2">
-                    <span className="font-mono text-[10px] tracking-widest text-zinc-400">{label}</span>
+                    <span className="font-mono text-xs tracking-widest text-zinc-400">{label}</span>
                     <span className="font-mono text-xs font-bold text-zinc-200">{val}</span>
                   </div>
                 ))}
@@ -389,7 +389,7 @@ export default function FocusPage() {
               <div className="border border-orange-900 bg-orange-950/20 px-4 py-3">
                 <div className="mb-1 flex items-center gap-1.5">
                   <Trophy className="h-3 w-3 text-orange-600" />
-                  <p className="font-mono text-[9px] tracking-widest text-orange-600">PROTOCOL_INSIGHT</p>
+                  <p className="font-mono text-[11px] tracking-widest text-orange-600">PROTOCOL_INSIGHT</p>
                 </div>
                 <p className="font-mono text-xs text-zinc-400">
                   {stats.totalSessions >= 100

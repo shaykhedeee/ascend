@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO — Deep Scan Protocol (5-Stage Onboarding)
@@ -325,7 +325,7 @@ export function DeepScanProtocol() {
             'h-2 w-2 rounded-full',
             stage === 'generating' ? 'animate-pulse bg-orange-500' : 'bg-green-500'
           )} />
-          <span className="font-pixel text-[0.4rem] tracking-widest text-zinc-400">
+          <span className="font-pixel text-[0.6rem] tracking-widest text-zinc-400">
             DEEP SCAN PROTOCOL
             {typeof stage === 'number' && ` — STAGE ${stage}/5`}
             {stage === 'generating' && ' — GENERATING SYSTEM'}
@@ -342,7 +342,7 @@ export function DeepScanProtocol() {
         {stage === 1 && (
           <div className="space-y-8">
             <div>
-              <p className="font-pixel text-[0.4rem] tracking-widest text-orange-600 mb-2">STAGE 01 — IDENTITY SCAN</p>
+              <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600 mb-2">STAGE 01 — IDENTITY SCAN</p>
               <h2 className="font-pixel text-lg text-zinc-100">Who are you?</h2>
               <p className="mt-2 font-terminal text-base text-zinc-400">
                 Before we can build your system, we need to understand the person behind the goals.
@@ -351,7 +351,7 @@ export function DeepScanProtocol() {
 
             <div className="space-y-6">
               <div>
-                <label className="font-pixel text-[0.4rem] tracking-widest text-zinc-500 mb-2 block">
+                <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-2 block">
                   WHAT SHOULD WE CALL YOU?
                 </label>
                 <input
@@ -366,7 +366,7 @@ export function DeepScanProtocol() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="font-pixel text-[0.4rem] tracking-widest text-zinc-500 mb-2 block">AGE (OPTIONAL)</label>
+                  <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-2 block">AGE (OPTIONAL)</label>
                   <input
                     type="number"
                     value={age}
@@ -376,7 +376,7 @@ export function DeepScanProtocol() {
                   />
                 </div>
                 <div>
-                  <label className="font-pixel text-[0.4rem] tracking-widest text-zinc-500 mb-2 block">OCCUPATION (OPTIONAL)</label>
+                  <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-2 block">OCCUPATION (OPTIONAL)</label>
                   <input
                     type="text"
                     value={occupation}
@@ -388,7 +388,7 @@ export function DeepScanProtocol() {
               </div>
 
               <div>
-                <label className="font-pixel text-[0.4rem] tracking-widest text-zinc-500 mb-3 block">
+                <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-3 block">
                   LIFE STAGE — WHERE ARE YOU NOW?
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -415,7 +415,7 @@ export function DeepScanProtocol() {
               onClick={handleStage1}
               disabled={!nickname.trim()}
               className={cn(
-                'w-full border-2 py-3 font-pixel text-[0.5rem] tracking-widest transition-all duration-100',
+                'w-full border-2 py-3 font-pixel text-[0.65rem] tracking-widest transition-all duration-100',
                 nickname.trim()
                   ? 'border-orange-600 bg-orange-600 text-black shadow-[3px_3px_0px_rgba(0,0,0,0.8)] hover:bg-orange-500 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_rgba(0,0,0,0.8)]'
                   : 'border-zinc-800 text-zinc-600 cursor-not-allowed'
@@ -430,7 +430,7 @@ export function DeepScanProtocol() {
         {stage === 2 && (
           <div className="space-y-8">
             <div>
-              <p className="font-pixel text-[0.4rem] tracking-widest text-orange-600 mb-2">STAGE 02 — LIFE PILLAR ASSESSMENT</p>
+              <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600 mb-2">STAGE 02 — LIFE PILLAR ASSESSMENT</p>
               <h2 className="font-pixel text-lg text-zinc-100">Rate your life pillars</h2>
               <p className="mt-2 font-terminal text-base text-zinc-400">
                 Be brutally honest. Rate each area from 1 (critical) to 10 (thriving). Then select your top 3 priorities.
@@ -473,7 +473,7 @@ export function DeepScanProtocol() {
             </div>
 
             <div>
-              <label className="font-pixel text-[0.4rem] tracking-widest text-zinc-500 mb-3 block">
+              <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-3 block">
                 TOP 3 PRIORITIES — WHAT DO YOU WANT TO FIX FIRST?
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -506,7 +506,7 @@ export function DeepScanProtocol() {
               onClick={handleStage2}
               disabled={pillarPriorities.length < 1}
               className={cn(
-                'w-full border-2 py-3 font-pixel text-[0.5rem] tracking-widest transition-all duration-100',
+                'w-full border-2 py-3 font-pixel text-[0.65rem] tracking-widest transition-all duration-100',
                 pillarPriorities.length >= 1
                   ? 'border-orange-600 bg-orange-600 text-black shadow-[3px_3px_0px_rgba(0,0,0,0.8)] hover:bg-orange-500 active:translate-x-[2px] active:translate-y-[2px]'
                   : 'border-zinc-800 text-zinc-600 cursor-not-allowed'
@@ -521,7 +521,7 @@ export function DeepScanProtocol() {
         {stage === 3 && (
           <div className="space-y-8">
             <div>
-              <p className="font-pixel text-[0.4rem] tracking-widest text-orange-600 mb-2">STAGE 03 — ROOT CAUSE ANALYSIS</p>
+              <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600 mb-2">STAGE 03 — ROOT CAUSE ANALYSIS</p>
               <h2 className="font-pixel text-lg text-zinc-100">What&apos;s been stopping you?</h2>
               <p className="mt-2 font-terminal text-base text-zinc-400">
                 Understanding your patterns of failure is the first step to breaking them.
@@ -531,7 +531,7 @@ export function DeepScanProtocol() {
 
             <div className="space-y-6">
               <div>
-                <label className="font-pixel text-[0.4rem] tracking-widest text-zinc-500 mb-2 block">
+                <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-2 block">
                   WHAT&apos;S YOUR BIGGEST CHALLENGE RIGHT NOW? *
                 </label>
                 <textarea
@@ -544,7 +544,7 @@ export function DeepScanProtocol() {
               </div>
 
               <div>
-                <label className="font-pixel text-[0.4rem] tracking-widest text-zinc-500 mb-2 block">
+                <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-2 block">
                   WHAT HAVE YOU TRIED BEFORE THAT DIDN&apos;T WORK?
                 </label>
                 <textarea
@@ -557,7 +557,7 @@ export function DeepScanProtocol() {
               </div>
 
               <div>
-                <label className="font-pixel text-[0.4rem] tracking-widest text-zinc-500 mb-2 block">
+                <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-2 block">
                   WHAT USUALLY MAKES YOU QUIT?
                 </label>
                 <textarea
@@ -570,7 +570,7 @@ export function DeepScanProtocol() {
               </div>
 
               <div>
-                <label className="font-pixel text-[0.4rem] tracking-widest text-zinc-500 mb-3 block">
+                <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-3 block">
                   SELF-SABOTAGE PATTERNS — SELECT ALL THAT APPLY
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -597,7 +597,7 @@ export function DeepScanProtocol() {
               onClick={handleStage3}
               disabled={!biggestChallenge.trim()}
               className={cn(
-                'w-full border-2 py-3 font-pixel text-[0.5rem] tracking-widest transition-all duration-100',
+                'w-full border-2 py-3 font-pixel text-[0.65rem] tracking-widest transition-all duration-100',
                 biggestChallenge.trim()
                   ? 'border-orange-600 bg-orange-600 text-black shadow-[3px_3px_0px_rgba(0,0,0,0.8)] hover:bg-orange-500 active:translate-x-[2px] active:translate-y-[2px]'
                   : 'border-zinc-800 text-zinc-600 cursor-not-allowed'
@@ -612,7 +612,7 @@ export function DeepScanProtocol() {
         {stage === 4 && (
           <div className="space-y-8">
             <div>
-              <p className="font-pixel text-[0.4rem] tracking-widest text-orange-600 mb-2">STAGE 04 — BEHAVIORAL FINGERPRINT</p>
+              <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600 mb-2">STAGE 04 — BEHAVIORAL FINGERPRINT</p>
               <h2 className="font-pixel text-lg text-zinc-100">How do you operate?</h2>
               <p className="mt-2 font-terminal text-base text-zinc-400">
                 Your behavioral patterns determine how we calibrate the system.
@@ -622,7 +622,7 @@ export function DeepScanProtocol() {
 
             <div className="space-y-6">
               <div>
-                <label className="font-pixel text-[0.4rem] tracking-widest text-zinc-500 mb-3 block">
+                <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-3 block">
                   CHRONOTYPE — WHEN&apos;S YOUR PEAK?
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -645,7 +645,7 @@ export function DeepScanProtocol() {
               </div>
 
               <div>
-                <label className="font-pixel text-[0.4rem] tracking-widest text-zinc-500 mb-3 block">
+                <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-3 block">
                   MOTIVATION STYLE — WHAT DRIVES YOU?
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -668,7 +668,7 @@ export function DeepScanProtocol() {
               </div>
 
               <div>
-                <label className="font-pixel text-[0.4rem] tracking-widest text-zinc-500 mb-3 block">
+                <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-3 block">
                   ACCOUNTABILITY — WHAT KEEPS YOU ON TRACK?
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -693,7 +693,7 @@ export function DeepScanProtocol() {
 
             <button
               onClick={handleStage4}
-              className="w-full border-2 border-orange-600 bg-orange-600 py-3 font-pixel text-[0.5rem] tracking-widest text-black shadow-[3px_3px_0px_rgba(0,0,0,0.8)] transition-all duration-100 hover:bg-orange-500 active:translate-x-[2px] active:translate-y-[2px]"
+              className="w-full border-2 border-orange-600 bg-orange-600 py-3 font-pixel text-[0.65rem] tracking-widest text-black shadow-[3px_3px_0px_rgba(0,0,0,0.8)] transition-all duration-100 hover:bg-orange-500 active:translate-x-[2px] active:translate-y-[2px]"
             >
               CONTINUE TO COMMITMENT CALIBRATION →
             </button>
@@ -704,7 +704,7 @@ export function DeepScanProtocol() {
         {stage === 5 && (
           <div className="space-y-8">
             <div>
-              <p className="font-pixel text-[0.4rem] tracking-widest text-orange-600 mb-2">STAGE 05 — COMMITMENT CALIBRATION</p>
+              <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600 mb-2">STAGE 05 — COMMITMENT CALIBRATION</p>
               <h2 className="font-pixel text-lg text-zinc-100">How serious are you?</h2>
               <p className="mt-2 font-terminal text-base text-zinc-400">
                 This is the moment of truth. Be honest about your capacity and
@@ -714,7 +714,7 @@ export function DeepScanProtocol() {
 
             <div className="space-y-6">
               <div>
-                <label className="font-pixel text-[0.4rem] tracking-widest text-zinc-500 mb-2 block">
+                <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-2 block">
                   COMMITMENT LEVEL: {commitmentLevel}/10
                 </label>
                 <input
@@ -732,7 +732,7 @@ export function DeepScanProtocol() {
               </div>
 
               <div>
-                <label className="font-pixel text-[0.4rem] tracking-widest text-zinc-500 mb-2 block">
+                <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-2 block">
                   DAILY TIME AVAILABLE: {dailyTimeAvailable} MIN/DAY
                 </label>
                 <input
@@ -751,7 +751,7 @@ export function DeepScanProtocol() {
               </div>
 
               <div>
-                <label className="font-pixel text-[0.4rem] tracking-widest text-zinc-500 mb-3 block">
+                <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-3 block">
                   STARTING DIFFICULTY
                 </label>
                 <div className="grid grid-cols-3 gap-2">
@@ -778,7 +778,7 @@ export function DeepScanProtocol() {
               </div>
 
               <div>
-                <label className="font-pixel text-[0.4rem] tracking-widest text-zinc-500 mb-2 block">
+                <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-2 block">
                   YOUR 90-DAY VISION — WHAT DOES YOUR LIFE LOOK LIKE?
                 </label>
                 <textarea
@@ -791,7 +791,7 @@ export function DeepScanProtocol() {
               </div>
 
               <div>
-                <label className="font-pixel text-[0.4rem] tracking-widest text-zinc-500 mb-2 block">
+                <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-2 block">
                   BIGGEST FEAR ABOUT THIS JOURNEY
                 </label>
                 <textarea
@@ -806,7 +806,7 @@ export function DeepScanProtocol() {
 
             <button
               onClick={handleStage5}
-              className="w-full border-2 border-orange-600 bg-orange-600 py-3 font-pixel text-[0.5rem] tracking-widest text-black shadow-[3px_3px_0px_rgba(0,0,0,0.8)] transition-all duration-100 hover:bg-orange-500 active:translate-x-[2px] active:translate-y-[2px]"
+              className="w-full border-2 border-orange-600 bg-orange-600 py-3 font-pixel text-[0.65rem] tracking-widest text-black shadow-[3px_3px_0px_rgba(0,0,0,0.8)] transition-all duration-100 hover:bg-orange-500 active:translate-x-[2px] active:translate-y-[2px]"
             >
               GENERATE MY PROTOCOL →
             </button>
@@ -817,7 +817,7 @@ export function DeepScanProtocol() {
         {stage === 'generating' && (
           <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-8">
             <div className="text-center">
-              <p className="font-pixel text-[0.4rem] tracking-widest text-orange-600 mb-2">BUILDING YOUR SYSTEM</p>
+              <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600 mb-2">BUILDING YOUR SYSTEM</p>
               <h2 className="font-pixel text-lg text-zinc-100">Generating Protocol...</h2>
             </div>
 

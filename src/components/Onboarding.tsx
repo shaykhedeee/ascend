@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO - User Onboarding Flow with Goal Setup
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -244,7 +244,7 @@ export function Onboarding() {
           </div>
           <div>
             <h1 className="text-xl sm:text-2xl font-bold text-themed">RESURGO</h1>
-            <p className="text-[10px] sm:text-xs text-themed-muted">Rise to your potential</p>
+            <p className="text-xs sm:text-xs text-themed-muted">Rise to your potential</p>
           </div>
         </div>
 

@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO - Calendar View Component
 // Monthly calendar showing habit completions, tasks, and progress
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -184,7 +184,7 @@ export function CalendarView() {
             </div>
             <div className="min-w-0">
               <p className="text-lg sm:text-2xl font-bold text-themed">{monthlyStats.habitCompletion}%</p>
-              <p className="text-[10px] sm:text-xs text-themed-muted truncate">Habit Completion</p>
+              <p className="text-xs sm:text-xs text-themed-muted truncate">Habit Completion</p>
             </div>
           </div>
         </div>
@@ -196,7 +196,7 @@ export function CalendarView() {
             </div>
             <div className="min-w-0">
               <p className="text-lg sm:text-2xl font-bold text-themed">{monthlyStats.tasksCompleted}/{monthlyStats.totalTasks}</p>
-              <p className="text-[10px] sm:text-xs text-themed-muted truncate">Tasks Done</p>
+              <p className="text-xs sm:text-xs text-themed-muted truncate">Tasks Done</p>
             </div>
           </div>
         </div>
@@ -208,7 +208,7 @@ export function CalendarView() {
             </div>
             <div className="min-w-0">
               <p className="text-lg sm:text-2xl font-bold text-themed">{monthlyStats.streakDays}</p>
-              <p className="text-[10px] sm:text-xs text-themed-muted truncate">Streak Days</p>
+              <p className="text-xs sm:text-xs text-themed-muted truncate">Streak Days</p>
             </div>
           </div>
         </div>
@@ -220,7 +220,7 @@ export function CalendarView() {
             </div>
             <div className="min-w-0">
               <p className="text-lg sm:text-2xl font-bold text-themed">{monthlyStats.perfectDays}</p>
-              <p className="text-[10px] sm:text-xs text-themed-muted truncate">Perfect Days</p>
+              <p className="text-xs sm:text-xs text-themed-muted truncate">Perfect Days</p>
             </div>
           </div>
         </div>
@@ -256,7 +256,7 @@ export function CalendarView() {
         {/* Days of Week Header */}
         <div className="grid grid-cols-7 gap-0.5 sm:gap-1 mb-2">
           {DAYS_OF_WEEK.map((day) => (
-            <div key={day} className="text-center text-[10px] sm:text-xs font-medium text-themed-muted py-1 sm:py-2">
+            <div key={day} className="text-center text-xs sm:text-xs font-medium text-themed-muted py-1 sm:py-2">
               <span className="sm:hidden">{day.charAt(0)}</span>
               <span className="hidden sm:inline">{day}</span>
             </div>
@@ -313,7 +313,7 @@ export function CalendarView() {
                       "w-3 h-3",
                       day.tasksCompleted === day.tasksTotal ? "text-green-500" : "text-gold-400"
                     )} />
-                    <span className="text-[10px] text-themed-muted">{day.tasksCompleted}</span>
+                    <span className="text-xs text-themed-muted">{day.tasksCompleted}</span>
                   </div>
                 )}
                 

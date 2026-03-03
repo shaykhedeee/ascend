@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO - Skeleton Loader Components — PIXEL EDITION
 // Pixel-style loading states with stepped shimmer
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -307,7 +307,7 @@ export function SkeletonOverlay({
     )}>
       <div className="flex flex-col items-center gap-3">
         <div className="w-8 h-8 border-2 border-zinc-700 border-t-orange-500 animate-spin" style={{ borderRadius: '2px' }} />
-        <span className="font-pixel text-[0.5rem] uppercase tracking-wider text-[var(--text-muted)]">Loading...</span>
+        <span className="font-pixel text-[0.65rem] uppercase tracking-wider text-[var(--text-muted)]">Loading...</span>
       </div>
     </div>
   );

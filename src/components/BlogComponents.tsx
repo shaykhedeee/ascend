@@ -19,7 +19,7 @@ export function StatCard({ label, value, change, trend, color = '#f97316' }: Sta
   return (
     <div className="border-2 border-zinc-800 bg-zinc-950 p-4 font-mono">
       <div className="mb-1 flex items-center justify-between">
-        <span className="text-[9px] tracking-widest text-zinc-400">{label}</span>
+        <span className="text-[11px] tracking-widest text-zinc-400">{label}</span>
         {change && (
           <div className="flex items-center gap-1">
             {trend === 'up' ? (
@@ -27,7 +27,7 @@ export function StatCard({ label, value, change, trend, color = '#f97316' }: Sta
             ) : (
               <TrendingDown className="h-3 w-3 text-red-500" />
             )}
-            <span className={`text-[9px] ${trend === 'up' ? 'text-green-500' : 'text-red-500'}`}>
+            <span className={`text-[11px] ${trend === 'up' ? 'text-green-500' : 'text-red-500'}`}>
               {change}
             </span>
           </div>
@@ -71,7 +71,7 @@ export function PixelChart({ title, data, maxValue, height = 120 }: PixelChartPr
           
           return (
             <div key={i}>
-              <div className="mb-1 flex items-center justify-between text-[9px]">
+              <div className="mb-1 flex items-center justify-between text-[11px]">
                 <span className="text-zinc-400">{point.label}</span>
                 <span className="font-bold text-zinc-200">{point.value}%</span>
               </div>
@@ -137,7 +137,7 @@ export function Timeline({ title, points }: TimelineProps) {
             </div>
             <div className="flex-1 pb-2">
               <h4 className="mb-1 text-xs font-bold text-zinc-200">{point.label}</h4>
-              <p className="text-[10px] leading-relaxed text-zinc-500">{point.description}</p>
+              <p className="text-xs leading-relaxed text-zinc-500">{point.description}</p>
             </div>
           </div>
         ))}
@@ -166,13 +166,13 @@ export function ComparisonTable({ title, rows }: ComparisonTableProps) {
         <h3 className="text-xs font-bold tracking-widest text-orange-500">{title}</h3>
       </div>
       <div className="divide-y divide-zinc-900">
-        <div className="grid grid-cols-3 gap-2 bg-zinc-900 p-2 text-[9px] font-bold tracking-widest text-zinc-400">
+        <div className="grid grid-cols-3 gap-2 bg-zinc-900 p-2 text-[11px] font-bold tracking-widest text-zinc-400">
           <div>METRIC</div>
           <div className="text-red-500">BEFORE</div>
           <div className="text-green-500">AFTER</div>
         </div>
         {rows.map((row, i) => (
-          <div key={i} className="grid grid-cols-3 gap-2 p-2 text-[10px]">
+          <div key={i} className="grid grid-cols-3 gap-2 p-2 text-xs">
             <div className="text-zinc-300">{row.label}</div>
             <div className="text-red-400">{row.before}</div>
             <div className="text-green-400">{row.after}</div>
@@ -202,10 +202,10 @@ export function Highlight({ text, author, icon = 'brain' }: QuoteProps) {
     <div className="my-6 border-l-4 border-orange-500 bg-orange-500/5 p-4 font-mono">
       <div className="mb-2 flex items-center gap-2">
         {icons[icon]}
-        <span className="text-[8px] tracking-widest text-orange-500">KEY INSIGHT</span>
+        <span className="text-xs tracking-widest text-orange-500">KEY INSIGHT</span>
       </div>
       <p className="mb-2 text-sm leading-relaxed text-zinc-200">{text}</p>
-      {author && <p className="text-[10px] text-zinc-500">— {author}</p>}
+      {author && <p className="text-xs text-zinc-500">— {author}</p>}
     </div>
   );
 }
@@ -235,7 +235,7 @@ export function Steps({ title, steps }: StepsProps) {
             </div>
             <div className="flex-1">
               <h4 className="mb-1 text-xs font-bold text-zinc-200">{step.title}</h4>
-              <p className="text-[10px] leading-relaxed text-zinc-500">{step.description}</p>
+              <p className="text-xs leading-relaxed text-zinc-500">{step.description}</p>
             </div>
           </div>
         ))}
@@ -265,7 +265,7 @@ export function StatGrid({ stats }: StatGridProps) {
           >
             {stat.value}
           </div>
-          <div className="text-[9px] tracking-wider text-zinc-500">{stat.label}</div>
+          <div className="text-[11px] tracking-wider text-zinc-500">{stat.label}</div>
         </div>
       ))}
     </div>

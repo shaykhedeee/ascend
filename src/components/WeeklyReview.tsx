@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO - Weekly Review System
 // Structured weekly check-in for reflection, planning, and goal adjustment
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -293,7 +293,7 @@ export function WeeklyReview({ isOpen, onClose }: WeeklyReviewProps) {
                 >
                   {stats.completed}
                 </div>
-                <span className="text-[10px] text-themed-muted">
+                <span className="text-xs text-themed-muted">
                   {format(day, 'EEE')}
                 </span>
               </div>
@@ -525,7 +525,7 @@ export function WeeklyReview({ isOpen, onClose }: WeeklyReviewProps) {
                       <span
                         key={i}
                         className={cn(
-                          "text-[10px] px-2 py-0.5 rounded-full",
+                          "text-xs px-2 py-0.5 rounded-full",
                           m.status === 'completed' ? "bg-green-500/20 text-green-300" :
                           m.status === 'in_progress' ? "bg-amber-500/20 text-amber-300" :
                           "bg-white/5 text-themed-muted"

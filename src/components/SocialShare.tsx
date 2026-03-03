@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════════════════════════════
 // RESURGOIFY - Social Sharing Component
 // Share progress, streaks, and achievements on social media
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -255,7 +255,7 @@ export function SocialShare({
             )}
           >
             <btn.icon className="w-5 h-5" />
-            <span className="text-[10px] text-themed-muted">{btn.label}</span>
+            <span className="text-xs text-themed-muted">{btn.label}</span>
           </button>
         ))}
       </div>

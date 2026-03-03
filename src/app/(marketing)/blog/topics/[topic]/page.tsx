@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -91,7 +91,7 @@ export default function BlogTopicDetailPage({ params }: { params: { topic: strin
         </Link>
 
         <div className="mb-8 border border-zinc-900 bg-zinc-950 p-6">
-          <p className="font-mono text-[10px] tracking-widest text-orange-500">TOPIC_CLUSTER</p>
+          <p className="font-mono text-xs tracking-widest text-orange-500">TOPIC_CLUSTER</p>
           <h1 className="mt-2 font-mono text-2xl font-bold text-zinc-100">{cluster.title}</h1>
           <p className="mt-2 font-mono text-xs text-zinc-500">{cluster.description}</p>
         </div>
@@ -109,7 +109,7 @@ export default function BlogTopicDetailPage({ params }: { params: { topic: strin
               />
               <h2 className="font-mono text-base font-bold text-zinc-100">{post.title}</h2>
               <p className="mt-2 font-mono text-xs leading-relaxed text-zinc-500">{post.desc}</p>
-              <p className="mt-3 font-mono text-[10px] text-zinc-400">{post.date} · {post.readTime}</p>
+              <p className="mt-3 font-mono text-xs text-zinc-400">{post.date} · {post.readTime}</p>
             </Link>
           ))}
         </div>

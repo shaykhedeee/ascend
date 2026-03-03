@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO — Interactive Terminal Demo
@@ -153,7 +153,7 @@ export function TerminalDemo() {
     <section className="border-t-2 border-zinc-800 bg-black px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
       <div className="mx-auto max-w-3xl">
         <div className="text-center mb-8">
-          <p className="font-pixel text-[0.4rem] tracking-widest text-orange-600">LIVE_DEMO</p>
+          <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">LIVE_DEMO</p>
           <h2 className="mt-3 font-pixel text-lg text-zinc-100 sm:text-xl">
             Try It Now — Enter Your Goal
           </h2>
@@ -171,7 +171,7 @@ export function TerminalDemo() {
                 'h-2 w-2 rounded-full',
                 phase === 'scanning' ? 'animate-pulse bg-orange-500' : 'bg-green-500'
               )} />
-              <span className="font-pixel text-[0.4rem] tracking-widest text-orange-500">RESURGO://DIAGNOSTIC</span>
+              <span className="font-pixel text-[0.6rem] tracking-widest text-orange-500">RESURGO://DIAGNOSTIC</span>
             </div>
             <span className="font-pixel text-[0.35rem] tracking-widest text-zinc-500">
               {phase === 'idle' && 'AWAITING_INPUT'}
@@ -252,7 +252,7 @@ export function TerminalDemo() {
             {phase === 'complete' && result && (
               <div className="mt-6 space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
                 <div className="border border-orange-900/50 bg-orange-950/20 p-4">
-                  <p className="text-orange-500 font-pixel text-[0.4rem] tracking-widest mb-2">DIAGNOSTIC_RESULT</p>
+                  <p className="text-orange-500 font-pixel text-[0.6rem] tracking-widest mb-2">DIAGNOSTIC_RESULT</p>
                   
                   <div className="grid grid-cols-2 gap-3 mb-4">
                     <div className="border border-zinc-800 bg-black p-2">
@@ -298,7 +298,7 @@ export function TerminalDemo() {
                     </a>
                     <button
                       onClick={reset}
-                      className="border-2 border-zinc-800 px-4 py-2 font-pixel text-[0.4rem] tracking-widest text-zinc-500 hover:text-zinc-300 hover:border-zinc-600 transition"
+                      className="border-2 border-zinc-800 px-4 py-2 font-pixel text-[0.6rem] tracking-widest text-zinc-500 hover:text-zinc-300 hover:border-zinc-600 transition"
                     >
                       RESET
                     </button>

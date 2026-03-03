@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO - Template Library
 // Pre-built habit and goal templates for quick start
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -669,7 +669,7 @@ export function TemplateLibrary({ isOpen, onClose, type = 'all' }: TemplateLibra
                       
                       {/* Popular Badge */}
                       {habit.popular && (
-                        <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-gold-400/20 text-gold-400 text-[10px] font-medium">
+                        <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-gold-400/20 text-gold-400 text-xs font-medium">
                           Popular
                         </div>
                       )}
@@ -716,7 +716,7 @@ export function TemplateLibrary({ isOpen, onClose, type = 'all' }: TemplateLibra
                               {goal.title}
                             </h4>
                             {goal.popular && (
-                              <span className="px-2 py-0.5 rounded-full bg-gold-400/20 text-gold-400 text-[10px] font-medium">
+                              <span className="px-2 py-0.5 rounded-full bg-gold-400/20 text-gold-400 text-xs font-medium">
                                 Popular
                               </span>
                             )}

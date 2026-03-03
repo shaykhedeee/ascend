@@ -67,7 +67,7 @@ export function Header({ activeTab, onTabChange, onOpenSettings, onOpenUpgrade }
             <div className="relative">
               <Logo size="md" />
               <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-gold-400 
-                            flex items-center justify-center text-[8px] font-bold text-black z-10">
+                            flex items-center justify-center text-xs font-bold text-black z-10">
                 {user.gamification.level}
               </div>
             </div>
@@ -76,7 +76,7 @@ export function Header({ activeTab, onTabChange, onOpenSettings, onOpenUpgrade }
                   style={{ color: 'var(--text-primary)' }}>
                 RESURGO
               </h1>
-              <p className="text-[10px] -mt-0.5" style={{ color: 'var(--text-muted)' }}>
+              <p className="text-xs -mt-0.5" style={{ color: 'var(--text-muted)' }}>
                 Rise to your potential
               </p>
             </div>

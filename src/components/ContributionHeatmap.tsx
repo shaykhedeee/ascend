@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════════════════════════════
 // Resurgo — Contribution Heatmap
 // GitHub-style activity grid showing daily habit/task completion history
 // "Don't break the chain" visual motivation
@@ -283,7 +283,7 @@ export function ContributionHeatmap({ className, compact = false }: Contribution
             {monthLabels.map((label, i) => (
               <div
                 key={i}
-                className="text-[10px] text-themed-muted"
+                className="text-xs text-themed-muted"
                 style={{
                   position: 'relative',
                   left: `${label.weekIndex * 14}px`,
@@ -357,14 +357,14 @@ export function ContributionHeatmap({ className, compact = false }: Contribution
 
       {/* Legend */}
       <div className="flex items-center justify-end gap-1.5 mt-3">
-        <span className="text-[10px] text-themed-muted mr-1">Less</span>
+        <span className="text-xs text-themed-muted mr-1">Less</span>
         {colors.map((color, i) => (
           <div
             key={i}
             className={cn('w-[10px] h-[10px] rounded-[2px]', color)}
           />
         ))}
-        <span className="text-[10px] text-themed-muted ml-1">More</span>
+        <span className="text-xs text-themed-muted ml-1">More</span>
       </div>
     </div>
   );

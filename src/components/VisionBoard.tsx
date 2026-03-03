@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useQuery } from 'convex/react';
@@ -192,7 +192,7 @@ export function VisionBoard({ canRegenerate = false }: VisionBoardProps) {
         <div className="flex items-center justify-center mb-3">
           <div className="inline-flex items-center gap-2 border border-amber-800 bg-amber-950/20 px-3 py-1 rounded-full">
             <Crown className="h-4 w-4 text-amber-400" />
-            <span className="text-[10px] tracking-widest font-mono text-amber-400">PRO_FEATURE</span>
+            <span className="text-xs tracking-widest font-mono text-amber-400">PRO_FEATURE</span>
           </div>
         </div>
 
@@ -229,7 +229,7 @@ export function VisionBoard({ canRegenerate = false }: VisionBoardProps) {
             <Crown className="h-3.5 w-3.5" />
             [UPGRADE_TO_PRO]
           </Link>
-          <span className="font-mono text-[10px] text-zinc-500">Current plan: {plan.toUpperCase()}</span>
+          <span className="font-mono text-xs text-zinc-500">Current plan: {plan.toUpperCase()}</span>
         </div>
       </div>
     );
@@ -517,14 +517,14 @@ function PanelCard({
         style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)' }}
       >
         <div className="flex items-center gap-1 mb-1">
-          <span className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: accentColor }}>
+          <span className="text-xs uppercase tracking-wider font-semibold" style={{ color: accentColor }}>
             {CATEGORY_ICONS[panel.category]} {panel.category}
           </span>
         </div>
         <h3 className="text-white font-bold text-xs leading-tight mb-1 line-clamp-2">
           {panel.goalTitle}
         </h3>
-        <p className="text-zinc-300 text-[10px] italic line-clamp-2">
+        <p className="text-zinc-300 text-xs italic line-clamp-2">
           &ldquo;{panel.affirmation}&rdquo;
         </p>
         {/* Progress bar */}
@@ -535,7 +535,7 @@ function PanelCard({
               style={{ width: `${panel.progress}%`, backgroundColor: accentColor }}
             />
           </div>
-          <span className="text-[10px] text-zinc-400 mt-0.5 block">{panel.progress}% complete</span>
+          <span className="text-xs text-zinc-400 mt-0.5 block">{panel.progress}% complete</span>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BLOG_TOPIC_CLUSTERS, getPostsForCluster } from '@/lib/blog/post-index';
 
@@ -82,10 +82,10 @@ export default function BlogTopicsPage() {
                 href={`/blog/topics/${cluster.slug}`}
                 className="block border border-zinc-900 bg-zinc-950 p-5 transition hover:border-zinc-700"
               >
-                <p className="font-mono text-[10px] tracking-widest text-orange-500">CLUSTER</p>
+                <p className="font-mono text-xs tracking-widest text-orange-500">CLUSTER</p>
                 <h2 className="mt-2 font-mono text-base font-bold text-zinc-100">{cluster.title}</h2>
                 <p className="mt-2 font-mono text-xs leading-relaxed text-zinc-500">{cluster.description}</p>
-                <p className="mt-3 font-mono text-[10px] text-zinc-400">{postCount} related articles</p>
+                <p className="mt-3 font-mono text-xs text-zinc-400">{postCount} related articles</p>
               </Link>
             );
           })}

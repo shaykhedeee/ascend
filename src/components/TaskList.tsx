@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO - TaskList Component (TickTick-inspired)
 // Comprehensive task management with priorities, due dates, subtasks, smart lists
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -346,13 +346,13 @@ function TaskItem({ task, onToggle, onToggleStar, onDelete, onEdit, onToggleSubt
 
             {/* Tags */}
             {task.tags.slice(0, 2).map(tag => (
-              <span key={tag} className="px-1.5 py-0.5 text-[10px] rounded bg-white/5 text-themed-muted">
+              <span key={tag} className="px-1.5 py-0.5 text-xs rounded bg-white/5 text-themed-muted">
                 #{tag}
               </span>
             ))}
 
             {/* XP Reward */}
-            <span className="text-[10px] text-gold-400 font-medium">
+            <span className="text-xs text-gold-400 font-medium">
               +{task.xpReward} XP
             </span>
 

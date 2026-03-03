@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO — Morning Check-In Component
@@ -121,7 +121,7 @@ export function MorningCheckIn({ onComplete, userName }: MorningCheckInProps) {
     return (
       <div className="border border-emerald-900 bg-emerald-950/20 p-6 text-center animate-fade-in">
         <Check className="mx-auto h-6 w-6 text-emerald-400 mb-2" />
-        <p className="font-pixel text-[0.5rem] tracking-widest text-emerald-400">MORNING_CHECK_IN_COMPLETE</p>
+        <p className="font-pixel text-[0.65rem] tracking-widest text-emerald-400">MORNING_CHECK_IN_COMPLETE</p>
         <p className="mt-2 font-terminal text-sm text-zinc-400">You&apos;re locked in. Let&apos;s go.</p>
       </div>
     );
@@ -133,7 +133,7 @@ export function MorningCheckIn({ onComplete, userName }: MorningCheckInProps) {
       <div className="flex items-center justify-between border-b border-zinc-800 px-4 py-2.5">
         <div className="flex items-center gap-2">
           <Sun className="h-3.5 w-3.5 text-amber-500" />
-          <span className="font-pixel text-[0.4rem] tracking-widest text-amber-400">MORNING_CHECK_IN</span>
+          <span className="font-pixel text-[0.6rem] tracking-widest text-amber-400">MORNING_CHECK_IN</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="font-terminal text-xs text-zinc-500">Step {stepIndex + 1}/{steps.length - 1}</span>
@@ -281,7 +281,7 @@ export function MorningCheckIn({ onComplete, userName }: MorningCheckInProps) {
           <div className="animate-fade-in">
             <div className="flex items-center gap-2 mb-3">
               <Brain className="h-3.5 w-3.5 text-amber-500" />
-              <span className="font-pixel text-[0.4rem] tracking-widest text-amber-400">AI_MORNING_BRIEFING</span>
+              <span className="font-pixel text-[0.6rem] tracking-widest text-amber-400">AI_MORNING_BRIEFING</span>
             </div>
 
             {isGenerating ? (
@@ -301,15 +301,15 @@ export function MorningCheckIn({ onComplete, userName }: MorningCheckInProps) {
             {/* Summary */}
             <div className="mt-4 grid grid-cols-3 gap-2">
               <div className="border border-zinc-800 bg-zinc-900/50 p-2 text-center">
-                <p className="font-pixel text-[0.3rem] tracking-widest text-zinc-500">MOOD</p>
+                <p className="font-pixel text-[0.55rem] tracking-widest text-zinc-500">MOOD</p>
                 <p className="font-terminal text-lg">{MOOD_OPTIONS[mood - 1]?.emoji}</p>
               </div>
               <div className="border border-zinc-800 bg-zinc-900/50 p-2 text-center">
-                <p className="font-pixel text-[0.3rem] tracking-widest text-zinc-500">ENERGY</p>
+                <p className="font-pixel text-[0.55rem] tracking-widest text-zinc-500">ENERGY</p>
                 <p className="font-terminal text-lg text-orange-400">{ENERGY_OPTIONS[energy - 1]?.icon}</p>
               </div>
               <div className="border border-zinc-800 bg-zinc-900/50 p-2 text-center">
-                <p className="font-pixel text-[0.3rem] tracking-widest text-zinc-500">SLEEP</p>
+                <p className="font-pixel text-[0.55rem] tracking-widest text-zinc-500">SLEEP</p>
                 <p className="font-terminal text-sm text-violet-400">{SLEEP_OPTIONS[sleep - 1]?.label}</p>
               </div>
             </div>

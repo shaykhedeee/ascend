@@ -58,10 +58,10 @@ module.exports = {
       },
       fontSize: {
         // Pixel font sizes (Press Start 2P needs smaller sizes)
-        'pixel-xs': ['0.5rem', { lineHeight: '1.6' }],
-        'pixel-sm': ['0.6rem', { lineHeight: '1.5' }],
-        'pixel-md': ['0.7rem', { lineHeight: '1.4' }],
-        'pixel-lg': ['0.85rem', { lineHeight: '1.3' }],
+        'pixel-xs': ['0.625rem', { lineHeight: '1.6' }],
+        'pixel-sm': ['0.7rem', { lineHeight: '1.5' }],
+        'pixel-md': ['0.8rem', { lineHeight: '1.4' }],
+        'pixel-lg': ['0.9rem', { lineHeight: '1.3' }],
         'pixel-xl': ['1rem', { lineHeight: '1.3' }],
         'pixel-2xl': ['1.25rem', { lineHeight: '1.2' }],
         // Terminal sizes (VT323 is taller)

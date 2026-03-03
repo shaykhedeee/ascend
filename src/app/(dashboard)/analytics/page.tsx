@@ -51,7 +51,7 @@ export default function AnalyticsPage() {
         <div className="mb-6 border border-zinc-900 bg-zinc-950">
           <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
-            <span className="font-mono text-[9px] tracking-widest text-orange-600">TELEMETRY :: GROWTH_PROFILE_READOUT</span>
+            <span className="font-mono text-[11px] tracking-widest text-orange-600">TELEMETRY :: GROWTH_PROFILE_READOUT</span>
           </div>
           <div className="px-5 py-4">
             <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">Analytics</h1>
@@ -64,8 +64,8 @@ export default function AnalyticsPage() {
         {/* ── XP LEVEL PANEL ── */}
         <div className="mb-6 border border-zinc-900 bg-zinc-950">
           <div className="flex items-center justify-between border-b border-zinc-900 px-5 py-2">
-            <span className="font-mono text-[10px] tracking-widest text-zinc-500">OPERATOR_LEVEL</span>
-            <span className="font-mono text-[10px] tracking-widest text-orange-600">{profile.tier?.toUpperCase()} ACCESS</span>
+            <span className="font-mono text-xs tracking-widest text-zinc-500">OPERATOR_LEVEL</span>
+            <span className="font-mono text-xs tracking-widest text-orange-600">{profile.tier?.toUpperCase()} ACCESS</span>
           </div>
           <div className="flex flex-col gap-4 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-4">
@@ -83,7 +83,7 @@ export default function AnalyticsPage() {
             </div>
           </div>
           <div className="px-5 pb-4">
-            <div className="mb-1 flex justify-between font-mono text-[10px] text-zinc-400">
+            <div className="mb-1 flex justify-between font-mono text-xs text-zinc-400">
               <span>LVL_{profile.level}</span>
               <span>{xpPercent}%</span>
               <span>LVL_{profile.level + 1}</span>
@@ -98,9 +98,9 @@ export default function AnalyticsPage() {
         <div className="mb-6 grid grid-cols-2 gap-px border border-zinc-900 sm:grid-cols-4">
           {statCards.map(({ label, value, sub }) => (
             <div key={label} className="bg-zinc-950 px-4 py-3 transition hover:bg-zinc-900">
-              <p className="font-mono text-[9px] tracking-widest text-zinc-400">{label.replace(/ /g, '_').toUpperCase()}</p>
+              <p className="font-mono text-[11px] tracking-widest text-zinc-400">{label.replace(/ /g, '_').toUpperCase()}</p>
               <p className="mt-0.5 font-mono text-xl font-bold text-zinc-100">{value}</p>
-              {sub && <p className="mt-0.5 font-mono text-[10px] text-zinc-400">{sub}</p>}
+              {sub && <p className="mt-0.5 font-mono text-xs text-zinc-400">{sub}</p>}
             </div>
           ))}
         </div>
@@ -114,15 +114,15 @@ export default function AnalyticsPage() {
             <div className="space-y-px p-1">
               {(([['TOTAL_SESSIONS', focusStats.totalSessions], ['TOTAL_MINUTES', focusStats.totalMinutes], ['AVG_SESSION', `${focusStats.avgMinutes}_MIN`], ['AVG_FOCUS_SCORE', focusStats.avgFocusScore || 'N/A'], ['TOTAL_DISTRACTIONS', focusStats.totalDistractions], ['BEST_DAY_STREAK', `${focusStats.bestStreak}_DAYS`]]) as [string, string | number][]).map(([label, val]) => (
                 <div key={label} className="flex items-center justify-between px-3 py-2">
-                  <span className="font-mono text-[10px] tracking-widest text-zinc-400">{label}</span>
+                  <span className="font-mono text-xs tracking-widest text-zinc-400">{label}</span>
                   <span className="font-mono text-xs text-zinc-200">{val}</span>
                 </div>
               ))}
               <div className="border-t border-zinc-900 px-3 pt-2 pb-1">
-                <p className="mb-1.5 font-mono text-[10px] tracking-widest text-zinc-400">BY_METHOD</p>
+                <p className="mb-1.5 font-mono text-xs tracking-widest text-zinc-400">BY_METHOD</p>
                 {Object.entries(focusStats.byType).map(([key, count]) =>
                   (count as number) > 0 ? (
-                    <div key={key} className="flex justify-between py-0.5 font-mono text-[10px]">
+                    <div key={key} className="flex justify-between py-0.5 font-mono text-xs">
                       <span className="text-zinc-400">{key.replace('_', '_').toUpperCase()}</span>
                       <span className="text-zinc-400">{count as number}</span>
                     </div>
@@ -139,7 +139,7 @@ export default function AnalyticsPage() {
             <div className="space-y-px p-1">
               {(([['NODES_COMPLETED', profile.totalHabitsCompleted], ['CURRENT_UPTIME', `${profile.currentStreak}_DAYS`], ['PEAK_UPTIME', `${profile.longestStreak}_DAYS`], ['OBJECTIVES_COMPLETED', profile.totalGoalsCompleted], ['FOCUS_MINUTES', profile.totalFocusMinutes], ['COINS_EARNED', profile.coins]]) as [string, string | number][]).map(([label, val]) => (
                 <div key={label} className="flex items-center justify-between px-3 py-2">
-                  <span className="font-mono text-[10px] tracking-widest text-zinc-400">{label}</span>
+                  <span className="font-mono text-xs tracking-widest text-zinc-400">{label}</span>
                   <span className="font-mono text-xs text-zinc-200">{val}</span>
                 </div>
               ))}
@@ -151,14 +151,14 @@ export default function AnalyticsPage() {
         <div className="border border-zinc-900 bg-zinc-950">
           <div className="flex items-center justify-between border-b border-zinc-900 px-4 py-2.5">
             <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">ACHIEVEMENT_LOG</span>
-            <span className="border border-orange-900 bg-orange-950/30 px-2 py-0.5 font-mono text-[9px] tracking-widest text-orange-600">
+            <span className="border border-orange-900 bg-orange-950/30 px-2 py-0.5 font-mono text-[11px] tracking-widest text-orange-600">
               {profile.achievements.length}_UNLOCKED
             </span>
           </div>
           {profile.achievements.length === 0 ? (
             <div className="py-12 text-center">
               <p className="font-mono text-xs tracking-widest text-zinc-400">NO_ACHIEVEMENTS_YET</p>
-              <p className="mt-2 font-mono text-[10px] text-zinc-400">Continue building nodes and objectives to unlock rewards.</p>
+              <p className="mt-2 font-mono text-xs text-zinc-400">Continue building nodes and objectives to unlock rewards.</p>
             </div>
           ) : (
             <div className="grid gap-px p-1 sm:grid-cols-2 lg:grid-cols-3">
@@ -169,9 +169,9 @@ export default function AnalyticsPage() {
                     <span className="text-xl leading-none">{a.icon}</span>
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-mono text-xs text-zinc-200">{a.name.toUpperCase()}</p>
-                      <p className="mt-0.5 line-clamp-2 font-mono text-[10px] text-zinc-400">{a.description}</p>
+                      <p className="mt-0.5 line-clamp-2 font-mono text-xs text-zinc-400">{a.description}</p>
                       {a.rarity && (
-                        <span className={`mt-1 inline-block border px-1.5 py-0.5 font-mono text-[9px] tracking-widest ${rarityClass}`}>
+                        <span className={`mt-1 inline-block border px-1.5 py-0.5 font-mono text-[11px] tracking-widest ${rarityClass}`}>
                           {a.rarity.toUpperCase()}
                         </span>
                       )}

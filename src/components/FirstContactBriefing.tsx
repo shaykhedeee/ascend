@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO — First Contact Briefing
@@ -235,7 +235,7 @@ export function FirstContactBriefing() {
       <div className="flex min-h-screen items-center justify-center bg-black">
         <div className="flex items-center gap-3">
           <div className="h-3 w-3 bg-orange-600 animate-pulse" />
-          <span className="font-pixel text-[0.4rem] tracking-widest text-zinc-500">LOADING DEEP SCAN DATA...</span>
+          <span className="font-pixel text-[0.6rem] tracking-widest text-zinc-500">LOADING DEEP SCAN DATA...</span>
         </div>
       </div>
     );
@@ -360,11 +360,11 @@ export function FirstContactBriefing() {
                 {/* Stats bar */}
                 {briefing.stats.providersUsed.length > 0 && (
                   <div className="flex flex-wrap gap-2 justify-center">
-                    <span className="font-pixel text-[0.3rem] tracking-widest text-zinc-600 px-2 py-1">
+                    <span className="font-pixel text-[0.55rem] tracking-widest text-zinc-600 px-2 py-1">
                       POWERED BY {briefing.stats.providersUsed.length} AI{briefing.stats.providersUsed.length > 1 ? 's' : ''}
                     </span>
                     {briefing.stats.providersUsed.map((p) => (
-                      <span key={p} className="font-pixel text-[0.3rem] tracking-widest text-zinc-600 border border-zinc-900 px-2 py-1">
+                      <span key={p} className="font-pixel text-[0.55rem] tracking-widest text-zinc-600 border border-zinc-900 px-2 py-1">
                         {p.toUpperCase()}
                       </span>
                     ))}
@@ -375,7 +375,7 @@ export function FirstContactBriefing() {
                 <div className="text-center">
                   <button
                     onClick={handleContinue}
-                    className="border-2 border-orange-600 bg-orange-600 px-8 py-4 font-pixel text-[0.5rem] tracking-widest text-black shadow-[4px_4px_0px_rgba(0,0,0,0.8)] transition-all hover:bg-orange-500 active:translate-x-[2px] active:translate-y-[2px]"
+                    className="border-2 border-orange-600 bg-orange-600 px-8 py-4 font-pixel text-[0.65rem] tracking-widest text-black shadow-[4px_4px_0px_rgba(0,0,0,0.8)] transition-all hover:bg-orange-500 active:translate-x-[2px] active:translate-y-[2px]"
                   >
                     ENTER COMMAND CENTER →
                   </button>

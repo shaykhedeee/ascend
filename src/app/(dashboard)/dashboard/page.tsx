@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO — Dashboard Command Center (Today View)
@@ -152,7 +152,7 @@ export default function DashboardPage() {
       <div className="mb-6 border border-zinc-900 bg-zinc-950 shadow-[0_0_0_1px_rgba(39,39,42,0.25)]">
         <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2.5">
           <span className="h-2 w-2 animate-pulse rounded-full bg-orange-600" />
-          <span className="font-pixel text-[0.4rem] tracking-widest text-orange-500">COMMAND_CENTER</span>
+          <span className="font-pixel text-[0.6rem] tracking-widest text-orange-500">COMMAND_CENTER</span>
           <span className="ml-auto font-terminal text-xs tracking-widest text-zinc-400">
             {today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
           </span>
@@ -398,7 +398,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2 border-b border-zinc-900 px-4 py-2.5">
             <Brain className="h-3.5 w-3.5 text-zinc-500" />
             <span className="font-terminal text-sm font-bold text-zinc-100">AI Insight</span>
-            <span className="ml-auto border border-green-900 bg-green-950/30 px-2 py-0.5 font-pixel text-[0.3rem] tracking-widest text-green-600">LIVE</span>
+            <span className="ml-auto border border-green-900 bg-green-950/30 px-2 py-0.5 font-pixel text-[0.55rem] tracking-widest text-green-600">LIVE</span>
           </div>
           <div className="p-4">
             <p className="font-terminal text-sm leading-relaxed text-zinc-300">
@@ -496,7 +496,7 @@ function MorningBriefingCard({ briefing, mood, energy }: { briefing: string; moo
       >
         <div className="flex items-center gap-2">
           <Sun className="h-3.5 w-3.5 text-amber-500" />
-          <span className="font-pixel text-[0.4rem] tracking-widest text-amber-400">AI_MORNING_BRIEFING</span>
+          <span className="font-pixel text-[0.6rem] tracking-widest text-amber-400">AI_MORNING_BRIEFING</span>
           <span className="ml-2 text-sm">{moodEmojis[mood] ?? ''}</span>
           <span className="font-terminal text-sm text-orange-400">{energyBars[energy] ?? ''}</span>
         </div>

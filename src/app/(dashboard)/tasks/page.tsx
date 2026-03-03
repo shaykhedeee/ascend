@@ -114,7 +114,7 @@ export default function TasksPage() {
         <div className="mb-6 border border-zinc-900 bg-zinc-950">
           <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
-            <span className="font-mono text-[9px] tracking-widest text-orange-600">TASK_QUEUE :: EXECUTION_SUBSYSTEM</span>
+            <span className="font-mono text-[11px] tracking-widest text-orange-600">TASK_QUEUE :: EXECUTION_SUBSYSTEM</span>
           </div>
           <div className="flex flex-col gap-4 px-5 py-4 md:flex-row md:items-center md:justify-between">
             <div>
@@ -153,7 +153,7 @@ export default function TasksPage() {
               <button
                 key={label}
                 onClick={() => setStatusFilter(key)}
-                className={`flex-1 py-2.5 font-mono text-[10px] tracking-widest transition border-b-2 ${
+                className={`flex-1 py-2.5 font-mono text-xs tracking-widest transition border-b-2 ${
                   statusFilter === key
                     ? 'border-orange-600 bg-orange-950/20 text-orange-500'
                     : 'border-transparent bg-zinc-950 text-zinc-400 hover:text-zinc-300'
@@ -171,8 +171,8 @@ export default function TasksPage() {
             {(!tasks || tasks.length === 0) ? (
               <div className="border border-dashed border-zinc-800 py-16 text-center">
                 <p className="font-mono text-xs tracking-widest text-zinc-400">Queue empty</p>
-                <p className="mt-2 font-mono text-[10px] text-zinc-400">No tasks in queue. Add a task to begin.</p>
-                <button onClick={() => setShowCreate(true)} className="mt-4 border border-zinc-800 bg-zinc-900 px-4 py-2 font-mono text-[10px] tracking-widest text-zinc-500 transition hover:border-orange-900 hover:text-orange-500">
+                <p className="mt-2 font-mono text-xs text-zinc-400">No tasks in queue. Add a task to begin.</p>
+                <button onClick={() => setShowCreate(true)} className="mt-4 border border-zinc-800 bg-zinc-900 px-4 py-2 font-mono text-xs tracking-widest text-zinc-500 transition hover:border-orange-900 hover:text-orange-500">
                   <Plus className="mr-1 inline h-3 w-3" /> QUEUE_TASK
                 </button>
               </div>
@@ -192,15 +192,15 @@ export default function TasksPage() {
               return (
                 <div key={quad} className={`min-h-[200px] border p-4 ${QUADRANT_COLORS[quad]}`}>
                   <div className="mb-3 flex items-center gap-2">
-                    <span className="font-mono text-[10px] tracking-widest text-orange-500">{quad.toUpperCase()}</span>
-                    <span className="font-mono text-[10px] text-zinc-400">:: {QUADRANT_LABELS[quad].toUpperCase()}</span>
+                    <span className="font-mono text-xs tracking-widest text-orange-500">{quad.toUpperCase()}</span>
+                    <span className="font-mono text-xs text-zinc-400">:: {QUADRANT_LABELS[quad].toUpperCase()}</span>
                   </div>
                   <div className="space-y-px">
                     {quadTasks.map((task) => (
                       <TaskItem key={task._id} task={task} onToggle={handleToggle} onDelete={handleDelete} compact />
                     ))}
                     {quadTasks.length === 0 && (
-                      <p className="font-mono text-[10px] text-zinc-500">No tasks assigned</p>
+                      <p className="font-mono text-xs text-zinc-500">No tasks assigned</p>
                     )}
                   </div>
                 </div>
@@ -222,41 +222,41 @@ export default function TasksPage() {
             </div>
             <form onSubmit={handleCreate} className="max-h-[80vh] overflow-y-auto p-5 space-y-4">
               <div>
-                <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">TASK_TITLE *</label>
+                <label className="mb-1 block font-mono text-xs tracking-widest text-zinc-500">TASK_TITLE *</label>
                 <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="What needs to be done?" className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-400 focus:border-orange-800 focus:outline-none" required autoFocus />
               </div>
               <div>
-                <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">DESCRIPTION</label>
+                <label className="mb-1 block font-mono text-xs tracking-widest text-zinc-500">DESCRIPTION</label>
                 <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Add details..." rows={2} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-400 focus:border-orange-800 focus:outline-none" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">PRIORITY</label>
+                  <label className="mb-1 block font-mono text-xs tracking-widest text-zinc-500">PRIORITY</label>
                   <select value={priority} onChange={(e) => setPriority(e.target.value as typeof PRIORITY_OPTIONS[number])} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 focus:border-orange-800 focus:outline-none">
                     {PRIORITY_OPTIONS.map((p) => <option key={p} value={p}>{p.toUpperCase()}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">DUE_DATE</label>
+                  <label className="mb-1 block font-mono text-xs tracking-widest text-zinc-500">DUE_DATE</label>
                   <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 focus:border-orange-800 focus:outline-none" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">MATRIX_QUADRANT</label>
+                  <label className="mb-1 block font-mono text-xs tracking-widest text-zinc-500">MATRIX_QUADRANT</label>
                   <select value={eisenhower} onChange={(e) => setEisenhower(e.target.value as typeof QUADRANT_OPTIONS[number])} className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 focus:border-orange-800 focus:outline-none">
                     <option value="">NONE</option>
                     {QUADRANT_OPTIONS.map((q) => <option key={q} value={q}>{QUADRANT_LABELS[q].toUpperCase()}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="mb-1 block font-mono text-[10px] tracking-widest text-zinc-500">EST_MINUTES</label>
+                  <label className="mb-1 block font-mono text-xs tracking-widest text-zinc-500">EST_MINUTES</label>
                   <input type="number" value={estimatedMinutes} onChange={(e) => setEstimatedMinutes(e.target.value)} placeholder="30" className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-400 focus:border-orange-800 focus:outline-none" />
                 </div>
               </div>
               <div className="flex gap-px pt-1">
-                <button type="button" onClick={() => setShowCreate(false)} className="flex-1 border border-zinc-800 bg-zinc-900 py-2.5 font-mono text-[10px] tracking-widest text-zinc-500 transition hover:text-zinc-300">[CANCEL]</button>
-                <button type="submit" disabled={creating || !title.trim()} className="flex-1 border border-orange-800 bg-orange-950/40 py-2.5 font-mono text-[10px] tracking-widest text-orange-500 transition hover:bg-orange-950/70 disabled:opacity-40">
+                <button type="button" onClick={() => setShowCreate(false)} className="flex-1 border border-zinc-800 bg-zinc-900 py-2.5 font-mono text-xs tracking-widest text-zinc-500 transition hover:text-zinc-300">[CANCEL]</button>
+                <button type="submit" disabled={creating || !title.trim()} className="flex-1 border border-orange-800 bg-orange-950/40 py-2.5 font-mono text-xs tracking-widest text-orange-500 transition hover:bg-orange-950/70 disabled:opacity-40">
                   {creating ? 'QUEUING...' : '[QUEUE_TASK]'}
                 </button>
               </div>
@@ -303,16 +303,16 @@ function TaskItem({ task, onToggle, onDelete, compact }: {
         </p>
         {!compact && (
           <div className="mt-0.5 flex items-center gap-2">
-            <span className={`border px-1.5 py-0.5 font-mono text-[9px] tracking-widest ${priorityMap[task.priority] ?? priorityMap.low}`}>
+            <span className={`border px-1.5 py-0.5 font-mono text-[11px] tracking-widest ${priorityMap[task.priority] ?? priorityMap.low}`}>
               {task.priority.toUpperCase()}
             </span>
             {task.dueDate && (
-              <span className="flex items-center gap-1 font-mono text-[10px] text-zinc-400">
+              <span className="flex items-center gap-1 font-mono text-xs text-zinc-400">
                 <Clock className="h-2.5 w-2.5" /> DUE_{task.dueDate.replace(/-/g, '')}
               </span>
             )}
             {task.xpValue && (
-              <span className="flex items-center gap-1 font-mono text-[10px] text-orange-700">
+              <span className="flex items-center gap-1 font-mono text-xs text-orange-700">
                 <Zap className="h-2.5 w-2.5" /> {task.xpValue}XP
               </span>
             )}
@@ -329,7 +329,7 @@ function TaskItem({ task, onToggle, onDelete, compact }: {
 function QMetric({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
     <div className="bg-zinc-950 px-4 py-3 transition hover:bg-zinc-900">
-          <p className="font-mono text-[9px] tracking-widest text-zinc-400">{label}</p>
+          <p className="font-mono text-[11px] tracking-widest text-zinc-400">{label}</p>
       <p className={`mt-0.5 font-mono text-lg font-bold ${highlight ? 'text-orange-500' : 'text-zinc-100'}`}>{value}</p>
     </div>
   );

@@ -44,7 +44,7 @@ export default function GoalDetailPage() {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-3 bg-black">
         <p className="font-mono text-xs tracking-widest text-zinc-400">OBJECTIVE_NOT_FOUND</p>
-        <Link href="/goals" className="border border-zinc-800 px-3 py-1.5 font-mono text-[10px] tracking-widest text-zinc-500 transition hover:border-zinc-700">[RETURN_TO_OBJECTIVES]</Link>
+        <Link href="/goals" className="border border-zinc-800 px-3 py-1.5 font-mono text-xs tracking-widest text-zinc-500 transition hover:border-zinc-700">[RETURN_TO_OBJECTIVES]</Link>
       </div>
     );
   }
@@ -77,7 +77,7 @@ export default function GoalDetailPage() {
       <div className="mx-auto max-w-3xl">
 
         {/* ── BACK NAV ── */}
-        <Link href="/goals" className="mb-6 inline-flex items-center gap-1.5 font-mono text-[10px] tracking-widest text-zinc-400 transition hover:text-zinc-300">
+        <Link href="/goals" className="mb-6 inline-flex items-center gap-1.5 font-mono text-xs tracking-widest text-zinc-400 transition hover:text-zinc-300">
           <ArrowLeft className="h-3 w-3" /> [RETURN_TO_OBJECTIVES]
         </Link>
 
@@ -85,7 +85,7 @@ export default function GoalDetailPage() {
         <div className="mb-4 border border-zinc-900 bg-zinc-950">
           <div className="flex items-center gap-2 border-b border-zinc-900 px-4 py-2">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
-            <span className="font-mono text-[9px] tracking-widest text-orange-600">CORE_OBJECTIVE :: DETAIL_VIEW</span>
+            <span className="font-mono text-[11px] tracking-widest text-orange-600">CORE_OBJECTIVE :: DETAIL_VIEW</span>
           </div>
 
           <div className="p-4">
@@ -103,8 +103,8 @@ export default function GoalDetailPage() {
                   rows={2}
                 />
                 <div className="flex gap-2">
-                  <button type="submit" className="border border-orange-800 bg-orange-950/30 px-3 py-1.5 font-mono text-[10px] tracking-widest text-orange-500 transition hover:bg-orange-950/50">[SAVE]</button>
-                  <button type="button" onClick={() => setEditing(false)} className="border border-zinc-800 px-3 py-1.5 font-mono text-[10px] tracking-widest text-zinc-500 transition hover:border-zinc-700">[CANCEL]</button>
+                  <button type="submit" className="border border-orange-800 bg-orange-950/30 px-3 py-1.5 font-mono text-xs tracking-widest text-orange-500 transition hover:bg-orange-950/50">[SAVE]</button>
+                  <button type="button" onClick={() => setEditing(false)} className="border border-zinc-800 px-3 py-1.5 font-mono text-xs tracking-widest text-zinc-500 transition hover:border-zinc-700">[CANCEL]</button>
                 </div>
               </form>
             ) : (
@@ -133,7 +133,7 @@ export default function GoalDetailPage() {
           {/* Progress */}
           <div className="border-t border-zinc-900 px-4 py-3">
             <div className="mb-1.5 flex items-center justify-between">
-              <span className="font-mono text-[9px] tracking-widest text-zinc-400">COMPLETION_RATIO</span>
+              <span className="font-mono text-[11px] tracking-widest text-zinc-400">COMPLETION_RATIO</span>
               <span className="font-mono text-sm font-bold text-orange-500">{goal.progress ?? 0}%</span>
             </div>
             <div className="h-0.5 overflow-hidden bg-zinc-900">
@@ -146,17 +146,17 @@ export default function GoalDetailPage() {
 
           {/* Meta */}
           <div className="flex flex-wrap items-center gap-3 border-t border-zinc-900 px-4 py-3">
-            <span className="flex items-center gap-1 font-mono text-[10px] tracking-widest text-zinc-400">
+            <span className="flex items-center gap-1 font-mono text-xs tracking-widest text-zinc-400">
               <TrendingUp className="h-3 w-3" />
               <span className="text-zinc-500">{goal.status?.replace('_', ' ').toUpperCase()}</span>
             </span>
             {goal.lifeDomain && (
-              <span className="border border-zinc-800 px-2 py-0.5 font-mono text-[9px] tracking-widest text-zinc-400">
+              <span className="border border-zinc-800 px-2 py-0.5 font-mono text-[11px] tracking-widest text-zinc-400">
                 {goal.lifeDomain.replace('_', ' ').toUpperCase()}
               </span>
             )}
             {goal.targetDate && (
-              <span className="flex items-center gap-1 font-mono text-[10px] text-zinc-400">
+              <span className="flex items-center gap-1 font-mono text-xs text-zinc-400">
                 <Calendar className="h-3 w-3" /> {goal.targetDate}
               </span>
             )}
@@ -165,7 +165,7 @@ export default function GoalDetailPage() {
           {/* Why Important */}
           {goal.whyImportant && (
             <div className="border-t border-zinc-900 px-4 py-3">
-              <p className="mb-1 font-mono text-[9px] tracking-widest text-orange-600">WHY_THIS_MATTERS</p>
+              <p className="mb-1 font-mono text-[11px] tracking-widest text-orange-600">WHY_THIS_MATTERS</p>
               <p className="font-mono text-xs text-zinc-500">{goal.whyImportant}</p>
             </div>
           )}
@@ -175,7 +175,7 @@ export default function GoalDetailPage() {
             {goal.status !== 'completed' && (
               <button
                 onClick={() => handleStatusChange('completed')}
-                className="flex items-center gap-1.5 border border-green-900 bg-green-950/20 px-3 py-1.5 font-mono text-[10px] tracking-widest text-green-500 transition hover:bg-green-950/40"
+                className="flex items-center gap-1.5 border border-green-900 bg-green-950/20 px-3 py-1.5 font-mono text-xs tracking-widest text-green-500 transition hover:bg-green-950/40"
               >
                 <CheckCircle2 className="h-3 w-3" /> [MARK_COMPLETE]
               </button>
@@ -183,7 +183,7 @@ export default function GoalDetailPage() {
             {goal.status === 'in_progress' && (
               <button
                 onClick={() => handleStatusChange('paused')}
-                className="border border-yellow-900/50 bg-yellow-950/20 px-3 py-1.5 font-mono text-[10px] tracking-widest text-yellow-600 transition hover:bg-yellow-950/40"
+                className="border border-yellow-900/50 bg-yellow-950/20 px-3 py-1.5 font-mono text-xs tracking-widest text-yellow-600 transition hover:bg-yellow-950/40"
               >
                 [PAUSE]
               </button>
@@ -191,7 +191,7 @@ export default function GoalDetailPage() {
             {goal.status === 'paused' && (
               <button
                 onClick={() => handleStatusChange('in_progress')}
-                className="border border-blue-900/50 bg-blue-950/20 px-3 py-1.5 font-mono text-[10px] tracking-widest text-blue-500 transition hover:bg-blue-950/40"
+                className="border border-blue-900/50 bg-blue-950/20 px-3 py-1.5 font-mono text-xs tracking-widest text-blue-500 transition hover:bg-blue-950/40"
               >
                 [RESUME]
               </button>
@@ -202,8 +202,8 @@ export default function GoalDetailPage() {
         {/* ── RELATED TASKS ── */}
         <div className="border border-zinc-900 bg-zinc-950">
           <div className="flex items-center justify-between border-b border-zinc-900 px-4 py-2.5">
-            <span className="font-mono text-[10px] font-bold tracking-widest text-zinc-400">Linked Tasks</span>
-            <Link href="/tasks" className="font-mono text-[10px] tracking-widest text-orange-600 transition hover:text-orange-500">[Add Task]</Link>
+            <span className="font-mono text-xs font-bold tracking-widest text-zinc-400">Linked Tasks</span>
+            <Link href="/tasks" className="font-mono text-xs tracking-widest text-orange-600 transition hover:text-orange-500">[Add Task]</Link>
           </div>
 
           {!tasks || tasks.length === 0 ? (
@@ -216,7 +216,7 @@ export default function GoalDetailPage() {
                   <p className={`flex-1 font-mono text-xs ${task.status === 'done' ? 'text-zinc-400 line-through' : 'text-zinc-400'}`}>
                     {task.title}
                   </p>
-                  {task.dueDate && <span className="font-mono text-[9px] text-zinc-400">{task.dueDate}</span>}
+                  {task.dueDate && <span className="font-mono text-[11px] text-zinc-400">{task.dueDate}</span>}
                 </div>
               ))}
             </div>

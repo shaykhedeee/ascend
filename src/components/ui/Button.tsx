@@ -82,11 +82,11 @@ const variantStyles: Record<ButtonVariant, string> = {
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  xs: 'px-2.5 py-1 text-[0.6rem] min-h-[28px] gap-1',
-  sm: 'px-3 py-1.5 text-[0.65rem] min-h-[36px] gap-1.5',
-  md: 'px-4 py-2 text-[0.7rem] min-h-[44px] gap-2',
-  lg: 'px-6 py-3 text-xs min-h-[52px] gap-2',
-  xl: 'px-8 py-4 text-sm min-h-[60px] gap-3',
+  xs: 'px-2.5 py-1 text-xs min-h-[32px] gap-1',
+  sm: 'px-3 py-1.5 text-xs min-h-[36px] gap-1.5',
+  md: 'px-4 py-2 text-sm min-h-[44px] gap-2',
+  lg: 'px-6 py-3 text-sm min-h-[52px] gap-2',
+  xl: 'px-8 py-4 text-base min-h-[60px] gap-3',
 };
 
 const iconOnlySizes: Record<ButtonSize, string> = {

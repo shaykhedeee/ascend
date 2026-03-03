@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO - Quick Wellness Widget
 // Small sidebar widget for quick access to wellness features
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -96,7 +96,7 @@ export function QuickWellnessWidget({ variant = 'compact', className = '' }: Qui
           <div className="flex items-center gap-3">
             {/* Today's mood indicator */}
             <div className="flex items-center gap-1">
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-[var(--surface-hover)] text-[var(--text-secondary)]">
+              <span className="text-xs px-1.5 py-0.5 rounded bg-[var(--surface-hover)] text-[var(--text-secondary)]">
                 {todayMood ? MOOD_EMOJIS[todayMood.mood].emoji : 'LOG'}
               </span>
               <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
@@ -189,7 +189,7 @@ export function QuickWellnessWidget({ variant = 'compact', className = '' }: Qui
           {todayMood ? (
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-[var(--surface-hover)] text-[var(--text-secondary)]">
+                <span className="text-xs px-1.5 py-0.5 rounded bg-[var(--surface-hover)] text-[var(--text-secondary)]">
                   {MOOD_EMOJIS[todayMood.mood].emoji}
                 </span>
                 <div>

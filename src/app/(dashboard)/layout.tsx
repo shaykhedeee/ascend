@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO — Dashboard Layout (Protected) — PIXEL TERMINAL EDITION
@@ -80,7 +80,7 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
           <div className="h-[2px] w-32 bg-zinc-900 overflow-hidden">
             <div className="h-full w-1/2 bg-orange-600 animate-[progress-indeterminate_1.5s_steps(12)_infinite]" />
           </div>
-          <p className="font-pixel text-[0.5rem] tracking-widest text-zinc-500">INITIALIZING<span className="animate-blink">_</span></p>
+          <p className="font-pixel text-[0.65rem] tracking-widest text-zinc-500">INITIALIZING<span className="animate-blink">_</span></p>
           <p className="font-terminal text-sm tracking-widest text-zinc-600">LOADING WORKSPACE...</p>
         </div>
       </div>
@@ -90,7 +90,7 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
   if (!isAuthenticated) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-black">
-        <p className="font-pixel text-[0.5rem] tracking-widest text-zinc-400">REDIRECTING<span className="animate-blink">_</span></p>
+        <p className="font-pixel text-[0.65rem] tracking-widest text-zinc-400">REDIRECTING<span className="animate-blink">_</span></p>
       </div>
     );
   }
@@ -233,7 +233,7 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
                 {user && (
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-terminal text-sm text-zinc-300">{user.name}</p>
-                    <p className="truncate font-pixel text-[0.4rem] tracking-wider text-zinc-600 uppercase">
+                    <p className="truncate font-pixel text-[0.6rem] tracking-wider text-zinc-600 uppercase">
                       {user.plan === 'free' ? '[ FREE ]' : user.plan === 'lifetime' ? '[ LIFETIME ]' : '[ PRO ]'}
                     </p>
                   </div>

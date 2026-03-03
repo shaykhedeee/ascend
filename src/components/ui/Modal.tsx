@@ -215,7 +215,7 @@ export function Modal({
               <div>
                 <h2
                   id="modal-title"
-                  className="font-pixel text-[0.7rem] uppercase tracking-wider text-[var(--text-primary)]"
+                  className="font-pixel text-sm uppercase tracking-wider text-[var(--text-primary)]"
                 >
                   {title}
                 </h2>
@@ -489,7 +489,7 @@ export function Drawer({
         {(title || showCloseButton) && (
           <div className="flex items-center justify-between px-6 py-4 border-b-2 border-[var(--border)]">
             {title && (
-              <h2 className="font-pixel text-[0.7rem] uppercase tracking-wider text-[var(--text-primary)]">{title}</h2>
+              <h2 className="font-pixel text-sm uppercase tracking-wider text-[var(--text-primary)]">{title}</h2>
             )}
             {showCloseButton && (
               <IconButton variant="ghost" size="sm" onClick={onClose} aria-label="Close drawer">

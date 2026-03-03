@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO - Analytics Dashboard Charts
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -190,12 +190,12 @@ export function MonthlyCompletionDonut() {
       <div className="flex items-center justify-center gap-4 sm:gap-6 mt-4">
         <div className="text-center">
           <p className="text-xl sm:text-2xl font-bold text-white">{stats.completed}</p>
-          <p className="text-[10px] sm:text-xs text-white/60">Completed</p>
+          <p className="text-xs sm:text-xs text-white/60">Completed</p>
         </div>
         <div className="w-px h-8 bg-white/10" />
         <div className="text-center">
           <p className="text-xl sm:text-2xl font-bold text-white">{stats.total}</p>
-          <p className="text-[10px] sm:text-xs text-white/60">Total Goal</p>
+          <p className="text-xs sm:text-xs text-white/60">Total Goal</p>
         </div>
       </div>
     </div>
@@ -432,7 +432,7 @@ export function StatsCards() {
                 {stat.suffix}
               </span>
             </p>
-            <p className="text-[10px] sm:text-xs text-white/60 truncate">{stat.label}</p>
+            <p className="text-xs sm:text-xs text-white/60 truncate">{stat.label}</p>
           </div>
         </div>
       ))}

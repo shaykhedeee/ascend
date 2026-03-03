@@ -1,17 +1,52 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges" style="image-rendering:pixelated">
   <defs>
-    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#14B899;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#0EA5E9;stop-opacity:1" />
-    </linearGradient>
+    <filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="0.6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
+
   <!-- Background -->
-  <rect width="512" height="512" rx="96" fill="#0A0A0B"/>
-  <!-- Main arrow/ascend shape -->
-  <path d="M256 100 L380 280 L320 280 L320 400 L192 400 L192 280 L132 280 Z" 
-        fill="url(#grad)" 
-        stroke="none"/>
-  <!-- Accent lines -->
-  <path d="M176 340 L336 340" stroke="#FFD700" stroke-width="8" stroke-linecap="round"/>
-  <path d="M196 380 L316 380" stroke="#FFD700" stroke-width="6" stroke-linecap="round" opacity="0.7"/>
+  <rect width="16" height="16" fill="#0A0A0B"/>
+
+  <g filter="url(#glow)">
+    <!-- TIP -->
+    <rect x="7" y="0" width="2" height="2" fill="#FFEDD5"/>
+    <!-- ROW 2 -->
+    <rect x="6" y="2" width="4" height="2" fill="#FB923C"/>
+    <!-- ROW 3 -->
+    <rect x="5" y="4" width="1" height="2" fill="#FB923C"/>
+    <rect x="6" y="4" width="4" height="2" fill="#F97316"/>
+    <rect x="10" y="4" width="1" height="2" fill="#EA580C"/>
+    <!-- ROW 4 -->
+    <rect x="4" y="6" width="1" height="2" fill="#FDBA74"/>
+    <rect x="5" y="6" width="1" height="2" fill="#FB923C"/>
+    <rect x="6" y="6" width="4" height="2" fill="#EA580C"/>
+    <rect x="10" y="6" width="1" height="2" fill="#C2410C"/>
+    <rect x="11" y="6" width="1" height="2" fill="#9A3412"/>
+    <!-- ROW 5 widest -->
+    <rect x="2" y="8" width="2" height="2" fill="#FED7AA"/>
+    <rect x="4" y="8" width="2" height="2" fill="#FB923C"/>
+    <rect x="6" y="8" width="4" height="2" fill="#EA580C"/>
+    <rect x="10" y="8" width="2" height="2" fill="#C2410C"/>
+    <rect x="12" y="8" width="2" height="2" fill="#7C2D12"/>
+    <!-- SHAFT -->
+    <rect x="6" y="10" width="1" height="2" fill="#FB923C"/>
+    <rect x="7" y="10" width="2" height="2" fill="#EA580C"/>
+    <rect x="9" y="10" width="1" height="2" fill="#C2410C"/>
+    <rect x="6" y="12" width="1" height="2" fill="#EA580C"/>
+    <rect x="7" y="12" width="2" height="2" fill="#C2410C"/>
+    <rect x="9" y="12" width="1" height="2" fill="#9A3412"/>
+    <rect x="6" y="14" width="1" height="2" fill="#C2410C"/>
+    <rect x="7" y="14" width="2" height="2" fill="#9A3412"/>
+    <rect x="9" y="14" width="1" height="2" fill="#7C2D12"/>
+    <!-- GLINTS -->
+    <rect x="7" y="0" width="1" height="1" fill="white" opacity="0.65"/>
+    <rect x="6" y="2" width="1" height="1" fill="white" opacity="0.25"/>
+    <rect x="4" y="8" width="1" height="1" fill="white" opacity="0.12"/>
+  </g>
 </svg>

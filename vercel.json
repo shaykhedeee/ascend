@@ -1,24 +1,26 @@
 {
-  "projectName": "resurgo",
   "buildCommand": "next build",
   "devCommand": "next dev",
+  "installCommand": "npm ci",
   "public": false,
-  "env": {
-    "NEXT_PUBLIC_CONVEX_URL": "@resurgo_convex_url",
-    "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY": "@resurgo_clerk_pub_key",
-    "NEXT_PUBLIC_SITE_URL": "https://resurgo.life",
-    "NEXT_PUBLIC_GA_ID": "G-F1VLMSS8FB",
-    "NODE_ENV": "production"
-  },
+  "env": [
+    "NEXT_PUBLIC_CONVEX_URL",
+    "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
+    "NEXT_PUBLIC_SITE_URL",
+    "NEXT_PUBLIC_GA_ID",
+    "NODE_ENV"
+  ],
   "build": {
-    "env": {
-      "CLERK_SECRET_KEY": "@resurgo_clerk_secret",
-      "CLERK_WEBHOOK_SECRET": "@resurgo_clerk_webhook",
-      "CONVEX_DEPLOY_KEY": "@resurgo_convex_deploy_key",
-      "RESEND_API_KEY": "@resurgo_resend_api_key",
-      "EMAIL_INTERNAL_SECRET": "@resurgo_email_internal_secret",
-      "GROQ_API_KEY": "@resurgo_groq_api_key"
-    }
+    "env": [
+      "CLERK_SECRET_KEY",
+      "CLERK_WEBHOOK_SECRET",
+      "CONVEX_DEPLOY_KEY",
+      "RESEND_API_KEY",
+      "EMAIL_INTERNAL_SECRET",
+      "GROQ_API_KEY",
+      "GOOGLE_AI_STUDIO_KEY",
+      "OPENROUTER_API_KEY"
+    ]
   },
   "functions": {
     "src/app/api/**/*.ts": {

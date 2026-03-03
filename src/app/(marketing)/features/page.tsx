@@ -46,8 +46,8 @@ const FEATURES = [
     category: 'AI_COACHING',
     icon: '🤖',
     features: [
-      { name: '6 AI Coach Personas', desc: 'Marcus (Discipline), Aurora (Balance), Titan (Performance), Sage (Wisdom), Phoenix (Resilience), Nova (Creativity)' },
-      { name: 'Context-Aware Memory', desc: 'Your coach remembers your goals, challenges, and recent conversations for personalized advice' },
+      { name: '4 Action-Capable AI Coaches', desc: 'Nova (Systems Architect), Titan (Performance Engine), Sage (Wealth Architect), Phoenix (Resilience Forge) — each can create tasks, goals, habits & plans from chat' },
+      { name: 'Context-Aware Intelligence', desc: 'Your coach knows your real goals, tasks, habits, and streaks — delivering hyper-personalized advice based on actual data' },
       { name: 'AI Plan Builder', desc: 'AI breaks any goal into phases, weekly actions, and daily steps you can follow immediately' },
       { name: 'Anti-Procrastination', desc: 'Daily intention setting, Two-Minute Rule prompts, and accountability check-ins' },
     ],

@@ -260,7 +260,7 @@ const ACCESS_TIERS = [
     specs: [
       'Unlimited habits & goals',
       'Focus timer (all modes)',
-      '2 AI coaches (Marcus & Aurora)',
+      '2 AI coaches (Nova & Phoenix)',
       'Daily planning',
       'Basic analytics',
       'Mobile PWA access',
@@ -274,7 +274,7 @@ const ACCESS_TIERS = [
     period: '/month',
     specs: [
       'Everything in Free',
-      'All 6 AI coaches unlocked',
+      'All 4 AI coaches unlocked',
       'Advanced analytics & insights',
       'Weekly AI reviews',
       'Priority support',
@@ -314,40 +314,28 @@ const ACCESS_TIERS = [
 // ─── AI COACHES ─────────────────────────────────────────────────────────────
 const AI_COACHES = [
   {
-    name: 'MARCUS',
-    style: 'Stoic Discipline',
-    desc: 'Grounded in ancient Stoic philosophy. Marcus pushes you toward clarity, self-control, and consistent action.',
+    name: 'NOVA',
+    style: 'Systems Architect',
+    desc: 'Thinks in systems, leverage points, and second-order effects. Nova can build complete plans, create tasks, and design habit systems directly from conversation.',
     free: true,
-  },
-  {
-    name: 'AURORA',
-    style: 'Creative Energy',
-    desc: 'Warm and encouraging. Aurora helps you find motivation through positivity, creative thinking, and self-compassion.',
-    free: true,
-  },
-  {
-    name: 'SAGE',
-    style: 'Mindful Wisdom',
-    desc: 'Calm and reflective. Sage guides you through mindfulness, intentional living, and thoughtful decision-making.',
-    free: false,
   },
   {
     name: 'TITAN',
-    style: 'Peak Performance',
-    desc: 'Intense and results-driven. Titan pushes your limits and demands your best in every session.',
+    style: 'Performance Engine',
+    desc: 'Your body is the foundation. Titan creates workout plans, nutrition protocols, and energy optimization systems — all action-capable.',
     free: false,
   },
   {
-    name: 'NOVA',
-    style: 'Growth Hacking',
-    desc: 'Data-oriented and strategic. Nova optimizes your systems, habits, and workflows for maximum efficiency.',
+    name: 'SAGE',
+    style: 'Wealth Architect',
+    desc: 'Every dollar is a soldier. Sage builds financial plans, savings goals, career roadmaps, and compound growth strategies for you.',
     free: false,
   },
   {
-    name: 'ECHO',
-    style: 'Emotional Intelligence',
-    desc: 'Empathetic and insightful. Echo helps you process emotions, build resilience, and maintain mental clarity.',
-    free: false,
+    name: 'PHOENIX',
+    style: 'Resilience Forge',
+    desc: 'Built for rock bottom. Phoenix creates recovery plans, micro-step momentum systems, and turns setbacks into structured comebacks.',
+    free: true,
   },
 ];
 
@@ -591,7 +579,7 @@ function LandingPageV2() {
                   {[
                     { label: 'Morning habit routine', meta: 'Health · streak 14 days', status: 'Done', color: 'green' as const },
                     { label: 'Deep work session', meta: 'Focus · 2 h planned', status: 'In progress', color: 'orange' as const },
-                    { label: 'AI coach check-in', meta: 'Marcus · Stoic advice', status: 'Ready', color: 'zinc' as const },
+                    { label: 'AI coach check-in', meta: 'NOVA · Systems strategy', status: 'Ready', color: 'zinc' as const },
                     { label: 'Weekly goal review', meta: 'Strategy · AI brief', status: 'Pending', color: 'zinc' as const },
                   ].map((row) => (
                     <div

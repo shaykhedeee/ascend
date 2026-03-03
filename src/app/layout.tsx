@@ -376,7 +376,7 @@ const jsonLd = {
           'name': 'What AI coaches are available?',
           'acceptedAnswer': {
             '@type': 'Answer',
-            'text': 'Resurgo offers 6 AI coach personas: Marcus (discipline-focused), Aurora (mindfulness and balance), Titan (performance-driven), Sage (wisdom and reflection), Phoenix (resilience and comeback), and Nova (creative and exploratory). Each has a unique coaching style.',
+            'text': 'Resurgo offers 4 elite action-capable AI coaches: Nova (systems architect), Titan (performance engine), Sage (wealth architect), and Phoenix (resilience forge). Each coach can create tasks, goals, habits, and full plans directly from conversation.',
           },
         },
         {

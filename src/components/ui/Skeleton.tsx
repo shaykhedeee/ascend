@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// RESURGO - Skeleton Loader Components
-// Beautiful loading states for a polished UX
+// RESURGO - Skeleton Loader Components — PIXEL EDITION
+// Pixel-style loading states with stepped shimmer
 // ═══════════════════════════════════════════════════════════════════════════════
 
 'use client';
@@ -14,16 +14,16 @@ interface SkeletonProps {
   style?: CSSProperties;
 }
 
-// Base Skeleton Element
+// Base Skeleton Element — pixel style
 export function Skeleton({ className, animate = true, style }: SkeletonProps) {
   return (
     <div
       className={cn(
-        'bg-[var(--surface)] rounded-lg',
-        animate && 'animate-skeleton',
+        'bg-[var(--surface)] border border-zinc-800/50',
+        animate && 'pixel-shimmer',
         className
       )}
-      style={style}
+      style={{ borderRadius: '2px', ...style }}
     />
   );
 }
@@ -51,7 +51,7 @@ export function SkeletonText({
   );
 }
 
-// Skeleton for avatar/profile images
+// Skeleton for avatar — pixel square instead of circle
 export function SkeletonAvatar({ 
   size = 'md',
   className 
@@ -67,17 +67,17 @@ export function SkeletonAvatar({
   };
 
   return (
-    <Skeleton className={cn('rounded-full', sizes[size], className)} />
+    <Skeleton className={cn(sizes[size], className)} />
   );
 }
 
-// Skeleton for cards
+// Skeleton for cards — pixel panel
 export function SkeletonCard({ className }: { className?: string }) {
   return (
     <div className={cn(
-      'p-4 rounded-xl bg-[var(--surface)] border border-[var(--border)]',
+      'p-4 bg-[var(--surface)] border-2 border-[var(--border)]',
       className
-    )}>
+    )} style={{ borderRadius: '2px' }}>
       <div className="flex items-start gap-4">
         <SkeletonAvatar size="lg" />
         <div className="flex-1 space-y-3">
@@ -93,16 +93,16 @@ export function SkeletonCard({ className }: { className?: string }) {
 export function SkeletonHabit({ className }: { className?: string }) {
   return (
     <div className={cn(
-      'p-4 rounded-xl bg-[var(--surface)] border border-[var(--border)]',
+      'p-4 bg-[var(--surface)] border-2 border-[var(--border)]',
       className
-    )}>
+    )} style={{ borderRadius: '2px' }}>
       <div className="flex items-center gap-4">
-        <Skeleton className="w-12 h-12 rounded-xl" />
+        <Skeleton className="w-12 h-12" />
         <div className="flex-1 space-y-2">
           <Skeleton className="h-5 w-1/2" />
           <Skeleton className="h-3 w-1/3" />
         </div>
-        <Skeleton className="w-8 h-8 rounded-full" />
+        <Skeleton className="w-8 h-8" />
       </div>
     </div>
   );
@@ -123,20 +123,20 @@ export function SkeletonHabitGrid({ count = 3 }: { count?: number }) {
 export function SkeletonGoalCard({ className }: { className?: string }) {
   return (
     <div className={cn(
-      'p-6 rounded-2xl bg-[var(--surface)] border border-[var(--border)]',
+      'p-6 bg-[var(--surface)] border-2 border-[var(--border)]',
       className
-    )}>
+    )} style={{ borderRadius: '2px' }}>
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
-          <Skeleton className="w-14 h-14 rounded-xl" />
+          <Skeleton className="w-14 h-14" />
           <div className="space-y-2">
             <Skeleton className="h-6 w-40" />
             <Skeleton className="h-4 w-24" />
           </div>
         </div>
-        <Skeleton className="w-8 h-8 rounded-lg" />
+        <Skeleton className="w-8 h-8" />
       </div>
-      <Skeleton className="h-3 w-full rounded-full mb-3" />
+      <Skeleton className="h-3 w-full mb-3" />
       <div className="flex items-center justify-between">
         <Skeleton className="h-4 w-20" />
         <Skeleton className="h-4 w-16" />
@@ -149,9 +149,9 @@ export function SkeletonGoalCard({ className }: { className?: string }) {
 export function SkeletonStats({ className }: { className?: string }) {
   return (
     <div className={cn(
-      'p-4 rounded-xl bg-[var(--surface)] border border-[var(--border)]',
+      'p-4 bg-[var(--surface)] border-2 border-[var(--border)]',
       className
-    )}>
+    )} style={{ borderRadius: '2px' }}>
       <Skeleton className="h-4 w-20 mb-2" />
       <Skeleton className="h-8 w-16 mb-1" />
       <Skeleton className="h-3 w-24" />
@@ -174,14 +174,14 @@ export function SkeletonStatsGrid({ count = 4 }: { count?: number }) {
 export function SkeletonCalendar({ className }: { className?: string }) {
   return (
     <div className={cn(
-      'p-4 rounded-xl bg-[var(--surface)] border border-[var(--border)]',
+      'p-4 bg-[var(--surface)] border-2 border-[var(--border)]',
       className
-    )}>
+    )} style={{ borderRadius: '2px' }}>
       <div className="flex items-center justify-between mb-4">
         <Skeleton className="h-6 w-32" />
         <div className="flex gap-2">
-          <Skeleton className="w-8 h-8 rounded-lg" />
-          <Skeleton className="w-8 h-8 rounded-lg" />
+          <Skeleton className="w-8 h-8" />
+          <Skeleton className="w-8 h-8" />
         </div>
       </div>
       <div className="grid grid-cols-7 gap-2">
@@ -189,7 +189,7 @@ export function SkeletonCalendar({ className }: { className?: string }) {
           <Skeleton key={i} className="h-4 w-full" />
         ))}
         {Array.from({ length: 35 }).map((_, i) => (
-          <Skeleton key={`day-${i}`} className="aspect-square rounded-lg" />
+          <Skeleton key={`day-${i}`} className="aspect-square" />
         ))}
       </div>
     </div>
@@ -200,21 +200,21 @@ export function SkeletonCalendar({ className }: { className?: string }) {
 export function SkeletonChart({ className }: { className?: string }) {
   return (
     <div className={cn(
-      'p-6 rounded-xl bg-[var(--surface)] border border-[var(--border)]',
+      'p-6 bg-[var(--surface)] border-2 border-[var(--border)]',
       className
-    )}>
+    )} style={{ borderRadius: '2px' }}>
       <div className="flex items-center justify-between mb-6">
         <Skeleton className="h-6 w-32" />
         <div className="flex gap-2">
-          <Skeleton className="w-16 h-8 rounded-lg" />
-          <Skeleton className="w-16 h-8 rounded-lg" />
+          <Skeleton className="w-16 h-8" />
+          <Skeleton className="w-16 h-8" />
         </div>
       </div>
       <div className="flex items-end gap-2 h-48">
         {Array.from({ length: 7 }).map((_, i) => (
           <Skeleton 
             key={i} 
-            className="flex-1 rounded-t-lg" 
+            className="flex-1" 
             style={{ height: `${Math.random() * 60 + 40}%` }}
           />
         ))}
@@ -241,7 +241,7 @@ export function SkeletonList({
   return (
     <div className={cn('space-y-3', className)}>
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-[var(--surface)]">
+        <div key={i} className="flex items-center gap-3 p-3 bg-[var(--surface)]" style={{ borderRadius: '2px' }}>
           {showAvatar && <SkeletonAvatar size="sm" />}
           <div className="flex-1 space-y-2">
             <Skeleton className="h-4 w-3/4" />
@@ -267,7 +267,7 @@ export function SkeletonDashboard() {
             <Skeleton className="h-4 w-32" />
           </div>
         </div>
-        <Skeleton className="w-32 h-10 rounded-xl" />
+        <Skeleton className="w-32 h-10" />
       </div>
 
       {/* Stats */}
@@ -300,14 +300,14 @@ export function SkeletonOverlay({
 
   return (
     <div className={cn(
-      'absolute inset-0 bg-[var(--background)]/80 backdrop-blur-sm',
-      'flex items-center justify-center z-10 rounded-xl',
+      'absolute inset-0 bg-[var(--background)]/80',
+      'flex items-center justify-center z-10',
       'animate-fade-in',
       className
     )}>
       <div className="flex flex-col items-center gap-3">
-        <div className="w-10 h-10 border-2 border-[var(--border)] border-t-[var(--ascend-primary)] rounded-full animate-spin" />
-        <span className="text-sm text-[var(--text-muted)]">Loading...</span>
+        <div className="w-8 h-8 border-2 border-zinc-700 border-t-orange-500 animate-spin" style={{ borderRadius: '2px' }} />
+        <span className="font-pixel text-[0.5rem] uppercase tracking-wider text-[var(--text-muted)]">Loading...</span>
       </div>
     </div>
   );

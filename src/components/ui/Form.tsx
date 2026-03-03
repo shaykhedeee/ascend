@@ -59,7 +59,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label 
             htmlFor={inputId} 
-            className="block text-sm font-medium text-[var(--text-primary)]"
+            className="block font-pixel text-[0.55rem] uppercase tracking-wider text-[var(--text-primary)]"
           >
             {label}
             {props.required && <span className="text-red-400 ml-1">*</span>}
@@ -80,18 +80,18 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             type={actualType}
             disabled={disabled || isLoading}
             className={cn(
-              // Base styles
-              'w-full rounded-lg border bg-[var(--surface)] text-[var(--text-primary)]',
+              // Base pixel styles
+              'w-full border-2 bg-[var(--surface)] text-[var(--text-primary)] font-terminal text-base',
               'placeholder:text-[var(--text-muted)]',
-              'transition-all duration-[var(--duration-normal)]',
-              'focus:outline-none focus:ring-2 focus:ring-offset-0',
+              'transition-all duration-100',
+              'focus:outline-none focus:ring-1 focus:ring-offset-0',
               // Size
-              'px-4 py-2.5 text-sm',
+              'px-4 py-2.5',
               // States
               hasError 
-                ? 'border-red-500/50 focus:ring-red-500/30 focus:border-red-500' 
+                ? 'border-red-500/60 focus:ring-red-500/30 focus:border-red-500' 
                 : hasSuccess 
-                  ? 'border-green-500/50 focus:ring-green-500/30 focus:border-green-500'
+                  ? 'border-green-500/60 focus:ring-green-500/30 focus:border-green-500'
                   : 'border-[var(--border)] focus:ring-ascend-500/30 focus:border-ascend-500',
               // Disabled
               disabled && 'opacity-50 cursor-not-allowed',
@@ -214,7 +214,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         {label && (
           <label 
             htmlFor={textareaId}
-            className="block text-sm font-medium text-[var(--text-primary)]"
+            className="block font-pixel text-[0.55rem] uppercase tracking-wider text-[var(--text-primary)]"
           >
             {label}
             {props.required && <span className="text-red-400 ml-1">*</span>}
@@ -228,15 +228,15 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           maxLength={maxLength}
           value={value}
           className={cn(
-            'w-full rounded-lg border bg-[var(--surface)] text-[var(--text-primary)]',
+            'w-full border-2 bg-[var(--surface)] text-[var(--text-primary)] font-terminal text-base',
             'placeholder:text-[var(--text-muted)]',
-            'transition-all duration-[var(--duration-normal)]',
-            'focus:outline-none focus:ring-2 focus:ring-offset-0',
-            'px-4 py-3 text-sm min-h-[100px] resize-y',
+            'transition-all duration-100',
+            'focus:outline-none focus:ring-1 focus:ring-offset-0',
+            'px-4 py-3 min-h-[100px] resize-y',
             hasError 
-              ? 'border-red-500/50 focus:ring-red-500/30 focus:border-red-500' 
+              ? 'border-red-500/60 focus:ring-red-500/30 focus:border-red-500' 
               : hasSuccess 
-                ? 'border-green-500/50 focus:ring-green-500/30 focus:border-green-500'
+                ? 'border-green-500/60 focus:ring-green-500/30 focus:border-green-500'
                 : 'border-[var(--border)] focus:ring-ascend-500/30 focus:border-ascend-500',
             disabled && 'opacity-50 cursor-not-allowed',
             hasError && 'animate-shake',
@@ -338,7 +338,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
         {label && (
           <label 
             htmlFor={selectId}
-            className="block text-sm font-medium text-[var(--text-primary)]"
+            className="block font-pixel text-[0.55rem] uppercase tracking-wider text-[var(--text-primary)]"
           >
             {label}
             {props.required && <span className="text-red-400 ml-1">*</span>}
@@ -351,14 +351,14 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             id={selectId}
             disabled={disabled}
             className={cn(
-              'w-full rounded-lg border bg-[var(--surface)] text-[var(--text-primary)]',
-              'transition-all duration-[var(--duration-normal)]',
-              'focus:outline-none focus:ring-2 focus:ring-offset-0',
-              'px-4 py-2.5 pr-10 text-sm appearance-none cursor-pointer',
+              'w-full border-2 bg-[var(--surface)] text-[var(--text-primary)] font-terminal text-base',
+              'transition-all duration-100',
+              'focus:outline-none focus:ring-1 focus:ring-offset-0',
+              'px-4 py-2.5 pr-10 appearance-none cursor-pointer',
               hasError 
-                ? 'border-red-500/50 focus:ring-red-500/30 focus:border-red-500' 
+                ? 'border-red-500/60 focus:ring-red-500/30 focus:border-red-500' 
                 : hasSuccess 
-                  ? 'border-green-500/50 focus:ring-green-500/30 focus:border-green-500'
+                  ? 'border-green-500/60 focus:ring-green-500/30 focus:border-green-500'
                   : 'border-[var(--border)] focus:ring-ascend-500/30 focus:border-ascend-500',
               disabled && 'opacity-50 cursor-not-allowed',
               className

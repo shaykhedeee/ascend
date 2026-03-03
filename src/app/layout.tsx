@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Press_Start_2P, VT323 } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import '@/lib/env'; // Env validation — runs at startup (server-side)
@@ -19,6 +19,21 @@ const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-inter',
+});
+
+// Pixel fonts for 8-bit UI aesthetic
+const pressStart2P = Press_Start_2P({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-pixel',
+});
+
+const vt323 = VT323({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-vt323',
 });
 
 export const metadata: Metadata = {
@@ -398,7 +413,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${pressStart2P.variable} ${vt323.variable}`} suppressHydrationWarning>
       <head>
         {/* JSON-LD Structured Data */}
         <script
@@ -466,7 +481,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className="antialiased min-h-screen bg-[var(--background)] text-[var(--text-primary)]">
+      <body className="antialiased min-h-screen bg-[var(--background)] text-[var(--text-primary)] pixel-mode crt-subtle">
         {/* Error Tracking */}
         <ErrorTrackingInit />
 

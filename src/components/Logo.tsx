@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// RESURGOIFY - Premium Logo Component
-// Summit Arrow Design - Represents climbing to the peak of your potential
+// RESURGO - Pixel Art Logo Component
+// 8-bit ascending arrow on pixel grid — consistent across all contexts
 // ═══════════════════════════════════════════════════════════════════════════════
 
 'use client';
@@ -23,11 +23,68 @@ const sizeClasses = {
 };
 
 const textSizeClasses = {
-  sm: 'text-lg',
-  md: 'text-xl',
-  lg: 'text-2xl',
-  xl: 'text-4xl',
+  sm: 'text-[0.55rem]',
+  md: 'text-[0.65rem]',
+  lg: 'text-[0.8rem]',
+  xl: 'text-[1rem]',
 };
+
+// Pixel grid for the ascending arrow — 16x16 grid
+// Each rect is a "pixel" in the logo
+function PixelArrowSVG({ className, animated }: { className?: string; animated?: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 16 16"
+      className={cn("pixel-render", className)}
+      style={{ imageRendering: 'pixelated' }}
+      fill="none"
+    >
+      {/* Arrow body — ascending pixel arrow */}
+      {/* Top pixel (tip) */}
+      <rect x="7" y="1" width="2" height="2" fill="#FB923C" />
+      {/* Second row */}
+      <rect x="6" y="3" width="1" height="2" fill="#FB923C" />
+      <rect x="7" y="3" width="2" height="2" fill="#EA580C" />
+      <rect x="9" y="3" width="1" height="2" fill="#FB923C" />
+      {/* Third row (shoulders) */}
+      <rect x="4" y="5" width="2" height="2" fill="#FB923C" />
+      <rect x="6" y="5" width="1" height="2" fill="#EA580C" />
+      <rect x="7" y="5" width="2" height="2" fill="#C2410C" />
+      <rect x="9" y="5" width="1" height="2" fill="#EA580C" />
+      <rect x="10" y="5" width="2" height="2" fill="#FB923C" />
+      {/* Fourth row (wide base of arrow head) */}
+      <rect x="3" y="7" width="2" height="2" fill="#FDBA74" />
+      <rect x="5" y="7" width="1" height="2" fill="#FB923C" />
+      <rect x="6" y="7" width="4" height="2" fill="#EA580C" />
+      <rect x="10" y="7" width="1" height="2" fill="#FB923C" />
+      <rect x="11" y="7" width="2" height="2" fill="#FDBA74" />
+      {/* Shaft top */}
+      <rect x="6" y="9" width="4" height="2" fill="#EA580C" />
+      {/* Shaft middle */}
+      <rect x="6" y="11" width="4" height="2" fill="#C2410C" />
+      {/* Shaft bottom */}
+      <rect x="6" y="13" width="4" height="2" fill="#9A3412" />
+      {/* Shine pixels (top-left highlight) */}
+      <rect x="7" y="1" width="1" height="1" fill="#FED7AA" opacity="0.7" />
+      <rect x="6" y="3" width="1" height="1" fill="#FED7AA" opacity="0.5" />
+      <rect x="4" y="5" width="1" height="1" fill="#FED7AA" opacity="0.4" />
+      {/* Animated scanline shimmer */}
+      {animated && (
+        <rect x="0" y="0" width="16" height="2" fill="white" opacity="0.08">
+          <animateTransform
+            attributeName="transform"
+            type="translate"
+            from="0 -2"
+            to="0 18"
+            dur="3s"
+            begin="0s"
+            repeatCount="indefinite"
+          />
+        </rect>
+      )}
+    </svg>
+  );
+}
 
 export function Logo({ 
   size = 'md', 
@@ -36,69 +93,46 @@ export function Logo({
   animated = false 
 }: LogoProps) {
   return (
-    <div className={cn("flex items-center gap-3", className)}>
-      {/* Logo Icon - Summit Arrow */}
+    <div className={cn("flex items-center gap-2.5", className)}>
+      {/* Logo Icon — Pixel Arrow */}
       <div className="relative">
         <div className={cn(
           sizeClasses[size],
-          "rounded-xl bg-gradient-to-br from-ascend-400 via-ascend-500 to-ascend-600",
-          "flex items-center justify-center shadow-lg",
+          "bg-black border-2 border-ascend-600",
+          "flex items-center justify-center",
           "relative overflow-hidden",
-          animated && "animate-pulse-glow"
+          animated && "animate-glow"
         )}
         style={{
-          boxShadow: '0 4px 20px rgba(249, 115, 22, 0.35)',
+          boxShadow: '3px 3px 0px rgba(154, 52, 18, 0.8)',
+          borderRadius: '0px',
+          imageRendering: 'pixelated',
         }}>
-          {/* Subtle gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-white/0 to-white/20" />
-          
-          {/* Summit Arrow SVG */}
-          <svg 
-            viewBox="0 0 24 24" 
+          <PixelArrowSVG 
             className={cn(
-              "relative z-10 text-white",
-              size === 'sm' ? 'w-4 h-4' : size === 'md' ? 'w-5 h-5' : size === 'lg' ? 'w-7 h-7' : 'w-10 h-10'
+              "relative z-10",
+              size === 'sm' ? 'w-5 h-5' : size === 'md' ? 'w-6 h-6' : size === 'lg' ? 'w-9 h-9' : 'w-14 h-14'
             )}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            {/* Main upward arrow/mountain peak */}
-            <path d="M12 4L4 14h5v6h6v-6h5L12 4z" fill="currentColor" />
-            {/* Secondary peak line for depth */}
-            <path d="M12 4L8 10" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" />
-            {/* Accent line */}
-            <path d="M12 4L16 10" stroke="rgba(255,255,255,0.5)" strokeWidth="1.5" />
-          </svg>
-          
-          {/* Shine effect */}
-          <div 
-            className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/25 to-transparent"
-            style={{ borderRadius: '12px 12px 0 0' }}
+            animated={animated}
           />
         </div>
-        
-        {/* Glow effect behind logo */}
-        <div 
-          className={cn(
-            "absolute inset-0 -z-10 rounded-xl blur-xl bg-ascend-500/40",
-            animated && "animate-pulse"
-          )}
-        />
       </div>
 
-      {/* Text */}
+      {/* Text — Pixel font */}
       {showText && (
         <div className="flex flex-col">
           <h1 className={cn(
             textSizeClasses[size],
-            "font-bold tracking-tight text-white leading-none"
-          )}>
+            "font-pixel tracking-wider text-white leading-none uppercase"
+          )}
+          style={{ fontFamily: 'var(--font-pixel, "Press Start 2P"), monospace' }}
+          >
             RESURGO
           </h1>
-          <span className="text-[9px] text-white/60 tracking-[0.2em] uppercase font-medium mt-0.5">
+          <span 
+            className="text-[7px] text-zinc-500 tracking-[0.15em] uppercase mt-1"
+            style={{ fontFamily: 'var(--font-pixel, "Press Start 2P"), monospace' }}
+          >
             by WEBNESS
           </span>
         </div>
@@ -107,44 +141,49 @@ export function Logo({
   );
 }
 
-// Compact version for favicon/small contexts
+// Compact pixel version for favicon/small contexts
 export function LogoMark({ className }: { className?: string }) {
   return (
     <svg 
       viewBox="0 0 32 32" 
-      className={cn("text-ascend-500", className)}
-      fill="currentColor"
+      className={cn("pixel-render", className)}
+      style={{ imageRendering: 'pixelated' }}
     >
-      <defs>
-        <linearGradient id="ascend-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#FB923C" />
-          <stop offset="50%" stopColor="#F97316" />
-          <stop offset="100%" stopColor="#EA580C" />
-        </linearGradient>
-      </defs>
-      <rect width="32" height="32" rx="8" fill="url(#ascend-gradient)" />
-      <path 
-        d="M16 6L6 18h6v8h8v-8h6L16 6z" 
-        fill="white"
-      />
+      {/* Background square — no rounded corners */}
+      <rect width="32" height="32" fill="#0A0A0A" />
+      <rect x="1" y="1" width="30" height="30" fill="#000000" stroke="#EA580C" strokeWidth="2" />
+      {/* Pixel arrow scaled to 32x32 */}
+      <rect x="14" y="4" width="4" height="4" fill="#FB923C" />
+      <rect x="12" y="8" width="2" height="4" fill="#FB923C" />
+      <rect x="14" y="8" width="4" height="4" fill="#EA580C" />
+      <rect x="18" y="8" width="2" height="4" fill="#FB923C" />
+      <rect x="8" y="12" width="4" height="4" fill="#FDBA74" />
+      <rect x="12" y="12" width="8" height="4" fill="#EA580C" />
+      <rect x="20" y="12" width="4" height="4" fill="#FDBA74" />
+      <rect x="12" y="16" width="8" height="4" fill="#EA580C" />
+      <rect x="12" y="20" width="8" height="4" fill="#C2410C" />
+      <rect x="12" y="24" width="8" height="4" fill="#9A3412" />
+      {/* Highlight pixel */}
+      <rect x="14" y="4" width="2" height="2" fill="#FED7AA" opacity="0.6" />
     </svg>
   );
 }
 
-// Alternative minimal logo for loading states
+// Pixel loading spinner
 export function LogoSpinner({ className }: { className?: string }) {
   return (
     <div className={cn("relative", className)}>
-      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-ascend-400 to-ascend-600 flex items-center justify-center">
-        <svg 
-          viewBox="0 0 24 24" 
-          className="w-6 h-6 text-white animate-bounce"
-          fill="currentColor"
-        >
-          <path d="M12 4L4 14h5v6h6v-6h5L12 4z" />
-        </svg>
+      <div 
+        className="w-12 h-12 bg-black border-2 border-ascend-600 flex items-center justify-center"
+        style={{ boxShadow: '3px 3px 0px rgba(154, 52, 18, 0.8)', borderRadius: '0px' }}
+      >
+        <PixelArrowSVG className="w-8 h-8 animate-pixel-bounce" animated />
       </div>
-      <div className="absolute inset-0 rounded-xl border-2 border-ascend-400/50 animate-ping" />
+      {/* Pixel pulsing border */}
+      <div 
+        className="absolute inset-0 border-2 border-ascend-400/50 animate-pixel-pulse"
+        style={{ borderRadius: '0px' }}
+      />
     </div>
   );
 }

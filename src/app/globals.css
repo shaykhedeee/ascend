@@ -7,8 +7,8 @@
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 /* ─────────────────────────────────────────────────────────────────────────────────
-   CSS Variables – Vitality Terminal Theme
-   Palette: Pitch Black × Rust Orange × Zinc panels
+   CSS Variables – PIXEL TERMINAL Theme
+   Palette: Pitch Black × Rust Orange × Matrix Green × Pixel UI
    ───────────────────────────────────────────────────────────────────────────────── */
 
 :root {
@@ -29,6 +29,15 @@
   --rust: #EA580C;
   --rust-dim: #431407;
 
+  /* ── Pixel Accent Palette ── */
+  --pixel-green: #00FF41;       /* Matrix green — success, active */
+  --pixel-green-dim: #003B00;    /* Darkened green for backgrounds */
+  --pixel-red: #FF6B6B;          /* Soft red — danger, errors */
+  --pixel-yellow: #FFD93D;       /* Amber — warnings, XP */
+  --pixel-blue: #4D96FF;         /* Info blue — links, info */
+  --pixel-cyan: #00D4FF;         /* Cyan — highlights */
+  --pixel-purple: #A855F7;       /* Purple — rare, achievements */
+
   /* ── Terminal backgrounds ── */
   --background: #000000;            /* pitch black page bg */
   --background-secondary: #09090B; /* zinc-950 sidebar */
@@ -48,11 +57,11 @@
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-border: rgba(255, 255, 255, 0.1);
   
-  /* Completion colors - Orange-tinted */
-  --completion-excellent: #22C55E;
-  --completion-good: #F59E0B;
+  /* Completion colors */
+  --completion-excellent: #00FF41;
+  --completion-good: #FFD93D;
   --completion-moderate: #F97316;
-  --completion-low: #EF4444;
+  --completion-low: #FF6B6B;
   
   /* ═══════════════════════════════════════════════════════════════════════════
      DESIGN SYSTEM - Spacing Scale (4px base unit)
@@ -72,45 +81,45 @@
   --space-24: 96px;  /* 6XL */
 
   /* ═══════════════════════════════════════════════════════════════════════════
-     DESIGN SYSTEM - Elevation & Shadows
+     DESIGN SYSTEM - Pixel Shadows (hard edge, no blur)
      ═══════════════════════════════════════════════════════════════════════════ */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
-  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-xs: 1px 1px 0px rgba(0, 0, 0, 0.6);
+  --shadow-sm: 2px 2px 0px rgba(0, 0, 0, 0.7);
+  --shadow-md: 3px 3px 0px rgba(0, 0, 0, 0.8);
+  --shadow-lg: 4px 4px 0px rgba(0, 0, 0, 0.8);
+  --shadow-xl: 5px 5px 0px rgba(0, 0, 0, 0.9);
+  --shadow-2xl: 6px 6px 0px rgba(0, 0, 0, 0.9);
+  --shadow-inner: inset 2px 2px 0px rgba(0, 0, 0, 0.3);
   
-  /* Colored Shadows (for glows) */
-  --shadow-glow: 0 0 20px rgba(249, 115, 22, 0.3);
-  --shadow-glow-sm: 0 0 10px rgba(249, 115, 22, 0.2);
-  --shadow-glow-lg: 0 0 40px rgba(249, 115, 22, 0.4);
-  --shadow-glow-gold: 0 0 20px rgba(251, 191, 36, 0.3);
-  --shadow-glow-green: 0 0 20px rgba(34, 197, 94, 0.3);
-  --shadow-glow-purple: 0 0 20px rgba(168, 85, 247, 0.3);
+  /* Colored Pixel Shadows (hard-edge glows) */
+  --shadow-glow: 0 0 0 1px rgba(234, 88, 12, 0.5), 3px 3px 0px rgba(234, 88, 12, 0.3);
+  --shadow-glow-sm: 0 0 0 1px rgba(234, 88, 12, 0.3), 2px 2px 0px rgba(234, 88, 12, 0.2);
+  --shadow-glow-lg: 0 0 0 2px rgba(234, 88, 12, 0.5), 4px 4px 0px rgba(234, 88, 12, 0.4);
+  --shadow-glow-gold: 0 0 0 1px rgba(255, 217, 61, 0.4), 3px 3px 0px rgba(255, 217, 61, 0.3);
+  --shadow-glow-green: 0 0 0 1px rgba(0, 255, 65, 0.4), 3px 3px 0px rgba(0, 255, 65, 0.3);
+  --shadow-glow-purple: 0 0 0 1px rgba(168, 85, 247, 0.4), 3px 3px 0px rgba(168, 85, 247, 0.3);
 
   /* ═══════════════════════════════════════════════════════════════════════════
-     DESIGN SYSTEM - Border Radius
+     DESIGN SYSTEM - Border Radius (Pixel: sharp edges)
      ═══════════════════════════════════════════════════════════════════════════ */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-2xl: 24px;
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
+  --radius-2xl: 2px;
   --radius-full: 9999px;
 
   /* ═══════════════════════════════════════════════════════════════════════════
      DESIGN SYSTEM - Animation Durations
      ═══════════════════════════════════════════════════════════════════════════ */
   --duration-instant: 50ms;
-  --duration-fast: 150ms;
-  --duration-normal: 250ms;
-  --duration-slow: 400ms;
-  --duration-slower: 600ms;
+  --duration-fast: 100ms;
+  --duration-normal: 200ms;
+  --duration-slow: 350ms;
+  --duration-slower: 500ms;
 
   /* ═══════════════════════════════════════════════════════════════════════════
-     DESIGN SYSTEM - Easing Functions
+     DESIGN SYSTEM - Easing Functions (Pixel: use steps for 8-bit feel)
      ═══════════════════════════════════════════════════════════════════════════ */
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
@@ -118,6 +127,9 @@
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
   --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --ease-pixel: steps(6, end);         /* Stepped animation for pixel feel */
+  --ease-pixel-fast: steps(4, end);
+  --ease-pixel-slow: steps(10, end);
 
   /* ═══════════════════════════════════════════════════════════════════════════
      DESIGN SYSTEM - Z-Index Scale
@@ -157,16 +169,16 @@
   --glass-bg: rgba(255, 255, 255, 0.8);
   --glass-border: rgba(249, 115, 22, 0.15);
   
-  /* Adjusted shadows for light - warm */
-  --shadow-xs: 0 1px 2px rgba(194, 65, 12, 0.03);
-  --shadow-sm: 0 1px 3px rgba(194, 65, 12, 0.05), 0 1px 2px rgba(194, 65, 12, 0.03);
-  --shadow-md: 0 4px 6px -1px rgba(194, 65, 12, 0.08), 0 2px 4px -1px rgba(194, 65, 12, 0.05);
-  --shadow-lg: 0 10px 15px -3px rgba(194, 65, 12, 0.1), 0 4px 6px -2px rgba(194, 65, 12, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(194, 65, 12, 0.12), 0 10px 10px -5px rgba(194, 65, 12, 0.08);
-  --shadow-2xl: 0 25px 50px -12px rgba(194, 65, 12, 0.15);
-  --shadow-glow: 0 0 20px rgba(249, 115, 22, 0.2);
-  --shadow-glow-sm: 0 0 10px rgba(249, 115, 22, 0.15);
-  --shadow-glow-lg: 0 0 40px rgba(249, 115, 22, 0.25);
+  /* Adjusted pixel shadows for light */
+  --shadow-xs: 1px 1px 0px rgba(194, 65, 12, 0.1);
+  --shadow-sm: 2px 2px 0px rgba(194, 65, 12, 0.12);
+  --shadow-md: 3px 3px 0px rgba(194, 65, 12, 0.15);
+  --shadow-lg: 4px 4px 0px rgba(194, 65, 12, 0.18);
+  --shadow-xl: 5px 5px 0px rgba(194, 65, 12, 0.2);
+  --shadow-2xl: 6px 6px 0px rgba(194, 65, 12, 0.22);
+  --shadow-glow: 0 0 0 1px rgba(249, 115, 22, 0.3), 3px 3px 0px rgba(249, 115, 22, 0.2);
+  --shadow-glow-sm: 0 0 0 1px rgba(249, 115, 22, 0.2), 2px 2px 0px rgba(249, 115, 22, 0.1);
+  --shadow-glow-lg: 0 0 0 2px rgba(249, 115, 22, 0.3), 4px 4px 0px rgba(249, 115, 22, 0.25);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────────
@@ -433,160 +445,212 @@ h6 { font-size: 0.875rem; }
    ───────────────────────────────────────────────────────────────────────────────── */
 
 @layer components {
-  /* Glass morphism card - Works in both themes */
+  /* Glass morphism card - Pixel terminal style */
   .glass-card {
     background: var(--glass-bg);
-    -webkit-backdrop-filter: blur(12px);
-    backdrop-filter: blur(12px);
     border: 1px solid var(--glass-border);
-    border-radius: 1rem;
+    border-radius: 2px;
     box-shadow: var(--shadow-md);
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    transition: background-color 0.2s steps(4), border-color 0.2s steps(4);
+    image-rendering: pixelated;
   }
   
-  /* Glowing border */
+  /* Pixel border panel — ASCII-art style border */
+  .pixel-panel {
+    position: relative;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 0;
+    box-shadow: var(--shadow-md);
+  }
+  .pixel-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--ascend-500) 0%, transparent 40%);
+    opacity: 0.6;
+  }
+  
+  /* Glowing border - Pixel */
   .glow-border {
     @apply relative overflow-hidden;
   }
   
   .glow-border::before {
     content: '';
-    @apply absolute inset-0 rounded-2xl;
+    @apply absolute inset-0;
+    border-radius: 2px;
     background: linear-gradient(135deg, var(--ascend-primary) 0%, transparent 50%);
     opacity: 0.1;
   }
   
-  /* XP Progress bar */
+  /* XP Progress bar - Pixel stepped */
   .xp-bar {
-    @apply h-3 rounded-full overflow-hidden;
-    background: linear-gradient(90deg, var(--background-tertiary) 0%, var(--surface) 100%);
+    @apply h-3 overflow-hidden;
+    border-radius: 0;
+    background: var(--background-tertiary);
+    border: 1px solid var(--border);
   }
   
   .xp-bar-fill {
-    @apply h-full rounded-full transition-all duration-500 ease-out;
-    background: linear-gradient(90deg, var(--ascend-primary) 0%, var(--gold) 100%);
-    box-shadow: 0 0 10px var(--ascend-primary), 0 0 20px var(--ascend-primary-light);
+    @apply h-full transition-all duration-500;
+    border-radius: 0;
+    background: linear-gradient(90deg, var(--ascend-primary) 0%, var(--pixel-yellow) 100%);
+    box-shadow: 0 0 0 1px rgba(234, 88, 12, 0.5);
+    image-rendering: pixelated;
+    transition-timing-function: steps(20, end);
   }
   
-  /* Habit checkbox */
+  /* Habit checkbox - Pixel */
   .habit-checkbox {
-    @apply w-8 h-8 rounded-lg border-2 border-white/20 flex items-center justify-center
-           cursor-pointer transition-all duration-200 hover:border-ascend-500;
+    @apply w-8 h-8 border-2 border-white/20 flex items-center justify-center
+           cursor-pointer transition-all duration-200;
+    border-radius: 2px;
   }
   
   .habit-checkbox.checked {
     @apply bg-ascend-500 border-ascend-500;
-    box-shadow: 0 0 10px rgba(249, 115, 22, 0.5);
+    box-shadow: var(--shadow-glow-sm);
   }
   
-  /* Stat card */
+  /* Stat card - Pixel */
   .stat-card {
-    @apply p-4 rounded-xl bg-gradient-to-br from-white/5 to-transparent
+    @apply p-4 bg-gradient-to-br from-white/5 to-transparent
            border border-white/10 hover:border-white/20 transition-all;
+    border-radius: 2px;
   }
   
-  /* Button styles with proper states (WCAG compliant) - Enhanced Design */
+  /* Button styles — Pixel Design */
   .btn-primary {
     @apply px-6 py-3 font-semibold text-white
-           rounded-xl transition-all duration-300 ease-out
-           shadow-lg min-h-[44px] min-w-[44px]
+           transition-all duration-300 ease-out
+           min-h-[44px] min-w-[44px]
            focus-visible:ring-2 focus-visible:ring-ascend-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]
            disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
-    background: linear-gradient(135deg, var(--ascend-primary) 0%, var(--ascend-primary-dark) 100%);
-    box-shadow: 0 4px 14px rgba(249, 115, 22, 0.25);
+    border-radius: 2px;
+    background: var(--ascend-primary);
+    border: 2px solid var(--ascend-primary-dark);
+    box-shadow: 3px 3px 0px var(--ascend-primary-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: var(--font-pixel, 'Press Start 2P', monospace);
+    font-size: 0.7rem;
   }
   
   .btn-primary:hover:not(:disabled) {
-    background: linear-gradient(135deg, var(--ascend-primary-light) 0%, var(--ascend-primary) 100%);
-    box-shadow: 0 6px 20px rgba(249, 115, 22, 0.35);
-    transform: translateY(-2px);
+    background: var(--ascend-primary-light);
+    box-shadow: 2px 2px 0px var(--ascend-primary-dark);
+    transform: translate(1px, 1px);
   }
   
   .btn-primary:active:not(:disabled) {
-    transform: translateY(0) scale(0.98);
-    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
+    transform: translate(3px, 3px);
+    box-shadow: 0px 0px 0px var(--ascend-primary-dark);
   }
   
   .btn-secondary {
     @apply px-6 py-3 font-semibold
-           rounded-xl transition-all duration-300 ease-out
+           transition-all duration-300 ease-out
            min-h-[44px] min-w-[44px]
            focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]
            disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
+    border-radius: 2px;
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 2px solid var(--border);
     color: var(--text-primary);
+    box-shadow: 3px 3px 0px var(--border);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.7rem;
   }
   
   .btn-secondary:hover:not(:disabled) {
     background: var(--surface-hover);
     border-color: var(--ascend-primary);
     color: var(--ascend-primary);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0px var(--border);
   }
   
   .btn-secondary:active:not(:disabled) {
-    transform: translateY(0) scale(0.98);
+    transform: translate(3px, 3px);
+    box-shadow: 0px 0px 0px var(--border);
   }
   
   .btn-ghost {
     @apply px-4 py-2 min-h-[44px] min-w-[44px]
-           rounded-lg transition-all duration-200
+           transition-all duration-200
            focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]
            disabled:opacity-50 disabled:cursor-not-allowed;
     color: var(--text-secondary);
+    border-radius: 2px;
+    border: 1px solid transparent;
   }
   
   .btn-ghost:hover:not(:disabled) {
     background: var(--surface-hover);
     color: var(--text-primary);
+    border-color: var(--border);
   }
   
   .btn-ghost:active:not(:disabled) {
-    transform: scale(0.98);
+    transform: translate(1px, 1px);
   }
   
-  /* Danger/Delete button variant */
+  /* Danger/Delete button - Pixel */
   .btn-danger {
     @apply px-6 py-3 font-semibold text-white
-           rounded-xl transition-all duration-300 ease-out
+           transition-all duration-300 ease-out
            min-h-[44px] min-w-[44px]
            focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]
            disabled:opacity-50 disabled:cursor-not-allowed;
-    background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
-    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.25);
+    border-radius: 2px;
+    background: #EF4444;
+    border: 2px solid #DC2626;
+    box-shadow: 3px 3px 0px #991B1B;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.7rem;
   }
   
   .btn-danger:hover:not(:disabled) {
-    background: linear-gradient(135deg, #F87171 0%, #EF4444 100%);
-    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.35);
-    transform: translateY(-2px);
+    background: #F87171;
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0px #991B1B;
   }
   
   .btn-danger:active:not(:disabled) {
-    transform: translateY(0) scale(0.98);
+    transform: translate(3px, 3px);
+    box-shadow: 0px 0px 0px #991B1B;
   }
   
-  /* Outline button variant */
+  /* Outline button - Pixel */
   .btn-outline {
     @apply px-6 py-3 font-semibold
-           rounded-xl transition-all duration-300 ease-out
+           transition-all duration-300 ease-out
            min-h-[44px] min-w-[44px] bg-transparent
            focus-visible:ring-2 focus-visible:ring-ascend-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]
            disabled:opacity-50 disabled:cursor-not-allowed;
+    border-radius: 2px;
     border: 2px solid var(--ascend-primary);
     color: var(--ascend-primary);
+    box-shadow: 3px 3px 0px var(--ascend-primary-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.7rem;
   }
   
   .btn-outline:hover:not(:disabled) {
     background: var(--ascend-primary);
     color: white;
-    transform: translateY(-1px);
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0px var(--ascend-primary-dark);
   }
   
   .btn-outline:active:not(:disabled) {
-    transform: translateY(0) scale(0.98);
+    transform: translate(3px, 3px);
+    box-shadow: 0px 0px 0px var(--ascend-primary-dark);
   }
   
   /* Loading spinner for buttons */
@@ -604,13 +668,15 @@ h6 { font-size: 0.875rem; }
     to { transform: rotate(360deg); }
   }
   
-  /* Input styles with accessibility improvements */
+  /* Input styles - Pixel Design */
   .input-primary {
-    @apply w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl
+    @apply w-full px-4 py-3 bg-white/5 border border-white/10
            placeholder:text-white/40 focus:outline-none 
            focus:border-ascend-500 focus:ring-2 focus:ring-ascend-500/20
            transition-all duration-200 min-h-[44px];
     color: var(--text-primary);
+    border-radius: 2px;
+    font-family: inherit;
   }
   
   .input-primary:disabled {
@@ -653,9 +719,11 @@ h6 { font-size: 0.875rem; }
     color: var(--text-muted);
   }
   
-  /* Badge styles */
+  /* Badge styles - Pixel */
   .badge {
-    @apply px-3 py-1 rounded-full text-xs font-semibold;
+    @apply px-3 py-1 text-xs font-semibold;
+    border-radius: 2px;
+    border: 1px solid currentColor;
   }
   
   .badge-success {
@@ -686,11 +754,12 @@ h6 { font-size: 0.875rem; }
     box-shadow: 0 0 8px rgba(249, 115, 22, 0.8);
   }
   
-  /* Level badge */
+  /* Level badge - Pixel */
   .level-badge {
-    @apply inline-flex items-center gap-2 px-4 py-2 rounded-xl
+    @apply inline-flex items-center gap-2 px-4 py-2
            bg-gradient-to-r from-ascend-500/20 to-gold/20
            border border-ascend-500/30;
+    border-radius: 2px;
   }
   
   /* Tooltip with accessibility */
@@ -699,12 +768,13 @@ h6 { font-size: 0.875rem; }
   }
   
   .tooltip .tooltip-text {
-    @apply invisible absolute z-50 px-3 py-2 text-sm rounded-lg
+    @apply invisible absolute z-50 px-3 py-2 text-sm
            shadow-lg whitespace-nowrap opacity-0 transition-all duration-200
            bottom-full left-1/2 -translate-x-1/2 mb-2 pointer-events-none;
     background: var(--surface);
     color: var(--text-primary);
     border: 1px solid var(--border);
+    border-radius: 2px;
   }
   
   .tooltip:hover .tooltip-text,
@@ -712,10 +782,11 @@ h6 { font-size: 0.875rem; }
     @apply visible opacity-100;
   }
   
-  /* Skeleton loading state */
+  /* Skeleton loading state - Pixel */
   .skeleton {
-    @apply relative overflow-hidden rounded-lg;
+    @apply relative overflow-hidden;
     background: var(--surface);
+    border-radius: 2px;
   }
   
   .skeleton::after {
@@ -753,8 +824,10 @@ h6 { font-size: 0.875rem; }
   }
   
   .empty-state-icon {
-    @apply w-16 h-16 rounded-2xl flex items-center justify-center mb-4;
+    @apply w-16 h-16 flex items-center justify-center mb-4;
     background: var(--surface);
+    border-radius: 2px;
+    border: 1px solid var(--border);
   }
   
   .empty-state-title {
@@ -767,9 +840,10 @@ h6 { font-size: 0.875rem; }
     color: var(--text-secondary);
   }
   
-  /* Error state container */
+  /* Error state container - Pixel */
   .error-state {
-    @apply p-4 rounded-xl border;
+    @apply p-4 border;
+    border-radius: 2px;
     background: rgba(239, 68, 68, 0.1);
     border-color: rgba(239, 68, 68, 0.3);
   }
@@ -1797,26 +1871,29 @@ textarea {
 }
 
 
-/* -- Terminal panel glow ----------------------------------------------- */
+/* -- Terminal panel glow (Pixel) ---------------------------------------- */
 .terminal-panel {
   position: relative;
-  box-shadow: 0 0 0 1px #18181b, 0 0 20px rgba(234, 88, 12, 0.04);
-  transition: box-shadow 0.2s ease;
+  border: 2px solid #18181b;
+  border-radius: 0;
+  box-shadow: var(--shadow-md);
+  transition: box-shadow 0.2s steps(4), border-color 0.2s steps(4);
 }
 .terminal-panel:hover {
-  box-shadow: 0 0 0 1px #27272a, 0 0 25px rgba(234, 88, 12, 0.10);
+  border-color: #27272a;
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(234, 88, 12, 0.12);
 }
 .terminal-panel:hover::after {
   content: '';
   position: absolute;
   left: 0;
   right: 0;
-  height: 1px;
-  background: rgba(234, 88, 12, 0.12);
-  animation: scanline 2s linear;
+  height: 2px;
+  background: rgba(234, 88, 12, 0.15);
+  animation: scanline-pixel 2s steps(30) forwards;
   pointer-events: none;
 }
-@keyframes scanline {
+@keyframes scanline-pixel {
   from { top: 0%; }
   to   { top: 100%; }
 }
@@ -1832,16 +1909,247 @@ body.custom-cursor-active .cursor-not-allowed {
   cursor: url('/icons/cursor.svg') 0 0, not-allowed !important;
 }
 
-/* -- Typography helpers ------------------------------------------------ */
+/* -- Typography helpers (Pixel) ---------------------------------------- */
 .text-headline {
-  font-family: ui-monospace, 'Cascadia Code', 'Fira Code', Menlo, monospace;
+  font-family: var(--font-pixel, 'Press Start 2P'), monospace;
   font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
 }
 .text-body {
-  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-family: var(--font-vt323, 'VT323'), ui-monospace, monospace;
+  line-height: 1.5;
+  font-size: 1.1rem;
+}
+.text-pixel-sm {
+  font-family: var(--font-pixel, 'Press Start 2P'), monospace;
+  font-size: 0.55rem;
   line-height: 1.6;
+  letter-spacing: 0.03em;
+}
+.text-pixel-md {
+  font-family: var(--font-pixel, 'Press Start 2P'), monospace;
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+.text-pixel-lg {
+  font-family: var(--font-pixel, 'Press Start 2P'), monospace;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+.text-terminal {
+  font-family: var(--font-vt323, 'VT323'), ui-monospace, monospace;
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   PIXEL / 8-BIT DESIGN SYSTEM UTILITIES
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* CRT Scanline Overlay — toggleable via .crt-on class on body/container */
+.crt-on::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.06) 2px,
+    rgba(0, 0, 0, 0.06) 4px
+  );
+  mix-blend-mode: multiply;
+}
+
+/* Lighter variant for subtle scanlines */
+.crt-subtle::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.03) 3px,
+    rgba(0, 0, 0, 0.03) 6px
+  );
+}
+
+/* Pixel rendering for images and icons */
+.pixel-render,
+.pixel-render img,
+.pixel-render svg {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Pixel border — dashed/stepped look */
+.pixel-border {
+  border: 2px solid var(--border);
+  border-radius: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Pixel border with glow */
+.pixel-border-glow {
+  border: 2px solid var(--ascend-primary);
+  border-radius: 0;
+  box-shadow: 0 0 0 1px var(--ascend-primary-dark), var(--shadow-sm);
+}
+
+/* Pixel card */
+.pixel-card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 0;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
+}
+.pixel-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Pixel progress bar */
+.pixel-progress {
+  height: 12px;
+  background: var(--background-tertiary);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+}
+.pixel-progress-fill {
+  height: 100%;
+  background: var(--ascend-primary);
+  border-radius: 0;
+  transition: width 0.5s steps(20, end);
+  image-rendering: pixelated;
+}
+
+/* Pixel dot divider */
+.pixel-divider {
+  border: none;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--border) 0px,
+    var(--border) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+
+/* Pixel notification dot */
+.pixel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 0;
+  display: inline-block;
+}
+.pixel-dot-green { background: var(--pixel-green); box-shadow: 0 0 4px var(--pixel-green); }
+.pixel-dot-red { background: var(--pixel-red); box-shadow: 0 0 4px var(--pixel-red); }
+.pixel-dot-yellow { background: var(--pixel-yellow); box-shadow: 0 0 4px var(--pixel-yellow); }
+.pixel-dot-blue { background: var(--pixel-blue); box-shadow: 0 0 4px var(--pixel-blue); }
+
+/* Matrix green text effect */
+.text-matrix {
+  color: var(--pixel-green);
+  text-shadow: 0 0 4px rgba(0, 255, 65, 0.5);
+}
+
+/* Pixel blinking cursor */
+.pixel-cursor::after {
+  content: '█';
+  animation: blink 1s steps(2) infinite;
+  color: var(--ascend-primary);
+}
+
+/* ASCII box drawing border */
+.ascii-border {
+  border: 1px solid var(--border);
+  border-radius: 0;
+  position: relative;
+}
+.ascii-border::before {
+  content: '╔';
+  position: absolute;
+  top: -1px;
+  left: 2px;
+  color: var(--text-muted);
+  font-family: monospace;
+  font-size: 10px;
+  line-height: 1;
+}
+
+/* Stepped animation utility */
+.animate-pixel {
+  animation-timing-function: steps(6, end) !important;
+}
+
+/* Pixel shimmer effect for loading */
+@keyframes pixel-shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: 200px 0; }
+}
+.pixel-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--surface) 0px,
+    var(--surface-hover) 40px,
+    var(--surface) 80px
+  );
+  background-size: 200px 100%;
+  animation: pixel-shimmer 1.5s steps(12) infinite;
+}
+
+/* Pixel typewriter effect */
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid var(--ascend-primary);
+  animation: 
+    typewriter 3s steps(40) forwards,
+    blink 0.8s steps(2) infinite;
+}
+
+/* Pixel tooltip arrow */
+.pixel-tooltip {
+  position: relative;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  padding: 8px 12px;
+  border-radius: 0;
+  box-shadow: var(--shadow-md);
+}
+
+/* Pixel tag/chip */
+.pixel-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  font-size: 0.7rem;
+  font-family: var(--font-pixel, 'Press Start 2P'), monospace;
+  text-transform: uppercase;
+}
+
+/* Override all rounded corners globally for pixel feel */
+.pixel-mode *:not(.rounded-full):not(.clerk-user-button):not([class*="cl-"]) {
+  border-radius: 2px !important;
 }
 
 /* -- Safe-area bottom padding (iOS PWA) -------------------------------- */

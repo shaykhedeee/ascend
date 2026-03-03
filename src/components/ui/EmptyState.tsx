@@ -145,25 +145,24 @@ export function EmptyState({
     return (
       <div className={cn('text-center py-8 px-4', className)}>
         <div className={cn(
-          'w-12 h-12 rounded-xl mx-auto mb-3',
-          'bg-gradient-to-br',
-          config.bgGradient,
+          'w-12 h-12 mx-auto mb-3',
+          'border-2 border-zinc-700 bg-zinc-900',
           'flex items-center justify-center'
-        )}>
+        )} style={{ borderRadius: '2px' }}>
           <Icon className={cn('w-6 h-6', config.iconColor)} />
         </div>
-        <p className="text-sm font-medium text-[var(--text-primary)] mb-1">
+        <p className="font-pixel text-[0.6rem] uppercase tracking-wider text-[var(--text-primary)] mb-1">
           {displayTitle}
         </p>
-        <p className="text-xs text-[var(--text-muted)] max-w-xs mx-auto">
+        <p className="font-terminal text-base text-[var(--text-muted)] max-w-xs mx-auto">
           {displayDescription}
         </p>
         {displayActionLabel && onAction && (
           <button
             onClick={onAction}
-            className="mt-3 text-xs text-ascend-400 hover:text-ascend-300 font-medium"
+            className="mt-3 font-pixel text-[0.5rem] uppercase tracking-wider text-ascend-400 hover:text-ascend-300"
           >
-            {displayActionLabel}
+            [{displayActionLabel}]
           </button>
         )}
         {children}
@@ -177,30 +176,23 @@ export function EmptyState({
       'py-16 px-6',
       className
     )}>
-      {/* Decorative Background */}
+      {/* Pixel Icon Frame */}
       <div className="relative mb-6">
         <div className={cn(
-          'absolute inset-0 blur-3xl opacity-50',
-          'bg-gradient-to-br',
-          config.bgGradient,
-          'rounded-full scale-150'
-        )} />
-        <div className={cn(
-          'relative w-20 h-20 rounded-2xl',
-          'bg-gradient-to-br',
-          config.bgGradient,
+          'relative w-20 h-20',
+          'border-2 border-zinc-700 bg-zinc-900',
           'flex items-center justify-center',
-          'border border-white/10'
-        )}>
+          'shadow-[3px_3px_0px_rgba(0,0,0,0.6)]'
+        )} style={{ borderRadius: '2px' }}>
           <Icon className={cn('w-10 h-10', config.iconColor)} />
         </div>
       </div>
 
       {/* Content */}
-      <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-2">
+      <h3 className="font-pixel text-[0.7rem] uppercase tracking-wider text-[var(--text-primary)] mb-2">
         {displayTitle}
       </h3>
-      <p className="text-[var(--text-muted)] max-w-sm mb-6 leading-relaxed">
+      <p className="font-terminal text-lg text-[var(--text-muted)] max-w-sm mb-6 leading-relaxed">
         {displayDescription}
       </p>
 
@@ -244,11 +236,13 @@ export function EmptyHabits({ onAction, className }: SpecializedEmptyStateProps)
             key={suggestion}
             onClick={onAction}
             className={cn(
-              'px-3 py-1.5 rounded-full text-xs font-medium',
-              'bg-[var(--surface)] border border-[var(--border)]',
+              'px-3 py-1.5 text-[0.55rem] font-pixel uppercase tracking-wider',
+              'bg-[var(--surface)] border-2 border-[var(--border)]',
               'hover:border-ascend-500/50 hover:bg-ascend-500/10',
-              'transition-colors'
+              'transition-colors duration-100',
+              'shadow-[2px_2px_0px_rgba(0,0,0,0.4)]'
             )}
+            style={{ borderRadius: '2px' }}
           >
             {suggestion}
           </button>
@@ -266,12 +260,12 @@ export function EmptyGoals({ onAction, className }: SpecializedEmptyStateProps) 
       className={className}
     >
       {/* AI Highlight */}
-      <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-purple-500/10 to-ascend-500/10 border border-purple-500/20 max-w-sm">
+      <div className="mt-6 p-4 bg-purple-950/20 border-2 border-purple-500/30 max-w-sm" style={{ borderRadius: '2px' }}>
         <div className="flex items-center gap-2 mb-2">
           <Sparkles className="w-4 h-4 text-purple-400" />
-          <span className="text-sm font-medium text-purple-400">AI-Powered</span>
+          <span className="font-pixel text-[0.5rem] uppercase tracking-wider text-purple-400">AI-Powered</span>
         </div>
-        <p className="text-xs text-[var(--text-muted)]">
+        <p className="font-terminal text-sm text-[var(--text-muted)]">
           Our AI will automatically break down your goal into milestones and daily tasks.
         </p>
       </div>
@@ -406,10 +400,10 @@ export function IllustratedEmptyState({
       <div className="mb-6 animate-float">
         {illustrations[illustration]}
       </div>
-      <h3 className="text-xl font-semibold text-[var(--text-primary)] mb-2">
+      <h3 className="font-pixel text-[0.7rem] uppercase tracking-wider text-[var(--text-primary)] mb-2">
         {title}
       </h3>
-      <p className="text-[var(--text-muted)] max-w-sm mb-6">
+      <p className="font-terminal text-lg text-[var(--text-muted)] max-w-sm mb-6">
         {description}
       </p>
       {actionLabel && onAction && (

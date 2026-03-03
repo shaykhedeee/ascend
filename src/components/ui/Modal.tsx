@@ -177,11 +177,11 @@ export function Modal({
       )}
       style={{ zIndex: 'var(--z-modal)' }}
     >
-      {/* Backdrop */}
+      {/* Backdrop — no blur for pixel crispness */}
       <div
         className={cn(
-          'absolute inset-0 bg-black/60 backdrop-blur-sm',
-          'transition-opacity duration-200',
+          'absolute inset-0 bg-black/75',
+          'transition-opacity duration-150',
           isAnimating ? 'opacity-100' : 'opacity-0'
         )}
         onClick={handleBackdropClick}
@@ -197,31 +197,32 @@ export function Modal({
         aria-describedby={description ? 'modal-description' : undefined}
         className={cn(
           'relative w-full bg-[var(--background-secondary)]',
-          'border border-[var(--border)] rounded-2xl',
-          'shadow-2xl overflow-hidden',
-          'transition-all duration-300',
+          'border-2 border-[var(--border)]',
+          'shadow-[4px_4px_0px_rgba(0,0,0,0.8)] overflow-hidden',
+          'transition-all duration-150',
           isAnimating
-            ? 'opacity-100 scale-100 translate-y-0'
-            : 'opacity-0 scale-95 translate-y-4',
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-2',
           modalSizes[size],
           className
         )}
+        style={{ borderRadius: '2px' }}
       >
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-start justify-between px-6 pt-6 pb-4">
+          <div className="flex items-start justify-between border-b-2 border-[var(--border)] px-6 pt-5 pb-3">
             {title && (
               <div>
                 <h2
                   id="modal-title"
-                  className="text-xl font-semibold text-[var(--text-primary)]"
+                  className="font-pixel text-[0.7rem] uppercase tracking-wider text-[var(--text-primary)]"
                 >
                   {title}
                 </h2>
                 {description && (
                   <p
                     id="modal-description"
-                    className="mt-1 text-sm text-[var(--text-muted)]"
+                    className="mt-1.5 font-terminal text-base text-[var(--text-muted)]"
                   >
                     {description}
                   </p>
@@ -281,7 +282,7 @@ export function ModalFooter({ className, children }: ModalFooterProps) {
     <div
       className={cn(
         'flex items-center justify-end gap-3 px-6 py-4',
-        'border-t border-[var(--border)]',
+        'border-t-2 border-[var(--border)]',
         'bg-[var(--surface)]/50',
         className
       )}
@@ -339,11 +340,14 @@ export function ConfirmDialog({
           onClick={onClose}
           disabled={loading}
           className={cn(
-            'px-4 py-2 rounded-xl text-sm font-medium',
-            'bg-[var(--surface)] border border-[var(--border)]',
-            'hover:bg-[var(--surface-hover)] transition-colors',
+            'px-4 py-2 text-[0.65rem] font-pixel uppercase tracking-wider',
+            'bg-[var(--surface)] border-2 border-[var(--border)]',
+            'shadow-[2px_2px_0px_rgba(0,0,0,0.5)]',
+            'hover:bg-[var(--surface-hover)] transition-colors duration-100',
+            'active:shadow-[1px_1px_0px_rgba(0,0,0,0.5)] active:translate-x-[1px] active:translate-y-[1px]',
             'min-h-[44px] min-w-[80px]'
           )}
+          style={{ borderRadius: '2px' }}
         >
           {cancelText}
         </button>
@@ -351,13 +355,15 @@ export function ConfirmDialog({
           onClick={handleConfirm}
           disabled={loading}
           className={cn(
-            'px-4 py-2 rounded-xl text-sm font-semibold',
-            'min-h-[44px] min-w-[80px] transition-colors',
-            variant === 'danger' && 'bg-red-500 hover:bg-red-600 text-white',
-            variant === 'warning' && 'bg-amber-500 hover:bg-amber-600 text-black',
-            variant === 'default' &&
-              'bg-gradient-to-r from-ascend-500 to-ascend-600 hover:from-ascend-400 hover:to-ascend-500 text-white'
+            'px-4 py-2 text-[0.65rem] font-pixel uppercase tracking-wider font-bold',
+            'border-2 min-h-[44px] min-w-[80px] transition-colors duration-100',
+            'shadow-[3px_3px_0px_rgba(0,0,0,0.7)]',
+            'active:shadow-[1px_1px_0px_rgba(0,0,0,0.7)] active:translate-x-[2px] active:translate-y-[2px]',
+            variant === 'danger' && 'bg-red-600 hover:bg-red-500 text-white border-red-700',
+            variant === 'warning' && 'bg-amber-500 hover:bg-amber-400 text-black border-amber-600',
+            variant === 'default' && 'bg-ascend-600 hover:bg-ascend-500 text-white border-ascend-700'
           )}
+          style={{ borderRadius: '2px' }}
         >
           {loading ? (
             <span className="inline-block w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -456,7 +462,7 @@ export function Drawer({
     >
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/75"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -469,10 +475,10 @@ export function Drawer({
         className={cn(
           'absolute top-0 bottom-0 w-full',
           'bg-[var(--background-secondary)] border-[var(--border)]',
-          'shadow-2xl overflow-hidden',
-          'transition-transform duration-300 ease-out',
-          position === 'right' && 'right-0 border-l',
-          position === 'left' && 'left-0 border-r',
+          'shadow-[4px_4px_0px_rgba(0,0,0,0.8)] overflow-hidden',
+          'transition-transform duration-200',
+          position === 'right' && 'right-0 border-l-2',
+          position === 'left' && 'left-0 border-r-2',
           position === 'right' && (isAnimating ? 'translate-x-0' : 'translate-x-full'),
           position === 'left' && (isAnimating ? 'translate-x-0' : '-translate-x-full'),
           drawerSizes[size],
@@ -481,9 +487,9 @@ export function Drawer({
       >
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--border)]">
+          <div className="flex items-center justify-between px-6 py-4 border-b-2 border-[var(--border)]">
             {title && (
-              <h2 className="text-lg font-semibold text-[var(--text-primary)]">{title}</h2>
+              <h2 className="font-pixel text-[0.7rem] uppercase tracking-wider text-[var(--text-primary)]">{title}</h2>
             )}
             {showCloseButton && (
               <IconButton variant="ghost" size="sm" onClick={onClose} aria-label="Close drawer">

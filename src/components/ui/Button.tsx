@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// RESURGO - Design System Button Components
-// Standardized button styles with consistent interactions
+// RESURGO - Design System Button Components — PIXEL EDITION
+// Hard-edge pixel buttons with stepped press animations
 // ═══════════════════════════════════════════════════════════════════════════════
 
 'use client';
@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 
 // ─────────────────────────────────────────────────────────────────────────────────
-// Button Variants & Sizes
+// Button Variants & Sizes — Pixel Theme
 // ─────────────────────────────────────────────────────────────────────────────────
 
 type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success' | 'gold';
@@ -18,78 +18,83 @@ type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 const variantStyles: Record<ButtonVariant, string> = {
   primary: `
-    bg-gradient-to-r from-ascend-500 to-ascend-600 
-    hover:from-ascend-400 hover:to-ascend-500 
-    text-white font-semibold
-    shadow-md shadow-ascend-500/20
-    hover:shadow-lg hover:shadow-ascend-500/30
-    active:shadow-sm
-    focus-visible:ring-2 focus-visible:ring-ascend-400 focus-visible:ring-offset-2
+    bg-ascend-600 hover:bg-ascend-500 
+    text-white font-bold uppercase tracking-wider
+    border-2 border-ascend-700
+    shadow-[3px_3px_0px_rgba(0,0,0,0.8)]
+    hover:shadow-[4px_4px_0px_rgba(0,0,0,0.8)]
+    active:shadow-[1px_1px_0px_rgba(0,0,0,0.8)] active:translate-x-[2px] active:translate-y-[2px]
+    focus-visible:ring-2 focus-visible:ring-ascend-400 focus-visible:ring-offset-1
   `,
   secondary: `
-    bg-[var(--surface)] 
-    hover:bg-[var(--surface-hover)] 
-    text-[var(--text-primary)]
-    border border-[var(--border)]
-    hover:border-[var(--text-muted)]
-    focus-visible:ring-2 focus-visible:ring-[var(--border)] focus-visible:ring-offset-2
+    bg-[var(--surface)] hover:bg-[var(--surface-hover)] 
+    text-[var(--text-primary)] uppercase tracking-wider
+    border-2 border-[var(--border)]
+    shadow-[2px_2px_0px_rgba(0,0,0,0.6)]
+    hover:shadow-[3px_3px_0px_rgba(0,0,0,0.6)] hover:border-[var(--text-muted)]
+    active:shadow-[1px_1px_0px_rgba(0,0,0,0.6)] active:translate-x-[1px] active:translate-y-[1px]
+    focus-visible:ring-2 focus-visible:ring-[var(--border)] focus-visible:ring-offset-1
   `,
   outline: `
-    bg-transparent 
-    hover:bg-[var(--surface)] 
-    text-[var(--text-primary)]
-    border border-[var(--border)]
+    bg-transparent hover:bg-[var(--surface)] 
+    text-[var(--text-primary)] uppercase tracking-wider
+    border-2 border-[var(--border)]
+    shadow-[2px_2px_0px_rgba(0,0,0,0.5)]
     hover:border-ascend-500/50
-    focus-visible:ring-2 focus-visible:ring-ascend-400 focus-visible:ring-offset-2
+    active:shadow-[1px_1px_0px_rgba(0,0,0,0.5)] active:translate-x-[1px] active:translate-y-[1px]
+    focus-visible:ring-2 focus-visible:ring-ascend-400 focus-visible:ring-offset-1
   `,
   ghost: `
-    bg-transparent 
-    hover:bg-[var(--surface)] 
-    text-[var(--text-secondary)]
-    hover:text-[var(--text-primary)]
-    focus-visible:ring-2 focus-visible:ring-[var(--border)] focus-visible:ring-offset-2
+    bg-transparent hover:bg-[var(--surface)] 
+    text-[var(--text-secondary)] uppercase tracking-wider
+    border-2 border-transparent
+    hover:text-[var(--text-primary)] hover:border-[var(--border)]
+    active:translate-x-[1px] active:translate-y-[1px]
+    focus-visible:ring-2 focus-visible:ring-[var(--border)] focus-visible:ring-offset-1
   `,
   danger: `
-    bg-red-500/10 
-    hover:bg-red-500/20 
-    text-red-400
-    border border-red-500/30
-    hover:border-red-500/50
-    focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-2
+    bg-red-900/30 hover:bg-red-800/40 
+    text-red-400 uppercase tracking-wider
+    border-2 border-red-500/50
+    shadow-[2px_2px_0px_rgba(220,38,38,0.3)]
+    hover:border-red-500/70
+    active:shadow-[1px_1px_0px_rgba(220,38,38,0.3)] active:translate-x-[1px] active:translate-y-[1px]
+    focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-1
   `,
   success: `
-    bg-green-500/10 
-    hover:bg-green-500/20 
-    text-green-400
-    border border-green-500/30
-    hover:border-green-500/50
-    focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-2
+    bg-green-900/30 hover:bg-green-800/40 
+    text-green-400 uppercase tracking-wider
+    border-2 border-green-500/50
+    shadow-[2px_2px_0px_rgba(34,197,94,0.3)]
+    hover:border-green-500/70
+    active:shadow-[1px_1px_0px_rgba(34,197,94,0.3)] active:translate-x-[1px] active:translate-y-[1px]
+    focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-offset-1
   `,
   gold: `
-    bg-gradient-to-r from-gold-400 to-amber-500 
-    hover:from-gold-300 hover:to-amber-400 
-    text-black font-semibold
-    shadow-md shadow-gold-400/20
-    hover:shadow-lg hover:shadow-gold-400/30
-    active:shadow-sm
-    focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2
+    bg-amber-500 hover:bg-amber-400 
+    text-black font-bold uppercase tracking-wider
+    border-2 border-amber-600
+    shadow-[3px_3px_0px_rgba(0,0,0,0.7)]
+    hover:shadow-[4px_4px_0px_rgba(0,0,0,0.7)]
+    active:shadow-[1px_1px_0px_rgba(0,0,0,0.7)] active:translate-x-[2px] active:translate-y-[2px]
+    focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-1
   `,
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  xs: 'px-2.5 py-1 text-xs min-h-[28px] rounded-md gap-1',
-  sm: 'px-3 py-1.5 text-sm min-h-[36px] rounded-lg gap-1.5',
-  md: 'px-4 py-2 text-sm min-h-[44px] rounded-xl gap-2',
-  lg: 'px-6 py-3 text-base min-h-[52px] rounded-xl gap-2',
-  xl: 'px-8 py-4 text-lg min-h-[60px] rounded-2xl gap-3',
+  xs: 'px-2.5 py-1 text-[0.6rem] min-h-[28px] gap-1',
+  sm: 'px-3 py-1.5 text-[0.65rem] min-h-[36px] gap-1.5',
+  md: 'px-4 py-2 text-[0.7rem] min-h-[44px] gap-2',
+  lg: 'px-6 py-3 text-xs min-h-[52px] gap-2',
+  xl: 'px-8 py-4 text-sm min-h-[60px] gap-3',
 };
 
 const iconOnlySizes: Record<ButtonSize, string> = {
-  xs: 'p-1 min-h-[28px] min-w-[28px] rounded-md',
-  sm: 'p-1.5 min-h-[36px] min-w-[36px] rounded-lg',
-  md: 'p-2 min-h-[44px] min-w-[44px] rounded-xl',
-  lg: 'p-3 min-h-[52px] min-w-[52px] rounded-xl',
-  xl: 'p-4 min-h-[60px] min-w-[60px] rounded-2xl',
+  xs: 'p-1 min-h-[28px] min-w-[28px]',
+  sm: 'p-1.5 min-h-[36px] min-w-[36px]',
+  md: 'p-2 min-h-[44px] min-w-[44px]',
+  lg: 'p-3 min-h-[52px] min-w-[52px]',
+  xl: 'p-4 min-h-[60px] min-w-[60px]',
 };
 
 // ─────────────────────────────────────────────────────────────────────────────────
@@ -131,16 +136,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={isDisabled}
         className={cn(
-          // Base styles
+          // Base pixel styles
           'inline-flex items-center justify-center',
-          'font-medium transition-all',
+          'font-pixel transition-all duration-100',
           'focus-visible:outline-none focus-visible:ring-offset-[var(--background)]',
-          
-          // Micro-interactions
-          'active:scale-[0.98] active-press',
-          
-          // Theme transition
-          'theme-transition',
+          'rounded-pixel',
           
           // Variant & Size
           variantStyles[variant],
@@ -227,17 +227,17 @@ export function ButtonGroup({ children, className, orientation = 'horizontal' }:
       className={cn(
         'inline-flex',
         orientation === 'horizontal' ? 'flex-row' : 'flex-col',
-        // Style adjustments for grouped buttons
+        // Pixel grouped buttons: no rounding, border collapse
         '[&>button]:rounded-none',
         orientation === 'horizontal' && [
-          '[&>button:first-child]:rounded-l-xl',
-          '[&>button:last-child]:rounded-r-xl',
-          '[&>button:not(:first-child)]:-ml-px',
+          '[&>button:first-child]:rounded-l-pixel',
+          '[&>button:last-child]:rounded-r-pixel',
+          '[&>button:not(:first-child)]:-ml-[2px]',
         ],
         orientation === 'vertical' && [
-          '[&>button:first-child]:rounded-t-xl',
-          '[&>button:last-child]:rounded-b-xl',
-          '[&>button:not(:first-child)]:-mt-px',
+          '[&>button:first-child]:rounded-t-pixel',
+          '[&>button:last-child]:rounded-b-pixel',
+          '[&>button:not(:first-child)]:-mt-[2px]',
         ],
         className
       )}
@@ -271,14 +271,16 @@ export const FAB = forwardRef<HTMLButtonElement, FABProps>(
         ref={ref}
         className={cn(
           fabPositions[position],
-          'w-14 h-14 rounded-full',
-          'bg-gradient-to-r from-ascend-500 to-ascend-600',
-          'hover:from-ascend-400 hover:to-ascend-500',
-          'text-white shadow-lg shadow-ascend-500/30',
-          'hover:shadow-xl hover:shadow-ascend-500/40',
+          'w-14 h-14 rounded-pixel',
+          'bg-ascend-600 hover:bg-ascend-500',
+          'border-2 border-ascend-700',
+          'text-white',
+          'shadow-[4px_4px_0px_rgba(0,0,0,0.8)]',
+          'hover:shadow-[5px_5px_0px_rgba(0,0,0,0.8)]',
+          'active:shadow-[2px_2px_0px_rgba(0,0,0,0.8)] active:translate-x-[2px] active:translate-y-[2px]',
           'flex items-center justify-center',
-          'transition-all active:scale-95',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ascend-400 focus-visible:ring-offset-2',
+          'transition-all duration-100',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ascend-400 focus-visible:ring-offset-1',
           'z-40',
           className
         )}
@@ -326,10 +328,9 @@ export function LinkButton({
       rel={external ? 'noopener noreferrer' : undefined}
       className={cn(
         'inline-flex items-center justify-center',
-        'font-medium transition-all',
+        'font-pixel transition-all duration-100',
         'focus-visible:outline-none focus-visible:ring-offset-[var(--background)]',
-        'active:scale-[0.98]',
-        'no-underline',
+        'rounded-pixel no-underline',
         variantStyles[variant],
         sizeStyles[size],
         fullWidth && 'w-full',

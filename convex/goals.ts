@@ -1,6 +1,7 @@
 import { mutation, internalMutation, query } from './_generated/server';
 import { v } from 'convex/values';
 import { checkAndCreateGoal } from './lib/transactions';
+import { checkAndCreateHabit } from './lib/transactions';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ARCHIVE EXCESS GOALS ON DOWNGRADE
@@ -487,3 +488,432 @@ export const getArchivedDowngradeCount = query({
     return archived.length;
   },
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ACTIVATE PLAN — Creates goal + milestones + tasks from AI plan JSON
+// This is the core "Plan Builder" activator. Takes a generated plan and
+// materialises it into the user's dashboard as real, actionable items.
+// ─────────────────────────────────────────────────────────────────────────────
+export const activatePlan = mutation({
+  args: {
+    goalTitle: v.string(),
+    goalDescription: v.optional(v.string()),
+    category: v.optional(v.string()),
+    totalDuration: v.optional(v.string()),
+    phases: v.array(
+      v.object({
+        title: v.string(),
+        description: v.string(),
+        estimatedDays: v.number(),
+        phase: v.string(),
+        subTasks: v.array(v.string()),
+      })
+    ),
+    // Optional: also create habits related to this plan
+    habits: v.optional(v.array(
+      v.object({
+        title: v.string(),
+        description: v.optional(v.string()),
+        category: v.optional(v.string()),
+        frequency: v.optional(v.union(
+          v.literal('daily'), v.literal('weekdays'), v.literal('weekends'),
+          v.literal('3x_week'), v.literal('weekly'), v.literal('custom'),
+        )),
+        timeOfDay: v.optional(v.union(
+          v.literal('morning'), v.literal('afternoon'),
+          v.literal('evening'), v.literal('anytime'),
+        )),
+        estimatedMinutes: v.optional(v.number()),
+      })
+    )),
+  },
+  returns: v.object({
+    goalId: v.id('goals'),
+    milestoneIds: v.array(v.id('milestones')),
+    taskIds: v.array(v.id('tasks')),
+    habitIds: v.array(v.id('habits')),
+  }),
+  handler: async (ctx, args) => {
+    const user = await getAuthUser(ctx);
+    const now = Date.now();
+
+    // 1. Create the main goal
+    const goalId = await checkAndCreateGoal(ctx, user._id, {
+      title: args.goalTitle,
+      description: args.goalDescription || `AI-generated plan: ${args.totalDuration || 'flexible timeline'}`,
+      category: args.category || 'personal_growth',
+      targetDate: args.totalDuration ? estimateTargetDate(args.totalDuration) : undefined,
+      startDate: new Date().toISOString().split('T')[0],
+      goalType: 'project',
+      deadlineType: 'flexible',
+      decompositionStatus: 'completed',
+      progressType: 'milestones',
+      difficultyLevel: Math.min(10, Math.max(1, args.phases.length)),
+      estimatedHours: args.phases.reduce((sum, p) => sum + p.estimatedDays * 2, 0),
+      tags: ['plan-builder', 'ai-generated'],
+      aiPlan: {
+        totalDuration: args.totalDuration,
+        phases: args.phases,
+        activatedAt: now,
+      },
+    });
+
+    // 2. Create milestones from phases
+    const milestoneIds: any[] = [];
+    let dayOffset = 0;
+
+    for (let i = 0; i < args.phases.length; i++) {
+      const phase = args.phases[i];
+      const targetDate = new Date(now + (dayOffset + phase.estimatedDays) * 86400000)
+        .toISOString().split('T')[0];
+
+      const milestoneId = await ctx.db.insert('milestones', {
+        userId: user._id,
+        goalId,
+        title: `${phase.phase}: ${phase.title}`,
+        description: phase.description,
+        sequenceOrder: i + 1,
+        targetDate,
+        status: i === 0 ? 'in_progress' : 'not_started',
+        progressPercentage: 0,
+        completionCriteria: phase.subTasks,
+        tags: ['plan-builder'],
+        createdAt: now,
+        updatedAt: now,
+      });
+
+      milestoneIds.push(milestoneId);
+      dayOffset += phase.estimatedDays;
+    }
+
+    // 3. Create tasks from each phase's sub-tasks
+    const taskIds: any[] = [];
+    dayOffset = 0;
+
+    for (let i = 0; i < args.phases.length; i++) {
+      const phase = args.phases[i];
+      const daysPerTask = Math.max(1, Math.floor(phase.estimatedDays / phase.subTasks.length));
+
+      for (let j = 0; j < phase.subTasks.length; j++) {
+        const taskDueDate = new Date(now + (dayOffset + (j + 1) * daysPerTask) * 86400000)
+          .toISOString().split('T')[0];
+
+        // First task of first phase is scheduled for today
+        const scheduledDate = (i === 0 && j === 0)
+          ? new Date().toISOString().split('T')[0]
+          : taskDueDate;
+
+        const priority = i === 0 ? 'high' : (i === 1 ? 'medium' : 'low');
+
+        const taskId = await ctx.db.insert('tasks', {
+          userId: user._id,
+          goalId,
+          milestoneId: milestoneIds[i],
+          title: phase.subTasks[j],
+          description: `Part of ${phase.phase}: ${phase.title}`,
+          priority,
+          status: 'todo',
+          dueDate: taskDueDate,
+          scheduledDate,
+          estimatedMinutes: Math.round((phase.estimatedDays * 120) / phase.subTasks.length),
+          tags: ['plan-builder', phase.phase.toLowerCase().replace(/\s+/g, '-')],
+          subtasks: [],
+          source: 'ai_generated',
+          xpValue: priority === 'high' ? 15 : (priority === 'medium' ? 10 : 5),
+          createdAt: now,
+          updatedAt: now,
+        });
+
+        taskIds.push(taskId);
+      }
+
+      dayOffset += phase.estimatedDays;
+    }
+
+    // 4. Create habits if provided
+    const habitIds: any[] = [];
+    if (args.habits && args.habits.length > 0) {
+      for (const habit of args.habits) {
+        try {
+          const habitId = await checkAndCreateHabit(ctx, user._id, {
+            title: habit.title,
+            description: habit.description || `Supporting habit for: ${args.goalTitle}`,
+            category: habit.category || args.category || 'productivity',
+            frequency: habit.frequency || 'daily',
+            timeOfDay: habit.timeOfDay || 'morning',
+            estimatedMinutes: habit.estimatedMinutes || 15,
+            goalId,
+            habitType: 'yes_no',
+          });
+          habitIds.push(habitId);
+        } catch {
+          // Skip if plan limit reached — don't fail the whole activation
+        }
+      }
+    }
+
+    return { goalId, milestoneIds, taskIds, habitIds };
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AUTO-GENERATE DASHBOARD ITEMS FROM ONBOARDING
+// Creates smart tasks + habits based on the user's onboarding answers
+// ─────────────────────────────────────────────────────────────────────────────
+export const autoGenerateFromOnboarding = mutation({
+  args: {
+    goalTitle: v.string(),
+    goalReason: v.optional(v.string()),
+    goalDeadline: v.optional(v.string()),
+    focusAreas: v.optional(v.array(v.string())),
+    preferredTime: v.optional(v.string()),
+  },
+  returns: v.object({
+    goalId: v.id('goals'),
+    taskIds: v.array(v.id('tasks')),
+    milestoneIds: v.array(v.id('milestones')),
+  }),
+  handler: async (ctx, args) => {
+    const user = await getAuthUser(ctx);
+    const now = Date.now();
+
+    // Map deadline to target date
+    const deadlineMap: Record<string, number> = {
+      '1m': 30, '3m': 90, '6m': 180, '1y': 365,
+    };
+    const daysUntilDeadline = deadlineMap[args.goalDeadline || '6m'] || 180;
+    const targetDate = new Date(now + daysUntilDeadline * 86400000).toISOString().split('T')[0];
+
+    // Determine category from focus areas
+    const focusToCategoryMap: Record<string, string> = {
+      'habits': 'personal_growth',
+      'goals': 'personal_growth',
+      'health': 'health',
+      'productivity': 'career',
+      'learning': 'learning',
+      'wellness': 'mindfulness',
+    };
+    const category = args.focusAreas?.[0]
+      ? (focusToCategoryMap[args.focusAreas[0]] || 'personal_growth')
+      : 'personal_growth';
+
+    // 1. Create the primary goal
+    const goalId = await checkAndCreateGoal(ctx, user._id, {
+      title: args.goalTitle,
+      description: args.goalReason || undefined,
+      category,
+      targetDate,
+      startDate: new Date().toISOString().split('T')[0],
+      deadlineType: args.goalDeadline === 'ongoing' ? 'ongoing' : 'flexible',
+      whyImportant: args.goalReason || undefined,
+      goalType: 'achievement',
+      decompositionStatus: 'completed',
+      progressType: 'milestones',
+      tags: ['onboarding', 'auto-generated'],
+    });
+
+    // 2. Generate smart milestones based on the goal
+    const milestoneTemplates = generateSmartMilestones(
+      args.goalTitle,
+      daysUntilDeadline,
+      args.focusAreas || [],
+    );
+
+    const milestoneIds: any[] = [];
+    for (let i = 0; i < milestoneTemplates.length; i++) {
+      const ms = milestoneTemplates[i];
+      const msTargetDate = new Date(now + ms.dayOffset * 86400000).toISOString().split('T')[0];
+
+      const milestoneId = await ctx.db.insert('milestones', {
+        userId: user._id,
+        goalId,
+        title: ms.title,
+        description: ms.description,
+        sequenceOrder: i + 1,
+        targetDate: msTargetDate,
+        status: i === 0 ? 'in_progress' : 'not_started',
+        progressPercentage: 0,
+        completionCriteria: ms.criteria,
+        tags: ['onboarding'],
+        createdAt: now,
+        updatedAt: now,
+      });
+      milestoneIds.push(milestoneId);
+    }
+
+    // 3. Generate starter tasks for week 1
+    const starterTasks = generateStarterTasks(args.goalTitle, args.focusAreas || [], args.preferredTime);
+    const taskIds: any[] = [];
+
+    for (let i = 0; i < starterTasks.length; i++) {
+      const task = starterTasks[i];
+      const taskDate = new Date(now + task.dayOffset * 86400000).toISOString().split('T')[0];
+
+      const taskId = await ctx.db.insert('tasks', {
+        userId: user._id,
+        goalId,
+        milestoneId: milestoneIds[0] || undefined,
+        title: task.title,
+        description: task.description,
+        priority: task.priority as 'high' | 'medium' | 'low',
+        status: 'todo',
+        dueDate: taskDate,
+        scheduledDate: taskDate,
+        estimatedMinutes: task.estimatedMinutes,
+        tags: ['onboarding', 'starter'],
+        subtasks: [],
+        source: 'ai_generated',
+        xpValue: task.priority === 'high' ? 15 : 10,
+        createdAt: now,
+        updatedAt: now,
+      });
+      taskIds.push(taskId);
+    }
+
+    return { goalId, taskIds, milestoneIds };
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Helper: Estimate target date from "X weeks/months" string
+// ─────────────────────────────────────────────────────────────────────────────
+function estimateTargetDate(duration: string): string {
+  const now = Date.now();
+  const lower = duration.toLowerCase();
+  const numMatch = lower.match(/(\d+)/);
+  const num = numMatch ? parseInt(numMatch[1]) : 8;
+
+  let days = 56; // default ~8 weeks
+  if (lower.includes('week')) days = num * 7;
+  else if (lower.includes('month')) days = num * 30;
+  else if (lower.includes('year')) days = num * 365;
+  else if (lower.includes('day')) days = num;
+
+  return new Date(now + days * 86400000).toISOString().split('T')[0];
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Helper: Generate smart milestones from goal text + deadline
+// ─────────────────────────────────────────────────────────────────────────────
+function generateSmartMilestones(
+  goalTitle: string,
+  totalDays: number,
+  focusAreas: string[],
+): Array<{ title: string; description: string; dayOffset: number; criteria: string[] }> {
+  const goal = goalTitle.toLowerCase();
+  const quarterDays = Math.round(totalDays / 4);
+
+  // Fitness-related goals
+  if (goal.includes('fit') || goal.includes('weight') || goal.includes('gym') || goal.includes('run') || goal.includes('exercise') || focusAreas.includes('health')) {
+    return [
+      { title: 'Foundation — Build the Routine', description: 'Establish a consistent exercise schedule and basic nutrition plan', dayOffset: quarterDays, criteria: ['Exercise 3+ times per week', 'Track meals for 1 full week', 'Set baseline measurements'] },
+      { title: 'Momentum — Increase Intensity', description: 'Ramp up workouts and dial in nutrition', dayOffset: quarterDays * 2, criteria: ['Increase workout frequency or intensity', 'Hit protein targets consistently', 'Complete 2 weeks without missing'] },
+      { title: 'Breakthrough — Push Limits', description: 'Challenge yourself with harder goals', dayOffset: quarterDays * 3, criteria: ['Set a personal record', 'Try a new workout type', 'Meal prep for a full week'] },
+      { title: 'Transformation — Lock In Results', description: 'Solidify habits and measure progress', dayOffset: totalDays, criteria: ['Compare before/after measurements', 'Build a sustainable routine', 'Celebrate your progress'] },
+    ];
+  }
+
+  // Business/career goals
+  if (goal.includes('business') || goal.includes('launch') || goal.includes('startup') || goal.includes('saas') || goal.includes('career') || goal.includes('job') || focusAreas.includes('productivity')) {
+    return [
+      { title: 'Research & Validation', description: 'Validate the idea and understand the market', dayOffset: quarterDays, criteria: ['Research 5+ competitors', 'Talk to 3+ potential users', 'Define your unique value prop'] },
+      { title: 'Build & Create', description: 'Create the minimum viable version', dayOffset: quarterDays * 2, criteria: ['Build MVP or first draft', 'Get 3+ pieces of feedback', 'Iterate on core feature'] },
+      { title: 'Launch & Distribute', description: 'Put it out into the world', dayOffset: quarterDays * 3, criteria: ['Launch publicly', 'Share on 3+ channels', 'Get first users/customers'] },
+      { title: 'Grow & Optimize', description: 'Learn from data and scale', dayOffset: totalDays, criteria: ['Analyze metrics', 'Fix top 3 issues', 'Plan next growth sprint'] },
+    ];
+  }
+
+  // Learning goals
+  if (goal.includes('learn') || goal.includes('read') || goal.includes('study') || goal.includes('language') || goal.includes('book') || focusAreas.includes('learning')) {
+    return [
+      { title: 'Foundations', description: 'Build baseline knowledge and set up a study system', dayOffset: quarterDays, criteria: ['Complete introductory material', 'Set up note-taking system', 'Study 5+ days in first 2 weeks'] },
+      { title: 'Deep Practice', description: 'Move from consuming to applying', dayOffset: quarterDays * 2, criteria: ['Complete a practice project', 'Teach a concept to someone', 'Identify knowledge gaps'] },
+      { title: 'Advanced Application', description: 'Tackle harder material and build real skills', dayOffset: quarterDays * 3, criteria: ['Complete an advanced project', 'Contribute to a community', 'Get feedback on your work'] },
+      { title: 'Mastery & Sharing', description: 'Solidify learning by teaching and creating', dayOffset: totalDays, criteria: ['Create a portfolio piece', 'Help someone else learn', 'Plan your next learning goal'] },
+    ];
+  }
+
+  // Financial goals
+  if (goal.includes('save') || goal.includes('money') || goal.includes('invest') || goal.includes('budget') || goal.includes('finance') || focusAreas.includes('goals')) {
+    return [
+      { title: 'Financial Clarity', description: 'Understand your current financial position', dayOffset: quarterDays, criteria: ['Track all expenses for 2 weeks', 'Calculate net worth', 'Set specific savings target'] },
+      { title: 'System Setup', description: 'Build automated systems for saving/investing', dayOffset: quarterDays * 2, criteria: ['Set up automatic transfers', 'Open investment account if needed', 'Create monthly budget'] },
+      { title: 'Accelerate', description: 'Find ways to increase income or reduce spending', dayOffset: quarterDays * 3, criteria: ['Eliminate 2+ unnecessary expenses', 'Explore 1 new income source', 'Review and optimize investments'] },
+      { title: 'Secure & Grow', description: 'Lock in financial habits for the long term', dayOffset: totalDays, criteria: ['Build 1-month emergency fund', 'Automate all bills', 'Plan next financial goal'] },
+    ];
+  }
+
+  // Generic goal (catch-all)
+  return [
+    { title: 'Clarify & Plan', description: `Define what success looks like for: ${goalTitle}`, dayOffset: quarterDays, criteria: ['Write down specific success criteria', 'Identify 3 potential obstacles', 'Find 1 mentor or resource'] },
+    { title: 'Build Momentum', description: 'Take consistent daily action toward your goal', dayOffset: quarterDays * 2, criteria: ['Complete first major milestone', 'Track progress daily for 2 weeks', 'Adjust strategy based on results'] },
+    { title: 'Push Through Resistance', description: 'Overcome the plateau and keep going', dayOffset: quarterDays * 3, criteria: ['Identify and address biggest blocker', 'Get feedback from someone you trust', 'Recommit to daily action'] },
+    { title: 'Achieve & Reflect', description: 'Cross the finish line and plan what comes next', dayOffset: totalDays, criteria: ['Evaluate results vs original goal', 'Document lessons learned', 'Set your next goal'] },
+  ];
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Helper: Generate starter tasks for week 1
+// ─────────────────────────────────────────────────────────────────────────────
+function generateStarterTasks(
+  goalTitle: string,
+  focusAreas: string[],
+  _preferredTime?: string,
+): Array<{ title: string; description: string; priority: string; dayOffset: number; estimatedMinutes: number }> {
+  const goal = goalTitle.toLowerCase();
+  const tasks: Array<{ title: string; description: string; priority: string; dayOffset: number; estimatedMinutes: number }> = [];
+
+  // Universal: first task is always "Define your success criteria"
+  tasks.push({
+    title: `Define exactly what "${goalTitle}" looks like when done`,
+    description: 'Write down 3 specific, measurable criteria that mean you\'ve achieved this goal. Be precise — "I want to feel better" is vague, "I can run 5K in 30 minutes" is clear.',
+    priority: 'high',
+    dayOffset: 0, // Today
+    estimatedMinutes: 15,
+  });
+
+  // Goal-specific starter tasks
+  if (goal.includes('fit') || goal.includes('weight') || goal.includes('gym') || goal.includes('run') || goal.includes('exercise') || focusAreas.includes('health')) {
+    tasks.push(
+      { title: 'Take "before" measurements & photos', description: 'Weigh yourself, measure waist/chest/arms, take a front & side photo. You\'ll thank yourself later.', priority: 'high', dayOffset: 0, estimatedMinutes: 10 },
+      { title: 'Plan your first 3 workouts this week', description: 'Decide exactly what exercises you\'ll do and when. Put them in your calendar like appointments.', priority: 'high', dayOffset: 0, estimatedMinutes: 20 },
+      { title: 'Complete your first workout', description: 'Just show up and move. Intensity doesn\'t matter on day 1 — consistency does.', priority: 'high', dayOffset: 1, estimatedMinutes: 45 },
+      { title: 'Prep healthy meals for tomorrow', description: 'Cook or plan meals for tomorrow. Remove the "what should I eat?" decision fatigue.', priority: 'medium', dayOffset: 1, estimatedMinutes: 30 },
+      { title: 'Track everything you eat today', description: 'Log your meals in the nutrition tracker. No judgement — just awareness.', priority: 'medium', dayOffset: 2, estimatedMinutes: 10 },
+      { title: 'Second workout of the week', description: 'Follow through on your plan. You\'re building the identity of someone who exercises regularly.', priority: 'high', dayOffset: 3, estimatedMinutes: 45 },
+      { title: 'Review week 1 & plan week 2', description: 'What worked? What didn\'t? Adjust your plan for next week.', priority: 'medium', dayOffset: 6, estimatedMinutes: 15 },
+    );
+  } else if (goal.includes('business') || goal.includes('launch') || goal.includes('startup') || goal.includes('saas') || goal.includes('job') || focusAreas.includes('productivity')) {
+    tasks.push(
+      { title: 'Write down your business idea in one sentence', description: 'Can you explain it to a 10-year-old? If not, simplify. Clarity is power.', priority: 'high', dayOffset: 0, estimatedMinutes: 15 },
+      { title: 'Research 3 competitors doing something similar', description: 'Study their pricing, messaging, and reviews. What gaps do they leave?', priority: 'high', dayOffset: 1, estimatedMinutes: 45 },
+      { title: 'List your first 10 potential customers by name', description: 'Real people or companies. Not "everyone" — specific names you could contact.', priority: 'high', dayOffset: 2, estimatedMinutes: 20 },
+      { title: 'Talk to 1 potential customer today', description: 'Ask them about their problem, NOT your solution. Listen more than you talk.', priority: 'high', dayOffset: 3, estimatedMinutes: 30 },
+      { title: 'Define your MVP — absolute minimum to launch', description: 'What\'s the smallest thing you can build that delivers value? Strip everything else.', priority: 'medium', dayOffset: 4, estimatedMinutes: 30 },
+      { title: 'Set up your workspace and tools', description: 'Get your dev environment, Notion/Trello, domain, and accounts ready. Remove friction.', priority: 'medium', dayOffset: 5, estimatedMinutes: 60 },
+      { title: 'Write and ship your first piece of content', description: 'Blog post, tweet thread, or short video about the problem you\'re solving.', priority: 'medium', dayOffset: 6, estimatedMinutes: 45 },
+    );
+  } else if (goal.includes('learn') || goal.includes('read') || goal.includes('study') || goal.includes('language') || goal.includes('book') || focusAreas.includes('learning')) {
+    tasks.push(
+      { title: 'Find the best beginner resource for your topic', description: 'Research courses, books, or tutorials. Pick ONE to start with — don\'t collect, consume.', priority: 'high', dayOffset: 0, estimatedMinutes: 20 },
+      { title: 'Complete the first lesson or chapter', description: 'Take notes as you go. Write down 3 key takeaways.', priority: 'high', dayOffset: 1, estimatedMinutes: 30 },
+      { title: 'Set up a note-taking system', description: 'Create a dedicated notebook, Notion page, or folder. Structure it for easy retrieval later.', priority: 'medium', dayOffset: 1, estimatedMinutes: 15 },
+      { title: 'Study session #2', description: 'Continue your course/book. The compound effect of daily practice is extraordinary.', priority: 'high', dayOffset: 2, estimatedMinutes: 30 },
+      { title: 'Try to apply what you learned', description: 'Build something small, solve a problem, or explain a concept to someone.', priority: 'medium', dayOffset: 3, estimatedMinutes: 30 },
+      { title: 'Join a community of learners', description: 'Find a subreddit, Discord, or study group for your topic. Learning accelerates with peers.', priority: 'low', dayOffset: 4, estimatedMinutes: 15 },
+      { title: 'Week 1 review: What stuck & what didn\'t?', description: 'Review your notes. Summarise the 5 most important things you learned this week.', priority: 'medium', dayOffset: 6, estimatedMinutes: 20 },
+    );
+  } else {
+    // Generic tasks
+    tasks.push(
+      { title: 'Write down 3 obstacles that could stop you', description: 'Be honest about what might derail you. Then write a "if X happens, I will Y" plan for each.', priority: 'high', dayOffset: 0, estimatedMinutes: 15 },
+      { title: 'Find someone who has achieved this goal', description: 'Research their journey. What can you learn from their approach?', priority: 'medium', dayOffset: 1, estimatedMinutes: 20 },
+      { title: 'Take your first real action step', description: 'Not planning, not researching — DOING. Even 15 minutes of real action beats hours of planning.', priority: 'high', dayOffset: 1, estimatedMinutes: 30 },
+      { title: 'Set up a daily check-in reminder', description: 'Use Resurgo\'s reminder system. Consistency beats intensity every time.', priority: 'medium', dayOffset: 2, estimatedMinutes: 5 },
+      { title: 'Tell someone about your goal', description: 'Accountability is powerful. Share your goal with someone you respect.', priority: 'medium', dayOffset: 3, estimatedMinutes: 10 },
+      { title: 'Review your first week of progress', description: 'What worked? What\'s harder than expected? Adjust your approach.', priority: 'medium', dayOffset: 6, estimatedMinutes: 15 },
+    );
+  }
+
+  return tasks;
+}

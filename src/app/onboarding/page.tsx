@@ -131,6 +131,7 @@ export default function OnboardingPage() {
   const completeOnboarding = useMutation(api.users.completeOnboarding);
   const createGoal = useMutation(api.goals.create);
   const createHabit = useMutation(api.habits.create);
+  const autoGenerate = useMutation(api.goals.autoGenerateFromOnboarding);
 
   const [step, setStep] = useState<Step>('welcome');
   const [saving, setSaving] = useState(false);
@@ -236,13 +237,28 @@ export default function OnboardingPage() {
           console.warn(`Habit creation failed for ${habitId}:`, err);
         }
       }
+
+      // 4. Auto-generate milestones & starter tasks from onboarding data
+      if (primaryGoal.trim()) {
+        try {
+          await autoGenerate({
+            goalTitle: primaryGoal.trim(),
+            goalReason: primaryGoalReason.trim() || undefined,
+            goalDeadline: primaryGoalDeadline || undefined,
+            focusAreas: selectedFocus.length > 0 ? selectedFocus : undefined,
+            preferredTime: preferredTime || undefined,
+          });
+        } catch (err) {
+          console.warn('Auto-generate from onboarding failed:', err);
+        }
+      }
     } catch (err) {
       // Non-fatal: log but always proceed to dashboard
       console.warn('Onboarding save failed, proceeding anyway:', err);
     }
     // Always navigate regardless of mutation success
     router.replace('/dashboard');
-  }, [saving, completeOnboarding, createGoal, createHabit, primaryGoal, primaryGoalReason, primaryGoalDeadline, lifeVision, selectedFocus, selectedHabits, preferredTime, router]);
+  }, [saving, completeOnboarding, createGoal, createHabit, autoGenerate, primaryGoal, primaryGoalReason, primaryGoalDeadline, lifeVision, selectedFocus, selectedHabits, preferredTime, router]);
 
   // Skip: save whatever we have and go straight to dashboard
   const handleSkip = useCallback(() => {

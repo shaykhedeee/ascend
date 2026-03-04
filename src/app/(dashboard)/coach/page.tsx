@@ -156,10 +156,14 @@ export default function CoachPage() {
     if (!history || isGreeting || isSending) return;
     const msgs = history.filter((m: any) => m.context?.startsWith(`coach:${selectedCoach}`));
     if (msgs.length === 0 && !greetedRef.current.has(selectedCoach)) {
-      greetedRef.current.add(selectedCoach);
       setIsGreeting(true);
       greetUser({ coachId: selectedCoach, userName: user?.name })
-        .catch(() => {})
+        .then(() => {
+          greetedRef.current.add(selectedCoach);
+        })
+        .catch((err) => {
+          console.error('[Coach] Greeting failed:', err);
+        })
         .finally(() => setIsGreeting(false));
     }
   }, [history, selectedCoach, isGreeting, isSending, greetUser, user?.name]);

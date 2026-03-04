@@ -96,11 +96,7 @@ const DECOMPOSE_LINES = [
 
 const EXECUTE_LINES = [
   '> Dispatching to providers in parallel...',
-  '> Cerebras: processing extraction task... ✓',
-  '> Groq: handling analysis thread... ✓',
-  '> Mistral: generating creative output... ✓',
-  '> Fireworks: building action plan... ✓',
-  '> All providers responded.',
+  '> Awaiting provider responses...',
 ];
 
 const SYNTH_LINES = [

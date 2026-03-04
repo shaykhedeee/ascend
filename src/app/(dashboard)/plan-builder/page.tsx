@@ -55,8 +55,8 @@ export default function PlanBuilderPage() {
 
   const COACHES = [
     { id: 'NOVA' as const, label: 'NOVA', desc: 'Productivity Scientist — systematic, efficient', icon: '⚡' },
-    { id: 'TITAN' as const, label: 'TITAN', desc: 'Business Strategist — revenue-focused', icon: '💪' },
-    { id: 'SAGE' as const, label: 'SAGE', desc: 'Life Architect — purpose-aligned', icon: '💰' },
+    { id: 'TITAN' as const, label: 'TITAN', desc: 'Discipline Engine — fitness & performance', icon: '💪' },
+    { id: 'SAGE' as const, label: 'SAGE', desc: 'Wealth Architect — finance & strategy', icon: '💰' },
     { id: 'PHOENIX' as const, label: 'PHOENIX', desc: 'Comeback Coach — rebuilding focus', icon: '🔥' },
   ];
 

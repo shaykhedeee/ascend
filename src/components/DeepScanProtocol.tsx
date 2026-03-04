@@ -72,6 +72,13 @@ const CHRONOTYPES = [
   { id: 'night_owl', label: 'Night Owl 🦉', desc: 'Best after 6 PM' },
 ];
 
+const ENERGY_PATTERNS = [
+  { id: 'sprint', label: 'Sprint Worker 🏃', desc: 'Short intense bursts with breaks' },
+  { id: 'marathon', label: 'Marathon Worker 💧', desc: 'Long sustained deep work sessions' },
+  { id: 'pomodoro', label: 'Pomodoro ⏱️', desc: '25-min blocks keep me focused' },
+  { id: 'flow', label: 'Flow State 🌊', desc: 'I need uninterrupted time to hit flow' },
+];
+
 const MOTIVATION_STYLES = [
   { id: 'intrinsic', label: 'Inner Drive', desc: 'I\'m motivated by personal meaning and mastery' },
   { id: 'extrinsic', label: 'Results-Driven', desc: 'I\'m motivated by visible outcomes and rewards' },
@@ -138,7 +145,7 @@ export function DeepScanProtocol() {
 
   // Stage 4 state
   const [chronotype, setChronotype] = useState('');
-  const [energyPattern, _setEnergyPattern] = useState('');
+  const [energyPattern, setEnergyPattern] = useState('');
   const [motivationStyle, setMotivationStyle] = useState('');
   const [accountabilityStyle, setAccountabilityStyle] = useState('');
 
@@ -164,6 +171,7 @@ export function DeepScanProtocol() {
       if (scan.pillarPriorities) setPillarPriorities(scan.pillarPriorities);
       if (scan.biggestChallenge) setBiggestChallenge(scan.biggestChallenge);
       if (scan.chronotype) setChronotype(scan.chronotype);
+      if (scan.energyPattern) setEnergyPattern(scan.energyPattern);
     } else if (!scan) {
       // Start new scan
       startScan().then((id) => setScanId(id));
@@ -639,6 +647,29 @@ export function DeepScanProtocol() {
                     >
                       <p className="font-terminal text-sm text-zinc-200">{ct.label}</p>
                       <p className="font-terminal text-xs text-zinc-500">{ct.desc}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="font-pixel text-[0.6rem] tracking-widest text-zinc-500 mb-3 block">
+                  ENERGY PATTERN — HOW DO YOU WORK BEST?
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  {ENERGY_PATTERNS.map((ep) => (
+                    <button
+                      key={ep.id}
+                      onClick={() => setEnergyPattern(ep.id)}
+                      className={cn(
+                        'border-2 px-3 py-2.5 text-left transition-all duration-100',
+                        energyPattern === ep.id
+                          ? 'border-orange-600 bg-orange-950/30'
+                          : 'border-zinc-800 bg-black hover:border-zinc-600'
+                      )}
+                    >
+                      <p className="font-terminal text-sm text-zinc-200">{ep.label}</p>
+                      <p className="font-terminal text-xs text-zinc-500">{ep.desc}</p>
                     </button>
                   ))}
                 </div>

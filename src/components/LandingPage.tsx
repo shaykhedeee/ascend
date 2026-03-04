@@ -1018,7 +1018,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
               <h4 className="text-sm font-semibold text-white mb-4">Product</h4>
               <ul className="space-y-3 text-sm text-white/50">
                 <li><Link href="/features" className="hover:text-white transition-colors">Features</Link></li>
-                <li><Link href="/billing" className="hover:text-white transition-colors">Pricing</Link></li>
+                <li><Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link></li>
                 <li><Link href="/guides" className="hover:text-white transition-colors">Guides</Link></li>
               </ul>
             </div>

@@ -246,15 +246,17 @@ ${ACTION_SYSTEM}`,
   },
 };
 
-// Valid coach IDs (only 4 universal coaches)
+// Valid coach IDs (all coaches including legacy)
 const COACH_ID_VALIDATOR = v.union(
+  v.literal('MARCUS'),
+  v.literal('AURORA'),
   v.literal('TITAN'),
   v.literal('SAGE'),
   v.literal('PHOENIX'),
   v.literal('NOVA'),
 );
 
-type CoachId = 'TITAN' | 'SAGE' | 'PHOENIX' | 'NOVA';
+type CoachId = 'MARCUS' | 'AURORA' | 'TITAN' | 'SAGE' | 'PHOENIX' | 'NOVA';
 
 // ─── Mutations ───────────────────────────────────────────────────────────────
 
@@ -473,8 +475,9 @@ export const executeCoachActions = internalMutation({
               timeOfDay: data.timeOfDay || 'morning',
               estimatedMinutes: data.estimatedMinutes || 15,
               habitType: 'yes_no',
-              currentStreak: 0,
-              longestStreak: 0,
+              isActive: true,
+              streakCurrent: 0,
+              streakLongest: 0,
               totalCompletions: 0,
               difficultyLevel: 1,
               createdAt: now,
@@ -504,11 +507,11 @@ export const executeCoachActions = internalMutation({
               category: data.category || 'personal_growth',
               targetDate: data.targetDate || undefined,
               startDate: new Date().toISOString().split('T')[0],
-              status: 'active',
-              progressPercentage: 0,
+              status: 'in_progress',
+              progress: 0,
               goalType: 'achievement',
               deadlineType: 'flexible',
-              decompositionStatus: 'not_started',
+              decompositionStatus: 'pending',
               progressType: 'percentage',
               tags: ['ai-coach'],
               createdAt: now,
@@ -528,7 +531,7 @@ export const executeCoachActions = internalMutation({
               t.status === 'todo' && t.title.toLowerCase().includes(needle)
             );
             if (match) {
-              await ctx.db.patch(match._id, { status: 'completed', updatedAt: now });
+              await ctx.db.patch(match._id, { status: 'done', updatedAt: now });
               results.push({ type: 'COMPLETE_TASK', success: true, message: `Task completed: "${match.title}"` });
             } else {
               results.push({ type: 'COMPLETE_TASK', success: false, message: `No matching task found for "${data.titleMatch}"` });
@@ -566,8 +569,8 @@ export const executeCoachActions = internalMutation({
               category: data.category || 'personal_growth',
               targetDate: data.targetDate || undefined,
               startDate: new Date().toISOString().split('T')[0],
-              status: 'active',
-              progressPercentage: 0,
+              status: 'in_progress',
+              progress: 0,
               goalType: 'project',
               deadlineType: 'flexible',
               decompositionStatus: 'completed',
@@ -662,7 +665,7 @@ export const greetUser = action({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error('Not authenticated');
 
-    const persona = COACH_PERSONAS[args.coachId as CoachId];
+    const persona = (COACH_PERSONAS as Record<string, (typeof COACH_PERSONAS)[keyof typeof COACH_PERSONAS]>)[args.coachId];
     if (!persona) throw new Error('Invalid coach');
     const name = args.userName || identity.name || 'there';
 
@@ -762,7 +765,7 @@ export const sendWithPersona = action({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error('Not authenticated');
 
-    const persona = COACH_PERSONAS[args.coachId as CoachId];
+    const persona = (COACH_PERSONAS as Record<string, (typeof COACH_PERSONAS)[keyof typeof COACH_PERSONAS]>)[args.coachId];
     if (!persona) throw new Error('Invalid coach');
 
     // Parallel fetch: recent history + user context
@@ -1098,3 +1101,5 @@ function buildFallbackReply(coachId: string, content: string): string {
   const pool = fallbacks[coachId] ?? fallbacks['NOVA'];
   if (isStuck) return pool[0];
   if (isGoal || isAction) return pool[1];
+  return pool[Math.floor(Math.random() * pool.length)];
+}

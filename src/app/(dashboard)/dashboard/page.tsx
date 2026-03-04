@@ -118,6 +118,21 @@ export default function DashboardPage() {
   // Best streak from habits
   const bestStreak = activeHabits.reduce((max, h) => Math.max(max, h.streakCurrent ?? 0), 0);
 
+  // Emotional state derived from today's check-in (mirrors convex/coachAI.ts deriveEmotionalState)
+  const _mood = todayCheckIn?.morningMood;
+  const _energy = todayCheckIn?.morningEnergy;
+  const _sleep = (todayCheckIn as any)?.sleepQuality;
+  const dashboardEmotionalState: string =
+    (_energy !== undefined && _mood !== undefined && _energy >= 4 && _mood >= 4)
+      ? 'energized and focused'
+      : ((_energy !== undefined && _energy <= 2) || (_sleep !== undefined && _sleep <= 2))
+      ? 'depleted — protect capacity'
+      : (_mood !== undefined && _mood <= 2)
+      ? 'anxious — needs grounding'
+      : (_mood === undefined && _energy === undefined)
+      ? 'no check-in yet'
+      : 'steady — moderate capacity';
+
   // Time-appropriate greeting
   const greeting = isMorning
     ? `Good morning, ${user.name?.split(' ')[0] ?? 'there'}`
@@ -401,14 +416,54 @@ export default function DashboardPage() {
             <span className="ml-auto border border-green-900 bg-green-950/30 px-2 py-0.5 font-pixel text-[0.55rem] tracking-widest text-green-600">LIVE</span>
           </div>
           <div className="p-4">
-            <p className="font-terminal text-sm leading-relaxed text-zinc-300">
-              You&apos;re tracking{' '}
-              <span className="text-zinc-200 font-bold">{activeHabits.length} habits</span> and working toward{' '}
-              <span className="text-zinc-200 font-bold">{activeGoals.length} goals</span>.
-              {morningDone
-                ? ' Your morning check-in is done. Stay focused on your priorities.'
-                : ' Complete your most important tasks before noon to protect your streak.'}
-            </p>
+            {morningDone ? (
+              <div className="space-y-3">
+                <p className="font-terminal text-sm leading-relaxed text-zinc-300">
+                  State:{' '}
+                  <span className="font-bold text-zinc-100">{dashboardEmotionalState}</span>
+                  {' '}&mdash; {activeHabits.length} habits tracked, {activeGoals.length} goals active.
+                </p>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <span className="font-pixel text-[0.45rem] tracking-widest text-zinc-500">ENERGY</span>
+                    <div className="mt-1 font-mono text-sm tracking-widest text-emerald-400">
+                      {'\u2593'.repeat(Math.max(0, Math.min(5, _energy ?? 0)))}
+                      {'\u2591'.repeat(Math.max(0, 5 - Math.min(5, _energy ?? 0)))}
+                      <span className="ml-2 font-terminal text-xs text-zinc-500">{_energy ?? 0}/5</span>
+                    </div>
+                  </div>
+                  <div>
+                    <span className="font-pixel text-[0.45rem] tracking-widest text-zinc-500">MOOD</span>
+                    <div className="mt-1 font-mono text-sm tracking-widest text-cyan-400">
+                      {'\u2593'.repeat(Math.max(0, Math.min(5, _mood ?? 0)))}
+                      {'\u2591'.repeat(Math.max(0, 5 - Math.min(5, _mood ?? 0)))}
+                      <span className="ml-2 font-terminal text-xs text-zinc-500">{_mood ?? 0}/5</span>
+                    </div>
+                  </div>
+                </div>
+                {(todayCheckIn as any)?.topThreePriorities?.length > 0 && (
+                  <div>
+                    <span className="font-pixel text-[0.45rem] tracking-widest text-zinc-500">TODAY&apos;S PRIORITIES</span>
+                    <ol className="mt-1 space-y-0.5">
+                      {((todayCheckIn as any).topThreePriorities as string[]).map((p, i) => (
+                        <li key={i} className="font-terminal text-xs text-zinc-300">
+                          <span className="text-zinc-600">{i + 1}.</span> {p}
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <p className="font-terminal text-sm leading-relaxed text-zinc-400">
+                  Complete your morning check-in to unlock AI personalization.
+                </p>
+                <p className="font-terminal text-xs text-zinc-600">
+                  Mood + energy data powers every coach response and your daily plan.
+                </p>
+              </div>
+            )}
             <div className="mt-4 flex flex-wrap gap-2">
               {!morningDone && isMorning && (
                 <span className="rounded border border-amber-900 bg-amber-950/20 px-3 py-1.5 font-terminal text-xs text-amber-400">
@@ -420,9 +475,6 @@ export default function DashboardPage() {
                   🌙 Evening debrief pending
                 </span>
               )}
-              <span className="rounded border border-zinc-800 bg-zinc-900 px-3 py-1.5 font-terminal text-xs text-zinc-400">
-                Best focus window: morning
-              </span>
               {openTasks.length > 3 && (
                 <span className="rounded border border-orange-900 bg-orange-950/20 px-3 py-1.5 font-terminal text-xs text-orange-400">
                   {openTasks.length} tasks pending — clear the queue

@@ -313,6 +313,24 @@ export const getOrCreateCoachMemory = query({
   },
 });
 
+// ─── Internal: Derive emotional state from daily check-in data ───────────────
+
+function deriveEmotionalState(mood?: number, energy?: number, sleep?: number): string {
+  if (energy !== undefined && mood !== undefined && energy >= 4 && mood >= 4) {
+    return 'energized and focused';
+  }
+  if ((energy !== undefined && energy <= 2) || (sleep !== undefined && sleep <= 2)) {
+    return 'depleted — protect capacity';
+  }
+  if (mood !== undefined && mood <= 2) {
+    return 'anxious — needs grounding';
+  }
+  if (mood === undefined && energy === undefined) {
+    return 'unknown — no check-in today';
+  }
+  return 'steady — moderate capacity';
+}
+
 // ─── Internal: Fetch user context for AI ──────────────────────────────────────
 
 export const getUserContext = internalQuery({
@@ -329,6 +347,11 @@ export const getUserContext = internalQuery({
     habitCount: v.number(),
     habitsSummary: v.string(),
     streak: v.number(),
+    morningMood: v.optional(v.number()),
+    morningEnergy: v.optional(v.number()),
+    sleepQuality: v.optional(v.number()),
+    emotionalState: v.string(),
+    todaysPriorities: v.optional(v.array(v.string())),
   }),
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -336,6 +359,7 @@ export const getUserContext = internalQuery({
       userName: 'User', userPlan: 'free', primaryGoal: 'Not set', focusAreas: 'Not set',
       goalCount: 0, goalsSummary: 'None', taskCount: 0, tasksSummary: 'None',
       habitCount: 0, habitsSummary: 'None', streak: 0,
+      emotionalState: 'unknown',
     };
 
     const user = await ctx.db
@@ -346,6 +370,7 @@ export const getUserContext = internalQuery({
       userName: identity.name || 'User', userPlan: 'free', primaryGoal: 'Not set', focusAreas: 'Not set',
       goalCount: 0, goalsSummary: 'None', taskCount: 0, tasksSummary: 'None',
       habitCount: 0, habitsSummary: 'None', streak: 0,
+      emotionalState: 'unknown',
     };
 
     // Goals
@@ -383,6 +408,17 @@ export const getUserContext = internalQuery({
     // Best streak
     const maxStreak = activeHabits.reduce((max: number, h: any) => Math.max(max, h.currentStreak || 0), 0);
 
+    // Fetch today's check-in for emotional context
+    const checkIn = await ctx.db
+      .query('dailyCheckIns')
+      .withIndex('by_userId_date', (q: any) => q.eq('userId', user._id).eq('date', today))
+      .unique();
+    const emotionalState = deriveEmotionalState(
+      checkIn?.morningMood,
+      checkIn?.morningEnergy,
+      checkIn?.sleepQuality,
+    );
+
     return {
       userName: user.name || identity.name || 'User',
       userPlan: user.plan || 'free',
@@ -395,6 +431,11 @@ export const getUserContext = internalQuery({
       habitCount: activeHabits.length,
       habitsSummary,
       streak: maxStreak,
+      morningMood: checkIn?.morningMood,
+      morningEnergy: checkIn?.morningEnergy,
+      sleepQuality: checkIn?.sleepQuality,
+      emotionalState,
+      todaysPriorities: checkIn?.topThreePriorities,
     };
   },
 });
@@ -791,8 +832,18 @@ CURRENT USER CONTEXT (use this to personalize):
 - Pending Tasks (${userCtx.taskCount}): ${userCtx.tasksSummary}
 - Active Habits (${userCtx.habitCount}): ${userCtx.habitsSummary}
 - Best Streak: ${userCtx.streak} days
+- Emotional State Today: ${userCtx.emotionalState}
+- Mood/Energy/Sleep: ${userCtx.morningMood ?? '?'}/5 | ${userCtx.morningEnergy ?? '?'}/5 | ${userCtx.sleepQuality ?? '?'}/5
+- Top Priorities Today: ${userCtx.todaysPriorities?.join(' → ') || 'Not set yet'}
 - Time: ${timeContext} (${today})
 `;
+    }
+
+    // Triage detection: if user appears overwhelmed, inject empathy directive
+    const overwhelmKeywords = ['overwhelmed', 'stressed', "can't", 'cannot', 'too much', 'stuck', 'anxious', 'burned out', 'burnout', 'falling behind', 'drowning'];
+    const msgLower = args.content.toLowerCase();
+    if (overwhelmKeywords.some(kw => msgLower.includes(kw))) {
+      contextBlock += '\n\nTRIAGE: User appears overwhelmed or distressed. ALWAYS lead with empathy and acknowledgment before any advice. Reduce scope to 1–3 actions maximum. Never skip emotional validation. Be the calm in the storm.';
     }
 
     const fullSystemPrompt = persona.systemPrompt

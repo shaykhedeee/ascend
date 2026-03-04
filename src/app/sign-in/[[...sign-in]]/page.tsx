@@ -45,6 +45,13 @@ export default function Page() {
             },
           }}
         />
+        {/* Help note — shown for the breach-password error Clerk surfaces */}
+        <p className="mt-4 font-mono text-[0.7rem] leading-relaxed tracking-wide text-zinc-600 border-t border-zinc-900 pt-3">
+          <span className="text-zinc-500">PASSWORD_BREACH_ERROR?</span>{' '}
+          If you see &ldquo;password found in a breach&rdquo;, use the{' '}
+          <span className="text-orange-600">Forgot password?</span> link above to reset it,
+          or choose a unique password that is not commonly used.
+        </p>
         </div>
       </section>
     </main>

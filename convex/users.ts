@@ -786,6 +786,52 @@ export const getBillingEventsByClerkId = query({
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
+// DELETE USER FROM WEBHOOK — Called when Clerk fires user.deleted
+// Removes PII (user row + gamification) so re-registration starts fresh.
+// ─────────────────────────────────────────────────────────────────────────────
+export const deleteByClerkIdWebhook = mutation({
+  args: {
+    clerkId: v.string(),
+    webhookSecret: v.string(),
+  },
+  returns: v.object({ deleted: v.boolean(), reason: v.string() }),
+  handler: async (ctx, { clerkId, webhookSecret }) => {
+    // Validate webhook secret (constant-time compare; same pattern as updatePlanFromWebhook)
+    const expected = process.env.BILLING_WEBHOOK_SYNC_SECRET;
+    if (!expected) throw new Error('BILLING_WEBHOOK_SYNC_SECRET is not configured');
+    if (expected.length !== webhookSecret.length) throw new Error('Unauthorized');
+    let mismatch = 0;
+    for (let i = 0; i < expected.length; i++) {
+      mismatch |= expected.charCodeAt(i) ^ webhookSecret.charCodeAt(i);
+    }
+    if (mismatch !== 0) throw new Error('Unauthorized');
+
+    const user = await ctx.db
+      .query('users')
+      .withIndex('by_clerkId', (q) => q.eq('clerkId', clerkId))
+      .unique();
+
+    if (!user) {
+      // Already gone or never synced — idempotent success
+      return { deleted: false, reason: 'user_not_found' };
+    }
+
+    // Delete gamification profile
+    const gamification = await ctx.db
+      .query('gamification')
+      .withIndex('by_userId', (q) => q.eq('userId', user._id))
+      .unique();
+    if (gamification) await ctx.db.delete(gamification._id);
+
+    // Delete the user record (removes PII: email, name, imageUrl)
+    await ctx.db.delete(user._id);
+
+    console.log(`[users.deleteByClerkIdWebhook] Deleted user clerkId=${clerkId}`);
+    return { deleted: true, reason: 'ok' };
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
 // UPDATE PLAN — Called by billing webhooks
 // ─────────────────────────────────────────────────────────────────────────────
 export const updatePlan = internalMutation({

@@ -428,9 +428,38 @@ export async function POST(req: NextRequest) {
         break;
       }
 
-      // User created in Clerk
+      // User created in Clerk — user is synced to Convex client-side via useStoreUser
+      // on first sign-in, so we just log here.
       case 'user.created': {
-        console.log(`[Webhook] New user: ${(data.id as string | undefined) ?? 'unknown'}`);
+        const newClerkId = getString(data.id);
+        console.log(`[Webhook] New user created in Clerk: ${newClerkId ?? 'unknown'}`);
+        break;
+      }
+
+      // User deleted in Clerk — purge their record from Convex so re-registration
+      // starts fresh and there are no stale orphan records.
+      case 'user.deleted': {
+        const deletedClerkId = getString(data.id);
+        if (!deletedClerkId) {
+          console.warn('[Webhook] user.deleted received without a clerkId, skipping');
+          break;
+        }
+
+        const syncSecret = process.env.BILLING_WEBHOOK_SYNC_SECRET;
+        if (!syncSecret) {
+          console.error('[Webhook] BILLING_WEBHOOK_SYNC_SECRET not set — cannot delete user from Convex');
+          break;
+        }
+
+        try {
+          const result = await convex.mutation(api.users.deleteByClerkIdWebhook, {
+            clerkId: deletedClerkId,
+            webhookSecret: syncSecret,
+          });
+          console.log(`[Webhook] user.deleted: clerkId=${deletedClerkId} deleted=${result.deleted} reason=${result.reason}`);
+        } catch (deleteErr) {
+          console.error(`[Webhook] Failed to delete user ${deletedClerkId} from Convex:`, deleteErr);
+        }
         break;
       }
 

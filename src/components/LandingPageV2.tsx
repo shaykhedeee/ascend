@@ -335,13 +335,16 @@ const ACCESS_TIERS = [
     tier: 'LIFETIME',
     price: '$49.99',
     period: 'one-time',
+    earlyAccess: true,
+    originalPrice: '$89.99',
+    spotsLeft: 1000,
     specs: [
       'Everything in Pro',
       'Pay once, use forever',
       'All future updates included',
       'Founding member badge',
     ],
-    cta: 'GET LIFETIME ACCESS',
+    cta: 'CLAIM FOUNDING PRICE',
     highlight: false,
   },
 ];
@@ -505,8 +508,8 @@ function LandingPageV2() {
         </div>
 
         {/* Ticker bar */}
-        <div className="border-t-2 border-zinc-800 bg-black py-1.5 text-center">
-          <p className="font-terminal text-sm tracking-widest text-zinc-500 transition-all duration-500">
+        <div className="overflow-hidden border-t-2 border-zinc-800 bg-black py-1.5 text-center">
+          <p className="truncate px-4 font-terminal text-sm tracking-widest text-zinc-500 transition-all duration-500">
             &gt; {TICKER_ITEMS[tickerIdx]}
           </p>
         </div>
@@ -547,9 +550,9 @@ function LandingPageV2() {
         <section id="system" className="relative px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
           <div className="mx-auto max-w-7xl">
             {/* Badge */}
-            <div className="mb-6 inline-flex items-center gap-2 border-2 border-zinc-800 bg-black px-3 py-1.5 shadow-[2px_2px_0px_rgba(0,0,0,0.6)]">
-              <span className="h-2 w-2 animate-pulse bg-orange-600" />
-              <span className="font-pixel text-[0.6rem] tracking-widest text-zinc-500">
+            <div className="mb-6 inline-flex max-w-full flex-wrap items-center gap-2 border-2 border-zinc-800 bg-black px-3 py-1.5 shadow-[2px_2px_0px_rgba(0,0,0,0.6)]">
+              <span className="h-2 w-2 shrink-0 animate-pulse bg-orange-600" />
+              <span className="font-pixel text-[0.55rem] leading-relaxed tracking-widest text-zinc-500 sm:text-[0.6rem]">
                 FREE AI HABIT TRACKER · GOAL PLANNER · FOCUS TIMER · AI COACHING
               </span>
             </div>
@@ -630,29 +633,29 @@ function LandingPageV2() {
               </div>
 
               {/* Right — terminal preview */}
-              <div className="border-2 border-zinc-800 bg-black shadow-[4px_4px_0px_rgba(0,0,0,0.7)]">
+              <div className="overflow-hidden border-2 border-zinc-800 bg-black shadow-[4px_4px_0px_rgba(0,0,0,0.7)]">
                 <div className="flex items-center justify-between border-b-2 border-zinc-800 px-4 py-2">
                   <span className="font-pixel text-[0.6rem] tracking-widest text-orange-500">COMMAND_CTR</span>
                   <span className="font-pixel text-[0.35rem] tracking-widest text-zinc-500">CYCLE: ACTIVE</span>
                 </div>
-                <div className="space-y-px p-4">
+                <div className="space-y-px p-3 sm:p-4">
                   {[
                     { label: 'Morning habit routine', meta: 'Health · streak 14 days', status: 'Done', color: 'green' as const },
-                    { label: 'Deep work session', meta: 'Focus · 2 h planned', status: 'In progress', color: 'orange' as const },
+                    { label: 'Deep work session', meta: 'Focus · 2 h planned', status: 'Active', color: 'orange' as const },
                     { label: 'AI coach check-in', meta: 'NOVA · Systems strategy', status: 'Ready', color: 'zinc' as const },
-                    { label: 'Weekly goal review', meta: 'Strategy · AI brief', status: 'Pending', color: 'zinc' as const },
+                    { label: 'Weekly goal review', meta: 'Strategy · AI brief', status: 'Later', color: 'zinc' as const },
                   ].map((row) => (
                     <div
                       key={row.label}
-                      className="flex items-center justify-between border border-zinc-900 bg-black px-3 py-2.5"
+                      className="flex items-center justify-between gap-2 border border-zinc-900 bg-black px-2 py-2 sm:px-3 sm:py-2.5"
                     >
-                      <div>
-                        <p className="font-terminal text-base text-zinc-300">{row.label}</p>
-                        <p className="font-terminal text-sm text-zinc-400">{row.meta}</p>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate font-terminal text-sm text-zinc-300 sm:text-base">{row.label}</p>
+                        <p className="truncate font-terminal text-xs text-zinc-400 sm:text-sm">{row.meta}</p>
                       </div>
                       <span
                         className={cn(
-                          'border-2 px-2 py-0.5 font-pixel text-[0.35rem] tracking-widest',
+                          'shrink-0 border-2 px-1.5 py-0.5 font-pixel text-[0.3rem] tracking-widest sm:px-2 sm:text-[0.35rem]',
                           row.color === 'green' && 'border-green-900 bg-green-950/50 text-green-500',
                           row.color === 'orange' && 'border-orange-900 bg-orange-950/50 text-orange-500',
                           row.color === 'zinc' && 'border-zinc-800 bg-zinc-900/50 text-zinc-500',
@@ -664,17 +667,17 @@ function LandingPageV2() {
                   ))}
                 </div>
                 <div className="grid grid-cols-3 gap-px border-t-2 border-zinc-800">
-                  <div className="bg-black px-4 py-3">
-                    <p className="font-pixel text-[0.35rem] tracking-widest text-zinc-400">WEEKLY_INTEGRITY</p>
-                    <p className="mt-1 font-pixel text-sm text-orange-500">89%</p>
+                  <div className="bg-black px-2 py-3 sm:px-4">
+                    <p className="truncate font-pixel text-[0.3rem] tracking-widest text-zinc-400 sm:text-[0.35rem]">INTEGRITY</p>
+                    <p className="mt-1 font-pixel text-xs text-orange-500 sm:text-sm">89%</p>
                   </div>
-                  <div className="border-l-2 border-zinc-800 bg-black px-4 py-3">
-                    <p className="font-pixel text-[0.35rem] tracking-widest text-zinc-400">FOCUS_HOURS</p>
-                    <p className="mt-1 font-pixel text-sm text-green-500">18.5h</p>
+                  <div className="border-l-2 border-zinc-800 bg-black px-2 py-3 sm:px-4">
+                    <p className="truncate font-pixel text-[0.3rem] tracking-widest text-zinc-400 sm:text-[0.35rem]">FOCUS</p>
+                    <p className="mt-1 font-pixel text-xs text-green-500 sm:text-sm">18.5h</p>
                   </div>
-                  <div className="border-l-2 border-zinc-800 bg-black px-4 py-3">
-                    <p className="font-pixel text-[0.35rem] tracking-widest text-zinc-400">XP_THIS_WEEK</p>
-                    <p className="mt-1 font-pixel text-sm text-orange-400">2,340</p>
+                  <div className="border-l-2 border-zinc-800 bg-black px-2 py-3 sm:px-4">
+                    <p className="truncate font-pixel text-[0.3rem] tracking-widest text-zinc-400 sm:text-[0.35rem]">XP WK</p>
+                    <p className="mt-1 font-pixel text-xs text-orange-400 sm:text-sm">2,340</p>
                   </div>
                 </div>
               </div>
@@ -714,7 +717,7 @@ function LandingPageV2() {
             </div>
 
             {/* Mission / Philosophy / Promise */}
-            <div className="mt-10 grid grid-cols-1 gap-px border-2 border-zinc-800 sm:grid-cols-3">
+            <div className="mt-10 grid grid-cols-1 gap-px border-2 border-zinc-800 bg-zinc-800 sm:grid-cols-3">
               {[
                 {
                   label: 'MISSION',
@@ -729,7 +732,7 @@ function LandingPageV2() {
                   value: 'Your data stays yours. Free forever tier. No dark patterns. No data selling.',
                 },
               ].map((item) => (
-                <div key={item.label} className="bg-black p-5">
+                <div key={item.label} className="bg-black p-4 sm:p-5">
                   <p className="font-pixel text-[0.6rem] tracking-widest text-orange-500">{item.label}</p>
                   <p className="mt-2 font-terminal text-base leading-relaxed text-zinc-300">{item.value}</p>
                 </div>
@@ -783,9 +786,9 @@ function LandingPageV2() {
               </p>
             </div>
 
-            <div className="grid gap-px border-2 border-zinc-800 md:grid-cols-3">
+            <div className="grid gap-px border-2 border-zinc-800 bg-zinc-800 md:grid-cols-3">
               {BOOT_STEPS.map((s) => (
-                <article key={s.step} className="bg-black p-6">
+                <article key={s.step} className="bg-black p-5 sm:p-6">
                   <p className="font-pixel text-[0.35rem] tracking-widest text-orange-500">STEP {s.step}</p>
                   <h3 className="mt-2 font-pixel text-[0.55rem] text-zinc-100">{s.cmd}</h3>
                   <p className="mt-3 font-terminal text-base leading-relaxed text-zinc-300">{s.desc}</p>
@@ -810,14 +813,14 @@ function LandingPageV2() {
               </p>
             </div>
 
-            <div className="grid gap-px border-2 border-zinc-800 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-px border-2 border-zinc-800 bg-zinc-800 sm:grid-cols-2 lg:grid-cols-3">
               {CORE_FEATURES.map((spec) => (
-                <article key={spec.id} className="bg-black p-5 transition hover:bg-zinc-900">
-                  <div className="flex items-center justify-between">
-                    <span className="font-pixel text-[0.6rem] tracking-widest text-orange-600">{spec.id}</span>
+                <article key={spec.id} className="bg-black p-4 transition hover:bg-zinc-900 sm:p-5">
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="min-w-0 truncate font-pixel text-[0.55rem] tracking-widest text-orange-600 sm:text-[0.6rem]">{spec.id}</span>
                     <span
                       className={cn(
-                        'border-2 px-2 py-0.5 font-pixel text-[0.35rem] tracking-widest',
+                        'shrink-0 border-2 px-2 py-0.5 font-pixel text-[0.35rem] tracking-widest',
                         spec.status === 'Secure'
                           ? 'border-blue-900 bg-blue-950/40 text-blue-500'
                           : 'border-green-900 bg-green-950/40 text-green-600',
@@ -826,8 +829,8 @@ function LandingPageV2() {
                       {spec.status}
                     </span>
                   </div>
-                  <h3 className="mt-2 font-pixel text-[0.65rem] text-zinc-200">{spec.title}</h3>
-                  <p className="mt-2 font-terminal text-base leading-relaxed text-zinc-400">{spec.description}</p>
+                  <h3 className="mt-2 font-pixel text-[0.6rem] text-zinc-200 sm:text-[0.65rem]">{spec.title}</h3>
+                  <p className="mt-2 font-terminal text-sm leading-relaxed text-zinc-400 sm:text-base">{spec.description}</p>
                 </article>
               ))}
             </div>
@@ -847,15 +850,15 @@ function LandingPageV2() {
               </p>
             </div>
 
-            <div className="grid gap-px border-2 border-zinc-800 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-px border-2 border-zinc-800 bg-zinc-800 sm:grid-cols-2 lg:grid-cols-3">
               {AI_COACHES.map((coach) => (
-                <article key={coach.name} className="relative bg-black p-5 transition hover:bg-zinc-900/60">
+                <article key={coach.name} className="relative bg-black p-4 transition hover:bg-zinc-900/60 sm:p-5">
                   {/* Free / Pro badge */}
-                  <div className="flex items-center justify-between">
-                    <span className="font-pixel text-[0.65rem] tracking-widest text-zinc-100">{coach.name}</span>
+                  <div className="flex items-start justify-between gap-2">
+                    <span className="min-w-0 truncate font-pixel text-[0.6rem] tracking-widest text-zinc-100 sm:text-[0.65rem]">{coach.name}</span>
                     <span
                       className={cn(
-                        'border-2 px-2 py-0.5 font-pixel text-[0.35rem] tracking-widest',
+                        'shrink-0 border-2 px-2 py-0.5 font-pixel text-[0.35rem] tracking-widest',
                         coach.free
                           ? 'border-green-900 bg-green-950/40 text-green-500'
                           : 'border-orange-900 bg-orange-950/40 text-orange-500',
@@ -865,7 +868,7 @@ function LandingPageV2() {
                     </span>
                   </div>
                   <p className="mt-1 font-pixel text-[0.35rem] tracking-widest text-orange-500">{coach.style}</p>
-                  <p className="mt-3 font-terminal text-base leading-relaxed text-zinc-400">{coach.desc}</p>
+                  <p className="mt-3 font-terminal text-sm leading-relaxed text-zinc-400 sm:text-base">{coach.desc}</p>
                 </article>
               ))}
             </div>
@@ -880,27 +883,59 @@ function LandingPageV2() {
               Start free forever. Upgrade to Pro only when you&apos;re ready. No lock-in, no hidden fees, no trial that expires.
             </p>
 
-            <div className="mt-10 grid gap-4 md:grid-cols-4">
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 md:grid-cols-4">
               {ACCESS_TIERS.map((plan) => (
                 <article
                   key={plan.tier}
                   className={cn(
-                    'p-6 shadow-[2px_2px_0px_rgba(0,0,0,0.5)]',
-                    plan.highlight ? 'border-2 border-orange-900 bg-orange-950/20' : 'border-2 border-zinc-800 bg-black',
+                    'flex flex-col p-5 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] sm:p-6',
+                    plan.highlight
+                      ? 'border-2 border-orange-900 bg-orange-950/20'
+                      : (plan as any).earlyAccess
+                        ? 'border-2 border-yellow-800 bg-yellow-950/10'
+                        : 'border-2 border-zinc-800 bg-black',
                   )}
                 >
                   {plan.highlight && (
-                    <p className="mb-3 font-pixel text-[0.6rem] tracking-widest text-orange-500">&#9733; MOST POPULAR</p>
+                    <p className="mb-3 font-pixel text-[0.55rem] tracking-widest text-orange-500">&#9733; MOST POPULAR</p>
                   )}
-                  <p className="font-pixel text-[0.65rem] tracking-widest text-zinc-300">{plan.tier}</p>
-                  <p className="mt-3 font-pixel text-sm text-zinc-100">
-                    {plan.price}
-                    <span className="font-terminal text-base text-zinc-400"> {plan.period}</span>
-                  </p>
-                  <ul className="mt-6 space-y-2.5">
+                  {(plan as any).earlyAccess && (
+                    <div className="mb-3 flex flex-wrap items-center gap-2">
+                      <span className="border border-yellow-700 bg-yellow-950/60 px-2 py-0.5 font-pixel text-[0.5rem] tracking-widest text-yellow-400">
+                        ⚡ FOUNDING PRICE
+                      </span>
+                      <span className="border border-red-900/60 bg-red-950/30 px-2 py-0.5 font-pixel text-[0.5rem] tracking-widest text-red-400">
+                        FIRST 1,000 ONLY
+                      </span>
+                    </div>
+                  )}
+                  <p className="font-pixel text-[0.6rem] tracking-widest text-zinc-300">{plan.tier}</p>
+
+                  {(plan as any).earlyAccess ? (
+                    <div className="mt-3">
+                      <p className="font-pixel text-sm text-zinc-100">
+                        {plan.price}
+                        <span className="font-terminal text-sm text-zinc-400"> {plan.period}</span>
+                      </p>
+                      <p className="mt-1 font-terminal text-sm text-zinc-500">
+                        <span className="line-through">{(plan as any).originalPrice}</span>
+                        <span className="ml-2 text-yellow-500">save 44%</span>
+                      </p>
+                      <p className="mt-1 font-pixel text-[0.5rem] tracking-widest text-zinc-500">
+                        Regular price after {(plan as any).spotsLeft} spots
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="mt-3 font-pixel text-sm text-zinc-100">
+                      {plan.price}
+                      <span className="font-terminal text-base text-zinc-400"> {plan.period}</span>
+                    </p>
+                  )}
+
+                  <ul className="mt-5 flex-1 space-y-2.5">
                     {plan.specs.map((spec) => (
-                      <li key={spec} className="flex items-center gap-2 font-terminal text-base text-zinc-300">
-                        <span className="text-base text-green-500">&#10003;</span>
+                      <li key={spec} className="flex items-start gap-2 font-terminal text-sm leading-snug text-zinc-300 sm:text-base">
+                        <span className="mt-0.5 shrink-0 text-green-500">&#10003;</span>
                         {spec}
                       </li>
                     ))}
@@ -908,10 +943,12 @@ function LandingPageV2() {
                   <Link
                     href="/sign-up"
                     className={cn(
-                      'mt-6 inline-flex min-h-[48px] w-full items-center justify-center font-pixel text-[0.45rem] tracking-widest transition active:translate-x-[2px] active:translate-y-[2px]',
+                      'mt-5 inline-flex min-h-[44px] w-full items-center justify-center px-3 font-pixel text-[0.45rem] tracking-widest transition active:translate-x-[2px] active:translate-y-[2px]',
                       plan.highlight
                         ? 'border-2 border-orange-600 bg-orange-600 text-black shadow-[3px_3px_0px_rgba(0,0,0,0.7)] hover:bg-orange-500'
-                        : 'border-2 border-zinc-700 text-zinc-300 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] hover:border-orange-600 hover:text-orange-500',
+                        : (plan as any).earlyAccess
+                          ? 'border-2 border-yellow-700 bg-yellow-950/40 text-yellow-400 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] hover:border-yellow-500 hover:bg-yellow-900/30'
+                          : 'border-2 border-zinc-700 text-zinc-300 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] hover:border-orange-600 hover:text-orange-500',
                     )}
                   >
                     {plan.cta}
@@ -958,7 +995,7 @@ function LandingPageV2() {
                       {TESTIMONIALS[activeLog].role}
                     </p>
                   </div>
-                  <span className="border-2 border-green-900 bg-green-950/40 px-3 py-1 font-pixel text-[0.35rem] tracking-widest text-green-500">
+                  <span className="shrink-0 border-2 border-green-900 bg-green-950/40 px-3 py-1 font-pixel text-[0.35rem] tracking-widest text-green-500">
                     RESULT: {TESTIMONIALS[activeLog].outcome}
                   </span>
                 </div>
@@ -969,7 +1006,7 @@ function LandingPageV2() {
                     key={idx}
                     onClick={() => setActiveLog(idx)}
                     className={cn(
-                      'h-1 flex-1 transition-colors',
+                      'h-2.5 flex-1 transition-colors',
                       activeLog === idx ? 'bg-orange-600' : 'bg-zinc-800 hover:bg-zinc-600',
                     )}
                     aria-label={`Review ${idx + 1}`}
@@ -979,18 +1016,18 @@ function LandingPageV2() {
             </div>
 
             {/* All testimonials grid */}
-            <div className="mt-6 grid gap-px border-2 border-zinc-800 md:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-6 grid grid-cols-1 gap-px border-2 border-zinc-800 sm:grid-cols-2 lg:grid-cols-3">
               {TESTIMONIALS.map((t) => (
-                <div key={t.name} className="bg-black p-5">
-                  <p className="font-terminal text-base leading-relaxed text-zinc-300">
+                <div key={t.name} className="bg-black p-4 sm:p-5">
+                  <p className="font-terminal text-sm leading-relaxed text-zinc-300 sm:text-base">
                     &quot;{t.quote.length > 120 ? t.quote.slice(0, 120) + '...' : t.quote}&quot;
                   </p>
-                  <div className="mt-4 flex items-center justify-between">
+                  <div className="mt-4 flex flex-wrap items-end justify-between gap-2">
                     <div>
                       <p className="font-pixel text-[0.6rem] text-zinc-400">{t.name}</p>
                       <p className="font-pixel text-[0.55rem] tracking-widest text-zinc-500">{t.role}</p>
                     </div>
-                    <span className="border-2 border-green-900/60 px-2 py-0.5 font-pixel text-[0.55rem] tracking-widest text-green-600">
+                    <span className="shrink-0 border-2 border-green-900/60 px-2 py-0.5 font-pixel text-[0.5rem] tracking-widest text-green-600">
                       {t.outcome}
                     </span>
                   </div>

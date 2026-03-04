@@ -48,9 +48,9 @@ const CORE_FEATURES = [
   },
   {
     id: 'AI_COACHING',
-    title: '6 AI Coaches',
+    title: '4 Specialized AI Coaches',
     description:
-      'Chat with specialized AI coaches — Stoic mentors, creative guides, and more. Advice tailored to your goals 24/7.',
+      'Chat with NOVA (Systems), TITAN (Performance), SAGE (Wealth), or PHOENIX (Resilience). Each coach has a distinct strategy. Advice personalized to your goals, 24/7.',
     status: 'Live',
     category: 'AI',
   },
@@ -199,7 +199,7 @@ const FAQS = [
   {
     question: 'Can I use Resurgo on my phone?',
     answer:
-      'Yes. Resurgo is a fully responsive Progressive Web App. Install it from your browser to your home screen on iOS or Android. On Android, you can also download the APK directly from the site for a native app experience. Plus, the Telegram bot lets you check in on habits from any device.',
+      'Yes. Resurgo is a fully responsive Progressive Web App (PWA). On iOS, open Safari, tap the Share button, then "Add to Home Screen." On Android, open Chrome and tap "Add to Home Screen" from the menu. It installs instantly, works offline, and feels like a native app — no app store required. The Telegram bot also lets you check in on habits from any device.',
   },
   {
     question: 'What focus timer modes are available?',
@@ -217,9 +217,34 @@ const FAQS = [
       'Absolutely. Your data is encrypted in transit and at rest. We do not sell or share your personal data. Your information stays yours — always.',
   },
   {
-    question: 'Can I download Resurgo as an app?',
+    question: 'How do I install Resurgo on my phone?',
     answer:
-      'Yes. On Android, download the APK directly from our website for a native experience. On iOS, install Resurgo as a PWA from Safari — tap Share then "Add to Home Screen". Both options work offline.',
+      'Resurgo is a Progressive Web App — no app store download needed. On iOS (Safari): tap the Share icon → "Add to Home Screen" → Add. On Android (Chrome): tap the three-dot menu → "Add to Home Screen" → Install. It installs in seconds, works offline, receives automatic updates, and uses under 1MB of storage.',
+  },
+  {
+    question: 'What is the best free AI habit tracker in 2025?',
+    answer:
+      'Resurgo is one of the top free AI habit trackers available in 2025. Unlike basic trackers, Resurgo uses AI to automatically break your goals into milestones and daily habits, offers Pomodoro and Deep Work focus timers, provides AI coaching via four distinct personas, and has a gamification system with XP and levels — all on the free plan with no time limit.',
+  },
+  {
+    question: 'Does Resurgo work offline?',
+    answer:
+      'Yes. When installed as a Progressive Web App, Resurgo works offline. Your habits, tasks, and recent data are cached locally so you can continue logging progress without an internet connection. Changes sync automatically when you reconnect.',
+  },
+  {
+    question: 'Can AI really help me build habits?',
+    answer:
+      'Yes. Research shows that specific implementation intentions (if-when-then plans) significantly increase habit follow-through. Resurgo\'s AI turns vague goals into concrete daily habits with context and timing, provides accountability through streaks and check-ins, and adapts your plan when you miss days — addressing the three core reasons habits fail: vagueness, lack of feedback, and all-or-nothing thinking.',
+  },
+  {
+    question: 'How is Resurgo different from Habitica, Streaks, or Notion?',
+    answer:
+      'Habitica focuses on gamification without AI planning. Streaks is habit-only with no goal decomposition. Notion requires manual setup with no AI automation. Resurgo combines all use cases: AI goal breakdown, habit tracking with streaks, focus timers (Pomodoro/Deep Work/Flowtime), 4 AI coaching personas, wellness tracking, and weekly AI reviews — all connected in one workflow, with a generous free plan.',
+  },
+  {
+    question: 'How long does it take to set up Resurgo?',
+    answer:
+      'Under 2 minutes. Create a free account, pick your primary focus (health, productivity, finance, etc.), enter one goal, and Resurgo\'s AI generates your first action plan. You can start your first habit check-in on day one without any lengthy configuration.',
   },
   {
     question: 'What makes Resurgo different from other habit trackers?',
@@ -237,7 +262,7 @@ const TICKER_ITEMS = [
   'DAILY & WEEKLY PLANNING',
   'GAMIFICATION & XP SYSTEM',
   'TELEGRAM BOT INTEGRATION',
-  'ANDROID APK AVAILABLE NOW',
+  'INSTALL AS PWA — ANY DEVICE, NO APP STORE NEEDED',
   'WELLNESS & SLEEP TRACKING',
   'NUTRITION & RECOVERY LOGS',
 ];
@@ -295,20 +320,20 @@ const ACCESS_TIERS = [
   },
   {
     tier: 'PRO YEARLY',
-    price: '$39.99',
+    price: '$29.99',
     period: '/year',
     specs: [
       'Everything in Pro',
-      'Save 33% vs monthly',
+      'Save 50% vs monthly',
       'Early access to new features',
-      'Annual progress report',
+      'Annual AI progress report',
     ],
     cta: 'SAVE WITH YEARLY',
     highlight: false,
   },
   {
     tier: 'LIFETIME',
-    price: '$79.99',
+    price: '$49.99',
     period: 'one-time',
     specs: [
       'Everything in Pro',
@@ -420,10 +445,10 @@ function LandingPageV2() {
               'When everything feels loud, Resurgo gives you one calm next step. Gentle accountability, flexible structure, and momentum that meets you where you are.',
           }
         : {
-            headingMain: 'Stop planning.',
-            headingAccent: 'Start executing.',
+            headingMain: 'The free AI habit tracker',
+            headingAccent: 'that makes goals unstoppable.',
             subcopy:
-              'Resurgo is the all-in-one productivity system that turns your goals into daily action. Set one clear goal, get an AI-generated roadmap, and execute with habits, focus sessions, and coaching — all in one app.',
+              'Resurgo turns any goal into a daily action plan — automatically. Enter one goal, get your AI-generated habit roadmap in seconds, and start executing with focus timers, streaks, and 24/7 AI coaching.',
           };
 
   // Rotate testimonials
@@ -453,7 +478,8 @@ function LandingPageV2() {
               { label: 'Features', href: '#features' },
               { label: 'How It Works', href: '#how-it-works' },
               { label: 'Coaches', href: '#coaches' },
-              { label: 'Pricing', href: '#access' },
+              { label: 'Pricing', href: '/pricing' },
+              { label: 'Blog', href: '/learn' },
               { label: 'FAQ', href: '#faq' },
             ].map((l) => (
               <a key={l.label} href={l.href} className="transition-colors duration-100 hover:text-orange-400">
@@ -487,47 +513,32 @@ function LandingPageV2() {
       </header>
 
       <main>
-        {/* ────────────────── APK DOWNLOAD BANNER ────────────────── */}
+        {/* ────────────────── PWA INSTALL BANNER ────────────────── */}
         <section className="border-b border-orange-900/40 bg-gradient-to-r from-orange-950/30 via-black to-orange-950/30 px-4 py-4 sm:px-6 lg:px-8">
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 sm:flex-row">
             <div className="flex items-center gap-3">
               <span className="flex h-8 w-8 items-center justify-center border border-orange-800 bg-orange-950/60">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 w-4 text-orange-500"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3" />
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                 </svg>
               </span>
               <div>
                 <p className="font-pixel text-[0.45rem] tracking-widest text-orange-400">
-                  ANDROID APK AVAILABLE
+                  PROGRESSIVE WEB APP — INSTALL ON ANY DEVICE
                 </p>
                 <p className="font-terminal text-base text-zinc-400">
-                  Download Resurgo natively on your Android device — no app store needed
+                  Install Resurgo on iOS or Android directly from your browser — no app store needed
                 </p>
               </div>
             </div>
             <a
-              href="/resurgo.apk"
-              download
+              href="/download"
               className="inline-flex items-center gap-2 border-2 border-orange-600 bg-orange-600 px-5 py-2 font-pixel text-[0.45rem] tracking-widest text-black shadow-[2px_2px_0px_rgba(0,0,0,0.5)] transition hover:bg-orange-500 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-3.5 w-3.5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3" />
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
               </svg>
-              DOWNLOAD APK
+              INSTALL APP
             </a>
           </div>
         </section>
@@ -539,7 +550,7 @@ function LandingPageV2() {
             <div className="mb-6 inline-flex items-center gap-2 border-2 border-zinc-800 bg-black px-3 py-1.5 shadow-[2px_2px_0px_rgba(0,0,0,0.6)]">
               <span className="h-2 w-2 animate-pulse bg-orange-600" />
               <span className="font-pixel text-[0.6rem] tracking-widest text-zinc-500">
-                ONE APP. EVERY TOOL YOU NEED TO ACHIEVE YOUR GOALS.
+                FREE AI HABIT TRACKER · GOAL PLANNER · FOCUS TIMER · AI COACHING
               </span>
             </div>
 
@@ -568,11 +579,11 @@ function LandingPageV2() {
                 <div className="mt-6 grid gap-2 text-sm sm:grid-cols-2">
                   {[
                     'AI breaks down any goal in seconds',
-                    'Free plan available forever',
-                    '6 AI coaches for personalized guidance',
-                    'Android APK + PWA on all devices',
-                    'Habit streaks, XP, and gamification',
-                    'Focus timer with ambient sounds',
+                    'Free plan — no credit card, no expiry',
+                    '4 AI coaches for personalized guidance',
+                    'PWA — install on iOS & Android instantly',
+                    'Habit streaks, XP levels, and badges',
+                    'Pomodoro, Deep Work & Flowtime timers',
                   ].map((item) => (
                     <div key={item} className="flex items-center gap-2 border-2 border-zinc-800 bg-black px-3 py-2">
                       <span className="text-orange-500">&#9632;</span>
@@ -590,8 +601,7 @@ function LandingPageV2() {
                     Start Free — No Credit Card
                   </Link>
                   <a
-                    href="/resurgo.apk"
-                    download
+                    href="/download"
                     className="inline-flex min-h-[56px] items-center justify-center gap-2 border-2 border-zinc-800 px-8 font-mono text-sm tracking-wider text-zinc-400 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] transition-all duration-100 hover:border-orange-600 hover:text-orange-400 active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_rgba(0,0,0,0.5)]"
                   >
                     <svg
@@ -602,9 +612,9 @@ function LandingPageV2() {
                       stroke="currentColor"
                       strokeWidth={2}
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                     </svg>
-                    Download Android APK
+                    Install as PWA
                   </a>
                 </div>
 
@@ -680,7 +690,7 @@ function LandingPageV2() {
           <div className="mx-auto max-w-4xl text-center">
             <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">OUR_STORY</p>
             <h2 className="mt-3 font-pixel text-lg text-zinc-100 sm:text-xl">
-              Why we built Resurgo
+              Why we built the Resurgo AI habit tracker
             </h2>
 
             <div className="mt-8 space-y-6 text-left">
@@ -734,10 +744,10 @@ function LandingPageV2() {
             <div className="mb-10 text-center">
               <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">THE_FRAMEWORK</p>
               <h2 className="mt-2 font-pixel text-lg text-zinc-100 sm:text-xl">
-                How Resurgo helps you achieve any goal
+                How to achieve any goal: the Resurgo framework
               </h2>
               <p className="mx-auto mt-3 max-w-2xl font-terminal text-lg leading-relaxed text-zinc-300">
-                Goals fail because of vague plans, inconsistent execution, and no feedback. Resurgo solves all three.
+                Goals fail because of vague intentions, inconsistent execution, and no feedback loop. The Resurgo AI habit tracker solves all three.
               </p>
             </div>
 
@@ -766,10 +776,10 @@ function LandingPageV2() {
             <div className="mb-10 text-center">
               <p className="font-pixel text-[0.6rem] tracking-widest text-orange-500">GETTING_STARTED</p>
               <h2 className="mt-2 font-pixel text-lg text-zinc-100 sm:text-xl">
-                Get started in 3 simple steps
+                How to build better habits with Resurgo
               </h2>
               <p className="mx-auto mt-3 max-w-2xl font-terminal text-lg leading-relaxed text-zinc-300">
-                No complicated setup. Go from zero to a personalized execution plan in under 2 minutes.
+                No complicated setup. Go from zero to a personalized AI habit plan in under 2 minutes — and start your first habit the same day.
               </p>
             </div>
 
@@ -792,12 +802,11 @@ function LandingPageV2() {
               <div>
                 <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">CORE_CAPABILITIES</p>
                 <h2 className="mt-2 font-pixel text-lg text-zinc-100 sm:text-xl">
-                  Everything you need, nothing you don&apos;t
+                  Every habit tracking tool you need — in one app
                 </h2>
               </div>
               <p className="max-w-md font-terminal text-lg leading-relaxed text-zinc-300">
-                12 integrated tools in one app. Stop paying for and switching between separate goal, habit, focus,
-                wellness, and coaching tools.
+                12 integrated tools — goal planner, habit tracker, focus timer, AI coach, wellness log, and more. Stop paying for five separate apps.
               </p>
             </div>
 
@@ -831,10 +840,10 @@ function LandingPageV2() {
             <div className="mb-10 text-center">
               <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">AI_COACHING_ENGINE</p>
               <h2 className="mt-2 font-pixel text-lg text-zinc-100 sm:text-xl">
-                6 AI coaches. Pick your style.
+                4 AI coaches. Choose your mentor.
               </h2>
               <p className="mx-auto mt-3 max-w-2xl font-terminal text-lg leading-relaxed text-zinc-300">
-                Each coach has a unique personality and approach. Two are free forever. Unlock all six with Pro.
+                Each coach has a distinct personality, philosophy, and strategy. Nova and Phoenix are free forever. Unlock all four with Pro.
               </p>
             </div>
 
@@ -866,9 +875,9 @@ function LandingPageV2() {
         {/* ────────────────── PRICING ────────────────── */}
         <section id="access" className="border-t-2 border-zinc-800 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-6xl">
-            <h2 className="text-center font-pixel text-lg text-zinc-100 sm:text-xl">Pricing</h2>
+            <h2 className="text-center font-pixel text-lg text-zinc-100 sm:text-xl">Simple, transparent pricing</h2>
             <p className="mx-auto mt-2 max-w-xl text-center font-terminal text-lg text-zinc-400">
-              Start free. Upgrade when you&apos;re ready. No lock-in. No hidden fees.
+              Start free forever. Upgrade to Pro only when you&apos;re ready. No lock-in, no hidden fees, no trial that expires.
             </p>
 
             <div className="mt-10 grid gap-4 md:grid-cols-4">
@@ -919,10 +928,10 @@ function LandingPageV2() {
             <div className="mb-8 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
               <div>
                 <h2 className="font-pixel text-lg text-zinc-100 sm:text-xl">
-                  Proof it works
+                  What users achieve with Resurgo
                 </h2>
                 <p className="mt-1 font-terminal text-lg text-zinc-400">
-                  Real outcomes from people using Resurgo weekly
+                  Real outcomes from people using Resurgo to track habits and hit goals daily
                 </p>
               </div>
               <p className="font-pixel text-[0.35rem] tracking-widest text-zinc-500">
@@ -994,9 +1003,9 @@ function LandingPageV2() {
         {/* ────────────────── FAQ ────────────────── */}
         <section id="faq" className="border-t-2 border-zinc-800 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-4xl">
-            <h2 className="font-pixel text-lg text-zinc-100 sm:text-xl">Frequently asked questions</h2>
-            <p className="mt-1 font-pixel text-[0.35rem] tracking-widest text-zinc-400">
-              {FAQS.length} ANSWERS TO COMMON QUESTIONS
+            <h2 className="font-pixel text-lg text-zinc-100 sm:text-xl">Frequently asked questions about AI habit tracking</h2>
+            <p className="mt-2 font-terminal text-lg text-zinc-400">
+              Everything you need to know about Resurgo — free plan, AI coaching, PWA install, privacy, and more.
             </p>
 
             <div
@@ -1062,7 +1071,13 @@ function LandingPageV2() {
         <section id="demo" className="border-t-2 border-zinc-800 bg-black px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-6xl">
             <div className="mb-8 text-center">
-              <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">BRAIN_DUMP_DEMO</p>
+              <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">INTERACTIVE_DEMO</p>
+              <h2 className="mt-2 font-pixel text-lg text-zinc-100 sm:text-xl">
+                Try the AI habit planner — live
+              </h2>
+              <p className="mx-auto mt-2 max-w-xl font-terminal text-lg text-zinc-400">
+                Enter any goal and watch the AI break it into milestones, habits, and daily tasks in real time.
+              </p>
             </div>
 
             <DemoSandbox />
@@ -1100,22 +1115,20 @@ function LandingPageV2() {
                 Ready to build habits that actually stick?
               </h2>
               <p className="mx-auto mt-4 max-w-xl font-terminal text-lg leading-relaxed text-zinc-300">
-                Create your free account, set one goal, and start your first day — all in under 2 minutes. No credit
-                card needed. No trial that expires.
+                Create your free account, set one goal, and follow your first personalized AI habit plan — all in under 2 minutes. No credit card. No trial that expires. Free forever.
               </p>
               <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                 <Link
                   href="/sign-up"
                   className="inline-flex min-h-[48px] items-center justify-center border-2 border-orange-600 bg-orange-600 px-8 font-pixel text-[0.45rem] tracking-widest text-black shadow-[3px_3px_0px_rgba(0,0,0,0.7)] transition hover:bg-orange-500 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
                 >
-                  [ INITIALIZE_SYSTEM ]
+                  [ START FREE — NO CREDIT CARD ]
                 </Link>
                 <a
-                  href="/resurgo.apk"
-                  download
+                  href="/download"
                   className="inline-flex min-h-[48px] items-center justify-center gap-2 border-2 border-zinc-800 px-8 font-pixel text-[0.6rem] tracking-widest text-zinc-500 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] transition hover:border-zinc-600 hover:text-zinc-300 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
                 >
-                  [ DOWNLOAD_APK ]
+                  [ INSTALL_AS_PWA ]
                 </a>
                 <Link
                   href="/pricing"
@@ -1125,10 +1138,10 @@ function LandingPageV2() {
                 </Link>
               </div>
               <div className="mt-6 flex flex-wrap items-center justify-center gap-4 font-pixel text-[0.55rem] tracking-widest text-zinc-400">
+                <span>&gt; FREE_PLAN_FOREVER</span>
                 <span>&gt; NO_CREDIT_CARD_REQUIRED</span>
-                <span>&gt; CLEAR_ONBOARDING_FLOW</span>
-                <span>&gt; MOBILE_READY</span>
-                <span>&gt; ANDROID_APK_AVAILABLE</span>
+                <span>&gt; WORKS_OFFLINE_AS_PWA</span>
+                <span>&gt; PRIVATE_ENCRYPTED_DATA</span>
               </div>
             </div>
           </div>

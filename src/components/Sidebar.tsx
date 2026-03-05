@@ -125,7 +125,7 @@ export function Sidebar({
           {!collapsed && (
             <div className="text-center">
               <h1 className="text-lg font-bold text-themed tracking-tight">Resurgo</h1>
-              <p className="text-xs text-themed-muted tracking-[0.2em] uppercase">by WEBNESS</p>
+
             </div>
           )}
         </div>

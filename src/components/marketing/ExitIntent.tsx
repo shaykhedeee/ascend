@@ -1,13 +1,21 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import EmailCapture from './EmailCapture';
+// ═══════════════════════════════════════════════════════════════════════════════
+// RESURGO — Exit Intent Modal (Terminal-styled)
+// Interrupt prompt that fires when cursor leaves viewport upward
+// ═══════════════════════════════════════════════════════════════════════════════
+
+import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { captureUtmParams, trackMarketingEvent } from '@/lib/marketing/analytics';
 
 const EXIT_INTENT_LAST_SEEN_KEY = 'resurgo_exit_intent_last_seen';
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
 export default function ExitIntent() {
   const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const canShow = useMemo(() => {
     if (typeof window === 'undefined') return false;
@@ -20,38 +28,143 @@ export default function ExitIntent() {
 
   useEffect(() => {
     if (!canShow) return;
-
     const onMouseLeave = (event: MouseEvent) => {
       if (event.clientY > 10) return;
       setOpen(true);
       window.localStorage.setItem(EXIT_INTENT_LAST_SEEN_KEY, String(Date.now()));
     };
-
     document.addEventListener('mouseleave', onMouseLeave);
     return () => document.removeEventListener('mouseleave', onMouseLeave);
   }, [canShow]);
 
+  useEffect(() => {
+    captureUtmParams();
+  }, []);
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (loading || !email.trim()) return;
+    setLoading(true);
+    try {
+      await fetch('/api/leads/capture', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim(), source: 'exit_intent_modal', offer: 'free_blueprint', variant: 'exit_intent' }),
+      });
+      trackMarketingEvent('email_captured', { source: 'exit_intent_modal', offer: 'free_blueprint', variant: 'exit_intent' });
+      setSuccess(true);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-4" role="dialog" aria-modal="true">
-      <div className="w-full max-w-lg rounded border border-zinc-700 bg-zinc-950 p-5 shadow-2xl">
-        <div className="mb-3 flex items-start justify-between gap-3">
-          <div>
-            <h3 className="text-lg font-semibold text-zinc-100">Before you go…</h3>
-            <p className="text-sm text-zinc-400">Get the free productivity blueprint + launch updates.</p>
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 p-4"
+      role="dialog"
+      aria-modal="true"
+      onClick={(e) => { if (e.target === e.currentTarget) setOpen(false); }}
+    >
+      <div className="w-full max-w-lg border-2 border-orange-900 bg-zinc-950 shadow-[0_0_40px_rgba(234,88,12,0.15)]">
+        {/* Terminal title bar */}
+        <div className="flex items-center justify-between border-b border-orange-900/50 bg-zinc-900 px-3 py-1.5">
+          <div className="flex items-center gap-1.5">
+            <span className="inline-block w-2.5 h-2.5 rounded-full bg-red-700" />
+            <span className="inline-block w-2.5 h-2.5 rounded-full bg-yellow-700" />
+            <span className="inline-block w-2.5 h-2.5 rounded-full bg-green-700" />
           </div>
+          <span className="font-pixel text-[0.45rem] tracking-widest text-orange-700">PROCESS_INTERRUPT</span>
           <button
             type="button"
             onClick={() => setOpen(false)}
-            className="text-zinc-400 transition hover:text-zinc-200"
-            aria-label="Close"
+            className="font-pixel text-[0.45rem] tracking-widest text-zinc-600 hover:text-zinc-300 transition-colors"
+            aria-label="Dismiss"
           >
-            ✕
+            [ SKIP {'>>'} ]
           </button>
         </div>
 
-        <EmailCapture variant="exit_intent" source="exit_intent_modal" offer="free_blueprint" />
+        {/* Body */}
+        <div className="p-6">
+          {success ? (
+            <div className="space-y-3">
+              <p className="font-pixel text-[0.6rem] tracking-widest text-green-400">
+                ✓ COMMAND_ACCEPTED
+              </p>
+              <p className="font-terminal text-sm text-zinc-400">Blueprint is incoming. Check your inbox.</p>
+              <div className="mt-2 border-l-2 border-orange-800 pl-3">
+                <p className="font-terminal text-xs text-zinc-600">
+                  {'>'} BLUEPRINT_DISPATCHED<br />
+                  {'>'} INBOX_TARGET: {email}<br />
+                  {'>'} STATUS: 200 OK
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {/* Header */}
+              <div>
+                <p className="font-pixel text-[0.5rem] tracking-widest text-orange-500 mb-2">
+                  !! INTERRUPT :: PROCESS_TERMINATING
+                </p>
+                <p className="font-terminal text-base text-zinc-200">
+                  Don&apos;t leave without the free blueprint.
+                </p>
+                <p className="font-terminal text-sm text-zinc-500 mt-1">
+                  90-day productivity system, AI prompts, and launch access — zero spam.
+                </p>
+              </div>
+
+              {/* Terminal code preview */}
+              <div className="border border-zinc-800 bg-black px-3 py-2">
+                <p className="font-terminal text-xs text-zinc-600">
+                  {'>'} resource: <span className="text-orange-400">FREE_BLUEPRINT.pdf</span><br />
+                  {'>'} includes: <span className="text-zinc-400">90-day plan · AI prompts · early access</span><br />
+                  {'>'} cost: <span className="text-green-400">$0.00</span>
+                </p>
+              </div>
+
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="space-y-3">
+                <div className="flex items-center gap-2 border-b border-zinc-700 pb-1">
+                  <span className="font-terminal text-sm text-orange-500 shrink-0">$_</span>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="your@email.com"
+                    required
+                    disabled={loading}
+                    className="flex-1 bg-transparent font-terminal text-sm text-zinc-200 placeholder:text-zinc-700 outline-none"
+                  />
+                </div>
+                <div className="flex items-center gap-3">
+                  <button
+                    type="submit"
+                    disabled={loading || !email.trim()}
+                    className="flex-1 font-pixel text-[0.5rem] tracking-widest py-2.5 bg-orange-600 text-black hover:bg-orange-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    style={{ boxShadow: '0 0 20px rgba(234,88,12,0.3)' }}
+                  >
+                    {loading ? 'PROCESSING_...' : '[ SEND_BLUEPRINT ]'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setOpen(false)}
+                    className="font-pixel text-[0.45rem] tracking-widest text-zinc-600 hover:text-zinc-400 transition-colors whitespace-nowrap"
+                  >
+                    SKIP {'>>'}
+                  </button>
+                </div>
+              </form>
+
+              <p className="font-terminal text-xs text-zinc-700">
+                {'>'} No spam. Unsubscribe anytime. Privacy protected.
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

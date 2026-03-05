@@ -22,6 +22,12 @@ import QuickJournalWidget from '@/components/widgets/QuickJournalWidget';
 import GoalProgressWidget from '@/components/widgets/GoalProgressWidget';
 import AICoachWidget from '@/components/widgets/AICoachWidget';
 import CalorieTrackerWidget from '@/components/widgets/CalorieTrackerWidget';
+import DigitalClockWidget from '@/components/widgets/DigitalClockWidget';
+import QuickTaskWidget from '@/components/widgets/QuickTaskWidget';
+import QuickNoteWidget from '@/components/widgets/QuickNoteWidget';
+import SleepWidget from '@/components/widgets/SleepWidget';
+import QuickActionsWidget from '@/components/widgets/QuickActionsWidget';
+import VisionBoardWidget from '@/components/widgets/VisionBoardWidget';
 import {
   Target,
   CheckCircle2,
@@ -480,6 +486,20 @@ export default function DashboardPage() {
         <QuickJournalWidget />
         <GoalProgressWidget />
         <CalorieTrackerWidget />
+      </div>
+
+      {/* -- CLOCK / QUICK-TASK / QUICK-NOTE ROW -- */}
+      <div className="mb-6 grid gap-4 md:grid-cols-3">
+        <DigitalClockWidget />
+        <QuickTaskWidget />
+        <QuickNoteWidget />
+      </div>
+
+      {/* -- SLEEP / QUICK-ACTIONS / VISION-BOARD ROW -- */}
+      <div className="mb-6 grid gap-4 md:grid-cols-3">
+        <SleepWidget />
+        <QuickActionsWidget />
+        <VisionBoardWidget />
       </div>
 
       {/* -- WEATHER WIDGET -- */}

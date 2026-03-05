@@ -26,32 +26,43 @@ import { Search, Brain, Bell } from 'lucide-react';
 // ── Navigation Sections (ASCII-grouped) ──
 const NAV_SECTIONS = [
   {
-    label: 'CORE',
+    label: 'CMD CENTER',
     items: [
       { href: '/dashboard', label: 'Dashboard' },
       { href: '/goals', label: 'Goals' },
       { href: '/tasks', label: 'Tasks' },
       { href: '/habits', label: 'Habits' },
+      { href: '/analytics', label: 'Analytics' },
     ],
   },
   {
-    label: 'TRACKING',
+    label: '★ AI COACH',
     items: [
-      { href: '/focus', label: 'Focus' },
-      { href: '/analytics', label: 'Analytics' },
-      { href: '/calendar', label: 'Calendar' },
+      { href: '/coach', label: 'AI Coach' },
+      { href: '/orchestrator', label: 'Orchestrator' },
+      { href: '/plan-builder', label: 'Plan Builder' },
+    ],
+  },
+  {
+    label: 'WELLNESS',
+    items: [
       { href: '/wellness', label: 'Wellness' },
+      { href: '/focus', label: 'Focus Timer' },
+      { href: '/calendar', label: 'Calendar' },
+    ],
+  },
+  {
+    label: 'WEALTH',
+    items: [
       { href: '/budget', label: 'Budget' },
       { href: '/business', label: 'Business' },
+      { href: '/wishlist', label: 'Wishlist' },
     ],
   },
   {
     label: 'SYSTEM',
     items: [
-      { href: '/plan-builder', label: 'Plan Builder' },
       { href: '/vision-board', label: 'Vision Board' },
-      { href: '/coach', label: 'AI Coach' },
-      { href: '/orchestrator', label: 'AI Orchestrator' },
       { href: '/integrations', label: 'Integrations' },
       { href: '/refer', label: 'Refer & Earn' },
     ],
@@ -172,7 +183,10 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
               {/* Section header */}
               {!collapsed && (
                 <div className="px-3 pt-3 pb-1">
-                  <span className="font-pixel text-[0.45rem] tracking-[0.15em] text-zinc-600">
+                  <span className={cn(
+                    'font-pixel text-[0.45rem] tracking-[0.15em]',
+                    section.label === '★ AI COACH' ? 'text-orange-600' : 'text-zinc-600'
+                  )}>
                     ── {section.label} ──
                   </span>
                 </div>

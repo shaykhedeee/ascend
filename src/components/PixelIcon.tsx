@@ -234,6 +234,7 @@ export const NAV_ICON_MAP: Record<string, PixelIconName> = {
   'Tasks': 'tasks',
   'Habits': 'habits',
   'Focus': 'focus',
+  'Focus Timer': 'timer',
   'Analytics': 'analytics',
   'Calendar': 'calendar',
   'Wellness': 'wellness',
@@ -242,7 +243,9 @@ export const NAV_ICON_MAP: Record<string, PixelIconName> = {
   'Plan Builder': 'plan',
   'Vision Board': 'vision',
   'AI Coach': 'coach',
+  'Orchestrator': 'coach',
   'Integrations': 'integrations',
   'Refer & Earn': 'refer',
   'Settings': 'settings',
+  'Wishlist': 'star',
 };

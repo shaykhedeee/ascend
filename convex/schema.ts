@@ -1427,4 +1427,75 @@ export default defineSchema({
   })
     .index('by_user', ['userId'])
     .index('by_user_active', ['userId', 'isActive']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // WISHLIST ITEMS — Goal-oriented saving & purchase tracking (Wealth section)
+  // ─────────────────────────────────────────────────────────────────────────────
+  wishlistItems: defineTable({
+    userId: v.id('users'),
+    name: v.string(),
+    price: v.optional(v.number()),
+    currency: v.optional(v.string()),
+    priority: v.union(v.literal('low'), v.literal('medium'), v.literal('high')),
+    url: v.optional(v.string()),
+    notes: v.optional(v.string()),
+    bought: v.boolean(),
+    createdAt: v.number(),
+    updatedAt: v.optional(v.number()),
+  })
+    .index('by_userId', ['userId'])
+    .index('by_userId_bought', ['userId', 'bought']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // SCRATCH NOTES — Quick capture from dashboard "Quick Note" widget
+  // ─────────────────────────────────────────────────────────────────────────────
+  scratchNotes: defineTable({
+    userId: v.id('users'),
+    text: v.string(),
+    source: v.optional(v.string()),
+    createdAt: v.number(),
+  })
+    .index('by_userId', ['userId'])
+    .index('by_userId_createdAt', ['userId', 'createdAt']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // WORKOUT LOGS — Physical fitness activity tracking (Fitness section)
+  // ─────────────────────────────────────────────────────────────────────────────
+  workoutLogs: defineTable({
+    userId: v.id('users'),
+    date: v.string(),
+    type: v.union(
+      v.literal('cardio'),
+      v.literal('strength'),
+      v.literal('flexibility'),
+      v.literal('sport'),
+      v.literal('other'),
+    ),
+    durationMinutes: v.number(),
+    notes: v.optional(v.string()),
+    caloriesBurned: v.optional(v.number()),
+    createdAt: v.number(),
+  })
+    .index('by_userId', ['userId'])
+    .index('by_userId_date', ['userId', 'date']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // COACH NOTIFICATIONS — Proactive AI coach nudges
+  // ─────────────────────────────────────────────────────────────────────────────
+  coachNotifications: defineTable({
+    userId: v.id('users'),
+    coachId: v.string(),
+    type: v.string(),
+    message: v.string(),
+    actions: v.array(v.object({
+      label: v.string(),
+      action: v.string(),
+    })),
+    read: v.boolean(),
+    createdAt: v.number(),
+    expiresAt: v.number(),
+  })
+    .index('by_userId', ['userId'])
+    .index('by_userId_read', ['userId', 'read'])
+    .index('by_userId_createdAt', ['userId', 'createdAt']),
 });

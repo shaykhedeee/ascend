@@ -262,7 +262,7 @@ const TICKER_ITEMS = [
   'DAILY & WEEKLY PLANNING',
   'GAMIFICATION & XP SYSTEM',
   'TELEGRAM BOT INTEGRATION',
-  'INSTALL AS PWA — ANY DEVICE, NO APP STORE NEEDED',
+  'ADD TO HOMESCREEN — ANY DEVICE, NO APP STORE NEEDED',
   'WELLNESS & SLEEP TRACKING',
   'NUTRITION & RECOVERY LOGS',
 ];
@@ -290,51 +290,43 @@ const BOOT_STEPS = [
 const ACCESS_TIERS = [
   {
     tier: 'FREE',
-    price: '$0',
-    period: '/forever',
+    price: { monthly: '$0', annual: '$0' },
+    period: { monthly: '/forever', annual: '/forever' },
     specs: [
       'Unlimited habits & goals',
       'Focus timer (all modes)',
-      '2 AI coaches (Nova & Phoenix)',
+      '2 AI coaches (Marcus & Aurora)',
       'Daily planning',
       'Basic analytics',
       'Mobile PWA access',
     ],
     cta: 'START FREE',
     highlight: false,
+    earlyAccess: false,
   },
   {
     tier: 'PRO',
-    price: '$4.99',
-    period: '/month',
+    price: { monthly: '$4.99', annual: '$2.49' },
+    period: { monthly: '/month', annual: '/month' },
+    annualBilled: '$29.99/yr',
+    savings: 'SAVE $29.88/yr',
     specs: [
       'Everything in Free',
-      'All 4 AI coaches unlocked',
+      'All 6 AI coaches unlocked',
       'Advanced analytics & insights',
       'Weekly AI reviews',
       'Priority support',
       'Telegram bot access',
+      'Proactive coach notifications',
     ],
     cta: 'UPGRADE TO PRO',
     highlight: true,
-  },
-  {
-    tier: 'PRO YEARLY',
-    price: '$29.99',
-    period: '/year',
-    specs: [
-      'Everything in Pro',
-      'Save 50% vs monthly',
-      'Early access to new features',
-      'Annual AI progress report',
-    ],
-    cta: 'SAVE WITH YEARLY',
-    highlight: false,
+    earlyAccess: false,
   },
   {
     tier: 'LIFETIME',
-    price: '$49.99',
-    period: 'one-time',
+    price: { monthly: '$49.99', annual: '$49.99' },
+    period: { monthly: 'one-time', annual: 'one-time' },
     earlyAccess: true,
     originalPrice: '$89.99',
     spotsLeft: 1000,
@@ -352,28 +344,46 @@ const ACCESS_TIERS = [
 // ─── AI COACHES ─────────────────────────────────────────────────────────────
 const AI_COACHES = [
   {
-    name: 'NOVA',
-    style: 'Systems Architect',
-    desc: 'Thinks in systems, leverage points, and second-order effects. Nova can build complete plans, create tasks, and design habit systems directly from conversation.',
+    name: 'MARCUS',
+    style: 'Stoic Strategist',
+    desc: 'Discipline, goals, and long-term strategy. Marcus builds frameworks that turn intentions into unbreakable commitments.',
     free: true,
+    accent: 'yellow',
+  },
+  {
+    name: 'AURORA',
+    style: 'Mindful Catalyst',
+    desc: 'Wellness, mindfulness, and emotional intelligence. Aurora helps you build inner peace alongside outer performance.',
+    free: true,
+    accent: 'purple',
   },
   {
     name: 'TITAN',
-    style: 'Performance Engine',
+    style: 'Physical Performance',
     desc: 'Your body is the foundation. Titan creates workout plans, nutrition protocols, and energy optimization systems — all action-capable.',
     free: false,
+    accent: 'red',
   },
   {
     name: 'SAGE',
-    style: 'Wealth Architect',
-    desc: 'Every dollar is a soldier. Sage builds financial plans, savings goals, career roadmaps, and compound growth strategies for you.',
+    style: 'Financial Alchemist',
+    desc: 'Every dollar is a soldier. Sage builds financial plans, savings goals, career roadmaps, and compound growth strategies.',
     free: false,
+    accent: 'green',
   },
   {
     name: 'PHOENIX',
-    style: 'Resilience Forge',
-    desc: 'Built for rock bottom. Phoenix creates recovery plans, micro-step momentum systems, and turns setbacks into structured comebacks.',
-    free: true,
+    style: 'Comeback Specialist',
+    desc: 'Built for resilience. Phoenix creates recovery plans, micro-step momentum systems, and turns setbacks into structured comebacks.',
+    free: false,
+    accent: 'orange',
+  },
+  {
+    name: 'NOVA',
+    style: 'Creative Systems',
+    desc: 'Thinks in systems, leverage points, and second-order effects. Nova designs complete plans for learning, creativity, and innovation.',
+    free: false,
+    accent: 'cyan',
   },
 ];
 
@@ -414,6 +424,7 @@ function LandingPageV2() {
   const [activeLog, setActiveLog] = useState(0);
   const [tickerIdx, setTickerIdx] = useState(0);
   const [heroVariant, setHeroVariant] = useState('control');
+  const [annual, setAnnual] = useState(false);
 
   useEffect(() => {
     captureUtmParams();
@@ -470,10 +481,10 @@ function LandingPageV2() {
     <div className="min-h-screen bg-black text-zinc-100 selection:bg-orange-600/40 selection:text-white">
       {/* ────────────────────── HEADER ────────────────────── */}
       <header className="sticky top-0 z-50 border-b-2 border-zinc-800 bg-black/95">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-0 min-h-[56px] sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-2.5">
             <LogoMark className="w-8 h-8" />
-            <span className="font-pixel text-[0.7rem] tracking-[0.2em] text-orange-500">RESURGO</span>
+            <span className="font-pixel text-[0.7rem] tracking-[0.2em] text-orange-500 hidden sm:inline">RESURGO</span>
           </Link>
 
           <nav className="hidden items-center gap-6 md:flex">
@@ -545,7 +556,7 @@ function LandingPageV2() {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
               </svg>
-              INSTALL APP
+              INSTALL ON HOMESCREEN
             </a>
           </div>
         </section>
@@ -621,7 +632,7 @@ function LandingPageV2() {
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                     </svg>
-                    Install as PWA
+                    Add to Homescreen
                   </a>
                 </div>
 
@@ -777,27 +788,82 @@ function LandingPageV2() {
           </div>
         </section>
 
-        {/* ────────────────── HOW IT WORKS (ONBOARDING) ────────────────── */}
+        {/* ────────────────── HOW IT WORKS (TERMINAL PIPELINE) ────────────── */}
         <section id="how-it-works" className="border-t-2 border-zinc-800 bg-black px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-          <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-3xl">
             <div className="mb-10 text-center">
-              <p className="font-pixel text-[0.6rem] tracking-widest text-orange-500">GETTING_STARTED</p>
+              <p className="font-pixel text-[0.55rem] tracking-widest text-orange-500">GETTING_STARTED</p>
               <h2 className="mt-2 font-pixel text-lg text-zinc-100 sm:text-xl">
-                How to build better habits with Resurgo
+                How Resurgo works
               </h2>
               <p className="mx-auto mt-3 max-w-2xl font-terminal text-lg leading-relaxed text-zinc-300">
-                No complicated setup. Go from zero to a personalized AI habit plan in under 2 minutes — and start your first habit the same day.
+                From intent to achieved goal — the Resurgo pipeline in 4 steps.
               </p>
             </div>
 
-            <div className="grid gap-px border-2 border-zinc-800 bg-zinc-800 md:grid-cols-3">
-              {BOOT_STEPS.map((s) => (
-                <article key={s.step} className="bg-black p-5 sm:p-6">
-                  <p className="font-pixel text-[0.35rem] tracking-widest text-orange-500">STEP {s.step}</p>
-                  <h3 className="mt-2 font-pixel text-[0.55rem] text-zinc-100">{s.cmd}</h3>
-                  <p className="mt-3 font-terminal text-base leading-relaxed text-zinc-300">{s.desc}</p>
-                </article>
+            {/* Terminal pipeline */}
+            <div className="space-y-0">
+              {[
+                {
+                  step: '01',
+                  cmd: 'SET_GOAL',
+                  desc: 'Tell Resurgo what you want to achieve — any goal, any domain',
+                  output: 'Milestones · Tasks · Habits',
+                },
+                {
+                  step: '02',
+                  cmd: 'EXECUTE_DAILY',
+                  desc: 'AI plans your day. You execute with focus sessions and habit check-ins.',
+                  output: 'Focus Sessions · Check-ins',
+                },
+                {
+                  step: '03',
+                  cmd: 'EARN_XP',
+                  desc: 'Track streaks, earn XP for every habit completed, level up your profile.',
+                  output: 'XP · Streaks · Achievements',
+                },
+                {
+                  step: '04',
+                  cmd: 'AI_ADAPTS',
+                  desc: 'Your AI coach analyzes patterns and updates your plan automatically.',
+                  output: 'Adaptive Plan · Recommendations',
+                },
+              ].map((s, i, arr) => (
+                <div key={s.cmd} className="flex flex-col items-center">
+                  <div className="w-full border-2 border-zinc-800 bg-black p-5 shadow-[2px_2px_0px_rgba(0,0,0,0.5)]">
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className="flex h-8 w-8 items-center justify-center border-2 border-orange-900 bg-orange-950/40 shrink-0">
+                        <span className="font-pixel text-[0.35rem] text-orange-500">{s.step}</span>
+                      </span>
+                      <span className="font-pixel text-[0.55rem] tracking-widest text-orange-400">
+                        // {s.cmd}
+                      </span>
+                    </div>
+                    <p className="font-terminal text-base text-zinc-300 ml-11">&gt; {s.desc}</p>
+                    <p className="mt-2 ml-11 font-pixel text-[0.4rem] tracking-widest text-zinc-500">
+                      OUTPUT: [{s.output}]
+                    </p>
+                  </div>
+                  {i < arr.length - 1 && (
+                    <div className="flex flex-col items-center py-1">
+                      <div className="w-px h-5 bg-zinc-700" />
+                      <span className="font-pixel text-[0.4rem] text-zinc-600">↓</span>
+                    </div>
+                  )}
+                </div>
               ))}
+              {/* Final output */}
+              <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center py-1">
+                  <div className="w-px h-5 bg-zinc-700" />
+                  <span className="font-pixel text-[0.4rem] text-zinc-600">↓</span>
+                </div>
+                <div className="border-2 border-green-900 bg-green-950/20 px-8 py-3 text-center shadow-[2px_2px_0px_rgba(0,0,0,0.5)]">
+                  <span className="font-pixel text-[0.55rem] tracking-widest text-green-400">
+                    █ GOAL_ACHIEVED ▋
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -845,21 +911,40 @@ function LandingPageV2() {
         <section id="coaches" className="border-t-2 border-zinc-800 bg-black px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-6xl">
             <div className="mb-10 text-center">
-              <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">AI_COACHING_ENGINE</p>
+              <p className="font-pixel text-[0.55rem] tracking-widest text-orange-500">AI_COACHING_ENGINE</p>
               <h2 className="mt-2 font-pixel text-lg text-zinc-100 sm:text-xl">
-                4 AI coaches. Choose your mentor.
+                6 AI coaches. One for every domain.
               </h2>
               <p className="mx-auto mt-3 max-w-2xl font-terminal text-lg leading-relaxed text-zinc-300">
-                Each coach has a distinct personality, philosophy, and strategy. Nova and Phoenix are free forever. Unlock all six with Pro.
+                Each coach has a distinct personality, philosophy, and area of expertise. Marcus &amp; Aurora are free forever. Unlock all six with Pro.
               </p>
             </div>
 
-            <div className="grid gap-px border-2 border-zinc-800 bg-zinc-800 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-2 gap-px bg-zinc-900 md:grid-cols-3">
               {AI_COACHES.map((coach) => (
-                <article key={coach.name} className="relative bg-black p-4 transition hover:bg-zinc-900/60 sm:p-5">
-                  {/* Free / Pro badge */}
+                <article
+                  key={coach.name}
+                  className={cn(
+                    'relative bg-black p-4 transition sm:p-5',
+                    'border-l-2',
+                    coach.accent === 'yellow' && 'border-yellow-600 hover:bg-yellow-950/10',
+                    coach.accent === 'purple' && 'border-purple-500 hover:bg-purple-950/10',
+                    coach.accent === 'red' && 'border-red-500 hover:bg-red-950/10',
+                    coach.accent === 'green' && 'border-green-500 hover:bg-green-950/10',
+                    coach.accent === 'orange' && 'border-orange-500 hover:bg-orange-950/10',
+                    coach.accent === 'cyan' && 'border-cyan-500 hover:bg-cyan-950/10',
+                  )}
+                >
                   <div className="flex items-start justify-between gap-2">
-                    <span className="min-w-0 truncate font-pixel text-[0.6rem] tracking-widest text-zinc-100 sm:text-[0.65rem]">{coach.name}</span>
+                    <span className={cn(
+                      'font-pixel text-[0.6rem] tracking-widest',
+                      coach.accent === 'yellow' && 'text-yellow-500',
+                      coach.accent === 'purple' && 'text-purple-400',
+                      coach.accent === 'red' && 'text-red-400',
+                      coach.accent === 'green' && 'text-green-400',
+                      coach.accent === 'orange' && 'text-orange-400',
+                      coach.accent === 'cyan' && 'text-cyan-400',
+                    )}>{coach.name}</span>
                     <span
                       className={cn(
                         'shrink-0 border-2 px-2 py-0.5 font-pixel text-[0.35rem] tracking-widest',
@@ -871,23 +956,56 @@ function LandingPageV2() {
                       {coach.free ? 'FREE' : 'PRO'}
                     </span>
                   </div>
-                  <p className="mt-1 font-pixel text-[0.35rem] tracking-widest text-orange-500">{coach.style}</p>
-                  <p className="mt-3 font-terminal text-sm leading-relaxed text-zinc-400 sm:text-base">{coach.desc}</p>
+                  <p className="mt-1 font-pixel text-[0.35rem] tracking-widest text-zinc-500">{coach.style}</p>
+                  <p className="mt-3 font-terminal text-sm leading-relaxed text-zinc-400">{coach.desc}</p>
                 </article>
               ))}
             </div>
+
+            <p className="mt-6 text-center font-terminal text-base text-zinc-500">
+              Use <span className="text-orange-400">@TITAN</span>, <span className="text-green-400">@SAGE</span>, <span className="text-cyan-400">@NOVA</span> in any message to direct your question to a specific coach
+            </p>
           </div>
         </section>
 
         {/* ────────────────── PRICING ────────────────── */}
         <section id="access" className="border-t-2 border-zinc-800 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-          <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-2 text-center">
+              <p className="font-pixel text-[0.55rem] tracking-widest text-orange-500">ACCESS_TIERS</p>
+            </div>
             <h2 className="text-center font-pixel text-lg text-zinc-100 sm:text-xl">Simple, transparent pricing</h2>
             <p className="mx-auto mt-2 max-w-xl text-center font-terminal text-lg text-zinc-400">
-              Start free forever. Upgrade to Pro only when you&apos;re ready. No lock-in, no hidden fees, no trial that expires.
+              Start free forever. Upgrade to Pro only when you&apos;re ready. No lock-in, no hidden fees.
             </p>
 
-            <div className="mt-10 grid gap-4 sm:grid-cols-2 md:grid-cols-4">
+            {/* Monthly / Annual toggle */}
+            <div className="mt-8 flex items-center justify-center gap-0">
+              <button
+                onClick={() => setAnnual(false)}
+                className={cn(
+                  'border-2 border-r-0 px-5 py-2 font-pixel text-[0.45rem] tracking-widest transition-all',
+                  !annual
+                    ? 'border-orange-600 bg-orange-600 text-black'
+                    : 'border-zinc-700 bg-transparent text-zinc-500 hover:text-zinc-300',
+                )}
+              >
+                MONTHLY
+              </button>
+              <button
+                onClick={() => setAnnual(true)}
+                className={cn(
+                  'border-2 px-5 py-2 font-pixel text-[0.45rem] tracking-widest transition-all',
+                  annual
+                    ? 'border-orange-600 bg-orange-600 text-black'
+                    : 'border-zinc-700 bg-transparent text-zinc-500 hover:text-zinc-300',
+                )}
+              >
+                ANNUAL — SAVE 50%
+              </button>
+            </div>
+
+            <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {ACCESS_TIERS.map((plan) => (
                 <article
                   key={plan.tier}
@@ -895,7 +1013,7 @@ function LandingPageV2() {
                     'flex flex-col p-5 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] sm:p-6',
                     plan.highlight
                       ? 'border-2 border-orange-900 bg-orange-950/20'
-                      : (plan as any).earlyAccess
+                      : plan.earlyAccess
                         ? 'border-2 border-yellow-800 bg-yellow-950/10'
                         : 'border-2 border-zinc-800 bg-black',
                   )}
@@ -903,36 +1021,53 @@ function LandingPageV2() {
                   {plan.highlight && (
                     <p className="mb-3 font-pixel text-[0.55rem] tracking-widest text-orange-500">&#9733; MOST POPULAR</p>
                   )}
-                  {(plan as any).earlyAccess && (
+                  {plan.earlyAccess && (
                     <div className="mb-3 flex flex-wrap items-center gap-2">
                       <span className="border border-yellow-700 bg-yellow-950/60 px-2 py-0.5 font-pixel text-[0.5rem] tracking-widest text-yellow-400">
                         ⚡ FOUNDING PRICE
                       </span>
                       <span className="border border-red-900/60 bg-red-950/30 px-2 py-0.5 font-pixel text-[0.5rem] tracking-widest text-red-400">
-                        FIRST 1,000 ONLY
+                        FIRST {plan.spotsLeft?.toLocaleString()} ONLY
                       </span>
                     </div>
                   )}
                   <p className="font-pixel text-[0.6rem] tracking-widest text-zinc-300">{plan.tier}</p>
 
-                  {(plan as any).earlyAccess ? (
+                  {plan.earlyAccess ? (
                     <div className="mt-3">
                       <p className="font-pixel text-sm text-zinc-100">
-                        {plan.price}
-                        <span className="font-terminal text-sm text-zinc-400"> {plan.period}</span>
+                        {plan.price.monthly}
+                        <span className="font-terminal text-sm text-zinc-400"> {plan.period.monthly}</span>
                       </p>
                       <p className="mt-1 font-terminal text-sm text-zinc-500">
-                        <span className="line-through">{(plan as any).originalPrice}</span>
+                        <span className="line-through">{plan.originalPrice}</span>
                         <span className="ml-2 text-yellow-500">save 44%</span>
                       </p>
                       <p className="mt-1 font-pixel text-[0.5rem] tracking-widest text-zinc-500">
-                        Regular price after {(plan as any).spotsLeft} spots
+                        Regular price after {plan.spotsLeft?.toLocaleString()} spots
                       </p>
+                    </div>
+                  ) : plan.highlight ? (
+                    <div className="mt-3">
+                      <div className="flex items-end gap-2">
+                        <p className="font-pixel text-sm text-zinc-100">
+                          {annual ? plan.price.annual : plan.price.monthly}
+                        </p>
+                        {annual && plan.price.monthly !== plan.price.annual && (
+                          <p className="mb-0.5 font-terminal text-sm text-zinc-500 line-through">{plan.price.monthly}</p>
+                        )}
+                      </div>
+                      <p className="font-terminal text-sm text-zinc-400">{plan.period.monthly}</p>
+                      {annual && plan.annualBilled && (
+                        <p className="mt-1 font-pixel text-[0.45rem] tracking-widest text-green-500">
+                          ✓ billed as {plan.annualBilled} · {plan.savings}
+                        </p>
+                      )}
                     </div>
                   ) : (
                     <p className="mt-3 font-pixel text-sm text-zinc-100">
-                      {plan.price}
-                      <span className="font-terminal text-base text-zinc-400"> {plan.period}</span>
+                      {annual ? plan.price.annual : plan.price.monthly}
+                      <span className="font-terminal text-base text-zinc-400"> {plan.period.monthly}</span>
                     </p>
                   )}
 
@@ -950,7 +1085,7 @@ function LandingPageV2() {
                       'mt-5 inline-flex min-h-[44px] w-full items-center justify-center px-3 font-pixel text-[0.45rem] tracking-widest transition active:translate-x-[2px] active:translate-y-[2px]',
                       plan.highlight
                         ? 'border-2 border-orange-600 bg-orange-600 text-black shadow-[3px_3px_0px_rgba(0,0,0,0.7)] hover:bg-orange-500'
-                        : (plan as any).earlyAccess
+                        : plan.earlyAccess
                           ? 'border-2 border-yellow-700 bg-yellow-950/40 text-yellow-400 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] hover:border-yellow-500 hover:bg-yellow-900/30'
                           : 'border-2 border-zinc-700 text-zinc-300 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] hover:border-orange-600 hover:text-orange-500',
                     )}

@@ -53,19 +53,20 @@ export default function WeatherWidget() {
       setError(null);
 
       // Try to get location, fallback to auto-detect by IP
-      let location = '';
+      let locationParam = 'auto';
       try {
         const pos = await new Promise<GeolocationPosition>((resolve, reject) =>
           navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 5000 })
         );
-        location = `${pos.coords.latitude},${pos.coords.longitude}`;
+        locationParam = `${pos.coords.latitude},${pos.coords.longitude}`;
       } catch {
-        // Auto-detect by IP — wttr.in handles this
-        location = '';
+        // Auto-detect by IP — server proxy handles this
+        locationParam = 'auto';
       }
 
-      const url = `https://wttr.in/${location}?format=j1`;
-      const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
+      // Use server-side proxy to avoid CORS issues in production
+      const url = `/api/weather?q=${encodeURIComponent(locationParam)}`;
+      const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
       if (!res.ok) throw new Error('Weather API error');
 
       const data = await res.json();

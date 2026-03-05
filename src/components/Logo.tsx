@@ -141,9 +141,6 @@ export function Logo({
           >
             RESURGO
           </span>
-          <span className="text-xs text-zinc-500 tracking-[0.12em] uppercase mt-1 font-mono">
-            by WEBNESS
-          </span>
         </div>
       )}
     </div>

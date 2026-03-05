@@ -19,6 +19,13 @@ const JOURNAL_TYPES = [
 type JournalType = 'reflection' | 'gratitude' | 'goal_note' | 'freeform';
 type Tab = 'overview' | 'mood' | 'journal' | 'sleep' | 'nutrition';
 
+// Local shape types for Convex query results
+interface MoodEntry { _id: string; date: string; score: number; notes?: string; tags?: string[] }
+interface SleepLog { _id: string; date: string; bedtime: string; wakeTime: string; durationMinutes?: number; quality?: number }
+interface MealEntry { name: string; calories: number; protein?: number; time?: string }
+interface NutritionLog { totalCalories: number; totalProtein?: number; totalCarbs?: number; totalFat?: number; waterMl?: number; steps?: number; meals?: MealEntry[] }
+interface JournalEntry { _id: string; date: string; type?: string; content: string }
+
 // Daily wellness goals
 const WATER_GOAL_ML   = 2500;
 const STEPS_GOAL      = 8000;
@@ -85,7 +92,7 @@ export default function WellnessPage() {
   const [moodNotes, setMoodNotes] = useState('');
   const [moodTags,  setMoodTags]  = useState<string[]>([]);
   const [moodSaving, setMoodSaving] = useState(false);
-  const todayMood = moodHistory?.find((m: any) => m.date === today);
+  const todayMood = moodHistory?.find((m: MoodEntry) => m.date === today);
 
   const [showJournalForm, setShowJournalForm] = useState(false);
   const [journalContent, setJournalContent]   = useState('');
@@ -116,7 +123,7 @@ export default function WellnessPage() {
   const [workoutLoading, setWorkoutLoading] = useState(false);
 
   // ── Derived wellness scores ─────────────────────────────────────────────────
-  const todaySleep = sleepLogs?.find((l: any) => l.date === today);
+  const todaySleep = sleepLogs?.find((l: SleepLog) => l.date === today);
   const waterScore  = todayNutrition?.waterMl ? Math.min(100, (todayNutrition.waterMl / WATER_GOAL_ML) * 100) : 0;
   const stepsScore  = todayNutrition?.steps ? Math.min(100, (todayNutrition.steps / STEPS_GOAL) * 100) : 0;
   const moodScoreNorm  = todayMood ? (todayMood.score / 5) * 100 : 0;
@@ -125,7 +132,7 @@ export default function WellnessPage() {
 
   const moodTrend7 = useMemo(() => {
     if (!moodHistory || moodHistory.length < 2) return null;
-    const last7 = moodHistory.slice(0, 7).map((m: any) => m.score);
+    const last7 = moodHistory.slice(0, 7).map((m: MoodEntry) => m.score);
     const avg = last7.reduce((a: number, b: number) => a + b, 0) / last7.length;
     return avg;
   }, [moodHistory]);
@@ -488,7 +495,7 @@ export default function WellnessPage() {
                 <div className="py-8 text-center"><p className="font-mono text-xs tracking-widest text-zinc-400">NO_ENTRIES_YET</p></div>
               ) : (
                 <div className="space-y-px p-1">
-                  {moodHistory.slice(0, 14).map((entry: any) => {
+                  {moodHistory.slice(0, 14).map((entry: MoodEntry) => {
                     const Icon = MOOD_ICONS[entry.score] || Meh;
                     return (
                       <div key={entry._id} className="flex items-start gap-3 px-3 py-2.5 hover:bg-zinc-900">
@@ -559,7 +566,7 @@ export default function WellnessPage() {
               </div>
             ) : (
               <div className="space-y-px">
-                {journalEntries.map((entry: any) => (
+                {journalEntries.map((entry: JournalEntry) => (
                   <div key={entry._id} className="border border-zinc-900 bg-zinc-950 p-4 transition hover:bg-zinc-900">
                     <div className="mb-2 flex items-center justify-between">
                       <span className={cn('border px-2 py-0.5 font-mono text-xs tracking-widest',
@@ -636,7 +643,7 @@ export default function WellnessPage() {
                   <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">SLEEP_HISTORY</span>
                 </div>
                 <div className="divide-y divide-zinc-900">
-                  {sleepLogs.map((log: any) => (
+                  {sleepLogs.map((log: SleepLog) => (
                     <div key={log._id} className="flex items-center gap-4 px-4 py-2.5">
                       <span className="font-mono text-xs text-zinc-400">{log.date}</span>
                       <span className="font-mono text-xs text-zinc-300">
@@ -718,7 +725,7 @@ export default function WellnessPage() {
                   <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">TODAY_MEALS</span>
                 </div>
                 <div className="divide-y divide-zinc-900">
-                  {todayNutrition.meals.map((meal: any, i: number) => (
+                  {todayNutrition.meals.map((meal: MealEntry, i: number) => (
                     <div key={i} className="flex items-center gap-3 px-4 py-2.5">
                       <Apple className="h-3.5 w-3.5 shrink-0 text-amber-500" />
                       <div className="flex-1">

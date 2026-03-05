@@ -712,12 +712,13 @@ export function getAvailableProviders(): AIProvider[] {
 // Used for complex tasks like goal decomposition, deep psychology profiling,
 // weekly reviews, and vision board generation.
 //
-// Stages (up to 5):
+// Stages (up to 6):
 //   1. PARSE    — Extract structured facts from raw user input
 //   2. ANALYZE  — Deep analysis of the parsed facts
 //   3. SYNTHESIZE — Combine analysis into coherent insights
 //   4. RECOMMEND  — Generate actionable recommendations
 //   5. FORMAT   — Final formatting / JSON schema enforcement
+//   6. (custom) — Any additional stage as needed
 // ─────────────────────────────────────────────────────────────────────────────
 
 export type PipelineStage = 'parse' | 'analyze' | 'synthesize' | 'recommend' | 'format';

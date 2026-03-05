@@ -503,11 +503,11 @@ export default function DashboardPage() {
             </div>
           </div>
           {/* Mood trend */}
-          {moodHistory && moodHistory.length > 0 && (
+              {moodHistory && moodHistory.length > 0 && (
             <div className="border-t border-zinc-900 px-4 py-3">
               <span className="font-terminal text-xs text-zinc-500">7-day mood: </span>
               <div className="inline-flex gap-1 mt-1">
-                {(moodHistory as any[]).slice(0, 7).reverse().map((m: any, i: number) => {
+                {([...(moodHistory as { date: string; score: number }[])].slice(0, 7).reverse()).map((m, i: number) => {
                   const colors = ['', 'bg-red-600', 'bg-orange-600', 'bg-yellow-500', 'bg-green-500', 'bg-emerald-400'];
                   return (
                     <div key={i} title={`${m.date}: ${m.score}/5`}

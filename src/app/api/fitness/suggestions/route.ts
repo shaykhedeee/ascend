@@ -60,7 +60,7 @@ async function getWeather(lat: number, lon: number): Promise<WeatherData | null>
     url.searchParams.set('temperature_unit', 'celsius');
     url.searchParams.set('forecast_days', '1');
 
-    const res = await fetch(url.toString(), { next: { revalidate: 3600 } }); // cache 1h
+    const res = await fetch(url.toString(), { cache: 'no-store' }); // weather changes hourly
     if (!res.ok) return null;
 
     const data = (await res.json()) as {

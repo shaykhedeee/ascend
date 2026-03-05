@@ -60,17 +60,21 @@ export function KaiChatbot({
     }
   }, [isOpen]);
 
-  // Add welcome message on first open
+  // Add personalized welcome message on first open
   useEffect(() => {
     if (isOpen && messages.length === 0) {
+      const hour = new Date().getHours();
+      const timeGreeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+      const firstName = user?.name?.split(' ')[0] ?? 'there';
+
       setMessages([{
         id: 'welcome',
         role: 'assistant',
-        content: `Hey! I'm Kai, your RESURGO assistant.\n\nI can help you with:\n• Setting up habits and goals\n• Understanding features\n• Troubleshooting issues\n• Habit advice (using Atomic Habits principles)\n\nWhat can I help you with today?`,
+        content: `${timeGreeting}, ${firstName}! 👋 I'm Kai, your personal Resurgo AI assistant.\n\nI'm here to help you with:\n• Setting up and optimizing your habits\n• Breaking down goals into actionable steps\n• Understanding your progress and patterns\n• Personalized coaching and motivation\n• Any questions about the app\n\nWhat can I help you with today?`,
         timestamp: new Date(),
       }]);
     }
-  }, [isOpen, messages.length]);
+  }, [isOpen, messages.length, user?.name]);
 
   const trackClientEvent = useCallback(
     async (

@@ -2,8 +2,8 @@
 
 import { useMutation, useQuery } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
-import { FormEvent, useState } from 'react';
-import { BookOpen, Smile, Meh, Frown, Plus, Calendar, Moon, Apple, Droplets, Zap } from 'lucide-react';
+import { FormEvent, useState, useMemo } from 'react';
+import { BookOpen, Smile, Meh, Frown, Plus, Calendar, Moon, Apple, Droplets, Zap, Activity, TrendingUp, Brain, Heart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const MOOD_LABELS = ['', 'Very Low', 'Low', 'Okay', 'Good', 'Great'];
@@ -17,11 +17,64 @@ const JOURNAL_TYPES = [
   { id: 'freeform'   as const, label: 'Freeform'   },
 ];
 type JournalType = 'reflection' | 'gratitude' | 'goal_note' | 'freeform';
-type Tab = 'mood' | 'journal' | 'sleep' | 'nutrition';
+type Tab = 'overview' | 'mood' | 'journal' | 'sleep' | 'nutrition';
+
+// Local shape types for Convex query results
+interface MoodEntry { _id: string; date: string; score: number; notes?: string; tags?: string[] }
+interface SleepLog { _id: string; date: string; bedtime: string; wakeTime: string; durationMinutes?: number; quality?: number }
+interface MealEntry { name: string; calories: number; protein?: number; time?: string }
+interface NutritionLog { totalCalories: number; totalProtein?: number; totalCarbs?: number; totalFat?: number; waterMl?: number; steps?: number; meals?: MealEntry[] }
+interface JournalEntry { _id: string; date: string; type?: string; content: string }
+
+// Daily wellness goals
+const WATER_GOAL_ML   = 2500;
+const STEPS_GOAL      = 8000;
+const CALORIES_GOAL   = 2000;
+const SLEEP_GOAL_HRS  = 8;
+
+function WellnessScore({ score, label, color }: { score: number; label: string; color: string }) {
+  const pct = Math.min(100, Math.max(0, score));
+  const r = 20;
+  const circ = 2 * Math.PI * r;
+  const dash = (pct / 100) * circ;
+  return (
+    <div className="flex flex-col items-center gap-1">
+      <svg width={56} height={56} viewBox="0 0 56 56">
+        <circle cx={28} cy={28} r={r} fill="none" stroke="#18181b" strokeWidth={5} />
+        <circle
+          cx={28} cy={28} r={r} fill="none" stroke={color} strokeWidth={5}
+          strokeDasharray={`${dash} ${circ - dash}`}
+          strokeLinecap="round"
+          transform="rotate(-90 28 28)"
+        />
+        <text x="50%" y="55%" textAnchor="middle" dominantBaseline="middle" fill="#f4f4f5" fontSize="10" fontFamily="monospace" fontWeight="bold">
+          {Math.round(pct)}
+        </text>
+      </svg>
+      <span className="font-mono text-xs tracking-widest text-zinc-400">{label}</span>
+    </div>
+  );
+}
+
+function ProgressBar({ value, max, color, label, unit }: { value: number; max: number; color: string; label: string; unit: string }) {
+  const pct = Math.min(100, Math.round((value / max) * 100));
+  return (
+    <div className="space-y-1">
+      <div className="flex justify-between">
+        <span className="font-mono text-xs text-zinc-400">{label}</span>
+        <span className="font-mono text-xs font-bold" style={{ color }}>{value}{unit} / {max}{unit}</span>
+      </div>
+      <div className="h-2 w-full rounded-full bg-zinc-800">
+        <div className="h-2 rounded-full transition-all duration-500" style={{ width: `${pct}%`, backgroundColor: color }} />
+      </div>
+      <span className="font-mono text-xs text-zinc-500">{pct}% of daily goal</span>
+    </div>
+  );
+}
 
 export default function WellnessPage() {
   const today = new Date().toISOString().split('T')[0];
-  const [tab, setTab] = useState<Tab>('mood');
+  const [tab, setTab] = useState<Tab>('overview');
 
   const logMoodMut      = useMutation(api.wellness.logMood);
   const createJournal   = useMutation(api.wellness.createJournalEntry);
@@ -39,7 +92,7 @@ export default function WellnessPage() {
   const [moodNotes, setMoodNotes] = useState('');
   const [moodTags,  setMoodTags]  = useState<string[]>([]);
   const [moodSaving, setMoodSaving] = useState(false);
-  const todayMood = moodHistory?.find((m: any) => m.date === today);
+  const todayMood = moodHistory?.find((m: MoodEntry) => m.date === today);
 
   const [showJournalForm, setShowJournalForm] = useState(false);
   const [journalContent, setJournalContent]   = useState('');
@@ -60,6 +113,52 @@ export default function WellnessPage() {
   const [waterMl,      setWaterMl]      = useState('');
   const [stepCount,    setStepCount]    = useState('');
   const [mealSaving,   setMealSaving]   = useState(false);
+  const [quickWaterSaving, setQuickWaterSaving] = useState(false);
+
+  // Workout suggestions state
+  const [workoutSuggestions, setWorkoutSuggestions] = useState<Array<{
+    name: string; duration: string; intensity: string; type: string; description: string; benefit: string;
+  }> | null>(null);
+  const [workoutTip, setWorkoutTip] = useState<string | null>(null);
+  const [workoutLoading, setWorkoutLoading] = useState(false);
+
+  // ── Derived wellness scores ─────────────────────────────────────────────────
+  const todaySleep = sleepLogs?.find((l: SleepLog) => l.date === today);
+  const waterScore  = todayNutrition?.waterMl ? Math.min(100, (todayNutrition.waterMl / WATER_GOAL_ML) * 100) : 0;
+  const stepsScore  = todayNutrition?.steps ? Math.min(100, (todayNutrition.steps / STEPS_GOAL) * 100) : 0;
+  const moodScoreNorm  = todayMood ? (todayMood.score / 5) * 100 : 0;
+  const sleepScore  = todaySleep?.durationMinutes ? Math.min(100, (todaySleep.durationMinutes / (SLEEP_GOAL_HRS * 60)) * 100) : 0;
+  const overallScore = Math.round((waterScore + stepsScore + moodScoreNorm + sleepScore) / 4);
+
+  const moodTrend7 = useMemo(() => {
+    if (!moodHistory || moodHistory.length < 2) return null;
+    const last7 = moodHistory.slice(0, 7).map((m: MoodEntry) => m.score);
+    const avg = last7.reduce((a: number, b: number) => a + b, 0) / last7.length;
+    return avg;
+  }, [moodHistory]);
+
+  const fetchWorkoutSuggestions = async () => {
+    if (workoutLoading) return;
+    setWorkoutLoading(true);
+    try {
+      const params = new URLSearchParams({
+        mood: String(todayMood?.score ?? 3),
+        energy: String(3),
+        sleep: String(todaySleep?.quality ?? 3),
+        steps: String(todayNutrition?.steps ?? 0),
+      });
+      const res = await fetch(`/api/fitness/suggestions?${params}`);
+      if (res.ok) {
+        const data = await res.json();
+        setWorkoutSuggestions(data.suggestions ?? []);
+        setWorkoutTip(data.dailyTip ?? null);
+      }
+    } catch {
+      // non-fatal
+    } finally {
+      setWorkoutLoading(false);
+    }
+  };
 
   const handleMoodSubmit = async () => {
     if (moodSaving) return;
@@ -118,16 +217,26 @@ export default function WellnessPage() {
     setWaterMl(''); setStepCount('');
   };
 
+  const handleQuickWater = async (ml: number) => {
+    if (quickWaterSaving) return;
+    setQuickWaterSaving(true);
+    try {
+      const current = todayNutrition?.waterMl ?? 0;
+      await updateHydration({ date: today, waterMl: current + ml });
+    } finally { setQuickWaterSaving(false); }
+  };
+
   const toggleTag = (tag: string) =>
     setMoodTags((prev) => prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]);
 
   const fmtDuration = (mins: number) => `${Math.floor(mins / 60)}h ${mins % 60}m`;
 
   const TABS: { id: Tab; label: string; icon: React.ElementType }[] = [
-    { id: 'mood',      label: 'MOOD',      icon: Smile    },
-    { id: 'journal',   label: 'JOURNAL',   icon: BookOpen },
-    { id: 'sleep',     label: 'SLEEP',     icon: Moon     },
-    { id: 'nutrition', label: 'NUTRITION', icon: Apple    },
+    { id: 'overview',  label: 'OVERVIEW',  icon: Activity  },
+    { id: 'mood',      label: 'MOOD',      icon: Smile     },
+    { id: 'journal',   label: 'JOURNAL',   icon: BookOpen  },
+    { id: 'sleep',     label: 'SLEEP',     icon: Moon      },
+    { id: 'nutrition', label: 'NUTRITION', icon: Apple     },
   ];
 
   return (
@@ -140,12 +249,12 @@ export default function WellnessPage() {
           </div>
           <div className="px-5 py-4">
             <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">Health & Wellness</h1>
-            <p className="mt-0.5 font-mono text-xs tracking-widest text-zinc-500">Mood · Journal · Sleep · Nutrition</p>
+            <p className="mt-0.5 font-mono text-xs tracking-widest text-zinc-500">Overview · Mood · Journal · Sleep · Nutrition</p>
           </div>
-          <div className="flex border-t border-zinc-900">
+          <div className="flex border-t border-zinc-900 overflow-x-auto">
             {TABS.map(({ id, label, icon: Icon }) => (
               <button key={id} onClick={() => setTab(id)}
-                className={cn('flex flex-1 items-center justify-center gap-1.5 border-b-2 px-2 py-2.5 font-mono text-xs tracking-widest transition',
+                className={cn('flex flex-1 items-center justify-center gap-1.5 border-b-2 px-2 py-2.5 font-mono text-xs tracking-widest transition whitespace-nowrap',
                   tab === id ? 'border-orange-600 bg-orange-950/10 text-orange-500' : 'border-transparent text-zinc-400 hover:text-zinc-400'
                 )}>
                 <Icon className="h-3 w-3" /> {label}
@@ -153,6 +262,189 @@ export default function WellnessPage() {
             ))}
           </div>
         </div>
+
+        {/* ── OVERVIEW TAB ─────────────────────────────────────────────────── */}
+        {tab === 'overview' && (
+          <div className="space-y-4">
+            {/* Wellness Score Rings */}
+            <div className="border border-zinc-900 bg-zinc-950 p-5">
+              <div className="mb-4 flex items-center gap-2">
+                <Heart className="h-4 w-4 text-orange-500" />
+                <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">TODAY_WELLNESS_SCORE</span>
+                <span className="ml-auto font-mono text-2xl font-bold text-orange-500">{overallScore}<span className="text-xs text-zinc-500">/100</span></span>
+              </div>
+              <div className="flex flex-wrap justify-around gap-4">
+                <WellnessScore score={moodScoreNorm}  label="MOOD"       color="#f97316" />
+                <WellnessScore score={waterScore}    label="HYDRATION"  color="#22d3ee" />
+                <WellnessScore score={stepsScore}    label="ACTIVITY"   color="#4ade80" />
+                <WellnessScore score={sleepScore}    label="SLEEP"      color="#818cf8" />
+              </div>
+              {moodTrend7 !== null && (
+                <div className="mt-4 flex items-center gap-2 border-t border-zinc-900 pt-3">
+                  <TrendingUp className="h-3 w-3 text-zinc-400" />
+                  <span className="font-mono text-xs text-zinc-400">7-day mood avg:</span>
+                  <span className={cn('font-mono text-xs font-bold', MOOD_COLORS[Math.round(moodTrend7)])}>
+                    {moodTrend7.toFixed(1)} — {MOOD_LABELS[Math.round(moodTrend7)]}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Quick Water Log */}
+            <div className="border border-zinc-900 bg-zinc-950 p-4">
+              <div className="mb-3 flex items-center gap-2">
+                <Droplets className="h-4 w-4 text-cyan-400" />
+                <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">QUICK_HYDRATION</span>
+              </div>
+              <ProgressBar
+                value={todayNutrition?.waterMl ?? 0}
+                max={WATER_GOAL_ML}
+                color="#22d3ee"
+                label="Water"
+                unit="ml"
+              />
+              <div className="mt-3 flex flex-wrap gap-2">
+                {[200, 330, 500, 750].map((ml) => (
+                  <button
+                    key={ml}
+                    onClick={() => handleQuickWater(ml)}
+                    disabled={quickWaterSaving}
+                    className="border border-cyan-900 bg-cyan-950/20 px-3 py-1.5 font-mono text-xs tracking-widest text-cyan-400 transition hover:bg-cyan-950/40 disabled:opacity-40"
+                  >
+                    +{ml}ml
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Today's Steps */}
+            <div className="border border-zinc-900 bg-zinc-950 p-4">
+              <div className="mb-3 flex items-center gap-2">
+                <Activity className="h-4 w-4 text-green-400" />
+                <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">ACTIVITY_TRACKING</span>
+              </div>
+              <ProgressBar
+                value={todayNutrition?.steps ?? 0}
+                max={STEPS_GOAL}
+                color="#4ade80"
+                label="Steps"
+                unit=" steps"
+              />
+              <div className="mt-3 flex items-center gap-2">
+                <Zap className="h-4 w-4 text-green-400" />
+                <input
+                  type="number"
+                  value={stepCount}
+                  onChange={(e) => setStepCount(e.target.value)}
+                  placeholder="Log step count"
+                  className="h-8 w-40 border border-zinc-800 bg-black px-3 font-mono text-xs text-zinc-200 placeholder:text-zinc-400 focus:border-green-800 focus:outline-none"
+                />
+                <button
+                  onClick={() => { if (stepCount) updateHydration({ date: today, steps: parseInt(stepCount) }).then(() => setStepCount('')); }}
+                  className="border border-green-900 bg-green-950/20 px-3 py-1.5 font-mono text-xs tracking-widest text-green-400 transition hover:bg-green-950/40"
+                >
+                  [LOG]
+                </button>
+              </div>
+            </div>
+
+            {/* Nutrition Summary */}
+            {todayNutrition && (
+              <div className="border border-zinc-900 bg-zinc-950 p-4">
+                <div className="mb-3 flex items-center gap-2">
+                  <Apple className="h-4 w-4 text-amber-400" />
+                  <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">TODAY_NUTRITION</span>
+                </div>
+                <ProgressBar
+                  value={todayNutrition.totalCalories ?? 0}
+                  max={CALORIES_GOAL}
+                  color="#fbbf24"
+                  label="Calories"
+                  unit=" kcal"
+                />
+                <div className="mt-3 grid grid-cols-3 gap-2">
+                  {[
+                    { label: 'PROTEIN', value: `${todayNutrition.totalProtein ?? 0}g`, color: 'text-blue-400' },
+                    { label: 'CARBS',   value: `${todayNutrition.totalCarbs ?? 0}g`,   color: 'text-yellow-400' },
+                    { label: 'FAT',     value: `${todayNutrition.totalFat ?? 0}g`,     color: 'text-orange-400' },
+                  ].map(({ label, value, color }) => (
+                    <div key={label} className="border border-zinc-800 p-2 text-center">
+                      <p className="font-mono text-xs text-zinc-500">{label}</p>
+                      <p className={cn('font-mono text-sm font-bold', color)}>{value}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* AI Insight Panel */}
+            <div className="border border-zinc-900 bg-zinc-950 p-4">
+              <div className="mb-3 flex items-center gap-2">
+                <Brain className="h-4 w-4 text-purple-400" />
+                <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">AI_WELLNESS_INSIGHT</span>
+              </div>
+              <div className="rounded border border-zinc-800 bg-black/50 p-3">
+                {overallScore >= 75 ? (
+                  <p className="font-mono text-xs leading-relaxed text-green-400">
+                    ✦ Strong day — all 4 wellness pillars are tracking well. Keep the momentum and prioritize rest tonight to lock in recovery.
+                  </p>
+                ) : overallScore >= 50 ? (
+                  <p className="font-mono text-xs leading-relaxed text-yellow-400">
+                    ◈ Moderate wellness day. Focus on the areas scoring below 50% — {waterScore < 50 ? 'hydration' : stepsScore < 50 ? 'movement' : 'sleep'} needs attention first.
+                  </p>
+                ) : (
+                  <p className="font-mono text-xs leading-relaxed text-orange-400">
+                    ◎ Recovery day detected. Prioritize: (1) Drink 500ml water now, (2) Log your mood to track patterns, (3) Aim for 8h sleep tonight. Small consistent actions rebuild momentum.
+                  </p>
+                )}
+                <p className="mt-2 font-mono text-xs text-zinc-600">Score: {overallScore}/100 · {today}</p>
+              </div>
+            </div>
+
+            {/* Workout Suggestions Panel */}
+            <div className="border border-zinc-900 bg-zinc-950 p-4">
+              <div className="mb-3 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Zap className="h-4 w-4 text-orange-400" />
+                  <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">AI_WORKOUT_SUGGESTIONS</span>
+                </div>
+                <button
+                  onClick={fetchWorkoutSuggestions}
+                  disabled={workoutLoading}
+                  className="border border-orange-900 bg-orange-950/20 px-3 py-1 font-mono text-xs tracking-widest text-orange-400 transition hover:bg-orange-950/40 disabled:opacity-40"
+                >
+                  {workoutLoading ? 'GENERATING_' : workoutSuggestions ? '[REFRESH]' : '[GET_SUGGESTIONS]'}
+                </button>
+              </div>
+              {workoutTip && (
+                <p className="mb-3 font-mono text-xs italic text-zinc-400 border-l-2 border-orange-900 pl-2">{workoutTip}</p>
+              )}
+              {workoutSuggestions && workoutSuggestions.length > 0 ? (
+                <div className="space-y-2">
+                  {workoutSuggestions.map((w, i) => (
+                    <div key={i} className="rounded border border-zinc-800 bg-black/40 p-3">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="font-mono text-xs font-bold text-zinc-200">{w.name}</span>
+                        <div className="flex gap-1">
+                          <span className={cn('font-mono text-xs px-1.5 py-0.5 rounded',
+                            w.intensity === 'low' ? 'bg-green-950/50 text-green-400' :
+                            w.intensity === 'moderate' ? 'bg-yellow-950/50 text-yellow-400' :
+                            'bg-red-950/50 text-red-400'
+                          )}>{w.intensity}</span>
+                          <span className="font-mono text-xs px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400">{w.duration}</span>
+                        </div>
+                      </div>
+                      <p className="font-mono text-xs text-zinc-400">{w.description}</p>
+                      <p className="font-mono text-xs text-orange-500 mt-1">✦ {w.benefit}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : !workoutLoading ? (
+                <p className="font-mono text-xs text-zinc-500">Click [GET_SUGGESTIONS] to get AI-personalized workout ideas based on your current wellness state.</p>
+              ) : null}
+            </div>
+          </div>
+        )}
 
         {tab === 'mood' && (
           <div className="space-y-4">
@@ -203,7 +495,7 @@ export default function WellnessPage() {
                 <div className="py-8 text-center"><p className="font-mono text-xs tracking-widest text-zinc-400">NO_ENTRIES_YET</p></div>
               ) : (
                 <div className="space-y-px p-1">
-                  {moodHistory.slice(0, 14).map((entry: any) => {
+                  {moodHistory.slice(0, 14).map((entry: MoodEntry) => {
                     const Icon = MOOD_ICONS[entry.score] || Meh;
                     return (
                       <div key={entry._id} className="flex items-start gap-3 px-3 py-2.5 hover:bg-zinc-900">
@@ -274,7 +566,7 @@ export default function WellnessPage() {
               </div>
             ) : (
               <div className="space-y-px">
-                {journalEntries.map((entry: any) => (
+                {journalEntries.map((entry: JournalEntry) => (
                   <div key={entry._id} className="border border-zinc-900 bg-zinc-950 p-4 transition hover:bg-zinc-900">
                     <div className="mb-2 flex items-center justify-between">
                       <span className={cn('border px-2 py-0.5 font-mono text-xs tracking-widest',
@@ -351,7 +643,7 @@ export default function WellnessPage() {
                   <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">SLEEP_HISTORY</span>
                 </div>
                 <div className="divide-y divide-zinc-900">
-                  {sleepLogs.map((log: any) => (
+                  {sleepLogs.map((log: SleepLog) => (
                     <div key={log._id} className="flex items-center gap-4 px-4 py-2.5">
                       <span className="font-mono text-xs text-zinc-400">{log.date}</span>
                       <span className="font-mono text-xs text-zinc-300">
@@ -433,7 +725,7 @@ export default function WellnessPage() {
                   <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">TODAY_MEALS</span>
                 </div>
                 <div className="divide-y divide-zinc-900">
-                  {todayNutrition.meals.map((meal: any, i: number) => (
+                  {todayNutrition.meals.map((meal: MealEntry, i: number) => (
                     <div key={i} className="flex items-center gap-3 px-4 py-2.5">
                       <Apple className="h-3.5 w-3.5 shrink-0 text-amber-500" />
                       <div className="flex-1">

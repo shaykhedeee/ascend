@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     const energyLabels = ['', 'Empty', 'Low', 'Mid', 'High', 'Peak'];
     const sleepLabels = ['', 'Terrible', 'Poor', 'Ok', 'Good', 'Great'];
 
-    const prompt = `You are RESURGO, an elite AI life coach system. Generate a personalized morning briefing for ${userName || 'the user'}.
+    const prompt = `Generate a personalized morning briefing for ${userName || 'the user'}.
 
 CONTEXT:
 - Mood: ${moodLabels[mood] || 'Unknown'} (${mood}/5)
@@ -33,22 +33,29 @@ ${priorities?.length ? `- Top priorities: ${priorities.join(', ')}` : ''}
 
 INSTRUCTIONS:
 Generate a punchy, actionable morning briefing (3-5 paragraphs, ~150 words). Include:
-1. A brief energy/mood-calibrated greeting (acknowledge their state honestly)
-2. Based on their energy/sleep, suggest how to structure the day (deep work timing, break cadence)
+1. A direct greeting using ${userName || 'their name'} that honestly acknowledges their current state
+2. Based on their energy/sleep, how to structure the day (deep work timing, break cadence)
 3. If priorities given, prioritize and suggest order of attack
 4. One specific micro-action to start the day with momentum
 5. A motivating closer that matches their energy level (don't be overly cheerful if they're low)
 
+Start with "Morning, ${userName || 'there'}." or similar direct greeting.
 Tone: Direct, supportive, slightly tactical. Like a smart friend who's also a performance coach.
 Do NOT use emojis. Keep it terminal-style clean.`;
 
-    const briefing = await callAI(prompt, {
-      taskType: 'coaching',
-      maxTokens: 400,
-      temperature: 0.7,
-    });
+    const result = await callAI(
+      [
+        { role: 'system', content: 'You are RESURGO, an elite AI life coach. Generate concise, actionable, personalized morning briefings.' },
+        { role: 'user', content: prompt },
+      ],
+      {
+        taskType: 'coaching',
+        maxTokens: 400,
+        temperature: 0.7,
+      },
+    );
 
-    return NextResponse.json({ briefing });
+    return NextResponse.json({ briefing: result.content });
   } catch (error) {
     console.error('Morning briefing error:', error);
     return NextResponse.json(

@@ -108,6 +108,13 @@ export default function WellnessPage() {
   const [mealSaving,   setMealSaving]   = useState(false);
   const [quickWaterSaving, setQuickWaterSaving] = useState(false);
 
+  // Workout suggestions state
+  const [workoutSuggestions, setWorkoutSuggestions] = useState<Array<{
+    name: string; duration: string; intensity: string; type: string; description: string; benefit: string;
+  }> | null>(null);
+  const [workoutTip, setWorkoutTip] = useState<string | null>(null);
+  const [workoutLoading, setWorkoutLoading] = useState(false);
+
   // ── Derived wellness scores ─────────────────────────────────────────────────
   const todaySleep = sleepLogs?.find((l: any) => l.date === today);
   const waterScore  = todayNutrition?.waterMl ? Math.min(100, (todayNutrition.waterMl / WATER_GOAL_ML) * 100) : 0;
@@ -122,6 +129,29 @@ export default function WellnessPage() {
     const avg = last7.reduce((a: number, b: number) => a + b, 0) / last7.length;
     return avg;
   }, [moodHistory]);
+
+  const fetchWorkoutSuggestions = async () => {
+    if (workoutLoading) return;
+    setWorkoutLoading(true);
+    try {
+      const params = new URLSearchParams({
+        mood: String(todayMood?.score ?? 3),
+        energy: String(3),
+        sleep: String(todaySleep?.quality ?? 3),
+        steps: String(todayNutrition?.steps ?? 0),
+      });
+      const res = await fetch(`/api/fitness/suggestions?${params}`);
+      if (res.ok) {
+        const data = await res.json();
+        setWorkoutSuggestions(data.suggestions ?? []);
+        setWorkoutTip(data.dailyTip ?? null);
+      }
+    } catch {
+      // non-fatal
+    } finally {
+      setWorkoutLoading(false);
+    }
+  };
 
   const handleMoodSubmit = async () => {
     if (moodSaving) return;
@@ -362,6 +392,49 @@ export default function WellnessPage() {
                 )}
                 <p className="mt-2 font-mono text-xs text-zinc-600">Score: {overallScore}/100 · {today}</p>
               </div>
+            </div>
+
+            {/* Workout Suggestions Panel */}
+            <div className="border border-zinc-900 bg-zinc-950 p-4">
+              <div className="mb-3 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Zap className="h-4 w-4 text-orange-400" />
+                  <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">AI_WORKOUT_SUGGESTIONS</span>
+                </div>
+                <button
+                  onClick={fetchWorkoutSuggestions}
+                  disabled={workoutLoading}
+                  className="border border-orange-900 bg-orange-950/20 px-3 py-1 font-mono text-xs tracking-widest text-orange-400 transition hover:bg-orange-950/40 disabled:opacity-40"
+                >
+                  {workoutLoading ? 'GENERATING_' : workoutSuggestions ? '[REFRESH]' : '[GET_SUGGESTIONS]'}
+                </button>
+              </div>
+              {workoutTip && (
+                <p className="mb-3 font-mono text-xs italic text-zinc-400 border-l-2 border-orange-900 pl-2">{workoutTip}</p>
+              )}
+              {workoutSuggestions && workoutSuggestions.length > 0 ? (
+                <div className="space-y-2">
+                  {workoutSuggestions.map((w, i) => (
+                    <div key={i} className="rounded border border-zinc-800 bg-black/40 p-3">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="font-mono text-xs font-bold text-zinc-200">{w.name}</span>
+                        <div className="flex gap-1">
+                          <span className={cn('font-mono text-xs px-1.5 py-0.5 rounded',
+                            w.intensity === 'low' ? 'bg-green-950/50 text-green-400' :
+                            w.intensity === 'moderate' ? 'bg-yellow-950/50 text-yellow-400' :
+                            'bg-red-950/50 text-red-400'
+                          )}>{w.intensity}</span>
+                          <span className="font-mono text-xs px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-400">{w.duration}</span>
+                        </div>
+                      </div>
+                      <p className="font-mono text-xs text-zinc-400">{w.description}</p>
+                      <p className="font-mono text-xs text-orange-500 mt-1">✦ {w.benefit}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : !workoutLoading ? (
+                <p className="font-mono text-xs text-zinc-500">Click [GET_SUGGESTIONS] to get AI-personalized workout ideas based on your current wellness state.</p>
+              ) : null}
             </div>
           </div>
         )}

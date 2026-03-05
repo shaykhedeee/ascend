@@ -142,12 +142,22 @@ export default function DashboardPage() {
       ? 'no check-in yet'
       : 'steady — moderate capacity';
 
-  // Time-appropriate greeting
+  // Time-appropriate greeting with personalized AI context
+  const firstName = user.name?.split(' ')[0] ?? 'there';
   const greeting = isMorning
-    ? `Good morning, ${user.name?.split(' ')[0] ?? 'there'}`
+    ? `Good morning, ${firstName} ☀`
     : isEvening
-      ? `Good evening, ${user.name?.split(' ')[0] ?? 'there'}`
-      : `Hey, ${user.name?.split(' ')[0] ?? 'there'}`;
+      ? `Good evening, ${firstName} 🌙`
+      : `Hey, ${firstName} 👋`;
+
+  // Dynamic sub-greeting based on state
+  const subGreeting = bestStreak >= 7
+    ? `🔥 ${bestStreak}-day streak — you're on fire!`
+    : checkInStreak > 0
+    ? `${checkInStreak} days consistent — keep building.`
+    : totalHabits === 0
+    ? "Let's set up your system."
+    : `${totalHabits} habits · ${openTasks.length} tasks · ${activeGoals.length} goals`;
 
   const handleToggleHabit = async (habitId: string) => {
     setTogglingHabit(habitId);
@@ -188,7 +198,7 @@ export default function DashboardPage() {
             </h1>
             <div className="mt-2 flex items-center gap-3">
               <p className="font-terminal text-sm text-zinc-300">
-                {totalHabits > 0 ? `${totalHabits} habits • ${openTasks.length} tasks • ${activeGoals.length} goals` : "Let's set up your system."}
+                {subGreeting}
               </p>
               {checkInStreak > 0 && (
                 <span className="flex items-center gap-1 border border-amber-900 bg-amber-950/30 px-2 py-0.5">

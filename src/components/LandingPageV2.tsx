@@ -8,11 +8,13 @@ import { ScrollToTop } from '@/components/ScrollToTop';
 import { TerminalDemo } from '@/components/TerminalDemo';
 import { MarketingFooter } from '@/components/MarketingFooter';
 import DemoSandbox from '@/components/marketing/DemoSandbox';
+import InteractiveDemoCarousel from '@/components/marketing/InteractiveDemoCarousel';
 import SocialProof from '@/components/marketing/SocialProof';
 import EmailCapture from '@/components/marketing/EmailCapture';
 import LandingChatWidget from '@/components/marketing/LandingChatWidget';
 import ExitIntent from '@/components/marketing/ExitIntent';
 import StickyCTA from '@/components/marketing/StickyCTA';
+import { CookieConsent } from '@/components/CookieConsent';
 import { captureUtmParams, trackMarketingEvent } from '@/lib/marketing/analytics';
 import { getExperimentVariant, trackExperimentExposure } from '@/lib/marketing/experiments';
 
@@ -484,7 +486,7 @@ function LandingPageV2() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-0 min-h-[56px] sm:px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-2.5">
             <LogoMark className="w-8 h-8" />
-            <span className="font-pixel text-[0.7rem] tracking-[0.2em] text-orange-500 hidden sm:inline">RESURGO</span>
+            <span className="font-pixel text-base tracking-[0.2em] text-orange-500 hidden sm:inline">RESURGO</span>
           </Link>
 
           <nav className="hidden items-center gap-6 md:flex">
@@ -531,8 +533,8 @@ function LandingPageV2() {
       </header>
 
       <main>
-        {/* ────────────────── PWA INSTALL BANNER ────────────────── */}
-        <section className="border-b border-orange-900/40 bg-gradient-to-r from-orange-950/30 via-black to-orange-950/30 px-4 py-4 sm:px-6 lg:px-8">
+        {/* PWA INSTALL BANNER — removed per UX decision; CTAs are sufficient */}
+        {false && <section className="border-b border-orange-900/40 bg-gradient-to-r from-orange-950/30 via-black to-orange-950/30 px-4 py-4 sm:px-6 lg:px-8">
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 sm:flex-row">
             <div className="flex items-center gap-3">
               <span className="flex h-8 w-8 items-center justify-center border border-orange-800 bg-orange-950/60">
@@ -559,7 +561,7 @@ function LandingPageV2() {
               INSTALL ON HOMESCREEN
             </a>
           </div>
-        </section>
+        </section>}
 
         {/* ────────────────────── HERO ────────────────────── */}
         <section id="system" className="relative overflow-hidden px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
@@ -1243,20 +1245,20 @@ function LandingPageV2() {
           </div>
         </section>
 
-        {/* ────────────────── BRAIN DUMP DEMO ────────────────── */}
+        {/* ────────────────── INTERACTIVE DEMO CAROUSEL ────────────────── */}
         <section id="demo" className="border-t-2 border-zinc-800 bg-black px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-6xl">
-            <div className="mb-8 text-center">
-              <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">INTERACTIVE_DEMO</p>
-              <h2 className="mt-2 font-pixel text-lg text-zinc-100 sm:text-xl">
-                Try the AI habit planner — live
+            <div className="mb-10 text-center">
+              <p className="font-pixel text-[0.5rem] tracking-widest text-orange-600">INTERACTIVE_DEMO</p>
+              <h2 className="mt-3 font-pixel text-lg text-zinc-100 sm:text-xl lg:text-2xl">
+                See Resurgo in Action
               </h2>
-              <p className="mx-auto mt-2 max-w-xl font-terminal text-lg text-zinc-400">
-                Enter any goal and watch the AI break it into milestones, habits, and daily tasks in real time.
+              <p className="mx-auto mt-3 max-w-xl font-terminal text-lg text-zinc-400">
+                Click any feature tab below — or watch it auto-demo every 8 seconds.
               </p>
             </div>
 
-            <DemoSandbox />
+            <InteractiveDemoCarousel />
 
             <div className="mt-8">
               <SocialProof />
@@ -1329,6 +1331,7 @@ function LandingPageV2() {
 
       <StickyCTA />
       <ExitIntent />
+      <CookieConsent />
       <ScrollToTop />
     </div>
   );

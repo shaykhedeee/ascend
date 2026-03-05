@@ -8,7 +8,7 @@ import { auth } from '@clerk/nextjs/server';
 import { ConvexHttpClient } from 'convex/browser';
 import { api } from '../../../../../convex/_generated/api';
 
-import { generateVisionBoardConfig, type GoalSummary } from '@/lib/ai/vision-board/generator';
+import { generateVisionBoardConfig, type GoalSummary, type WizardPromptData } from '@/lib/ai/vision-board/generator';
 import { generateBoardImages } from '@/lib/ai/vision-board/image-service';
 import type { PsychologicalProfile } from '@/lib/ai/psychology/profile-schema';
 import type { UserArchetype } from '@/lib/ai/onboarding/archetypes';
@@ -100,10 +100,13 @@ export async function POST(req: NextRequest) {
     mode?: VisionGenerationMode;
     stylePreset?: VisionStylePreset;
     customImages?: string[];
+    promptData?: WizardPromptData;
   };
 
   const mode: VisionGenerationMode = payload.mode === 'hybrid' ? 'hybrid' : 'ai';
-  const stylePreset: VisionStylePreset = payload.stylePreset ?? 'pinterest-bold';
+  // If wizard provided a style preset, it takes priority over direct payload stylePreset
+  const stylePreset: VisionStylePreset = (payload.promptData?.stylePreset ?? payload.stylePreset) ?? 'pinterest-bold';
+  const wizardData: WizardPromptData | null = payload.promptData ?? null;
   const customImages = Array.isArray(payload.customImages)
     ? payload.customImages
         .filter((img) => typeof img === 'string' && img.startsWith('data:image/'))
@@ -175,9 +178,12 @@ export async function POST(req: NextRequest) {
   const userName = userRecord.name?.split(' ')[0] ?? 'friend';
 
   // ── 4. Generate board config ───────────────────────────────────────────────
-  // If no goals yet, create placeholder goals so the board still generates
+  // If wizard data present, its domains drive the panels — goals are supplemental
+  // If no goals and no wizard data, still attempt with a placeholder goal
   const goalsForBoard = goals.length > 0
     ? goals
+    : wizardData
+    ? [] // wizard data will provide all panel content
     : [{ title: 'Define my life vision', category: 'PERSONAL', progress: 0 }];
 
   const config = await generateVisionBoardConfig({
@@ -186,6 +192,7 @@ export async function POST(req: NextRequest) {
     goals: goalsForBoard,
     archetype,
     psychProfile,
+    wizardData,
   });
 
   if (!config) {

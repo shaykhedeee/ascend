@@ -7,10 +7,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePlanGating } from '@/hooks/usePlanGating';
 import { CheckCircle, RefreshCw, Sparkles, ChevronLeft, ChevronRight, Crown, Upload, Wand2 } from 'lucide-react';
+import VisionBoardWizard, { type VisionBoardWizardResult } from '@/components/VisionBoardWizard';
 
-// -----------------------------------------------------------------------------
+// ─────────────────────────────────────────────────────────────────────────────
 // Types (mirrors VisionBoardConfig)
-// -----------------------------------------------------------------------------
+// ─────────────────────────────────────────────────────────────────────────────
 
 interface VisionBoardPanel {
   id: string;
@@ -64,17 +65,17 @@ async function sendGrowthEvent(eventName: GrowthEventName, details?: Record<stri
 }
 
 const CATEGORY_ICONS: Record<string, string> = {
-  HEALTH: '??',
-  CAREER: '??',
-  PERSONAL: '??',
-  FINANCE: '??',
-  LEARNING: '??',
-  RELATIONSHIP: '??',
+  HEALTH: '💪',
+  CAREER: '🚀',
+  PERSONAL: '🌱',
+  FINANCE: '💰',
+  LEARNING: '📚',
+  RELATIONSHIP: '❤️',
 };
 
-// -----------------------------------------------------------------------------
+// ─────────────────────────────────────────────────────────────────────────────
 // VisionBoard Component
-// -----------------------------------------------------------------------------
+// ─────────────────────────────────────────────────────────────────────────────
 
 interface VisionBoardProps {
   canRegenerate?: boolean; // Pro users can regenerate indefinitely
@@ -92,6 +93,10 @@ export function VisionBoard({ canRegenerate = false }: VisionBoardProps) {
   const [stylePreset, setStylePreset] = useState<'pinterest-bold' | 'clean-minimal' | 'luxury-editorial' | 'cinematic-dream'>('pinterest-bold');
   const [customImages, setCustomImages] = useState<string[]>([]);
   const [uploading, setUploading] = useState(false);
+
+  // Guided wizard
+  const [wizardDone, setWizardDone] = useState(false);
+  const [wizardData, setWizardData] = useState<VisionBoardWizardResult | null>(null);
 
   const boardDoc = useQuery(api.visionBoards.getActive, {});
   const board: VisionBoardConfig | null = boardDoc ? JSON.parse(boardDoc.config as string) : null;
@@ -128,6 +133,7 @@ export function VisionBoard({ canRegenerate = false }: VisionBoardProps) {
           mode: generationMode,
           stylePreset,
           customImages: generationMode === 'hybrid' ? customImages.slice(0, 6) : [],
+          promptData: wizardData ?? undefined,
         }),
       });
       if (!res.ok) {
@@ -151,7 +157,7 @@ export function VisionBoard({ canRegenerate = false }: VisionBoardProps) {
     } finally {
       setGenerating(false);
     }
-  }, [customImages, generationMode, plan, proUnlocked, stylePreset]);
+  }, [customImages, generationMode, plan, proUnlocked, stylePreset, wizardData]);
 
   const handleImageUpload = useCallback(async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files ?? []).slice(0, 6);
@@ -192,7 +198,7 @@ export function VisionBoard({ canRegenerate = false }: VisionBoardProps) {
         <div className="flex items-center justify-center mb-3">
           <div className="inline-flex items-center gap-2 border border-amber-800 bg-amber-950/20 px-3 py-1 rounded-full">
             <Crown className="h-4 w-4 text-amber-400" />
-            <span className="text-xs tracking-widest font-mono text-amber-400">PRO_FEATURE</span>
+            <span className="text-[10px] tracking-widest font-mono text-amber-400">PRO_FEATURE</span>
           </div>
         </div>
 
@@ -210,7 +216,7 @@ export function VisionBoard({ canRegenerate = false }: VisionBoardProps) {
             'Regeneration and design variations',
           ].map((feature) => (
             <div key={feature} className="border border-zinc-800 bg-black/40 p-3 rounded-lg">
-              <span className="text-orange-400 mr-1.5">-</span>{feature}
+              <span className="text-orange-400 mr-1.5">•</span>{feature}
             </div>
           ))}
         </div>
@@ -229,18 +235,41 @@ export function VisionBoard({ canRegenerate = false }: VisionBoardProps) {
             <Crown className="h-3.5 w-3.5" />
             [UPGRADE_TO_PRO]
           </Link>
-          <span className="font-mono text-xs text-zinc-500">Current plan: {plan.toUpperCase()}</span>
+          <span className="font-mono text-[10px] text-zinc-500">Current plan: {plan.toUpperCase()}</span>
         </div>
       </div>
     );
   }
 
-  // -- Empty state -------------------------------------------------------------
+  // ── Guided wizard (shown before empty state form) ─────────────────────────
+  if (!board && !wizardDone) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[420px] py-8">
+        <div className="w-full max-w-2xl mb-6 text-center">
+          <p className="font-pixel text-[0.5rem] tracking-widest text-orange-500 mb-1">✦ AI VISION BOARD STUDIO</p>
+          <h2 className="font-terminal text-xl font-bold text-zinc-100">Build Your Vision Board in 4 Steps</h2>
+          <p className="font-terminal text-sm text-zinc-500 mt-1">
+            Answer a few questions so AI can generate deeply personalised imagery for each area of your life.
+          </p>
+        </div>
+        <VisionBoardWizard
+          onComplete={(result) => {
+            setWizardData(result);
+            setStylePreset(result.stylePreset);
+            setWizardDone(true);
+          }}
+          onSkip={() => setWizardDone(true)}
+        />
+      </div>
+    );
+  }
+
+  // ── Empty state ─────────────────────────────────────────────────────────────
   if (!board) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[420px] 
                       border border-dashed border-zinc-700 rounded-xl p-8 bg-zinc-900/40">
-        <div className="text-5xl mb-4">??</div>
+        <div className="text-5xl mb-4">🎯</div>
         <h2 className="text-xl font-bold text-zinc-100 mb-2">Your Vision Board</h2>
         <p className="text-zinc-400 text-center mb-6 max-w-sm text-sm leading-relaxed">
           AI generates a personalized vision board from your goals, psychology
@@ -289,7 +318,7 @@ export function VisionBoard({ canRegenerate = false }: VisionBoardProps) {
             <div className="border border-zinc-800 rounded-lg p-3 bg-black/40 space-y-2">
               <label className="inline-flex items-center gap-2 border border-zinc-700 px-3 py-2 rounded-lg text-xs text-zinc-300 hover:border-zinc-600 cursor-pointer transition">
                 <Upload size={14} />
-                {uploading ? 'Processing images-' : 'Upload custom images (max 6)'}
+                {uploading ? 'Processing images…' : 'Upload custom images (max 6)'}
                 <input
                   type="file"
                   accept="image/*"
@@ -310,7 +339,7 @@ export function VisionBoard({ canRegenerate = false }: VisionBoardProps) {
                         className="absolute top-1 right-1 h-5 w-5 rounded-full bg-black/70 text-zinc-200 text-xs"
                         aria-label="Remove uploaded image"
                       >
-                        -
+                        ×
                       </button>
                     </div>
                   ))}
@@ -328,14 +357,14 @@ export function VisionBoard({ canRegenerate = false }: VisionBoardProps) {
           style={{ backgroundColor: primaryColor }}
         >
           {generating ? (
-            <><RefreshCw size={16} className="animate-spin" /> Generating your board-</>
+            <><RefreshCw size={16} className="animate-spin" /> Generating your board…</>
           ) : (
             <><Sparkles size={16} /> Generate My Vision Board</>
           )}
         </button>
         {generating && (
           <p className="text-zinc-500 text-xs mt-3 text-center">
-            Creating personalised images- this takes 30-60 seconds.
+            Creating personalised images… this takes 30–60 seconds.
           </p>
         )}
         {error && (
@@ -345,7 +374,7 @@ export function VisionBoard({ canRegenerate = false }: VisionBoardProps) {
     );
   }
 
-  // -- Full board --------------------------------------------------------------
+  // ── Full board ──────────────────────────────────────────────────────────────
   return (
     <div
       className="rounded-xl p-6 space-y-6"
@@ -364,7 +393,7 @@ export function VisionBoard({ canRegenerate = false }: VisionBoardProps) {
         </h2>
         <p className="text-zinc-300 text-base italic">&ldquo;{board.centerAffirmation}&rdquo;</p>
         <p className="text-zinc-400 text-xs">
-          Generated {new Date(board.generatedAt).toLocaleDateString()} - {board.theme.mood}
+          Generated {new Date(board.generatedAt).toLocaleDateString()} · {board.theme.mood}
         </p>
       </div>
 
@@ -425,7 +454,7 @@ export function VisionBoard({ canRegenerate = false }: VisionBoardProps) {
             <div className="mb-3">
               <label className="inline-flex items-center gap-2 border border-zinc-700 px-3 py-2 rounded-lg text-xs text-zinc-300 hover:border-zinc-600 cursor-pointer transition">
                 <Upload size={14} />
-                {uploading ? 'Processing images-' : `Upload custom images (${customImages.length}/6)`}
+                {uploading ? 'Processing images…' : `Upload custom images (${customImages.length}/6)`}
                 <input
                   type="file"
                   accept="image/*"
@@ -445,7 +474,7 @@ export function VisionBoard({ canRegenerate = false }: VisionBoardProps) {
                        hover:text-zinc-300 transition disabled:opacity-50"
           >
             <RefreshCw size={14} className={generating ? 'animate-spin' : ''} />
-            {generating ? 'Regenerating-' : 'Regenerate board'}
+            {generating ? 'Regenerating…' : 'Regenerate board'}
           </button>
           {error && <p className="text-red-400 text-xs mt-2">{error}</p>}
         </div>
@@ -467,9 +496,9 @@ export function VisionBoard({ canRegenerate = false }: VisionBoardProps) {
   );
 }
 
-// -----------------------------------------------------------------------------
+// ─────────────────────────────────────────────────────────────────────────────
 // Panel Card
-// -----------------------------------------------------------------------------
+// ─────────────────────────────────────────────────────────────────────────────
 
 function PanelCard({
   panel,
@@ -503,7 +532,7 @@ function PanelCard({
           className="w-full h-full flex flex-col items-center justify-center gap-2"
           style={{ background: `${accentColor}20` }}
         >
-          <span className="text-3xl">{CATEGORY_ICONS[panel.category] ?? '??'}</span>
+          <span className="text-3xl">{CATEGORY_ICONS[panel.category] ?? '🎯'}</span>
           <p className="text-zinc-400 text-xs text-center px-3 leading-tight">
             {panel.goalTitle}
           </p>
@@ -517,14 +546,14 @@ function PanelCard({
         style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%)' }}
       >
         <div className="flex items-center gap-1 mb-1">
-          <span className="text-xs uppercase tracking-wider font-semibold" style={{ color: accentColor }}>
+          <span className="text-[10px] uppercase tracking-wider font-semibold" style={{ color: accentColor }}>
             {CATEGORY_ICONS[panel.category]} {panel.category}
           </span>
         </div>
         <h3 className="text-white font-bold text-xs leading-tight mb-1 line-clamp-2">
           {panel.goalTitle}
         </h3>
-        <p className="text-zinc-300 text-xs italic line-clamp-2">
+        <p className="text-zinc-300 text-[10px] italic line-clamp-2">
           &ldquo;{panel.affirmation}&rdquo;
         </p>
         {/* Progress bar */}
@@ -535,16 +564,16 @@ function PanelCard({
               style={{ width: `${panel.progress}%`, backgroundColor: accentColor }}
             />
           </div>
-          <span className="text-xs text-zinc-400 mt-0.5 block">{panel.progress}% complete</span>
+          <span className="text-[10px] text-zinc-400 mt-0.5 block">{panel.progress}% complete</span>
         </div>
       </div>
     </div>
   );
 }
 
-// -----------------------------------------------------------------------------
+// ─────────────────────────────────────────────────────────────────────────────
 // Panel Detail Modal
-// -----------------------------------------------------------------------------
+// ─────────────────────────────────────────────────────────────────────────────
 
 function PanelModal({
   panel,
@@ -583,7 +612,7 @@ function PanelModal({
               className="w-full h-full flex items-center justify-center"
               style={{ background: `${accentColor}20` }}
             >
-              <span className="text-6xl">{CATEGORY_ICONS[panel.category] ?? '??'}</span>
+              <span className="text-6xl">{CATEGORY_ICONS[panel.category] ?? '🎯'}</span>
             </div>
           )}
         </div>
@@ -591,7 +620,7 @@ function PanelModal({
         {/* Content */}
         <div className="p-5 space-y-3">
           <div className="flex items-center gap-2">
-            <span className="text-xs uppercase tracking-wider font-bold" style={{ color: accentColor }}>
+            <span className="text-[11px] uppercase tracking-wider font-bold" style={{ color: accentColor }}>
               {CATEGORY_ICONS[panel.category]} {panel.category}
             </span>
           </div>
@@ -640,7 +669,7 @@ function PanelModal({
           onClick={onClose}
           className="absolute top-3 right-3 p-1.5 rounded-full bg-black/50 hover:bg-black/80 transition"
         >
-          <span className="text-white text-xs leading-none">?</span>
+          <span className="text-white text-xs leading-none">✕</span>
         </button>
       </div>
     </div>

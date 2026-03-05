@@ -361,28 +361,56 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
         {children}
       </main>
 
-      {/* ── Mobile bottom tab bar ── */}
-      <nav className="fixed bottom-0 left-0 right-0 z-40 flex h-14 items-center justify-around border-t-2 border-zinc-800 bg-black pb-safe md:hidden">
+      {/* ── Mobile bottom tab bar — enhanced with raised AI centre button ── */}
+      <nav
+        className="fixed bottom-0 left-0 right-0 z-40 flex h-16 items-end justify-around border-t-2 border-zinc-800 bg-black pb-1 md:hidden"
+        style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 4px)' }}
+      >
         {([
-          { href: '/dashboard', label: 'HOME', iconName: 'home' as PixelIconName },
-          { href: '/goals', label: 'GOALS', iconName: 'goals' as PixelIconName },
-          { href: '/habits', label: 'HABITS', iconName: 'habits' as PixelIconName },
-          { href: '/focus', label: 'FOCUS', iconName: 'focus' as PixelIconName },
-          { href: '/coach', label: 'COACH', iconName: 'coach' as PixelIconName },
-        ]).map((item) => {
+          { href: '/dashboard', label: 'HOME',   iconName: 'home'   as PixelIconName },
+          { href: '/goals',     label: 'GOALS',  iconName: 'goals'  as PixelIconName },
+        ] as { href: string; label: string; iconName: PixelIconName }[]).map((item) => {
           const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
           return (
-            <Link
-              key={item.href}
-              href={item.href}
+            <Link key={item.href} href={item.href}
               className={cn(
-                'flex flex-col items-center gap-0.5 px-3 py-1 transition-colors duration-100',
-                isActive ? 'text-orange-400' : 'text-zinc-600 hover:text-zinc-400'
-              )}
-            >
+                'flex flex-col items-center gap-0.5 px-4 py-2 transition-colors duration-100',
+                isActive ? 'text-orange-400' : 'text-zinc-600',
+              )}>
               <PixelIcon name={item.iconName} size={18} />
-              <span className="font-pixel text-[0.35rem] tracking-wider">{item.label}</span>
-              {isActive && <div className="h-[2px] w-4 bg-orange-500 mt-0.5" />}
+              <span className="font-pixel text-[0.33rem] tracking-wider">{item.label}</span>
+              {isActive && <div className="mt-0.5 h-[2px] w-4 bg-orange-500" />}
+            </Link>
+          );
+        })}
+
+        {/* ── Raised AI Coach centre button ── */}
+        <Link href="/coach"
+          className={cn(
+            'relative -top-3 flex h-14 w-14 shrink-0 flex-col items-center justify-center gap-0.5',
+            'border-2 shadow-[0_0_20px_rgba(234,88,12,0.35)] transition-all active:scale-95',
+            pathname === '/coach' || pathname.startsWith('/coach/')
+              ? 'border-orange-500 bg-orange-600 text-black shadow-[0_0_28px_rgba(234,88,12,0.55)]'
+              : 'border-orange-700 bg-orange-950 text-orange-400',
+          )}>
+          <PixelIcon name={'coach' as PixelIconName} size={18} />
+          <span className="font-pixel text-[0.3rem] tracking-wider">AI</span>
+        </Link>
+
+        {([
+          { href: '/habits', label: 'HABITS', iconName: 'habits' as PixelIconName },
+          { href: '/focus',  label: 'FOCUS',  iconName: 'focus'  as PixelIconName },
+        ] as { href: string; label: string; iconName: PixelIconName }[]).map((item) => {
+          const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+          return (
+            <Link key={item.href} href={item.href}
+              className={cn(
+                'flex flex-col items-center gap-0.5 px-4 py-2 transition-colors duration-100',
+                isActive ? 'text-orange-400' : 'text-zinc-600',
+              )}>
+              <PixelIcon name={item.iconName} size={18} />
+              <span className="font-pixel text-[0.33rem] tracking-wider">{item.label}</span>
+              {isActive && <div className="mt-0.5 h-[2px] w-4 bg-orange-500" />}
             </Link>
           );
         })}

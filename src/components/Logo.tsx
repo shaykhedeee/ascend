@@ -24,10 +24,10 @@ const sizeClasses = {
 };
 
 const textSizeClasses = {
-  sm: 'text-[0.55rem]',
-  md: 'text-[0.65rem]',
-  lg: 'text-[0.8rem]',
-  xl: 'text-[1rem]',
+  sm: 'text-sm',
+  md: 'text-base',
+  lg: 'text-xl',
+  xl: 'text-2xl',
 };
 
 // Redesigned pixel arrow - 16x16 grid, left-lit shading, no box

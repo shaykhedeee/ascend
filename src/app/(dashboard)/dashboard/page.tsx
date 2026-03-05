@@ -28,6 +28,7 @@ import QuickNoteWidget from '@/components/widgets/QuickNoteWidget';
 import SleepWidget from '@/components/widgets/SleepWidget';
 import QuickActionsWidget from '@/components/widgets/QuickActionsWidget';
 import VisionBoardWidget from '@/components/widgets/VisionBoardWidget';
+import MobileDashboard from '@/components/MobileDashboard';
 import {
   Target,
   CheckCircle2,
@@ -204,7 +205,15 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="mx-auto min-h-screen w-full max-w-7xl px-4 py-4 md:px-6 md:py-6">
+    <>
+      {/* ── Mobile: full native-like tabbed dashboard ── */}
+      <div className="block md:hidden">
+        <MobileDashboard />
+      </div>
+
+      {/* ── Desktop: original full dashboard ── */}
+      <div className="hidden md:block">
+      <div className="mx-auto min-h-screen w-full max-w-7xl px-4 py-4 md:px-6 md:py-6">
 
       {/* -- HEADER -- */}
       <div className="mb-6 border border-zinc-900 bg-zinc-950 shadow-[0_0_0_1px_rgba(39,39,42,0.25)]">
@@ -753,7 +762,7 @@ export default function DashboardPage() {
         </section>
       </div>
 
-      {/* Mobile FAB */}
+      {/* Mobile FAB — desktop/tablet only (mobile uses MobileDashboard) */}
       <div className="fixed bottom-6 right-6 md:hidden">
         <Link
           href="/tasks"
@@ -764,6 +773,8 @@ export default function DashboardPage() {
         </Link>
       </div>
     </div>
+      </div>{/* /hidden md:block */}
+    </>
   );
 }
 

@@ -74,33 +74,42 @@ export default function DownloadPage() {
   return (
     <main className="min-h-screen bg-black text-white">
 
-      {/* Hero */}
+      {/* ─── APK + Install Hero ─── */}
       <section className="border-b border-zinc-900">
-        <div className="mx-auto max-w-4xl px-6 pt-20 pb-16">
+        <div className="mx-auto max-w-4xl px-6 pb-16 pt-20">
           <div className="mb-4 font-mono text-xs tracking-widest text-orange-400">
-            INSTALL_RESURGO :: PROGRESSIVE_WEB_APP
+            GET_RESURGO :: NATIVE_APK + HOME_SCREEN
           </div>
           <h1 className="font-mono text-4xl font-bold tracking-tight text-zinc-100 md:text-5xl">
-            Install on Any Device
+            Download Resurgo
           </h1>
-          <p className="mt-4 max-w-xl font-mono text-sm text-zinc-400 leading-relaxed">
-            No app store. No APK. Just open resurgo.life in your browser and add it to your home screen.
-            Works on Android, iPhone, iPad, and desktop â€” in under 30 seconds.
-          </p>
+          {/* APK primary download */}
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="/sign-up"
-              className="border border-orange-800 bg-orange-950/30 px-5 py-2.5 font-mono text-sm tracking-widest text-orange-400 transition hover:bg-orange-950/60"
-            >
+            <a href="/resurgo-latest.apk" download
+              className="flex items-center gap-2 border-2 border-orange-600 bg-orange-600 px-6 py-3 font-mono text-sm font-bold tracking-widest text-black transition hover:bg-orange-500">
+              ↓ Download APK (Android)
+            </a>
+            <Link href="/sign-up"
+              className="border border-orange-800 bg-orange-950/30 px-5 py-3 font-mono text-sm tracking-widest text-orange-400 transition hover:bg-orange-950/60">
               [GET_STARTED_FREE]
             </Link>
-            <Link
-              href="/features"
-              className="border border-zinc-700 px-5 py-2.5 font-mono text-sm tracking-widest text-zinc-300 transition hover:border-zinc-500"
-            >
-              [VIEW_FEATURES]
-            </Link>
           </div>
+          <div className="mt-3 flex flex-wrap items-center gap-4 font-mono text-xs text-zinc-600">
+            <span>✓ Android 7.0+</span>
+            <span>✓ ~15MB</span>
+            <span>✓ Signed release build</span>
+            <span>✓ v1.0.0</span>
+          </div>
+          <div className="mt-5 max-w-xl border border-yellow-900/40 bg-yellow-950/10 px-4 py-3">
+            <p className="font-mono text-xs leading-relaxed text-yellow-400">
+              <strong>Android sideload note:</strong> Allow &quot;Install from unknown sources&quot; in
+              Settings → Security → Install unknown apps. This is standard for APKs outside the Play Store.
+            </p>
+          </div>
+          <h2 className="mt-10 font-mono text-xl text-zinc-400">Or install as a home screen app on any device</h2>
+          <p className="mt-2 font-mono text-xs text-zinc-500">
+            No app store needed — works on iPhone, iPad, and any desktop browser.
+          </p>
         </div>
       </section>
 

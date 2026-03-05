@@ -12,6 +12,16 @@ import type { UserArchetype } from '../onboarding/archetypes';
 // Types
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Wizard data passed from the guided creation flow
+export interface WizardPromptData {
+  overarchingVision: string;
+  domains: string[];
+  domainDetails: Record<string, string>;
+  stylePreset: 'pinterest-bold' | 'clean-minimal' | 'luxury-editorial' | 'cinematic-dream';
+  mood: string;
+  customPromptBoost: string;
+}
+
 export interface VisionBoardTheme {
   colorPalette: string[];   // 5 hex colors
   mood: string;             // e.g. "warm-ambitious" | "calm-focused"
@@ -52,14 +62,37 @@ export interface GoalSummary {
 // Build the generation prompt
 // ─────────────────────────────────────────────────────────────────────────────
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Style-to-visual mapping — used to enrich the AI prompt
+// ─────────────────────────────────────────────────────────────────────────────
+
+const STYLE_VISUAL_DESCRIPTOR: Record<string, string> = {
+  'pinterest-bold': 'Pinterest-style boldly-composed collage aesthetic, high contrast, rich saturation, aspirational lifestyle photography',
+  'clean-minimal': 'minimalist editorial aesthetic, soft natural light, airy white space, muted tones, calm premium design',
+  'luxury-editorial': 'luxury editorial photography, polished premium textures, magazine-grade composition, sophisticated tones',
+  'cinematic-dream': 'cinematic dreamlike imagery, dramatic moody lighting, shallow depth of field, cinematic color grading',
+};
+
+const DOMAIN_VISUAL_KEYWORDS: Record<string, string> = {
+  HEALTH: 'fitness, athletic body, vibrant health, outdoor exercise, clean nutrition',
+  CAREER: 'professional success, modern office, presentation, leadership, technology',
+  WEALTH: 'luxury lifestyle, financial freedom, modern home, elegant possessions, abundance',
+  RELATIONSHIP: 'connection, warm relationships, family, love, community',
+  LEARNING: 'books, education, skill mastery, focus, intellectual growth',
+  TRAVEL: 'exotic destination, adventure, world exploration, culture, freedom',
+  MINDSET: 'meditation, calm mind, inner peace, clarity, mindfulness',
+  CREATIVITY: 'artistic expression, creation, studio, music, art, innovation',
+};
+
 function buildGenerationPrompt(params: {
   userName: string;
   goals: GoalSummary[];
   archetype: UserArchetype | null;
   psychProfile: PsychologicalProfile | null;
   todayDate: string;
+  wizardData?: WizardPromptData | null;
 }): string {
-  const { userName, goals, archetype, psychProfile, todayDate } = params;
+  const { userName, goals, archetype, psychProfile, todayDate, wizardData } = params;
 
   const archetypeHint = archetype
     ? `User archetype: ${archetype.replace('the_', '').toUpperCase()}`
@@ -72,38 +105,83 @@ Feedback style: ${psychProfile.behavioral.preferredFeedbackStyle}
 Procrastination tendency: ${psychProfile.behavioral.procrastinationTendency}/10`
     : 'Psychology profile: not yet available (use balanced defaults)';
 
-  return `You are RESURGO's Vision Board Designer. Create a deeply personal vision board configuration.
+  // Build the wizard-enhanced context block
+  let wizardContext = '';
+  if (wizardData) {
+    const styleVisual = STYLE_VISUAL_DESCRIPTOR[wizardData.stylePreset] ?? '';
+    const domainLines = wizardData.domains
+      .map((d) => {
+        const detail = wizardData.domainDetails[d] ?? '';
+        const visual = DOMAIN_VISUAL_KEYWORDS[d] ?? '';
+        return `  ${d}: "${detail}" (visual keywords: ${visual})`;
+      })
+      .join('\n');
+
+    wizardContext = `
+GUIDED WIZARD INPUT (HIGH PRIORITY — use this over generic goal inference):
+Overarching vision: "${wizardData.overarchingVision}"
+Board mood: ${wizardData.mood}
+Visual style: ${wizardData.stylePreset} — ${styleVisual}
+Life domains and user's specific vision for each:
+${domainLines}
+${wizardData.customPromptBoost ? `Extra visual details requested: "${wizardData.customPromptBoost}"` : ''}
+
+INSTRUCTION: Use the wizard domain details as the DIRECT SOURCE for image prompts. Each domain selected by the user MUST become a panel. The user's exact words and specifics should be woven into the image prompts and affirmations.`;
+  }
+
+  // When wizard data provides domains, use them instead of goals
+  const panelSource = wizardData && wizardData.domains.length > 0
+    ? `PANELS TO GENERATE: One panel per selected domain below (${wizardData.domains.length} total). 
+Use the user's domain details directly as the basis for imagePrompt and affirmation:
+${wizardData.domains.map((d, i) => {
+  const detail = wizardData.domainDetails[d] ?? d;
+  return `${i + 1}. [${d}] ${detail}`;
+}).join('\n')}`
+    : `GOALS (${goals.length} total):
+${goals.map((g, i) => `${i + 1}. [${g.category}] ${g.title} — ${g.progress}% done${g.description ? ` (${g.description.slice(0, 80)})` : ''}`).join('\n')}`;
+
+  return `You are RESURGO's Vision Board Designer — an expert at creating deeply personal, emotionally resonant vision board configurations. Your image prompts are highly specific, cinematic, and optimized for AI image generation.
 
 USER: ${userName}
 DATE: ${todayDate}
 ${archetypeHint}
 ${psychHint}
+${wizardContext}
 
-GOALS (${goals.length} total):
-${goals.map((g, i) => `${i + 1}. [${g.category}] ${g.title} — ${g.progress}% done${g.description ? ` (${g.description.slice(0, 80)})` : ''}`).join('\n')}
+${panelSource}
 
-RULES FOR THEMES:
-- High neuroticism (>7) → calming colors (blues, greens, soft neutrals)
-- High extraversion (>7) → vibrant colors (warm oranges, energetic yellows)  
-- High conscientiousness (>7) → grid or minimal layout
-- High openness (>7) → collage or mosaic layout
-- the_overwhelmed / the_rebuilder → minimal layout, max 3 panels, soft palette
-- the_ambitious / the_optimizer → full grid, bold palette
-
-RULES FOR IMAGE PROMPTS:
-- Vivid, specific Stable Diffusion prompts. Focus on OUTCOMES not processes.
-- Always append: "photorealistic, warm lighting, aspirational, high quality, 4K"
-- Never include text in images. Culturally neutral and inclusive.
-- Each prompt uniquely tied to the specific goal.
+RULES FOR IMAGE PROMPTS (critical — follow precisely):
+- Write Stable Diffusion style prompts: specific, visual, evocative. Focus on OUTCOMES not processes.
+- Incorporate the user's own words and specific details from their domain descriptions
+- Each prompt must be unique and directly tied to THIS user's specific vision
+- Include subject, environment, lighting, mood, style in every prompt
+- Always end with: "photorealistic, inspirational lifestyle photography, 4K, award-winning composition"
+- Never include text, words, or signs in the visual
+- Culturally neutral and inclusive. No specific celebrity faces.
+- GOOD: "A lean athletic man finishing a morning run on a coastal cliff path at golden hour, Mediterranean morning light, triumphant expression, wearing performance gear"
+- BAD: "A person exercising at the gym"
 
 RULES FOR AFFIRMATIONS:
-- First person, present tense ("I am" not "I will be")
-- Specific to the goal, not generic quotes
-- Match archetype tone: rebuilder=nurturing, optimizer=analytical, ambitious=bold, scattered=short+clear
+- First person, present tense ("I am" not "I will be")  
+- Must be specific to THIS user's domain detail — not generic quotes
+- 8–15 words maximum. Punchy and personal.
+- Match mood: "${wizardData?.mood ?? 'Ambitious & Bold'}"
 
-OUTPUT (JSON only, no markdown, no explanation):
+RULES FOR THEME:
+${wizardData ? `- Style preset: ${wizardData.stylePreset} → apply matching color palette and layout
+- Mood: ${wizardData.mood} → reflect in color choices and font style
+- "Ambitious": bold oranges/reds, grid layout, sans-modern
+- "Calm/Peaceful": soft blues/greens, minimal layout, serif-elegant
+- "Luxurious": gold/black palette, collage or mosaic, serif-elegant
+- "Adventurous": warm earth tones, mosaic layout, sans-modern
+- "Spiritual": purple/indigo palette, minimal layout, serif-elegant` : `- High neuroticism (>7) → calming colors blues/greens
+- High extraversion (>7) → vibrant warm oranges/yellows
+- High conscientiousness (>7) → grid or minimal layout
+- High openness (>7) → collage or mosaic layout`}
+
+OUTPUT (strict JSON only, no markdown, no explanation, no code fences):
 {
-  "title": "string — personal board title",
+  "title": "Personal, specific board title referencing the user's overarching vision",
   "theme": {
     "colorPalette": ["#hex1","#hex2","#hex3","#hex4","#hex5"],
     "mood": "string",
@@ -112,9 +190,9 @@ OUTPUT (JSON only, no markdown, no explanation):
   },
   "panels": [
     {
-      "goalTitle": "exact goal title from the list",
-      "imagePrompt": "detailed SD prompt",
-      "affirmation": "personal affirmation",
+      "goalTitle": "domain or goal title being visualized",
+      "imagePrompt": "highly specific AI image generation prompt incorporating user's exact words",
+      "affirmation": "specific present-tense affirmation 8-15 words",
       "category": "HEALTH|CAREER|PERSONAL|FINANCE|LEARNING|RELATIONSHIP",
       "position": 0
     }
@@ -133,16 +211,20 @@ export async function generateVisionBoardConfig(params: {
   goals: GoalSummary[];
   archetype: UserArchetype | null;
   psychProfile: PsychologicalProfile | null;
+  wizardData?: WizardPromptData | null;
 }): Promise<VisionBoardConfig | null> {
-  if (params.goals.length === 0) {
-    console.warn('[VisionBoard] No goals provided — cannot generate board');
+  // Allow generation with wizard data even without goals
+  if (params.goals.length === 0 && !params.wizardData) {
+    console.warn('[VisionBoard] No goals and no wizard data — cannot generate board');
     return null;
   }
 
   const todayDate = new Date().toISOString().slice(0, 10);
 
-  // Max 6 panels to keep the board focused
-  const goals = params.goals.slice(0, 6);
+  // Max 6 panels. If wizard data provided, use domains instead of goals cap.
+  const goals = params.wizardData?.domains.length
+    ? params.goals.slice(0, 6)
+    : params.goals.slice(0, 6);
 
   const systemPrompt = buildGenerationPrompt({
     userName: params.userName,
@@ -150,6 +232,7 @@ export async function generateVisionBoardConfig(params: {
     archetype: params.archetype,
     psychProfile: params.psychProfile,
     todayDate,
+    wizardData: params.wizardData ?? null,
   });
 
   try {

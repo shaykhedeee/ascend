@@ -1,0 +1,141 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'convex/**'
+      - 'capacitor.config.ts'
+      - 'package.json'
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Build type (debug or release)'
+        required: true
+        default: 'debug'
+        type: choice
+        options: [debug, release]
+
+jobs:
+  build-apk:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      # ────────────────────────────────────────────────────────────────────────
+      # 1. Checkout + Node setup
+      # ────────────────────────────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # ────────────────────────────────────────────────────────────────────────
+      # 2. Java / Android SDK
+      # ────────────────────────────────────────────────────────────────────────
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      # ────────────────────────────────────────────────────────────────────────
+      # 3. Install npm dependencies
+      # ────────────────────────────────────────────────────────────────────────
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Capacitor CLI
+        run: npm install -g @capacitor/cli
+
+      # ────────────────────────────────────────────────────────────────────────
+      # 4. Build Next.js (static export for Capacitor)
+      # ────────────────────────────────────────────────────────────────────────
+      - name: Build Next.js static export
+        run: npm run build
+        env:
+          NEXT_PUBLIC_CONVEX_URL: ${{ secrets.NEXT_PUBLIC_CONVEX_URL }}
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+
+      # ────────────────────────────────────────────────────────────────────────
+      # 5. Sync Capacitor + add Android platform
+      # ────────────────────────────────────────────────────────────────────────
+      - name: Add Android platform (if not present)
+        run: |
+          if [ ! -d "android" ]; then
+            npx cap add android
+          fi
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      # ────────────────────────────────────────────────────────────────────────
+      # 6. Build APK
+      # ────────────────────────────────────────────────────────────────────────
+      - name: Make Gradle wrapper executable
+        run: chmod +x android/gradlew
+
+      - name: Build debug APK
+        if: github.event.inputs.release_type != 'release'
+        run: |
+          cd android
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Build release APK (signed)
+        if: github.event.inputs.release_type == 'release'
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 -d > android/app/resurgo.jks
+          cd android
+          ./gradlew assembleRelease \
+            -Pandroid.injected.signing.store.file=$(pwd)/app/resurgo.jks \
+            -Pandroid.injected.signing.store.password="$KEYSTORE_PASSWORD" \
+            -Pandroid.injected.signing.key.alias="$KEY_ALIAS" \
+            -Pandroid.injected.signing.key.password="$KEY_PASSWORD" \
+            --no-daemon
+
+      # ────────────────────────────────────────────────────────────────────────
+      # 7. Rename + upload APK
+      # ────────────────────────────────────────────────────────────────────────
+      - name: Rename APK
+        run: |
+          mkdir -p dist
+          APK_FILE=$(find android/app/build/outputs/apk -name "*.apk" | head -1)
+          cp "$APK_FILE" dist/resurgo-latest.apk
+          echo "APK_PATH=dist/resurgo-latest.apk" >> $GITHUB_ENV
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: resurgo-android-apk
+          path: dist/resurgo-latest.apk
+          retention-days: 30
+
+      # ────────────────────────────────────────────────────────────────────────
+      # 8. Upload to Firebase Hosting public folder
+      # ────────────────────────────────────────────────────────────────────────
+      - name: Copy APK to Firebase public dir
+        run: |
+          mkdir -p out
+          cp dist/resurgo-latest.apk out/resurgo-latest.apk
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          channelId: live
+          projectId: ${{ secrets.FIREBASE_PROJECT_ID }}

@@ -476,26 +476,38 @@ export const getUserContext = internalQuery({
     sleepQuality: v.optional(v.number()),
     emotionalState: v.string(),
     todaysPriorities: v.optional(v.array(v.string())),
+    // ── Enriched context fields ──
+    level: v.number(),
+    levelName: v.string(),
+    totalXP: v.number(),
+    achievementCount: v.number(),
+    totalTasksCompleted: v.number(),
+    totalHabitsCompleted: v.number(),
+    totalFocusMinutes: v.number(),
+    weeklyCompletionRate: v.number(),
+    recentWins: v.array(v.string()),
+    overdueTasks: v.number(),
+    goalsCompletedAllTime: v.number(),
   }),
   handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) return {
+    const empty = {
       userName: 'User', userPlan: 'free', primaryGoal: 'Not set', focusAreas: 'Not set',
       goalCount: 0, goalsSummary: 'None', taskCount: 0, tasksSummary: 'None',
       habitCount: 0, habitsSummary: 'None', streak: 0,
       emotionalState: 'unknown',
+      level: 1, levelName: 'Seedling', totalXP: 0, achievementCount: 0,
+      totalTasksCompleted: 0, totalHabitsCompleted: 0, totalFocusMinutes: 0,
+      weeklyCompletionRate: 0, recentWins: [] as string[], overdueTasks: 0, goalsCompletedAllTime: 0,
     };
+
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return empty;
 
     const user = await ctx.db
       .query('users')
       .withIndex('by_clerkId', (q: any) => q.eq('clerkId', identity.subject))
       .unique();
-    if (!user) return {
-      userName: identity.name || 'User', userPlan: 'free', primaryGoal: 'Not set', focusAreas: 'Not set',
-      goalCount: 0, goalsSummary: 'None', taskCount: 0, tasksSummary: 'None',
-      habitCount: 0, habitsSummary: 'None', streak: 0,
-      emotionalState: 'unknown',
-    };
+    if (!user) return { ...empty, userName: identity.name || 'User' };
 
     // Goals
     const goals = await ctx.db
@@ -503,8 +515,9 @@ export const getUserContext = internalQuery({
       .withIndex('by_userId', (q: any) => q.eq('userId', user._id))
       .collect();
     const activeGoals = goals.filter((g: any) => g.status === 'active' || g.status === 'in_progress');
+    const completedGoals = goals.filter((g: any) => g.status === 'completed');
     const goalsSummary = activeGoals.length > 0
-      ? activeGoals.slice(0, 5).map((g: any) => `"${g.title}" (${g.progressPercentage || 0}%)`).join(', ')
+      ? activeGoals.slice(0, 5).map((g: any) => `"${g.title}" (${g.progressPercentage || g.progress || 0}%)`).join(', ')
       : 'No active goals';
 
     // Tasks (pending for today)
@@ -519,6 +532,26 @@ export const getUserContext = internalQuery({
       ? todayTasks.slice(0, 6).map((t: any) => `"${t.title}" [${t.priority}]`).join(', ')
       : (pendingTasks.length > 0 ? `${pendingTasks.length} pending tasks (none scheduled today)` : 'No pending tasks');
 
+    // Overdue tasks
+    const overdueTasks = pendingTasks.filter((t: any) => t.dueDate && t.dueDate < today).length;
+
+    // Tasks completed this week (for weekly completion rate)
+    const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString().split('T')[0];
+    const doneThisWeek = tasks.filter((t: any) => t.status === 'done' && t.updatedAt && new Date(t.updatedAt).toISOString().split('T')[0] >= weekAgo);
+    const createdOrDueThisWeek = tasks.filter((t: any) =>
+      (t.dueDate && t.dueDate >= weekAgo && t.dueDate <= today) ||
+      (t.scheduledDate && t.scheduledDate >= weekAgo && t.scheduledDate <= today)
+    );
+    const weeklyCompletionRate = createdOrDueThisWeek.length > 0
+      ? Math.round((doneThisWeek.length / Math.max(createdOrDueThisWeek.length, 1)) * 100)
+      : 0;
+
+    // Recent wins (last 5 completed tasks from this week)
+    const recentWins = doneThisWeek
+      .sort((a: any, b: any) => (b.updatedAt || 0) - (a.updatedAt || 0))
+      .slice(0, 5)
+      .map((t: any) => t.title);
+
     // Habits
     const habits = await ctx.db
       .query('habits')
@@ -526,11 +559,34 @@ export const getUserContext = internalQuery({
       .collect();
     const activeHabits = habits.filter((h: any) => !h.archived && !h.archivedByDowngrade);
     const habitsSummary = activeHabits.length > 0
-      ? activeHabits.slice(0, 6).map((h: any) => `"${h.title}" (${h.currentStreak || 0}d streak)`).join(', ')
+      ? activeHabits.slice(0, 6).map((h: any) => `"${h.title}" (${h.currentStreak || h.streakCurrent || 0}d streak)`).join(', ')
       : 'No active habits';
 
     // Best streak
-    const maxStreak = activeHabits.reduce((max: number, h: any) => Math.max(max, h.currentStreak || 0), 0);
+    const maxStreak = activeHabits.reduce((max: number, h: any) => Math.max(max, h.currentStreak || h.streakCurrent || 0), 0);
+
+    // Gamification profile
+    const gamification = await ctx.db
+      .query('gamification')
+      .withIndex('by_userId', (q: any) => q.eq('userId', user._id))
+      .unique();
+
+    const LEVEL_THRESHOLDS = [
+      { level: 1, xp: 0, name: 'Seedling' }, { level: 2, xp: 100, name: 'Sprout' },
+      { level: 3, xp: 250, name: 'Sapling' }, { level: 4, xp: 500, name: 'Growing' },
+      { level: 5, xp: 800, name: 'Blooming' }, { level: 6, xp: 1200, name: 'Flourishing' },
+      { level: 7, xp: 1800, name: 'Thriving' }, { level: 8, xp: 2500, name: 'Mighty Oak' },
+      { level: 9, xp: 3500, name: 'Ancient Tree' }, { level: 10, xp: 5000, name: 'Forest Guardian' },
+      { level: 11, xp: 7000, name: 'Mountain Sage' }, { level: 12, xp: 10000, name: 'Summit Walker' },
+      { level: 13, xp: 15000, name: 'Sky Dancer' }, { level: 14, xp: 20000, name: 'Star Weaver' },
+      { level: 15, xp: 30000, name: 'Constellation' }, { level: 16, xp: 50000, name: 'Transcendent' },
+    ];
+    const xp = gamification?.totalXP ?? 0;
+    let lvl = 1;
+    let lvlName = 'Seedling';
+    for (const t of LEVEL_THRESHOLDS) {
+      if (xp >= t.xp) { lvl = t.level; lvlName = t.name; }
+    }
 
     // Fetch today's check-in for emotional context
     const checkIn = await ctx.db
@@ -560,6 +616,18 @@ export const getUserContext = internalQuery({
       sleepQuality: checkIn?.sleepQuality,
       emotionalState,
       todaysPriorities: checkIn?.topThreePriorities,
+      // ── Enriched context ──
+      level: lvl,
+      levelName: lvlName,
+      totalXP: xp,
+      achievementCount: gamification?.achievements?.length ?? 0,
+      totalTasksCompleted: gamification?.totalTasksCompleted ?? 0,
+      totalHabitsCompleted: gamification?.totalHabitsCompleted ?? 0,
+      totalFocusMinutes: gamification?.totalFocusMinutes ?? 0,
+      weeklyCompletionRate,
+      recentWins,
+      overdueTasks,
+      goalsCompletedAllTime: completedGoals.length,
     };
   },
 });
@@ -843,7 +911,7 @@ export const greetUser = action({
     }
 
     const contextInfo = userCtx
-      ? `\nUser context: ${userCtx.goalCount} active goals, ${userCtx.taskCount} pending tasks, ${userCtx.habitCount} habits, best streak ${userCtx.streak}d. Primary goal: "${userCtx.primaryGoal}". Plan: ${userCtx.userPlan}.`
+      ? `\nUser context: Level ${userCtx.level} "${userCtx.levelName}" (${userCtx.totalXP} XP). ${userCtx.goalCount} active goals, ${userCtx.taskCount} pending tasks, ${userCtx.habitCount} habits, best streak ${userCtx.streak}d. Primary goal: "${userCtx.primaryGoal}". Plan: ${userCtx.userPlan}. Weekly completion rate: ${userCtx.weeklyCompletionRate}%. ${userCtx.overdueTasks > 0 ? `${userCtx.overdueTasks} overdue tasks!` : ''} ${userCtx.recentWins.length > 0 ? `Recent wins: ${userCtx.recentWins.slice(0, 3).join(', ')}.` : ''}`
       : '';
 
     const greetingPrompt = `The user "${name}" just opened your chat. Write a powerful, in-character welcome message (3-4 sentences). Introduce who you are and your specialty. Reference something specific about their situation if context is available. Ask ONE compelling opening question.${contextInfo}
@@ -932,19 +1000,34 @@ export const sendWithPersona = action({
     let contextBlock = '';
     if (userCtx) {
       contextBlock = `
-CURRENT USER CONTEXT (use this to personalize):
+CURRENT USER CONTEXT (use this to personalize — reference specific data points!):
 - Name: ${userCtx.userName}
 - Plan: ${userCtx.userPlan}
+- Gamification: Level ${userCtx.level} "${userCtx.levelName}" | ${userCtx.totalXP} XP | ${userCtx.achievementCount} achievements unlocked
 - Primary Goal: ${userCtx.primaryGoal}
 - Focus Areas: ${userCtx.focusAreas}
 - Active Goals (${userCtx.goalCount}): ${userCtx.goalsSummary}
+- Goals Completed All-Time: ${userCtx.goalsCompletedAllTime}
 - Pending Tasks (${userCtx.taskCount}): ${userCtx.tasksSummary}
+- Overdue Tasks: ${userCtx.overdueTasks}${userCtx.overdueTasks > 0 ? ' ⚠️ address this!' : ''}
+- Weekly Task Completion Rate: ${userCtx.weeklyCompletionRate}%
+- Recent Wins This Week: ${userCtx.recentWins.length > 0 ? userCtx.recentWins.join(', ') : 'None yet'}
 - Active Habits (${userCtx.habitCount}): ${userCtx.habitsSummary}
 - Best Streak: ${userCtx.streak} days
+- Lifetime Stats: ${userCtx.totalTasksCompleted} tasks done | ${userCtx.totalHabitsCompleted} habit completions | ${userCtx.totalFocusMinutes} focus min
 - Emotional State Today: ${userCtx.emotionalState}
 - Mood/Energy/Sleep: ${userCtx.morningMood ?? '?'}/5 | ${userCtx.morningEnergy ?? '?'}/5 | ${userCtx.sleepQuality ?? '?'}/5
 - Top Priorities Today: ${userCtx.todaysPriorities?.join(' → ') || 'Not set yet'}
 - Time: ${timeContext} (${today})
+
+PERSONALIZATION DIRECTIVES:
+- Reference their SPECIFIC goals, tasks, and habits by name — never be generic.
+- If they have overdue tasks, proactively mention it and offer to help reprioritize.
+- If weekly completion rate < 50%, address workload/prioritization before adding more.
+- If they have recent wins, celebrate them specifically before moving forward.
+- If streak > 7 days, acknowledge consistency. If streak = 0, gently encourage restart.
+- Calibrate advice complexity to their level (Level 1-3 = beginner-friendly, Level 7+ = advanced strategies).
+- If no check-in today, suggest doing one for better coaching.
 `;
     }
 
@@ -1366,6 +1449,112 @@ export const updateMemoryInsights = internalMutation({
 });
 
 // ─── Fallback persona-toned replies ──────────────────────────────────────────
+
+// ─── Smart Prompt Suggestions (context-aware) ────────────────────────────────
+
+export const getSmartPrompts = query({
+  args: { coachId: COACH_ID_VALIDATOR },
+  returns: v.array(v.string()),
+  handler: async (ctx, { coachId }) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return [];
+    const user = await ctx.db
+      .query('users')
+      .withIndex('by_clerkId', (q: any) => q.eq('clerkId', identity.subject))
+      .unique();
+    if (!user) return [];
+
+    const today = new Date().toISOString().split('T')[0];
+    const hour = new Date().getHours();
+
+    // Gather data for smart suggestions
+    const [goals, tasks, habits, _gamification, checkIn] = await Promise.all([
+      ctx.db.query('goals').withIndex('by_userId', (q: any) => q.eq('userId', user._id)).collect(),
+      ctx.db.query('tasks').withIndex('by_userId', (q: any) => q.eq('userId', user._id)).collect(),
+      ctx.db.query('habits').withIndex('by_userId', (q: any) => q.eq('userId', user._id)).collect(),
+      ctx.db.query('gamification').withIndex('by_userId', (q: any) => q.eq('userId', user._id)).unique(),
+      ctx.db.query('dailyCheckIns').withIndex('by_userId_date', (q: any) =>
+        q.eq('userId', user._id).eq('date', today)
+      ).unique(),
+    ]);
+
+    const activeGoals = goals.filter((g: any) => g.status === 'active' || g.status === 'in_progress');
+    const pendingTasks = tasks.filter((t: any) => t.status === 'todo');
+    const overdueTasks = pendingTasks.filter((t: any) => t.dueDate && t.dueDate < today);
+    const todayTasks = pendingTasks.filter((t: any) => t.scheduledDate === today || t.dueDate === today);
+    const activeHabits = habits.filter((h: any) => !h.archived && !h.archivedByDowngrade);
+    const maxStreak = activeHabits.reduce((mx: number, h: any) => Math.max(mx, h.currentStreak || h.streakCurrent || 0), 0);
+
+    const prompts: string[] = [];
+
+    // ── Universal context-aware prompts ──
+    if (!checkIn) {
+      prompts.push('How should I start my day productively?');
+    }
+    if (hour < 12 && todayTasks.length > 0) {
+      prompts.push(`Help me prioritize my ${todayTasks.length} tasks for today`);
+    }
+    if (overdueTasks.length > 0) {
+      prompts.push(`I have ${overdueTasks.length} overdue tasks — help me catch up`);
+    }
+    if (activeGoals.length === 0) {
+      prompts.push('Help me set a meaningful goal to work toward');
+    }
+    if (activeHabits.length === 0) {
+      prompts.push('What are the best habits to start with?');
+    }
+    if (maxStreak >= 7) {
+      prompts.push(`I'm on a ${maxStreak}-day streak — what's the next level?`);
+    }
+    if (hour >= 17) {
+      prompts.push('Help me reflect on today and plan tomorrow');
+    }
+
+    // ── Coach-specific prompts ──
+    const coachSpecific: Record<string, string[]> = {
+      NOVA: [
+        'Build me a complete system for my biggest goal',
+        'What mental model should I apply to my current situation?',
+        'Create a weekly review template for me',
+        activeGoals[0] ? `Break down "${activeGoals[0].title}" into a step-by-step plan` : 'Help me design my ideal morning routine',
+      ],
+      TITAN: [
+        'Design a workout program for my fitness level',
+        'What should I eat to maximize energy and focus?',
+        'How do I fix my sleep schedule?',
+        'Create a 4-week body transformation plan for me',
+      ],
+      SAGE: [
+        'Help me build a savings system I can automate',
+        'What skills should I develop to increase my income?',
+        'Create a 90-day financial improvement plan',
+        'How do I start investing with a small amount?',
+      ],
+      PHOENIX: [
+        'I fell off track — help me rebuild momentum',
+        'How do I deal with feeling overwhelmed?',
+        'Help me create a gentle comeback plan',
+        'I need a reset — walk me through it',
+      ],
+      MARCUS: [
+        'Give me a Stoic principle for my current challenge',
+        'Plan my top 3 priorities for today',
+        'How do I build iron discipline?',
+      ],
+      AURORA: [
+        'Help me build a mindfulness routine',
+        'I\'m feeling anxious — guide me through it',
+        'How do I improve my emotional regulation?',
+      ],
+    };
+
+    const specific = coachSpecific[coachId] || coachSpecific['NOVA'];
+    prompts.push(...specific);
+
+    // Deduplicate and limit to 4
+    return [...new Set(prompts)].slice(0, 4);
+  },
+});
 
 function buildFallbackReply(coachId: string, content: string): string {
   const lower = content.toLowerCase();

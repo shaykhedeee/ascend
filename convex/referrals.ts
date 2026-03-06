@@ -62,3 +62,114 @@ export const trackReferralVisit = mutation({
     });
   },
 });
+
+// ─── Complete Referral — called when a referred user signs up and uses the app ──
+
+export const completeReferral = mutation({
+  args: { referralCode: v.string() },
+  handler: async (ctx, { referralCode }) => {
+    const referee = await requireUser(ctx);
+    const now = Date.now();
+
+    // Find the referrer by code
+    const referrer = await ctx.db
+      .query('users')
+      .filter((q: any) => q.eq(q.field('referralCode'), referralCode))
+      .first();
+    if (!referrer) return { success: false, message: 'Invalid referral code' };
+
+    // Don't allow self-referral
+    if (referrer._id === referee._id) return { success: false, message: 'Cannot refer yourself' };
+
+    // Check if this referee already completed a referral
+    const existingReferrals = await ctx.db
+      .query('referrals')
+      .withIndex('by_referrerId', (q: any) => q.eq('referrerId', referrer._id))
+      .collect();
+    const alreadyReferred = existingReferrals.some((r: any) =>
+      r.refereeId === referee._id && r.status === 'completed'
+    );
+    if (alreadyReferred) return { success: false, message: 'Already referred' };
+
+    // Find any pending referral to complete, or create new one
+    const pendingReferral = existingReferrals.find((r: any) =>
+      r.code === referralCode && r.status === 'pending' && !r.refereeId
+    );
+
+    if (pendingReferral) {
+      await ctx.db.patch(pendingReferral._id, {
+        refereeId: referee._id,
+        status: 'completed' as const,
+      });
+    } else {
+      await ctx.db.insert('referrals', {
+        referrerId: referrer._id,
+        refereeId: referee._id,
+        code: referralCode,
+        status: 'completed',
+        rewardGranted: false,
+        createdAt: now,
+      });
+    }
+
+    // Grant rewards: give referrer bonus XP and coins
+    const REFERRAL_XP_REWARD = 200;
+    const REFERRAL_COIN_REWARD = 100;
+
+    const referrerGamification = await ctx.db
+      .query('gamification')
+      .withIndex('by_userId', (q: any) => q.eq('userId', referrer._id))
+      .unique();
+
+    if (referrerGamification) {
+      await ctx.db.patch(referrerGamification._id, {
+        totalXP: (referrerGamification.totalXP || 0) + REFERRAL_XP_REWARD,
+        coins: (referrerGamification.coins || 0) + REFERRAL_COIN_REWARD,
+      });
+    }
+
+    // Mark reward as granted
+    const referralToUpdate = pendingReferral?._id
+      ? pendingReferral._id
+      : (await ctx.db.query('referrals')
+          .withIndex('by_referrerId', (q: any) => q.eq('referrerId', referrer._id))
+          .collect())
+          .find((r: any) => r.refereeId === referee._id && r.status === 'completed')?._id;
+
+    if (referralToUpdate) {
+      await ctx.db.patch(referralToUpdate, { rewardGranted: true });
+    }
+
+    return { success: true, message: 'Referral completed! Referrer rewarded.' };
+  },
+});
+
+// ─── Get Referral Stats (for marketing/social sharing) ──────────────────────
+
+export const getReferralShareData = query({
+  args: {},
+  handler: async (ctx) => {
+    const user = await requireUser(ctx);
+    const referrals = await ctx.db
+      .query('referrals')
+      .withIndex('by_referrerId', (q: any) => q.eq('referrerId', user._id))
+      .collect();
+
+    const completed = referrals.filter((r: any) => r.status === 'completed').length;
+    const domain = 'https://resurgo.life';
+    const shareUrl = user.referralCode ? `${domain}?ref=${user.referralCode}` : domain;
+    const shareText = completed > 0
+      ? `I've helped ${completed} people transform their lives with RESURGO! Join me on this journey 🚀`
+      : `I'm building better habits with RESURGO — join me and we both earn rewards! 🚀`;
+
+    return {
+      code: user.referralCode || null,
+      url: shareUrl,
+      text: shareText,
+      totalReferred: referrals.length,
+      totalCompleted: completed,
+      xpEarned: completed * 200,
+      coinsEarned: completed * 100,
+    };
+  },
+});

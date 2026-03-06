@@ -41,3 +41,7 @@ public/downloads/*.apk
 *.keystore
 *.jks
 .env*.local
+
+# External/embedded repos
+agentic-ads/
+todo-for-ai-mcp/

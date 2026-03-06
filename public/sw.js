@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════════════════════════════════════
-// ASCEND - Service Worker for Push Notifications & Offline Support
+// RESURGO - Service Worker for Push Notifications & Offline Support
 // ═══════════════════════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'ascend-v7';
+const CACHE_NAME = 'resurgo-v8';
 
 // Assets to cache for offline use (only truly static assets)
 const STATIC_ASSETS = [
@@ -96,7 +96,7 @@ self.addEventListener('push', (event) => {
     data = event.data.json();
   } catch {
     data = {
-      title: 'ASCEND',
+      title: 'RESURGO',
       body: event.data.text(),
     };
   }
@@ -111,12 +111,12 @@ self.addEventListener('push', (event) => {
       { action: 'open', title: 'Open App' },
       { action: 'dismiss', title: 'Dismiss' },
     ],
-    tag: data.tag || 'ascend-notification',
+    tag: data.tag || 'resurgo-notification',
     renotify: true,
   };
 
   event.waitUntil(
-    self.registration.showNotification(data.title || 'ASCEND', options)
+    self.registration.showNotification(data.title || 'RESURGO', options)
   );
 });
 
@@ -170,12 +170,12 @@ async function checkNotifications() {
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SHOW_NOTIFICATION') {
     const { title, body, tag, icon, badge } = event.data.payload;
-    self.registration.showNotification(title || 'ASCEND', {
+    self.registration.showNotification(title || 'RESURGO', {
       body: body || '',
       icon: icon || '/icons/icon-192x192.png',
       badge: badge || '/icons/icon-72x72.png',
       vibrate: [100, 50, 100],
-      tag: tag || 'ascend-notification',
+      tag: tag || 'resurgo-notification',
       renotify: true,
       actions: [
         { action: 'open', title: 'Open App' },

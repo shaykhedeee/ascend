@@ -5,9 +5,133 @@
 // Context-aware: reads user's real data to give personalized responses
 // ═══════════════════════════════════════════════════════════════════════════════
 
-import { action, internalMutation, internalQuery, mutation, query } from './_generated/server';
+import { action, internalAction, internalMutation, internalQuery, mutation, query } from './_generated/server';
 import { internal } from './_generated/api';
 import { v } from 'convex/values';
+
+// ─── Multi-Provider AI Cascade ───────────────────────────────────────────────
+// Groq 70B → Cerebras 70B → Gemini 2.0 Flash → Groq 8B (emergency fallback)
+// Each provider gets 1 attempt. On failure, cascade to the next.
+
+interface CascadeOptions {
+  max_tokens: number;
+  temperature: number;
+}
+
+async function callAICascade(
+  messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }>,
+  opts: CascadeOptions
+): Promise<string> {
+  // Provider 1: Groq — llama-3.3-70b-versatile (highest quality)
+  const groqKey = process.env.GROQ_API_KEY;
+  if (groqKey) {
+    try {
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${groqKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages,
+          max_tokens: opts.max_tokens,
+          temperature: opts.temperature,
+        }),
+      });
+      if (res.ok) {
+        const json = await res.json() as Record<string, any>;
+        const content = json?.choices?.[0]?.message?.content ?? '';
+        if (content) return content;
+      }
+    } catch {
+      // cascade to next provider
+    }
+  }
+
+  // Provider 2: Cerebras — llama-3.3-70b (ultra-fast inference)
+  const cerebrasKey = process.env.CEREBRAS_API_KEY;
+  if (cerebrasKey) {
+    try {
+      const res = await fetch('https://api.cerebras.ai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${cerebrasKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b',
+          messages,
+          max_tokens: opts.max_tokens,
+          temperature: opts.temperature,
+        }),
+      });
+      if (res.ok) {
+        const json = await res.json() as Record<string, any>;
+        const content = json?.choices?.[0]?.message?.content ?? '';
+        if (content) return content;
+      }
+    } catch {
+      // cascade to next provider
+    }
+  }
+
+  // Provider 3: Google Gemini 2.0 Flash (different architecture, great quality)
+  const geminiKey = process.env.GOOGLE_AI_STUDIO_KEY;
+  if (geminiKey) {
+    try {
+      // Convert messages to Gemini format
+      const systemInstruction = messages.find(m => m.role === 'system')?.content || '';
+      const geminiContents = messages
+        .filter(m => m.role !== 'system')
+        .map(m => ({
+          role: m.role === 'assistant' ? 'model' : 'user',
+          parts: [{ text: m.content }],
+        }));
+
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            system_instruction: { parts: [{ text: systemInstruction }] },
+            contents: geminiContents,
+            generationConfig: {
+              maxOutputTokens: opts.max_tokens,
+              temperature: opts.temperature,
+            },
+          }),
+        }
+      );
+      if (res.ok) {
+        const json = await res.json() as Record<string, any>;
+        const content = json?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+        if (content) return content;
+      }
+    } catch {
+      // cascade to next provider
+    }
+  }
+
+  // Provider 4: Emergency fallback — Groq 8B (fast, lower quality)
+  if (groqKey) {
+    try {
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${groqKey}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'llama-3.1-8b-instant',
+          messages,
+          max_tokens: Math.min(opts.max_tokens, 1000),
+          temperature: opts.temperature,
+        }),
+      });
+      if (res.ok) {
+        const json = await res.json() as Record<string, any>;
+        return json?.choices?.[0]?.message?.content ?? '';
+      }
+    } catch {
+      // all providers failed
+    }
+  }
+
+  return '';
+}
 
 // ─── The Four Universal Coaches ──────────────────────────────────────────────
 
@@ -727,33 +851,17 @@ export const greetUser = action({
 IMPORTANT: Do NOT include any [ACTION:...] blocks in your greeting. Just a natural conversational message.`;
 
     let greeting = '';
-    try {
-      const groqKey = process.env.GROQ_API_KEY;
-      if (groqKey) {
-        // Strip action system from prompt for greetings
-        const cleanPrompt = persona.systemPrompt.split('You have DIRECT CONTROL')[0];
-        const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: { 'Authorization': `Bearer ${groqKey}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            model: 'llama-3.1-8b-instant',
-            messages: [
-              { role: 'system', content: cleanPrompt },
-              { role: 'user', content: greetingPrompt },
-            ],
-            max_tokens: 300,
-            temperature: 0.85,
-          }),
-        });
-        if (res.ok) {
-          const json = await res.json() as Record<string, any>;
-          greeting = json?.choices?.[0]?.message?.content ?? '';
-          // Safety: strip any action blocks from greeting
-          greeting = greeting.replace(/\[ACTION:[^\]]*\][^\n]*/g, '').trim();
-        }
-      }
-    } catch {
-      // fall through to static
+    // Strip action system from prompt for greetings
+    const cleanPrompt = persona.systemPrompt.split('You have DIRECT CONTROL')[0];
+    const greetingMessages = [
+      { role: 'system' as const, content: cleanPrompt },
+      { role: 'user' as const, content: greetingPrompt },
+    ];
+
+    // Multi-provider cascade: Groq 70B → Cerebras 70B → Gemini → Groq 8B fallback
+    greeting = await callAICascade(greetingMessages, { max_tokens: 500, temperature: 0.85 });
+    if (greeting) {
+      greeting = greeting.replace(/\[ACTION:[^\]]*\][^\n]*/g, '').trim();
     }
 
     if (!greeting) greeting = buildGreeting(args.coachId, name);
@@ -809,10 +917,11 @@ export const sendWithPersona = action({
     const persona = (COACH_PERSONAS as Record<string, (typeof COACH_PERSONAS)[keyof typeof COACH_PERSONAS]>)[args.coachId];
     if (!persona) throw new Error('Invalid coach');
 
-    // Parallel fetch: recent history + user context
-    const [history, userCtx] = await Promise.all([
+    // Parallel fetch: recent history + user context + coach memory
+    const [history, userCtx, coachMem] = await Promise.all([
       ctx.runQuery(internal.coachAI.getRecentHistory, { coachId: args.coachId, limit: 12 }),
       ctx.runQuery(internal.coachAI.getUserContext, {}).catch(() => null),
+      ctx.runQuery(internal.coachAI.getCoachMemory, { coachId: args.coachId }).catch(() => null),
     ]);
 
     // Build enriched system prompt with user context
@@ -837,6 +946,18 @@ CURRENT USER CONTEXT (use this to personalize):
 - Top Priorities Today: ${userCtx.todaysPriorities?.join(' → ') || 'Not set yet'}
 - Time: ${timeContext} (${today})
 `;
+    }
+
+    // Inject accumulated coach memory insights
+    if (coachMem && ((coachMem.insights?.length ?? 0) > 0 || (coachMem.patterns?.length ?? 0) > 0)) {
+      contextBlock += `\nCOACH MEMORY (accumulated from past conversations — use this to personalize deeply):`;
+      if (coachMem.insights && coachMem.insights.length > 0) {
+        contextBlock += `\n- Known user patterns: ${coachMem.insights.join('; ')}`;
+      }
+      if (coachMem.patterns && coachMem.patterns.length > 0) {
+        contextBlock += `\n- Recurring themes: ${coachMem.patterns.join('; ')}`;
+      }
+      contextBlock += `\n- Conversation count: ${coachMem.messageCount} messages\n`;
     }
 
     // Triage detection: if user appears overwhelmed, inject empathy directive
@@ -865,29 +986,9 @@ CURRENT USER CONTEXT (use this to personalize):
     }
     messages.push({ role: 'user', content: args.content });
 
-    // Call Groq with higher token limit for action-capable responses
+    // Multi-provider cascade: Groq 70B → Cerebras 70B → Gemini → Groq 8B fallback
     let reply = '';
-    try {
-      const groqKey = process.env.GROQ_API_KEY;
-      if (groqKey) {
-        const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: { 'Authorization': `Bearer ${groqKey}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            model: 'llama-3.1-8b-instant',
-            messages,
-            max_tokens: 800,
-            temperature: 0.75,
-          }),
-        });
-        if (res.ok) {
-          const json = await res.json() as Record<string, any>;
-          reply = json?.choices?.[0]?.message?.content ?? '';
-        }
-      }
-    } catch {
-      // fallback
-    }
+    reply = await callAICascade(messages, { max_tokens: 2000, temperature: 0.75 });
 
     if (!reply) {
       reply = buildFallbackReply(args.coachId, args.content);
@@ -997,6 +1098,43 @@ export const getRecentHistory = internalQuery({
   },
 });
 
+export const getCoachMemory = internalQuery({
+  args: {
+    coachId: COACH_ID_VALIDATOR,
+  },
+  returns: v.union(
+    v.object({
+      insights: v.array(v.string()),
+      patterns: v.array(v.string()),
+      messageCount: v.number(),
+    }),
+    v.null(),
+  ),
+  handler: async (ctx, { coachId }) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return null;
+    const user = await ctx.db
+      .query('users')
+      .withIndex('by_clerkId', (q: any) => q.eq('clerkId', identity.subject))
+      .unique();
+    if (!user) return null;
+
+    const mem = await ctx.db
+      .query('coachMemory')
+      .withIndex('by_userId_coachId', (q: any) =>
+        q.eq('userId', user._id).eq('coachId', coachId)
+      )
+      .unique();
+
+    if (!mem) return null;
+    return {
+      insights: mem.insights ?? [],
+      patterns: mem.patterns ?? [],
+      messageCount: mem.messageCount ?? 0,
+    };
+  },
+});
+
 export const persistMessages = internalMutation({
   args: {
     userContent: v.string(),
@@ -1049,9 +1187,11 @@ export const persistMessages = internalMutation({
       )
       .unique();
 
+    const newCount = (mem?.messageCount ?? 0) + 1;
+
     if (mem) {
       await ctx.db.patch(mem._id, {
-        messageCount: (mem.messageCount ?? 0) + 1,
+        messageCount: newCount,
         updatedAt: now,
       });
     } else {
@@ -1062,6 +1202,13 @@ export const persistMessages = internalMutation({
         patterns: [],
         messageCount: 1,
         updatedAt: now,
+      });
+    }
+
+    // Trigger insight extraction every 5 messages
+    if (newCount % 5 === 0) {
+      await ctx.scheduler.runAfter(0, internal.coachAI.extractMemoryInsights, {
+        coachId: args.coachId,
       });
     }
 
@@ -1115,6 +1262,106 @@ export const persistGreeting = internalMutation({
     }
 
     return coachMessageId;
+  },
+});
+
+// ─── Memory Insight Extraction ───────────────────────────────────────────────
+
+export const extractMemoryInsights = internalAction({
+  args: {
+    coachId: COACH_ID_VALIDATOR,
+  },
+  returns: v.null(),
+  handler: async (ctx, args) => {
+    // Fetch recent history (last 20 messages)
+    const history = await ctx.runQuery(internal.coachAI.getRecentHistory, {
+      coachId: args.coachId,
+      limit: 20,
+    });
+
+    if (history.length < 4) return null;
+
+    // Build conversation summary for analysis
+    const convoText = history
+      .map(m => `${m.role === 'user' ? 'USER' : 'COACH'}: ${m.content.substring(0, 300)}`)
+      .join('\n');
+
+    const analysisPrompt = `Analyze this coaching conversation and extract exactly:
+1. INSIGHTS: 3-5 behavioral patterns about the user (e.g., "procrastinates on health goals", "most productive in mornings", "motivated by financial security")
+2. PATTERNS: 2-3 recurring conversation themes (e.g., "frequently asks about weight gain", "responds well to structured plans", "needs emotional validation before action")
+
+Respond in this EXACT JSON format only, no other text:
+{"insights":["insight1","insight2","insight3"],"patterns":["pattern1","pattern2"]}
+
+CONVERSATION:
+${convoText}`;
+
+    const messages: Array<{ role: 'system' | 'user'; content: string }> = [
+      { role: 'system', content: 'You are a behavioral analysis engine. Output only valid JSON.' },
+      { role: 'user', content: analysisPrompt },
+    ];
+
+    const raw = await callAICascade(messages, { max_tokens: 500, temperature: 0.3 });
+    if (!raw) return null;
+
+    try {
+      // Extract JSON from response (handle markdown code blocks)
+      const jsonStr = raw.replace(/```json?\n?/g, '').replace(/```/g, '').trim();
+      const parsed = JSON.parse(jsonStr) as { insights?: string[]; patterns?: string[] };
+      const insights = (parsed.insights || []).slice(0, 5).map(s => String(s).substring(0, 200));
+      const patterns = (parsed.patterns || []).slice(0, 3).map(s => String(s).substring(0, 200));
+
+      if (insights.length > 0 || patterns.length > 0) {
+        await ctx.runMutation(internal.coachAI.updateMemoryInsights, {
+          coachId: args.coachId,
+          insights,
+          patterns,
+        });
+      }
+    } catch {
+      // JSON parse failed — skip this extraction cycle
+    }
+
+    return null;
+  },
+});
+
+export const updateMemoryInsights = internalMutation({
+  args: {
+    coachId: COACH_ID_VALIDATOR,
+    insights: v.array(v.string()),
+    patterns: v.array(v.string()),
+  },
+  returns: v.null(),
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return null;
+    const user = await ctx.db
+      .query('users')
+      .withIndex('by_clerkId', (q: any) => q.eq('clerkId', identity.subject))
+      .unique();
+    if (!user) return null;
+
+    const mem = await ctx.db
+      .query('coachMemory')
+      .withIndex('by_userId_coachId', (q: any) =>
+        q.eq('userId', user._id).eq('coachId', args.coachId)
+      )
+      .unique();
+
+    if (mem) {
+      // Merge new insights with existing, dedup, keep last 10
+      const mergedInsights = [...new Set([...args.insights, ...(mem.insights || [])])].slice(0, 10);
+      const mergedPatterns = [...new Set([...args.patterns, ...(mem.patterns || [])])].slice(0, 6);
+      await ctx.db.patch(mem._id, {
+        insights: mergedInsights,
+        patterns: mergedPatterns,
+        lastAnalysisAt: Date.now(),
+        updatedAt: Date.now(),
+      });
+    }
+
+    return null;
   },
 });
 

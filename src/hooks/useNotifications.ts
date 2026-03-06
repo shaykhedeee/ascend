@@ -28,7 +28,7 @@ interface UseNotificationsReturn {
   scheduledReminders: ScheduledNotification[];
 }
 
-const REMINDERS_KEY = 'ascend-notification-reminders';
+const REMINDERS_KEY = 'resurgo-notification-reminders';
 
 export function useNotifications(): UseNotificationsReturn {
   const [permission, setPermission] = useState<NotificationPermission>('default');

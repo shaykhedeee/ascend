@@ -510,5 +510,6 @@ Generate a single, powerful identity statement (1 sentence).`;
 // Export singleton instance
 export const aiClient = new SecureAIClient();
 
-// Also export as ascendAI for backwards compatibility
+// Also export as resurgoAI and ascendAI for backwards compatibility
+export const resurgoAI = aiClient;
 export const ascendAI = aiClient;

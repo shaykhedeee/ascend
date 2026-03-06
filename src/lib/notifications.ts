@@ -90,7 +90,7 @@ interface NotificationIntelligenceOptions {
   scheduleProfile?: 'standard' | 'shift' | 'flexible' | 'student' | 'retired' | 'stay-at-home';
 }
 
-const SCHEDULED_NOTIFICATIONS_KEY = 'ascend-scheduled-notifications';
+const SCHEDULED_NOTIFICATIONS_KEY = 'resurgo-scheduled-notifications';
 
 /**
  * Save scheduled notifications to localStorage

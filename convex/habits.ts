@@ -693,6 +693,26 @@ export const getLogsForDateRange = query({
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
+// GET COMPLETED HABIT IDS FOR A SINGLE DATE (Mobile dashboard)
+// ─────────────────────────────────────────────────────────────────────────────
+export const getCompletionsForDate = query({
+  args: { date: v.string() },
+  returns: v.array(v.id('habits')),
+  handler: async (ctx, { date }) => {
+    const user = await getAuthUser(ctx);
+
+    const allLogs = await ctx.db
+      .query('habitLogs')
+      .withIndex('by_userId', (q: any) => q.eq('userId', user._id))
+      .collect();
+
+    return allLogs
+      .filter((log) => log.date === date && log.status === 'completed')
+      .map((log) => log.habitId);
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
 // GET HABIT STATS
 // ─────────────────────────────────────────────────────────────────────────────
 export const getStats = query({

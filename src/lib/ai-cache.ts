@@ -62,7 +62,7 @@ const RATE_LIMITS = {
 
 class AICache {
   private memoryCache: Map<string, CacheEntry<unknown>> = new Map();
-  private storageKey = 'ascend_ai_cache';
+  private storageKey = 'resurgo_ai_cache';
 
   constructor() {
     // Load from localStorage on initialization
@@ -190,7 +190,7 @@ class AICache {
 
 class AIRateLimiter {
   private limits: Map<string, RateLimitEntry> = new Map();
-  private storageKey = 'ascend_ai_rate_limits';
+  private storageKey = 'resurgo_ai_rate_limits';
 
   constructor() {
     if (typeof window !== 'undefined') {

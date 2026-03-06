@@ -36,4 +36,11 @@ crons.interval(
   internal.pushNotifications.deliverDueRemindersPush
 );
 
+// ── Lifecycle email automation: every day at 09:00 UTC ────────────────────────
+crons.daily(
+  'lifecycle-email-automation',
+  { hourUTC: 9, minuteUTC: 0 },
+  internal.emailAutomation.processLifecycleEmails
+);
+
 export default crons;

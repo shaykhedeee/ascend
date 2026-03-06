@@ -206,7 +206,7 @@ async function callOpenAI(
 // MAIN AI SERVICE CLASS
 // ─────────────────────────────────────────────────────────────────────────────────
 
-export class AscendAIService {
+export class ResurgoAIService {
   private preferredProvider: AIProvider = 'groq';
   private fallbackOrder: AIProvider[] = ['groq', 'gemini', 'openai'];
 
@@ -554,4 +554,7 @@ Generate a single, powerful identity statement (1 sentence).`;
 }
 
 // Singleton instance
-export const ascendAI = new AscendAIService('groq');
+export const resurgoAI = new ResurgoAIService('groq');
+
+// Backward compatibility alias
+export const ascendAI = resurgoAI;

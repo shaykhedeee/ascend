@@ -18,6 +18,7 @@ import AICoachWidget from '@/components/widgets/AICoachWidget';
 import CalorieTrackerWidget from '@/components/widgets/CalorieTrackerWidget';
 import SleepWidget from '@/components/widgets/SleepWidget';
 import { cn } from '@/lib/utils';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Brain, Target, Activity, Flame, Heart,
   ChevronRight, Plus, DollarSign, BookOpen,
@@ -81,8 +82,10 @@ function TodayTab() {
   const tasks = useQuery(api.tasks.list, { status: 'todo' });
   const todayDate = new Date().toISOString().split('T')[0];
   const todayNutrition = useQuery(api.nutrition.getNutritionLog, { date: todayDate });
+  const habitLogs = useQuery(api.habits.getCompletionsForDate, { date: todayDate });
   const updateWater = useMutation(api.nutrition.updateWaterAndSteps);
   const toggleTask = useMutation(api.tasks.toggleComplete);
+  const toggleHabit = useMutation(api.habits.toggleComplete);
 
   const currentWater = (todayNutrition as { waterMl?: number } | null | undefined)?.waterMl ?? 0;
   const waterGoal = 2500;
@@ -90,6 +93,10 @@ function TodayTab() {
 
   const [waterLoading, setWaterLoading] = useState(false);
   const [togglingTask, setTogglingTask] = useState<string | null>(null);
+  const [togglingHabit, setTogglingHabit] = useState<string | null>(null);
+
+  // Set of completed habit IDs for today
+  const completedHabitIds = new Set((habitLogs ?? []) as string[]);
 
   const addWater = useCallback(
     async (ml: number) => {
@@ -105,6 +112,12 @@ function TodayTab() {
     setTogglingTask(taskId);
     try { await toggleTask({ taskId: taskId as Id<'tasks'> }); } catch { /* silent */ }
     setTogglingTask(null);
+  };
+
+  const handleToggleHabit = async (habitId: string) => {
+    setTogglingHabit(habitId);
+    try { await toggleHabit({ habitId: habitId as Id<'habits'>, date: todayDate }); } catch { /* silent */ }
+    setTogglingHabit(null);
   };
 
   const todayTasks = ((tasks ?? []) as { _id: string; title: string; priority: string }[]).slice(0, 5);
@@ -194,7 +207,7 @@ function TodayTab() {
         </div>
       </div>
 
-      {/* — Habit tracker — */}
+      {/* — Habit tracker (interactive) — */}
       <div>
         <SectionHeader label="HABIT_TRACKER" linkHref="/habits" />
         <div className="grid grid-cols-2 gap-1.5">
@@ -203,15 +216,46 @@ function TodayTab() {
               className="col-span-2 flex items-center justify-center gap-2 border border-dashed border-zinc-800 py-5 font-terminal text-xs text-zinc-500">
               <Plus className="h-3.5 w-3.5" /> Start a habit
             </Link>
-          ) : todayHabits.map((h) => (
-            <div key={h._id} className="flex items-center gap-2 border border-zinc-900 bg-zinc-950 px-3 py-2.5">
-              <Flame className="h-3.5 w-3.5 shrink-0 text-orange-500" />
-              <div className="min-w-0">
-                <p className="truncate font-terminal text-xs text-zinc-200">{h.title}</p>
-                <p className="font-pixel text-[0.32rem] tracking-widest text-orange-400">{h.streakCurrent}d streak</p>
-              </div>
-            </div>
-          ))}
+          ) : todayHabits.map((h) => {
+            const isCompleted = completedHabitIds.has(h._id);
+            const isToggling = togglingHabit === h._id;
+            return (
+              <button key={h._id}
+                onClick={() => void handleToggleHabit(h._id)}
+                disabled={isToggling}
+                className={cn(
+                  'flex items-center gap-2 border px-3 py-2.5 text-left transition-all active:scale-95 disabled:opacity-50',
+                  isCompleted
+                    ? 'border-green-800/60 bg-green-950/30'
+                    : 'border-zinc-900 bg-zinc-950',
+                )}>
+                <div className={cn(
+                  'flex h-5 w-5 shrink-0 items-center justify-center rounded-sm border transition-all',
+                  isCompleted
+                    ? 'border-green-500 bg-green-500 text-black'
+                    : 'border-zinc-700 bg-zinc-900',
+                )}>
+                  {isCompleted && (
+                    <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <p className={cn(
+                    'truncate font-terminal text-xs',
+                    isCompleted ? 'text-green-300 line-through' : 'text-zinc-200',
+                  )}>{h.title}</p>
+                  <p className={cn(
+                    'font-pixel text-[0.32rem] tracking-widest',
+                    isCompleted ? 'text-green-500' : 'text-orange-400',
+                  )}>
+                    {isCompleted ? '✓ DONE' : `${h.streakCurrent}d streak`}
+                  </p>
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -409,11 +453,21 @@ export default function MobileDashboard() {
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto px-3 pt-3">
-        {activeTab === 'today'  && <TodayTab />}
-        {activeTab === 'ai'     && <AITab />}
-        {activeTab === 'health' && <HealthTab />}
-        {activeTab === 'goals'  && <GoalsTab />}
-        {activeTab === 'wealth' && <WealthTab />}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+          >
+            {activeTab === 'today'  && <TodayTab />}
+            {activeTab === 'ai'     && <AITab />}
+            {activeTab === 'health' && <HealthTab />}
+            {activeTab === 'goals'  && <GoalsTab />}
+            {activeTab === 'wealth' && <WealthTab />}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );

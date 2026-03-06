@@ -1498,4 +1498,18 @@ export default defineSchema({
     .index('by_userId', ['userId'])
     .index('by_userId_read', ['userId', 'read'])
     .index('by_userId_createdAt', ['userId', 'createdAt']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // EMAIL LOGS — Track lifecycle emails sent to prevent duplicates
+  // ─────────────────────────────────────────────────────────────────────────────
+  emailLogs: defineTable({
+    userId: v.id('users'),
+    emailType: v.string(),        // e.g. 'welcome', 'day3_tips', 'day7_streak', 'day14_checkin', 'day21_habit', 'day30_review', 'streak_at_risk', 'win_back'
+    sentAt: v.number(),
+    success: v.boolean(),
+    resendId: v.optional(v.string()),
+    error: v.optional(v.string()),
+  })
+    .index('by_userId', ['userId'])
+    .index('by_userId_emailType', ['userId', 'emailType']),
 });

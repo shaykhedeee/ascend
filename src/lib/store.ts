@@ -112,7 +112,7 @@ interface NewHabitInput {
   isActive: boolean;
 }
 
-interface AscendStore {
+interface ResurgoStore {
   // User & Profile
   user: User;
   hasCompletedOnboarding: boolean;
@@ -344,7 +344,7 @@ const defaultHabits: Habit[] = [];
 // STORE IMPLEMENTATION
 // ─────────────────────────────────────────────────────────────────────────────────
 
-export const useAscendStore = create<AscendStore>()(
+export const useResurgoStore = create<ResurgoStore>()(
   persist(
     (set, get) => ({
       // ─── User & Profile ───────────────────────────────────────────────────────
@@ -436,8 +436,8 @@ export const useAscendStore = create<AscendStore>()(
       // ─── Logout & Reset ───────────────────────────────────────────────────────
       logout: () => {
         // Clear localStorage
-        localStorage.removeItem('ascend-user');
-        localStorage.removeItem('ascend-storage');
+        localStorage.removeItem('resurgo-user');
+        localStorage.removeItem('resurgo-storage');
         // Reset store to defaults
         set({
           user: defaultUser,
@@ -462,7 +462,7 @@ export const useAscendStore = create<AscendStore>()(
       },
       
       resetStore: () => {
-        localStorage.removeItem('ascend-storage');
+        localStorage.removeItem('resurgo-storage');
         set({
           user: defaultUser,
           hasCompletedOnboarding: false,
@@ -1802,7 +1802,7 @@ export const useAscendStore = create<AscendStore>()(
       },
     }),
     {
-      name: 'ascend-storage',
+      name: 'resurgo-storage',
       partialize: (state) => ({
         user: state.user,
         hasCompletedOnboarding: state.hasCompletedOnboarding,
@@ -1854,3 +1854,6 @@ export const useAscendStore = create<AscendStore>()(
     }
   )
 );
+
+// Backward compatibility alias — all existing components import useAscendStore
+export const useAscendStore = useResurgoStore;

@@ -586,44 +586,64 @@ export class AIGoalDecomposer {
   private getTaskTitle(category: GoalCategory, milestone: number, week: number, task: number): string {
     const taskBanks: Record<GoalCategory, string[][]> = {
       fitness: [
-        ['Complete baseline fitness test', 'Plan weekly workout schedule', 'Research proper form videos', 'Prepare workout space', 'Do first full workout'],
-        ['Progressive overload session', 'Active recovery day', 'Nutrition planning', 'Track measurements', 'Mobility routine'],
+        ['Complete baseline fitness test (pushups, squats, plank hold)', 'Plan weekly workout schedule with progressive overload', 'Research proper form for compound lifts', 'Set up workout tracking spreadsheet or app', 'Do first full-body workout (3 sets × 8-12 reps)'],
+        ['Progressive overload: add 2.5kg to main lifts', 'Active recovery: 30-min yoga or foam rolling', 'Plan weekly meals with protein targets (1.6-2.2g/kg)', 'Take body measurements and progress photos', 'Full mobility and flexibility routine (20 min)'],
+        ['Strength session: squat/deadlift/bench focus', 'HIIT cardio session (20 min)', 'Meal prep 4+ healthy meals for the week', 'Research supplementation (creatine, protein, vitamins)', 'Test 1-rep max or endurance benchmark'],
+        ['Upper body strength day (push/pull split)', 'Lower body power day (squats, lunges, leg press)', 'Track macros: hit protein and calorie targets', 'Recovery session: cold shower + stretching', 'Review weekly training log and adjust intensity'],
       ],
       health: [
-        ['Complete health journal entry', 'Prepare healthy meals', 'Get 8 hours of sleep', 'Take a 30-min walk', 'Practice deep breathing'],
-        ['Meal prep for the week', 'Try a new healthy recipe', 'Schedule health checkup', 'Track water intake', 'Evening stretching'],
+        ['Complete health journal: energy, mood, sleep quality', 'Batch-prep 5 healthy meals with balanced macros', 'Achieve 8+ hours of quality sleep tonight', '30-minute outdoor walk in nature', '10-minute deep breathing and box breathing session'],
+        ['Weekly meal prep: cook protein + vegetables for 5 days', 'Try a new anti-inflammatory recipe', 'Schedule annual health checkup or blood work', 'Track water intake: hit 3L today', 'Evening stretching and relaxation routine (15 min)'],
+        ['Eliminate one processed food from daily diet', 'Practice sleep hygiene: no screens 1hr before bed', 'Blood pressure and resting heart rate check', 'Make a smoothie with 5+ whole ingredients', 'Complete a guided body scan meditation'],
+        ['Start supplement routine (vitamin D, omega-3, magnesium)', 'Cook a healthy dinner from scratch, no shortcuts', 'Walk 10,000 steps today', 'Practice mindful eating at one meal (no phone)', 'Log mood, energy, digestion patterns in journal'],
       ],
       career: [
-        ['Update resume/portfolio', 'Research industry trends', 'Reach out to 2 connections', 'Learn new skill (30 min)', 'Set weekly career goals'],
-        ['Apply to opportunities', 'Practice interview skills', 'Attend networking event', 'Complete online course', 'Review and reflect'],
+        ['Update resume with latest achievements and metrics', 'Research 3 industry trends relevant to your role', 'Send personalized messages to 2 professional connections', 'Learn a new skill for 30 min (course, tutorial, article)', 'Define 3 measurable weekly career goals'],
+        ['Apply to 2 opportunities or pitch to a client', 'Practice 30-min mock interview or presentation', 'Attend virtual networking event or webinar', 'Complete one module of online course or certification', 'Write weekly career reflection: wins, lessons, blockers'],
+        ['Create or update LinkedIn profile with keyword optimization', 'Set up informational interview with someone in target role', 'Build project portfolio piece showcasing your best work', 'Negotiate or ask for one thing you deserve', 'Research salary benchmarks for your target position'],
+        ['Write a thought leadership post on LinkedIn', 'Request performance feedback from manager or peer', 'Identify 3 mentors and reach out to one', 'Start a side project that demonstrates target skills', 'Map out your 5-year career trajectory on paper'],
       ],
       education: [
-        ['Study core concepts (1 hour)', 'Complete practice exercises', 'Review and take notes', 'Watch educational content', 'Quiz yourself'],
-        ['Deep dive into topic', 'Group study session', 'Create summary notes', 'Teach concept to someone', 'Assessment preparation'],
+        ['Focused study session: 60 min on core concepts', 'Complete 10 practice problems with full solutions', 'Create detailed summary notes with diagrams', 'Watch 2 educational videos and take timestamps', 'Self-quiz on today\'s learning (flashcards or recall)'],
+        ['Deep dive: read 2 chapters or papers on the topic', 'Join study group or find accountability partner', 'Create mind map connecting all learned concepts', 'Teach one concept to someone (Feynman Technique)', 'Timed practice test under real conditions'],
+        ['Build a project that uses what you\'ve studied', 'Review and update all notes from the past week', 'Research advanced resources: books, courses, papers', 'Write blog post or summary explaining key concept', 'Schedule mentorship session with subject expert'],
+        ['Complete a certification practice exam', 'Reorganize notes into a knowledge management system', 'Apply learning to a real-world problem or case study', 'Create cheat sheets for the top 10 concepts', 'Plan and begin next learning phase'],
       ],
       finance: [
-        ['Track all expenses', 'Review budget progress', 'Research investment options', 'Automate one payment', 'Find one expense to cut'],
-        ['Increase savings rate', 'Review subscriptions', 'Learn about investing', 'Set up emergency fund', 'Plan next month'],
+        ['Track every expense today — categorize each one', 'Review budget vs actual spending for this week', 'Research 3 investment options (index funds, ETFs, bonds)', 'Automate one recurring bill or savings transfer', 'Identify one subscription to cancel or downgrade'],
+        ['Increase savings rate by 1% this month', 'Review all active subscriptions and services', 'Read one chapter of a personal finance book', 'Set up or top up emergency fund goal', 'Create next month\'s budget with envelope categories'],
+        ['Analyze income sources: identify growth opportunities', 'Open or review investment account performance', 'Compare insurance plans for potential savings', 'Set up automated investing (dollar-cost averaging)', 'Calculate your exact cost of living per day'],
+        ['Create 12-month financial forecast spreadsheet', 'Research tax optimization strategies for your situation', 'Set SMART savings goal with specific target and deadline', 'Review credit score and dispute any errors', 'Negotiate one recurring bill (phone, internet, insurance)'],
       ],
       relationships: [
-        ['Have meaningful conversation', 'Express gratitude', 'Plan quality time', 'Practice active listening', 'Send appreciation message'],
-        ['Try new activity together', 'Address one small issue', 'Create shared goal', 'Celebrate small wins', 'Reflect on relationship'],
+        ['Have a 15-min deep conversation without phones', 'Write a heartfelt message of appreciation to someone', 'Plan a quality activity together this week', 'Practice active listening: no interrupting for one full conversation', 'Send a unexpected kind message to 3 people'],
+        ['Try a new activity or restaurant with someone important', 'Address one small relationship friction constructively', 'Create a shared goal or dream board together', 'Celebrate someone else\'s win publicly and privately', 'Write reflection: what am I grateful for in my relationships?'],
+        ['Schedule a recurring weekly date or catch-up', 'Learn your loved one\'s love language and act on it', 'Apologize for something you\'ve been holding back', 'Volunteer together or do a joint community activity', 'Create a photo album or memory collection'],
+        ['Plan a surprise for someone you care about', 'Set healthy boundaries in one relationship', 'Read an article on communication and practice one technique', 'Express vulnerability: share something you usually hide', 'Schedule next 3 regular contact points with distant friends'],
       ],
       creativity: [
-        ['Create for 30 minutes', 'Consume inspiring content', 'Brainstorm new ideas', 'Share work with someone', 'Learn new technique'],
-        ['Work on main project', 'Experiment freely', 'Get feedback', 'Refine recent work', 'Plan next creative sprint'],
+        ['Create for 30 minutes — no judgment, pure flow', 'Consume 2 pieces of inspiring content in your medium', 'Brainstorm 10 ideas (quantity over quality)', 'Share one piece of work publicly for feedback', 'Learn one new technique in your craft (tutorial/course)'],
+        ['Work on main creative project for 60+ minutes', 'Experiment with a medium or style you\'ve never tried', 'Ask 2 people for honest feedback on recent work', 'Refine and polish your best recent piece', 'Plan a 7-day creative challenge or sprint'],
+        ['Visit a gallery, concert, or creative space for inspiration', 'Collaborate with another creator on a small project', 'Document your creative process (video, writing, audio)', 'Study a master in your field — analyze their technique', 'Set up or organize your creative workspace'],
+        ['Create a portfolio showcasing your 5 best works', 'Submit work to a contest, publication, or platform', 'Mentor someone starting their creative journey', 'Write artist statement or creative mission', 'Plan your next creative project with timeline and milestones'],
       ],
       mindfulness: [
-        ['Morning meditation (10 min)', 'Mindful lunch break', 'Gratitude journaling', 'Body scan before bed', 'Mindful walking'],
-        ['Extended meditation (20 min)', 'Loving-kindness practice', 'Digital detox hour', 'Nature connection', 'Reflection session'],
+        ['Morning meditation: 10 minutes of silent sitting', 'Eat one meal with full attention — no phone, no screen', 'Gratitude journaling: 5 specific things from today', 'Body scan before bed: systematically relax each muscle', 'Mindful walk: notice 5 things you see, hear, smell'],
+        ['Extended meditation: 20 minutes sitting practice', 'Loving-kindness meditation for self and others', 'Digital detox: 2 hours completely phone-free', 'Nature immersion: 30 min outdoors with full presence', 'Evening reflection: what brought peace today?'],
+        ['Try a new meditation style (Zen, Vipassana, mantra)', 'Practice mindful breathing during a stressful moment', 'Single-tasking challenge: one thing at a time for 3 hours', 'Mindful communication: pause before every response', 'Progressive muscle relaxation session (20 min)'],
+        ['Lead or join a group meditation session', 'Write a letter to your future self about your practice', 'Create a mindfulness anchor routine for morning + evening', 'Practice equanimity: observe one strong emotion without reacting', 'Plan a personal mini-retreat (half-day of silence)'],
       ],
       productivity: [
-        ['Time block your day', 'Complete top 3 priorities', 'Review and clear inbox', 'Eliminate one distraction', 'End-of-day review'],
-        ['Deep work session (2 hours)', 'Batch similar tasks', 'Delegate one task', 'Automate repetitive work', 'Weekly review'],
+        ['Time-block your entire day in 90-minute chunks', 'Complete your TOP 3 priorities before noon', 'Process inbox to zero and unsubscribe from 5 lists', 'Identify and eliminate one time-wasting habit', 'End-of-day review: what worked, what didn\'t, tomorrow\'s plan'],
+        ['Deep work session: 2 hours, all notifications off', 'Batch similar tasks together (calls, emails, errands)', 'Delegate or automate one recurring task', 'Set up a focus environment: clean desk, blocked apps', 'Weekly review: plan next 7 days in detail'],
+        ['Audit your tools: keep only what you actually use', 'Create a standard operating procedure for one routine task', 'Practice saying no to one non-essential request', 'Energy audit: identify your peak focus hours', 'Design an ideal morning routine and test it'],
+        ['Create a project dashboard for tracking all active work', 'Implement 2-minute rule: do or delegate anything under 2 min', 'Build a capture system for ideas and tasks (all goes to inbox)', 'Review quarterly goals and set next sprint objectives', 'Optimize one workflow that takes too many steps'],
       ],
       custom: [
-        ['Work on main goal (30 min)', 'Review progress', 'Learn something relevant', 'Remove one obstacle', 'Plan tomorrow'],
-        ['Extended focus session', 'Get feedback on progress', 'Adjust approach if needed', 'Celebrate small win', 'Prepare for next week'],
+        ['Work on primary goal for 30 focused minutes', 'Review progress — are you on track for this week?', 'Learn one thing relevant to your goal (article, video, mentor)', 'Remove one obstacle blocking your progress', 'Plan tomorrow\'s most important actions tonight'],
+        ['Extended focus session: 60 min of deep work on goal', 'Get honest feedback from someone who knows your field', 'Adjust your approach based on this week\'s results', 'Celebrate one small win — write it down', 'Prepare materials and mindset for next week'],
+        ['Research best practices from people who achieved similar goals', 'Document your process and lessons learned so far', 'Connect with someone who can accelerate your progress', 'Review your why: reconnect with the motivation behind your goal', 'Set a micro-deadline and hit it today'],
+        ['Challenge yourself: attempt something slightly beyond comfort zone', 'Create a visual progress tracker (chart, calendar, dashboard)', 'Eliminate one distraction that consistently derails you', 'Write down your goal and read it aloud every morning', 'Identify the #1 bottleneck and brainstorm 5 solutions'],
       ],
     };
 
@@ -633,13 +653,79 @@ export class AIGoalDecomposer {
   }
 
   private getTaskDescription(category: GoalCategory, taskIndex: number): string {
-    const descriptions = [
-      'Focus on quality over quantity. Take your time.',
-      'Build momentum with consistent action.',
-      'Review your progress and adjust as needed.',
-      'Push slightly beyond your comfort zone.',
-      'Celebrate completing this task!',
-    ];
+    const categoryDescriptions: Record<GoalCategory, string[]> = {
+      fitness: [
+        'Push yourself — controlled intensity with proper form. Rest 60-90s between sets.',
+        'Consistency beats intensity. Show up even when motivation is low.',
+        'Track your numbers: weight, reps, sets. What gets measured gets improved.',
+        'Recovery is where growth happens. Prioritize sleep and nutrition today.',
+        'Challenge complete! You\'re building a stronger version of yourself.',
+      ],
+      health: [
+        'Nourish your body intentionally. Focus on whole, unprocessed foods.',
+        'Small health choices compound over time. Today\'s effort matters.',
+        'Listen to your body — adjust intensity based on how you feel.',
+        'Hydration and rest are the foundations. Don\'t skip the basics.',
+        'Your health investment today pays dividends for years to come.',
+      ],
+      career: [
+        'Approach this strategically. Think about the long-term impact of today\'s work.',
+        'Professional growth is a daily practice. Show up, learn, repeat.',
+        'Focus on outcomes that matter. Skip busy work, do the important thing.',
+        'Your future self will thank you for the effort you put in today.',
+        'Network authentically — genuine connections create real opportunities.',
+      ],
+      education: [
+        'Active recall is 3× more effective than re-reading. Test yourself.',
+        'Connect new concepts to what you already know. Build mental models.',
+        'Spaced repetition: review today\'s learning again in 3 days.',
+        'Understanding > memorization. Can you explain this to a beginner?',
+        'Celebrate learning something difficult. Growth happens at the edge.',
+      ],
+      finance: [
+        'Every dollar has a job. Make sure you\'re the one assigning it.',
+        'Compound growth is the 8th wonder of the world. Start now.',
+        'Track spending without judgment. Awareness is the first step to control.',
+        'Wealthy people don\'t budget more — they automate their finances.',
+        'Today\'s financial discipline creates tomorrow\'s financial freedom.',
+      ],
+      relationships: [
+        'Be fully present. The greatest gift you can give is your attention.',
+        'Vulnerability builds trust. Share something real today.',
+        'Small gestures matter more than grand gestures. Consistency wins.',
+        'Listen to understand, not to respond. Ask follow-up questions.',
+        'Investing in relationships is investing in your well-being.',
+      ],
+      creativity: [
+        'Don\'t wait for inspiration — create, and inspiration will follow.',
+        'Embrace imperfection. Finished is better than perfect.',
+        'Creative muscles grow with use. Daily practice compounds into mastery.',
+        'Steal like an artist — study, learn, remix, make it yours.',
+        'Put your work out there. Feedback accelerates creative growth.',
+      ],
+      mindfulness: [
+        'You are not your thoughts. Observe them like clouds passing by.',
+        'One breath at a time. That\'s all mindfulness requires.',
+        'Return to the present moment. The past and future are mental constructs.',
+        'Non-judgment is the core skill. Notice without labeling.',
+        'Peace is already here. You\'re just learning to access it.',
+      ],
+      productivity: [
+        'Done is better than perfect. Ship it, then iterate.',
+        'Focus on the ONE thing that makes everything else easier or unnecessary.',
+        'Batching similar tasks reduces context-switching cost dramatically.',
+        'Your energy is finite. Protect your peak hours for deep work.',
+        'Progress, not perfection. Small daily gains compound into breakthroughs.',
+      ],
+      custom: [
+        'Quality over quantity. Give this your full, undivided attention.',
+        'Build momentum with consistent daily action.',
+        'Review progress and adjust your approach as needed.',
+        'Push slightly beyond your comfort zone — that\'s where growth lives.',
+        'Celebrate completing this step. You\'re making real progress!',
+      ],
+    };
+    const descriptions = categoryDescriptions[category] || categoryDescriptions.custom;
     return descriptions[taskIndex % descriptions.length];
   }
 

@@ -17,6 +17,15 @@ import StickyCTA from '@/components/marketing/StickyCTA';
 import { CookieConsent } from '@/components/CookieConsent';
 import { captureUtmParams, trackMarketingEvent } from '@/lib/marketing/analytics';
 import { getExperimentVariant, trackExperimentExposure } from '@/lib/marketing/experiments';
+import {
+  TerminalWindow,
+  StatusBar,
+  ProgressBar,
+  KeyboardHints,
+  SparklineBars,
+  TerminalOutput,
+} from '@/components/terminal';
+import type { TerminalLine, StatusItem, KeyHint } from '@/components/terminal';
 
 /* ═══════════════════════════════════════════════════════════════════════════
    RESURGO :: LANDING PAGE v2.1 — Enhanced
@@ -441,6 +450,40 @@ const ACHIEVEMENT_STEPS = [
   },
 ];
 
+// ─── HERO TERMINAL LINES (auto-typed in TerminalWindow) ─────────────────────
+const HERO_TERMINAL_LINES: TerminalLine[] = [
+  { id: 'h1', type: 'command',  text: 'resurgo init --goal "launch startup"' },
+  { id: 'h2', type: 'system',   text: '✦ Analyzing goal complexity…',         delay: 300 },
+  { id: 'h3', type: 'success',  text: '→ 4 milestones generated',             delay: 200 },
+  { id: 'h4', type: 'success',  text: '→ 12 weekly targets created',          delay: 150 },
+  { id: 'h5', type: 'success',  text: '→ 37 daily tasks queued',              delay: 150 },
+  { id: 'h6', type: 'info',     text: '↳ Coach NOVA assigned (Systems)',      delay: 200 },
+  { id: 'h7', type: 'command',  text: 'resurgo status --today',               delay: 600 },
+  { id: 'h8', type: 'output',   text: '  Habits: 3/5  │  Focus: 2.1h  │  XP: +340', delay: 200 },
+  { id: 'h9', type: 'success',  text: '✓ Day 1 plan ready. Execute with: resurgo start', delay: 300 },
+];
+
+const HERO_STATUS_LEFT: StatusItem[] = [
+  { id: 'hs1', dot: 'online',  label: 'SYSTEM', value: 'READY' },
+  { id: 'hs2', label: 'CYCLE',  value: 'DAY_1' },
+  { id: 'hs3', label: 'v2.4.1' },
+];
+
+const HERO_STATUS_RIGHT: StatusItem[] = [
+  { id: 'hr1', label: 'INTEGRITY', value: '89%', color: 'text-[var(--term-green)]' },
+  { id: 'hr2', label: 'XP',        value: '2,340', color: 'text-[var(--term-orange)]' },
+];
+
+const HERO_KEY_HINTS: KeyHint[] = [
+  { id: 'k1', key: 'Enter', label: 'execute' },
+  { id: 'k2', key: '↑↓',   label: 'history' },
+  { id: 'k3', key: 'Tab',   label: 'autocomplete' },
+  { id: 'k4', key: '?',     label: 'help' },
+];
+
+// Sparkline data for hero visualizer (cava-inspired)
+const HERO_SPARKLINE = [30, 45, 35, 60, 50, 75, 55, 85, 65, 92, 70, 95, 80, 98, 88, 100, 95, 100, 100, 100];
+
 /* ═══════════════════════════════════════════════════════════════════════════
    COMPONENT
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -675,54 +718,61 @@ function LandingPageV2() {
                 </div>
               </div>
 
-              {/* Right — terminal preview */}
-              <div className="overflow-hidden border-2 border-zinc-800 bg-black shadow-[4px_4px_0px_rgba(0,0,0,0.7)]">
-                <div className="flex items-center justify-between border-b-2 border-zinc-800 px-4 py-2">
-                  <span className="font-pixel text-[0.6rem] tracking-widest text-orange-500">COMMAND_CTR</span>
-                  <span className="font-pixel text-[0.35rem] tracking-widest text-zinc-500">CYCLE: ACTIVE</span>
-                </div>
-                <div className="space-y-px p-3 sm:p-4">
-                  {[
-                    { label: 'Morning habit routine', meta: 'Health · streak 14 days', status: 'Done', color: 'green' as const },
-                    { label: 'Deep work session', meta: 'Focus · 2 h planned', status: 'Active', color: 'orange' as const },
-                    { label: 'AI coach check-in', meta: 'NOVA · Systems strategy', status: 'Ready', color: 'zinc' as const },
-                    { label: 'Weekly goal review', meta: 'Strategy · AI brief', status: 'Later', color: 'zinc' as const },
-                  ].map((row) => (
-                    <div
-                      key={row.label}
-                      className="flex items-center justify-between gap-2 border border-zinc-900 bg-black px-2 py-2 sm:px-3 sm:py-2.5"
-                    >
-                      <div className="min-w-0 flex-1">
-                        <p className="truncate font-terminal text-sm text-zinc-300 sm:text-base">{row.label}</p>
-                        <p className="truncate font-terminal text-xs text-zinc-400 sm:text-sm">{row.meta}</p>
-                      </div>
-                      <span
-                        className={cn(
-                          'shrink-0 border-2 px-1.5 py-0.5 font-pixel text-[0.3rem] tracking-widest sm:px-2 sm:text-[0.35rem]',
-                          row.color === 'green' && 'border-green-900 bg-green-950/50 text-green-500',
-                          row.color === 'orange' && 'border-orange-900 bg-orange-950/50 text-orange-500',
-                          row.color === 'zinc' && 'border-zinc-800 bg-zinc-900/50 text-zinc-500',
-                        )}
-                      >
-                        {row.status}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                <div className="grid grid-cols-3 gap-px border-t-2 border-zinc-800">
-                  <div className="bg-black px-2 py-3 sm:px-4">
-                    <p className="truncate font-pixel text-[0.3rem] tracking-widest text-zinc-400 sm:text-[0.35rem]">INTEGRITY</p>
-                    <p className="mt-1 font-pixel text-xs text-orange-500 sm:text-sm">89%</p>
+              {/* Right — Enhanced Terminal Preview (research-driven) */}
+              <div className="flex flex-col gap-3">
+                <TerminalWindow
+                  title="resurgo.terminal"
+                  variant="bordered"
+                  scanlines
+                  crtGlow
+                  lines={HERO_TERMINAL_LINES}
+                  autoType
+                  typeSpeed={25}
+                  lineDelay={350}
+                  maxBodyHeight="240px"
+                  prompt="$"
+                  headerRight={
+                    <SparklineBars
+                      data={HERO_SPARKLINE}
+                      height={20}
+                      barWidth={3}
+                      gap={1}
+                      color="orange"
+                    />
+                  }
+                  footer={
+                    <StatusBar
+                      items={HERO_STATUS_LEFT}
+                      rightItems={HERO_STATUS_RIGHT}
+                      compact
+                    />
+                  }
+                  className="shadow-[4px_4px_0px_rgba(0,0,0,0.7)]"
+                />
+
+                {/* Quick progress snapshot below terminal */}
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="border border-[var(--term-border)] bg-[var(--term-bg)] px-3 py-2 rounded-sm">
+                    <p className="font-pixel text-[0.35rem] tracking-widest text-[var(--term-fg-dimmer)] mb-1">HABITS</p>
+                    <ProgressBar value={60} variant="blocks" color="green" size="sm" showLabel />
                   </div>
-                  <div className="border-l-2 border-zinc-800 bg-black px-2 py-3 sm:px-4">
-                    <p className="truncate font-pixel text-[0.3rem] tracking-widest text-zinc-400 sm:text-[0.35rem]">FOCUS</p>
-                    <p className="mt-1 font-pixel text-xs text-green-500 sm:text-sm">18.5h</p>
+                  <div className="border border-[var(--term-border)] bg-[var(--term-bg)] px-3 py-2 rounded-sm">
+                    <p className="font-pixel text-[0.35rem] tracking-widest text-[var(--term-fg-dimmer)] mb-1">FOCUS</p>
+                    <ProgressBar value={75} variant="ascii" color="cyan" size="sm" showLabel />
                   </div>
-                  <div className="border-l-2 border-zinc-800 bg-black px-2 py-3 sm:px-4">
-                    <p className="truncate font-pixel text-[0.3rem] tracking-widest text-zinc-400 sm:text-[0.35rem]">XP WK</p>
-                    <p className="mt-1 font-pixel text-xs text-orange-400 sm:text-sm">2,340</p>
+                  <div className="border border-[var(--term-border)] bg-[var(--term-bg)] px-3 py-2 rounded-sm">
+                    <p className="font-pixel text-[0.35rem] tracking-widest text-[var(--term-fg-dimmer)] mb-1">XP</p>
+                    <ProgressBar value={88} variant="gradient" color="orange" size="sm" showLabel />
                   </div>
                 </div>
+
+                {/* Keyboard hints */}
+                <KeyboardHints
+                  hints={HERO_KEY_HINTS}
+                  compact
+                  variant="minimal"
+                  className="justify-center opacity-60 mt-1"
+                />
               </div>
             </div>
           </div>

@@ -52,6 +52,30 @@
   --text-primary: #FAFAFA;         /* zinc-50 */
   --text-secondary: #71717A;       /* zinc-500 */
   --text-muted: #3F3F46;           /* zinc-700 */
+
+  /* ── Advanced Terminal UI Colors (research-driven) ── */
+  --term-bg: #0a0e27;              /* Deep terminal bg */
+  --term-bg-lighter: #141823;      /* Lighter panel bg */
+  --term-fg: #e0e6ed;              /* Off-white text */
+  --term-fg-dim: #8892a6;          /* Dimmed text */
+  --term-fg-dimmer: #5a6270;       /* Very dim */
+  --term-orange: #FF6B35;          /* Primary accent (ANSI orange) */
+  --term-orange-bright: #FF8C42;
+  --term-orange-dim: #cc5529;
+  --term-cyan: #00D9FF;            /* Secondary accent (ANSI cyan) */
+  --term-cyan-bright: #33E1FF;
+  --term-cyan-dim: #00aac7;
+  --term-green: #00FF88;           /* Success (ANSI green) */
+  --term-yellow: #FFD700;          /* Warning (ANSI yellow) */
+  --term-red: #FF5F57;             /* Error (ANSI red) */
+  --term-magenta: #B833FF;         /* Highlight (ANSI magenta) */
+  --term-border: #2a2f4a;          /* Panel borders */
+  --term-border-active: #FF6B35;
+  --term-selection: rgba(255, 107, 53, 0.2);
+  --term-hover: rgba(255, 107, 53, 0.1);
+  --term-glow-orange: 0 0 20px rgba(255, 107, 53, 0.4);
+  --term-glow-cyan: 0 0 20px rgba(0, 217, 255, 0.4);
+  --term-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   
   /* Glass effect */
   --glass-bg: rgba(255, 255, 255, 0.05);
@@ -2275,4 +2299,203 @@ body.custom-cursor-active .cursor-not-allowed {
 
 .animate-streak-pulse {
   animation: streak-pulse 2s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   TERMINAL UI COMPONENT SYSTEM (Research-Driven)
+   Inspired by: btop, tig, ranger, cava, charm.sh/gum, bpytop
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── Scanline Overlay ── */
+.terminal-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 217, 255, 0.015) 0px,
+    transparent 1px,
+    transparent 2px,
+    rgba(0, 217, 255, 0.015) 3px
+  );
+  animation: scanlines-drift 8s linear infinite;
+}
+
+@keyframes scanlines-drift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(12px); }
+}
+
+/* ── CRT Vignette Glow ── */
+.terminal-crt-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(255, 107, 53, 0.03) 0%,
+    transparent 65%
+  );
+  mix-blend-mode: screen;
+}
+
+/* ── Terminal Window Chrome ── */
+.terminal-chrome {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--term-border, #2a2f4a);
+  background: var(--term-bg, #0a0e27);
+  box-shadow: var(--term-shadow, 0 4px 12px rgba(0, 0, 0, 0.5));
+}
+
+.terminal-chrome.terminal-bordered {
+  border-color: var(--term-orange, #FF6B35);
+  box-shadow: var(--term-glow-orange, 0 0 20px rgba(255, 107, 53, 0.4));
+}
+
+.terminal-chrome .terminal-title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: linear-gradient(180deg,
+    rgba(255, 107, 53, 0.12) 0%,
+    rgba(255, 107, 53, 0.04) 100%
+  );
+  border-bottom: 1px solid var(--term-border, #2a2f4a);
+}
+
+.terminal-chrome .window-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.terminal-chrome .window-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.terminal-chrome .window-dots .dot-close { background: #FF5F57; }
+.terminal-chrome .window-dots .dot-minimize { background: #FFD700; }
+.terminal-chrome .window-dots .dot-maximize { background: #00FF88; }
+
+.terminal-chrome .window-dots span:hover {
+  opacity: 0.8;
+  filter: brightness(1.2);
+}
+
+/* ── Sparkline Bars (cava-inspired) ── */
+.sparkline-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 32px;
+}
+
+.sparkline-bars .bar {
+  width: 4px;
+  background: var(--term-orange, #FF6B35);
+  opacity: 0.7;
+  transition: height 0.3s ease;
+}
+
+.sparkline-bars .bar:nth-child(even) {
+  background: var(--term-cyan, #00D9FF);
+  opacity: 0.5;
+}
+
+/* ── ASCII Box Borders ── */
+.ascii-border-line {
+  white-space: pre;
+  font-family: var(--font-mono, 'VT323', monospace);
+  color: var(--term-fg-dim, #8892a6);
+  line-height: 1.4;
+  user-select: none;
+}
+
+.ascii-border-line.border-orange { color: var(--term-orange, #FF6B35); }
+.ascii-border-line.border-cyan { color: var(--term-cyan, #00D9FF); }
+
+/* ── Cursor Blink ── */
+.cursor-blink {
+  animation: cursor-blink-anim 1s step-end infinite;
+}
+
+@keyframes cursor-blink-anim {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* ── Terminal Progress Variants ── */
+.progress-bar-shine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.15) 50%, transparent 100%);
+  animation: progress-shine 2s ease-in-out infinite;
+}
+
+@keyframes progress-shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ── Keyboard Hint Key ── */
+.kbd-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  padding: 2px 8px;
+  background: rgba(255, 107, 53, 0.15);
+  border: 1px solid var(--term-orange, #FF6B35);
+  color: var(--term-orange, #FF6B35);
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Status Indicator Dots ── */
+.status-dot {
+  position: relative;
+  display: inline-flex;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.status-dot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: status-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.status-dot.online { background: var(--term-green, #00FF88); }
+.status-dot.online::before { background: var(--term-green, #00FF88); }
+.status-dot.warning { background: var(--term-yellow, #FFD700); }
+.status-dot.warning::before { background: var(--term-yellow, #FFD700); }
+.status-dot.error { background: var(--term-red, #FF5F57); }
+.status-dot.error::before { background: var(--term-red, #FF5F57); }
+
+@keyframes status-ping {
+  0% { transform: scale(1); opacity: 0.6; }
+  75%, 100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* ── Reduced Motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .terminal-scanlines,
+  .progress-bar-shine::after,
+  .cursor-blink,
+  .status-dot::before {
+    animation: none !important;
+  }
 }

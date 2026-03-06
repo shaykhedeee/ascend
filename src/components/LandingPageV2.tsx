@@ -696,15 +696,7 @@ function LandingPageV2() {
                     </svg>
                     Download APK
                   </a>
-                  <a
-                    href="/download"
-                    className="inline-flex min-h-[56px] items-center justify-center gap-2 border-2 border-zinc-800 px-8 font-mono text-sm tracking-wider text-zinc-400 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] transition-all duration-100 hover:border-orange-600 hover:text-orange-400 active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_rgba(0,0,0,0.5)]"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                    </svg>
-                    Add to Homescreen
-                  </a>
+
                 </div>
 
                 {/* Metrics bar */}
@@ -1355,6 +1347,66 @@ function LandingPageV2() {
           </div>
         </section>
 
+        {/* ────────────────── GOAL TEMPLATES ────────────────── */}
+        <section id="templates" className="border-t-2 border-zinc-800 bg-black px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-10 text-center">
+              <p className="font-pixel text-[0.5rem] tracking-widest text-orange-600">GOAL_TEMPLATES</p>
+              <h2 className="mt-3 font-pixel text-lg text-zinc-100 sm:text-xl lg:text-2xl">
+                From idea to 90-day plan in seconds
+              </h2>
+              <p className="mx-auto mt-3 max-w-xl font-terminal text-lg text-zinc-400">
+                Pick any goal template below. Resurgo instantly generates milestones, daily habits, and an AI-coached execution schedule tailored to you.
+              </p>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {([
+                { slug: 'run-a-5k-in-12-weeks',      title: 'Run a 5K in 12 Weeks',        category: 'FITNESS',  weeks: 12, diff: 'BEGINNER' },
+                { slug: 'build-a-morning-routine',   title: 'Build a Morning Routine',     category: 'WELLNESS', weeks: 8,  diff: 'BEGINNER' },
+                { slug: 'get-promoted-this-year',    title: 'Get Promoted This Year',      category: 'CAREER',   weeks: 40, diff: 'ADVANCED' },
+                { slug: 'save-5000-emergency-fund',  title: 'Save a $5,000 Emergency Fund',category: 'FINANCE',  weeks: 24, diff: 'INTERMEDIATE' },
+                { slug: 'learn-to-code-in-100-days', title: 'Learn to Code in 100 Days',   category: 'LEARNING', weeks: 15, diff: 'INTERMEDIATE' },
+                { slug: 'quit-smoking-90-day-plan',  title: 'Quit Smoking — 90-Day Plan',  category: 'HEALTH',   weeks: 13, diff: 'ADVANCED' },
+              ] as const).map((t) => (
+                <Link
+                  key={t.slug}
+                  href={`/templates/${t.slug}`}
+                  className="group block border-2 border-zinc-800 bg-black p-5 transition hover:border-orange-900/60 hover:bg-zinc-950"
+                >
+                  <div className="mb-3 flex items-center justify-between">
+                    <span className="border border-orange-900/50 bg-orange-950/20 px-2 py-0.5 font-pixel text-[0.35rem] tracking-widest text-orange-500">
+                      {t.category}
+                    </span>
+                    <span className={`font-pixel text-[0.32rem] tracking-widest ${t.diff === 'BEGINNER' ? 'text-green-500' : t.diff === 'ADVANCED' ? 'text-red-500' : 'text-yellow-500'}`}>
+                      {t.diff}
+                    </span>
+                  </div>
+                  <p className="font-terminal text-base font-semibold text-zinc-200 group-hover:text-orange-300 transition-colors">
+                    {t.title}
+                  </p>
+                  <div className="mt-3 flex items-center justify-between">
+                    <span className="font-mono text-[11px] text-zinc-600">{t.weeks}w plan</span>
+                    <span className="font-pixel text-[0.35rem] tracking-widest text-orange-600 opacity-0 transition-opacity group-hover:opacity-100">
+                      LOAD_TEMPLATE →
+                    </span>
+                  </div>
+                  <div className="mt-2 h-0.5 w-0 bg-orange-600 transition-all duration-300 group-hover:w-full" />
+                </Link>
+              ))}
+            </div>
+
+            <div className="mt-8 text-center">
+              <Link
+                href="/templates"
+                className="inline-flex items-center gap-2 border-2 border-zinc-700 px-8 py-3 font-pixel text-[0.45rem] tracking-widest text-zinc-400 transition hover:border-orange-700 hover:text-orange-400"
+              >
+                [ VIEW_ALL_TEMPLATES ] &rarr;
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* ────────────────── INTERACTIVE DEMO CAROUSEL ────────────────── */}
         <section id="demo" className="border-t-2 border-zinc-800 bg-black px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-6xl">
@@ -1384,6 +1436,82 @@ function LandingPageV2() {
 
             <div className="mt-8">
               <LandingChatWidget />
+            </div>
+          </div>
+        </section>
+
+        {/* ────────────────── COMPARISON MATRIX ────────────────── */}
+        <section className="border-t-2 border-zinc-800 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+          <div className="mx-auto max-w-6xl">
+            <div className="mb-10 text-center">
+              <p className="font-pixel text-[0.5rem] tracking-widest text-orange-600">COMPARISON_MATRIX</p>
+              <h2 className="mt-3 font-pixel text-lg text-zinc-100 sm:text-xl lg:text-2xl">
+                How Resurgo outperforms every alternative
+              </h2>
+              <p className="mx-auto mt-3 max-w-xl font-terminal text-lg text-zinc-400">
+                Most apps track one thing. Resurgo unifies your goals, habits, focus, and AI coaching in a single OS.
+              </p>
+            </div>
+
+            {/* Terminal table */}
+            <div className="overflow-x-auto border-2 border-zinc-800">
+              {/* Chrome */}
+              <div className="flex items-center gap-1.5 border-b border-zinc-800 bg-zinc-950 px-4 py-2">
+                <span className="h-2 w-2 rounded-full bg-red-700" />
+                <span className="h-2 w-2 rounded-full bg-yellow-700" />
+                <span className="h-2 w-2 rounded-full bg-green-700" />
+                <span className="ml-3 font-pixel text-[0.35rem] tracking-widest text-zinc-500">
+                  compare.sh --all-apps --feature-diff
+                </span>
+              </div>
+
+              <table className="w-full min-w-[640px] text-left">
+                <thead className="border-b border-zinc-800 bg-zinc-950">
+                  <tr>
+                    <th className="px-5 py-3 font-pixel text-[0.38rem] tracking-widest text-zinc-500">APP</th>
+                    {['AI Goal Planning','AI Coaching','Habits + Focus + Wellness','Free Tier','All-in-one'].map((f) => (
+                      <th key={f} className="px-3 py-3 font-pixel text-[0.35rem] tracking-widest text-zinc-500 text-center">{f}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {([
+                    { app: 'Habitica',  ai: false, coach: false, unified: false, free: true,  aio: false },
+                    { app: 'Streaks',   ai: false, coach: false, unified: false, free: false, aio: false },
+                    { app: 'Notion',    ai: 'partial', coach: false, unified: false, free: true, aio: false },
+                    { app: 'Todoist',   ai: 'partial', coach: false, unified: false, free: true, aio: false },
+                    { app: 'RESURGO ★', ai: true,  coach: true,  unified: true,  free: true,  aio: true,  highlight: true },
+                  ] as const).map((row) => {
+                    const cols = [row.ai, row.coach, row.unified, row.free, row.aio];
+                    return (
+                      <tr
+                        key={row.app}
+                        className={`border-t border-zinc-800 ${'highlight' in row && row.highlight ? 'bg-orange-950/10' : 'bg-black'}`}
+                      >
+                        <td className={`px-5 py-3 font-pixel text-[0.4rem] tracking-widest ${'highlight' in row && row.highlight ? 'text-orange-400' : 'text-zinc-400'}`}>
+                          {row.app}
+                        </td>
+                        {cols.map((val, ci) => (
+                          <td key={ci} className="px-3 py-3 text-center">
+                            {val === true ? (
+                              <span className={`font-pixel text-[0.5rem] ${'highlight' in row && row.highlight ? 'text-orange-500' : 'text-green-500'}`}>✓</span>
+                            ) : val === 'partial' ? (
+                              <span className="font-pixel text-[0.5rem] text-yellow-600">~</span>
+                            ) : (
+                              <span className="font-pixel text-[0.5rem] text-zinc-700">✗</span>
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+              <div className="border-t border-zinc-800 bg-zinc-950 px-5 py-2 text-right">
+                <Link href="/compare" className="font-mono text-[11px] text-orange-500 hover:text-orange-400 transition-colors">
+                  full comparison guide →
+                </Link>
+              </div>
             </div>
           </div>
         </section>
@@ -1434,12 +1562,6 @@ function LandingPageV2() {
                 >
                   [ DOWNLOAD_APK ]
                 </a>
-                <a
-                  href="/download"
-                  className="inline-flex min-h-[48px] items-center justify-center gap-2 border-2 border-zinc-800 px-8 font-pixel text-[0.6rem] tracking-widest text-zinc-500 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] transition hover:border-zinc-600 hover:text-zinc-300 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
-                >
-                  [ INSTALL_AS_PWA ]
-                </a>
                 <Link
                   href="/pricing"
                   className="inline-flex min-h-[48px] items-center justify-center border-2 border-zinc-800 px-8 font-pixel text-[0.6rem] tracking-widest text-zinc-500 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] transition hover:border-zinc-600 hover:text-zinc-300 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
@@ -1451,7 +1573,6 @@ function LandingPageV2() {
                 <span>&gt; FREE_PLAN_FOREVER</span>
                 <span>&gt; NO_CREDIT_CARD_REQUIRED</span>
                 <span>&gt; 30_DAY_MONEY_BACK_GUARANTEE</span>
-                <span>&gt; WORKS_OFFLINE_AS_PWA</span>
                 <span>&gt; PRIVATE_ENCRYPTED_DATA</span>
               </div>
             </div>

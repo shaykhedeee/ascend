@@ -11,7 +11,7 @@ import { AccessibilityProvider } from '@/components/AccessibilityProvider';
 import ConvexClientProvider from '@/components/ConvexClientProvider';
 import ClerkProviderWrapper from '@/components/ClerkProviderWrapper';
 import { CookieConsent } from '@/components/CookieConsent';
-import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
+
 
 // Base URL for the application (update for production)
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
@@ -519,7 +519,6 @@ export default function RootLayout({
               <AccessibilityProvider>
                 {children}
                 <CookieConsent />
-                <PWAInstallPrompt />
               </AccessibilityProvider>
             </ThemeProvider>
           </ConvexClientProvider>

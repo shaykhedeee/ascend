@@ -18,9 +18,7 @@ const FOOTER_SECTIONS = [
     links: [
       { href: '/features', label: 'Features' },
       { href: '/pricing', label: 'Pricing' },
-      { href: '/download', label: 'Install PWA' },
       { href: '/templates', label: 'Goal Templates' },
-      { href: '/tools', label: 'Free Tools' },
       { href: '/changelog', label: 'Changelog' },
       { href: '/roadmap', label: 'Roadmap' },
     ],

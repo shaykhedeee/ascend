@@ -98,6 +98,58 @@ export default function RoadmapPage() {
           >
             [JOIN_RESURGO]
           </Link>
+          <a
+            href="mailto:feedback@resurgo.life?subject=Roadmap%20Feedback&body=Feature%20request%20or%20feedback%3A%0A%0A"
+            className="border border-zinc-700 bg-zinc-900 px-4 py-2 font-mono text-xs tracking-widest text-zinc-300 transition hover:border-orange-700 hover:text-orange-400"
+          >
+            [LEAVE_FEEDBACK]
+          </a>
+        </div>
+
+        {/* Feedback terminal box */}
+        <div className="mt-10 border border-zinc-800 bg-zinc-950">
+          <div className="flex items-center gap-2 border-b border-zinc-800 px-4 py-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-cyan-500" />
+            <span className="font-mono text-xs tracking-widest text-zinc-500">FEEDBACK_TERMINAL</span>
+          </div>
+          <div className="p-5">
+            <p className="font-mono text-xs text-zinc-400 leading-relaxed">
+              <span className="text-orange-500">$</span>{' '}
+              Got a feature request? Found a bug? Want to vote on what ships next?
+            </p>
+            <p className="mt-2 font-mono text-xs text-zinc-500 leading-relaxed">
+              → Email <span className="text-cyan-400">feedback@resurgo.life</span> with your idea{' '}
+              — we read every message and update this roadmap weekly.
+            </p>
+            <p className="mt-2 font-mono text-xs text-zinc-500 leading-relaxed">
+              → Join the community on{' '}
+              <a
+                href="https://t.me/ResurgoApp"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-orange-500 underline underline-offset-2 hover:text-orange-400"
+              >
+                Telegram
+              </a>{' '}
+              for real-time discussion and early access to features.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-3">
+              <a
+                href="mailto:feedback@resurgo.life?subject=Roadmap%20Feedback&body=Feature%20request%20or%20feedback%3A%0A%0A"
+                className="inline-flex items-center gap-2 border border-orange-700 bg-orange-950/30 px-4 py-2 font-mono text-xs tracking-widest text-orange-400 transition hover:bg-orange-950/60"
+              >
+                ✉ Leave Feedback
+              </a>
+              <a
+                href="https://t.me/ResurgoApp"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 border border-zinc-700 bg-zinc-900 px-4 py-2 font-mono text-xs tracking-widest text-zinc-300 transition hover:border-zinc-500"
+              >
+                ✈ Join Telegram
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </main>

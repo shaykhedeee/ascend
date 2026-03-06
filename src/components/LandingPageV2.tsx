@@ -31,6 +31,8 @@ const CORE_FEATURES = [
       'Enter any goal. The AI generates milestones, weekly targets, and daily tasks in seconds — no planning expertise needed.',
     status: 'Live',
     category: 'Planning',
+    icon: '🎯',
+    terminalCmd: '> plan --goal "launch startup"',
   },
   {
     id: 'HABIT_SYSTEM',
@@ -39,6 +41,8 @@ const CORE_FEATURES = [
       'Build habits that stick. Track streaks, completion rates, consistency patterns, and chain habits into stacks.',
     status: 'Live',
     category: 'Habits',
+    icon: '🔁',
+    terminalCmd: '> track --habits --streak',
   },
   {
     id: 'FOCUS_ENGINE',
@@ -47,6 +51,8 @@ const CORE_FEATURES = [
       'Run Pomodoro, Deep Work, or Flowtime sessions. Log distractions, play ambient sounds, and track total focus hours.',
     status: 'Live',
     category: 'Focus',
+    icon: '⏱️',
+    terminalCmd: '> focus --mode deepwork --90min',
   },
   {
     id: 'AI_COACHING',
@@ -55,6 +61,8 @@ const CORE_FEATURES = [
       'Chat with NOVA (Systems), TITAN (Performance), SAGE (Wealth), PHOENIX (Resilience), ATLAS (Strategy), or EMBER (Creativity). Each coach has a distinct strategy. Advice personalized to your goals, 24/7.',
     status: 'Live',
     category: 'AI',
+    icon: '🤖',
+    terminalCmd: '> coach --ask @TITAN "next step"',
   },
   {
     id: 'DAILY_PLANNER',
@@ -63,6 +71,8 @@ const CORE_FEATURES = [
       'Plan your day with AI-assisted task prioritization. See habits, tasks, and sessions in one clear timeline.',
     status: 'Live',
     category: 'Planning',
+    icon: '📋',
+    terminalCmd: '> plan --today --prioritize',
   },
   {
     id: 'DASHBOARD',
@@ -71,6 +81,8 @@ const CORE_FEATURES = [
       'Goals, habits, tasks, wellness, budget, and planning — one clean interface. No more switching between apps.',
     status: 'Live',
     category: 'Core',
+    icon: '📊',
+    terminalCmd: '> dash --overview --all',
   },
   {
     id: 'WELLNESS_TRACK',
@@ -79,6 +91,8 @@ const CORE_FEATURES = [
       'Track mood, energy, sleep quality, and recovery. See how your lifestyle patterns affect productivity over time.',
     status: 'Live',
     category: 'Wellness',
+    icon: '💤',
+    terminalCmd: '> wellness --log mood energy sleep',
   },
   {
     id: 'GAMIFICATION',
@@ -87,6 +101,8 @@ const CORE_FEATURES = [
       'Earn XP for completing habits and tasks. Level up, unlock badges, and maintain streaks that keep you motivated.',
     status: 'Live',
     category: 'Motivation',
+    icon: '🏆',
+    terminalCmd: '> xp --leaderboard --badges',
   },
   {
     id: 'WEEKLY_REVIEW',
@@ -95,6 +111,8 @@ const CORE_FEATURES = [
       'Get AI-generated weekly summaries. See what worked, what didn\'t, and receive personalized focus recommendations.',
     status: 'Live',
     category: 'Analytics',
+    icon: '📈',
+    terminalCmd: '> review --weekly --insights',
   },
   {
     id: 'NUTRITION_LOG',
@@ -103,6 +121,8 @@ const CORE_FEATURES = [
       'Log meals and track macros. Connect nutrition data to energy levels and correlate with performance goals.',
     status: 'Live',
     category: 'Wellness',
+    icon: '🥗',
+    terminalCmd: '> nutrition --log --macros',
   },
   {
     id: 'TELEGRAM_BOT',
@@ -111,6 +131,8 @@ const CORE_FEATURES = [
       'Check in on habits, receive reminders, and log progress from Telegram. Stay consistent without opening the app.',
     status: 'Live',
     category: 'Integration',
+    icon: '✈️',
+    terminalCmd: '> telegram --checkin --notify',
   },
   {
     id: 'DATA_SECURITY',
@@ -119,6 +141,8 @@ const CORE_FEATURES = [
       'Your data is encrypted, synced in real-time, and preserved across plan changes. Privacy-first — no data selling.',
     status: 'Secure',
     category: 'Security',
+    icon: '🔒',
+    terminalCmd: '> security --encrypt --private',
   },
 ];
 
@@ -888,24 +912,37 @@ function LandingPageV2() {
               </p>
             </div>
 
-            <div className="grid gap-px border-2 border-zinc-800 bg-zinc-800 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {CORE_FEATURES.map((spec) => (
-                <article key={spec.id} className="bg-black p-4 transition hover:bg-zinc-900 sm:p-5">
-                  <div className="flex items-start justify-between gap-2">
-                    <span className="min-w-0 truncate font-pixel text-[0.55rem] tracking-widest text-orange-600 sm:text-[0.6rem]">{spec.id}</span>
-                    <span
-                      className={cn(
-                        'shrink-0 border-2 px-2 py-0.5 font-pixel text-[0.35rem] tracking-widest',
-                        spec.status === 'Secure'
-                          ? 'border-blue-900 bg-blue-950/40 text-blue-500'
-                          : 'border-green-900 bg-green-950/40 text-green-600',
-                      )}
-                    >
-                      {spec.status}
-                    </span>
+                <article
+                  key={spec.id}
+                  className="group flex flex-col border-2 border-zinc-800 bg-black shadow-[2px_2px_0px_rgba(0,0,0,0.5)] transition-all duration-200 hover:-translate-y-1 hover:border-orange-600/60 hover:shadow-[0_0_20px_rgba(234,88,12,0.15)]"
+                >
+                  <div className="flex-1 p-4 sm:p-5">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex h-12 w-12 items-center justify-center border-2 border-zinc-700 bg-zinc-900/60 text-xl transition-colors group-hover:border-orange-800 group-hover:bg-orange-950/20">
+                        {spec.icon}
+                      </div>
+                      <span
+                        className={cn(
+                          'shrink-0 border-2 px-2 py-0.5 font-pixel text-[0.35rem] tracking-widest',
+                          spec.status === 'Secure'
+                            ? 'border-blue-900 bg-blue-950/40 text-blue-500'
+                            : 'border-green-900 bg-green-950/40 text-green-600',
+                        )}
+                      >
+                        {spec.status}
+                      </span>
+                    </div>
+                    <p className="mt-3 font-pixel text-[0.5rem] tracking-widest text-orange-600">{spec.id}</p>
+                    <h3 className="mt-1 font-pixel text-[0.6rem] text-zinc-200 sm:text-[0.65rem]">{spec.title}</h3>
+                    <p className="mt-2 font-terminal text-sm leading-relaxed text-zinc-400 sm:text-base">{spec.description}</p>
                   </div>
-                  <h3 className="mt-2 font-pixel text-[0.6rem] text-zinc-200 sm:text-[0.65rem]">{spec.title}</h3>
-                  <p className="mt-2 font-terminal text-sm leading-relaxed text-zinc-400 sm:text-base">{spec.description}</p>
+                  <div className="border-t border-zinc-800 px-4 py-2.5 sm:px-5">
+                    <code className="font-terminal text-xs text-zinc-500 transition-colors group-hover:text-orange-500/70">
+                      {spec.terminalCmd}
+                    </code>
+                  </div>
                 </article>
               ))}
             </div>
@@ -984,30 +1021,32 @@ function LandingPageV2() {
               Start free forever. Upgrade to Pro only when you&apos;re ready. No lock-in, no hidden fees.
             </p>
 
-            {/* Monthly / Annual toggle */}
-            <div className="mt-8 flex items-center justify-center gap-0">
-              <button
-                onClick={() => setAnnual(false)}
-                className={cn(
-                  'border-2 border-r-0 px-5 py-2 font-pixel text-[0.45rem] tracking-widest transition-all',
-                  !annual
-                    ? 'border-orange-600 bg-orange-600 text-black'
-                    : 'border-zinc-700 bg-transparent text-zinc-500 hover:text-zinc-300',
-                )}
-              >
-                MONTHLY
-              </button>
-              <button
-                onClick={() => setAnnual(true)}
-                className={cn(
-                  'border-2 px-5 py-2 font-pixel text-[0.45rem] tracking-widest transition-all',
-                  annual
-                    ? 'border-orange-600 bg-orange-600 text-black'
-                    : 'border-zinc-700 bg-transparent text-zinc-500 hover:text-zinc-300',
-                )}
-              >
-                ANNUAL — SAVE 50%
-              </button>
+            {/* Monthly / Annual toggle — terminal-styled */}
+            <div className="mt-8 flex items-center justify-center">
+              <div className="inline-flex border-2 border-zinc-800 bg-zinc-900/50">
+                <button
+                  onClick={() => setAnnual(false)}
+                  className={cn(
+                    'px-6 py-2.5 font-pixel text-[0.45rem] tracking-widest transition-all',
+                    !annual
+                      ? 'bg-orange-600 text-black'
+                      : 'bg-transparent text-zinc-500 hover:text-zinc-300',
+                  )}
+                >
+                  MONTHLY
+                </button>
+                <button
+                  onClick={() => setAnnual(true)}
+                  className={cn(
+                    'px-6 py-2.5 font-pixel text-[0.45rem] tracking-widest transition-all',
+                    annual
+                      ? 'bg-orange-600 text-black'
+                      : 'bg-transparent text-zinc-500 hover:text-zinc-300',
+                  )}
+                >
+                  ANNUAL — SAVE 50%
+                </button>
+              </div>
             </div>
 
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
@@ -1193,13 +1232,16 @@ function LandingPageV2() {
         {/* ────────────────── FAQ ────────────────── */}
         <section id="faq" className="border-t-2 border-zinc-800 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="mx-auto max-w-4xl">
-            <h2 className="font-pixel text-lg text-zinc-100 sm:text-xl">Frequently asked questions about AI habit tracking</h2>
-            <p className="mt-2 font-terminal text-lg text-zinc-400">
-              Everything you need to know about Resurgo — free plan, AI coaching, PWA install, privacy, and more.
-            </p>
+            <div className="text-center">
+              <p className="font-pixel text-[0.55rem] tracking-widest text-orange-600">FAQ_DATABASE</p>
+              <h2 className="mt-3 font-pixel text-lg text-zinc-100 sm:text-xl">Frequently asked questions about AI habit tracking</h2>
+              <p className="mt-2 font-terminal text-lg text-zinc-400">
+                Everything you need to know about Resurgo — free plan, AI coaching, PWA install, privacy, and more.
+              </p>
+            </div>
 
             <div
-              className="mt-8 space-y-px border-2 border-zinc-800"
+              className="mt-8 space-y-2"
               itemScope
               itemType="https://schema.org/FAQPage"
             >
@@ -1208,26 +1250,32 @@ function LandingPageV2() {
                 return (
                   <article
                     key={faq.question}
-                    className="bg-black"
+                    className={cn(
+                      'border-2 bg-black transition-colors duration-200',
+                      isOpen ? 'border-orange-900/60' : 'border-zinc-800 hover:border-zinc-700',
+                    )}
                     itemProp="mainEntity"
                     itemScope
                     itemType="https://schema.org/Question"
                   >
                     <button
                       onClick={() => setOpenFaq(isOpen ? null : idx)}
-                      className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+                      className="flex w-full items-center gap-4 px-5 py-4 text-left"
                       aria-expanded={isOpen}
                     >
-                      <h3 itemProp="name" className="font-terminal text-base text-zinc-300">
+                      <span className="shrink-0 font-terminal text-sm text-orange-600">&gt;</span>
+                      <h3 itemProp="name" className="flex-1 font-terminal text-base text-zinc-300">
                         {faq.question}
                       </h3>
                       <span
                         className={cn(
-                          'shrink-0 font-pixel text-[0.45rem] text-zinc-400 transition-transform',
-                          isOpen && 'rotate-180',
+                          'flex h-6 w-6 shrink-0 items-center justify-center border border-zinc-800 font-pixel text-[0.5rem] transition-all duration-200',
+                          isOpen
+                            ? 'border-orange-800 bg-orange-950/30 text-orange-500 rotate-45'
+                            : 'text-zinc-500',
                         )}
                       >
-                        &#9662;
+                        +
                       </span>
                     </button>
                     <div
@@ -1244,7 +1292,7 @@ function LandingPageV2() {
                       >
                         <p
                           itemProp="text"
-                          className="border-t-2 border-zinc-800 px-5 pb-4 pt-3 font-terminal text-base leading-relaxed text-zinc-400"
+                          className="border-t border-zinc-800 px-5 pb-4 pt-3 pl-10 font-terminal text-base leading-relaxed text-zinc-400"
                         >
                           {faq.answer}
                         </p>
@@ -1295,18 +1343,34 @@ function LandingPageV2() {
           <div className="mx-auto max-w-6xl border-2 border-zinc-800 bg-black shadow-[4px_4px_0px_rgba(0,0,0,0.7)]">
             <div className="flex items-center gap-2 border-b-2 border-zinc-800 px-5 py-2">
               <span className="h-2 w-2 bg-orange-600" />
-              <span className="font-pixel text-[0.35rem] tracking-widest text-zinc-400">
-                TERMINAL :: READY_FOR_INPUT
+              <span className="h-2 w-2 bg-zinc-700" />
+              <span className="h-2 w-2 bg-zinc-700" />
+              <span className="ml-2 font-pixel text-[0.35rem] tracking-widest text-zinc-400">
+                final_decision.sh — TERMINAL
               </span>
             </div>
             <div className="px-6 py-12 text-center sm:px-10">
-              <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">YOUR_NEXT_MOVE</p>
-              <h2 className="mt-3 font-pixel text-lg text-zinc-100 sm:text-xl">
-                Ready to build habits that actually stick?
+              <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">EXECUTE_NOW</p>
+              <h2 className="mt-3 font-pixel text-lg text-zinc-100 sm:text-xl lg:text-2xl">
+                Stop managing apps. Start living.
               </h2>
               <p className="mx-auto mt-4 max-w-xl font-terminal text-lg leading-relaxed text-zinc-300">
                 Create your free account, set one goal, and follow your first personalized AI habit plan — all in under 2 minutes. No credit card. No trial that expires. Free forever.
               </p>
+
+              {/* Stats badges */}
+              <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                <span className="border-2 border-zinc-800 bg-zinc-900/50 px-4 py-2 font-pixel text-[0.45rem] tracking-widest text-zinc-300">
+                  50K+ USERS
+                </span>
+                <span className="border-2 border-zinc-800 bg-zinc-900/50 px-4 py-2 font-pixel text-[0.45rem] tracking-widest text-zinc-300">
+                  ★ 4.8 RATING
+                </span>
+                <span className="border-2 border-green-900 bg-green-950/30 px-4 py-2 font-pixel text-[0.45rem] tracking-widest text-green-500">
+                  FREE PLAN FOREVER
+                </span>
+              </div>
+
               <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row sm:flex-wrap">
                 <Link
                   href="/sign-up"

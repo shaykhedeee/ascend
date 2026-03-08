@@ -1,17 +1,17 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Support & FAQ — Resurgo | Get Help with Habits, Goals & Account',
+  title: 'Support & FAQ - Resurgo | Help with setup, billing, sync, and AI',
   description:
-    'Get help with Resurgo. Browse 14+ FAQs on habit tracking, AI goal decomposition, habit stacking, XP system, billing, data recovery, and troubleshooting. Email support within 24 hours.',
+    'Get help with Resurgo setup, billing, sync, offline access, AI coaching, and troubleshooting. Browse the FAQ or contact support.',
   keywords: [
-    'Resurgo support', 'habit tracker help', 'Resurgo FAQ', 'Resurgo troubleshooting',
-    'habit stacking help', 'AI goal decomposition', 'XP system guide', 'Resurgo billing help',
-    'productivity app support', 'Resurgo account help', 'data recovery', 'refund policy',
+    'Resurgo support', 'Resurgo FAQ', 'Resurgo troubleshooting',
+    'AI productivity app support', 'Resurgo billing help', 'Resurgo sync help',
+    'offline mode help', 'refund policy', 'Resurgo account help',
   ],
   openGraph: {
     title: 'Resurgo Support & FAQ — Get Help',
-    description: 'Find answers to common questions about habits, goals, billing, and account management.',
+    description: 'Find answers about setup, billing, AI coaching, sync, and offline behavior.',
     type: 'website',
     url: 'https://resurgo.life/support',
   },
@@ -28,15 +28,15 @@ export default function SupportLayout({ children }: { children: React.ReactNode 
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     name: 'Resurgo Support & FAQ',
-    description: 'Frequently asked questions about Resurgo habit tracker and productivity platform.',
+    description: 'Frequently asked questions about Resurgo, the AI productivity platform.',
     url: 'https://resurgo.life/support',
     mainEntity: [
-      { '@type': 'Question', name: 'How does AI Goal Decomposition work?', acceptedAnswer: { '@type': 'Answer', text: 'When you enter your ultimate goal, our AI analyzes it and breaks it down into achievable milestones, weekly objectives, and daily tasks based on your timeline and available time.' } },
-      { '@type': 'Question', name: 'Can I use Resurgo offline?', acceptedAnswer: { '@type': 'Answer', text: 'Yes! Resurgo is a Progressive Web App (PWA) that works offline. Install it to your home screen for the best experience.' } },
-      { '@type': 'Question', name: 'What is Habit Stacking?', acceptedAnswer: { '@type': 'Answer', text: 'Habit Stacking links a new habit to an existing one. For example: After I pour my morning coffee, I will meditate for 2 minutes. This creates powerful habit chains.' } },
-      { '@type': 'Question', name: 'What is included in the Free plan?', acceptedAnswer: { '@type': 'Answer', text: 'Free plan includes up to 5 habits, 2 goals, 14-day history, basic analytics, Pomodoro timer, and all core tracking features.' } },
+      { '@type': 'Question', name: 'How does Resurgo handle messy planning?', acceptedAnswer: { '@type': 'Answer', text: 'Resurgo turns goals, tasks, brain dumps, and coaching prompts into a structured execution workflow with AI guidance and dashboards.' } },
+      { '@type': 'Question', name: 'Can I use Resurgo offline?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Installed PWA sessions cache key screens and queue supported actions locally until your connection returns, then sync them back to the cloud.' } },
+      { '@type': 'Question', name: 'Where is my data stored?', acceptedAnswer: { '@type': 'Answer', text: 'Your account data is stored in the cloud and synced across devices when you sign in with the same account.' } },
+      { '@type': 'Question', name: 'What is included in the Free plan?', acceptedAnswer: { '@type': 'Answer', text: 'The free plan includes up to 3 active goals, 5 brain dumps per day, 10 AI coach messages per day, basic habit tracking, basic Telegram notifications, and Emergency Mode.' } },
       { '@type': 'Question', name: 'Can I cancel my subscription anytime?', acceptedAnswer: { '@type': 'Answer', text: 'Yes, you can cancel your Pro subscription at any time. You will continue to have access until the end of your billing period.' } },
-      { '@type': 'Question', name: 'Do you offer refunds?', acceptedAnswer: { '@type': 'Answer', text: 'Yes! 14-day refund for Pro subscriptions and 30-day refund for Lifetime purchases if you have not extensively used premium features.' } },
+      { '@type': 'Question', name: 'Do you offer refunds?', acceptedAnswer: { '@type': 'Answer', text: 'Yes. Pro subscriptions have a 14-day refund window, and Lifetime purchases have a 30-day refund window.' } },
     ],
   };
 

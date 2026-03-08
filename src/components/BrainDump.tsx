@@ -8,6 +8,8 @@
 import { useState, useCallback } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '../../convex/_generated/api';
+import { enqueueOfflineBrainDump } from '@/lib/offline/queue';
+import { useOfflineQueue } from '@/hooks/useOfflineQueue';
 import {
   Brain,
   Loader2,
@@ -98,6 +100,8 @@ export default function BrainDump({ isOpen, onClose }: BrainDumpProps) {
   const [addingTasks, setAddingTasks] = useState(false);
   const [tasksAdded, setTasksAdded] = useState(false);
   const [showAllTasks, setShowAllTasks] = useState(false);
+  const [offlineSaved, setOfflineSaved] = useState(false);
+  const { isOnline, pendingBrainDumpCount, recentBrainDumpDrafts, syncingCount } = useOfflineQueue();
 
   const createTask = useMutation(api.tasks.create);
   const createHabit = useMutation(api.habits.create);
@@ -105,11 +109,22 @@ export default function BrainDump({ isOpen, onClose }: BrainDumpProps) {
   // ── Submit brain dump ──
   const handleSubmit = useCallback(async () => {
     if (!rawText.trim() || rawText.trim().length < 10) return;
+
+    if (!isOnline) {
+      await enqueueOfflineBrainDump(rawText.trim());
+      setOfflineSaved(true);
+      setError(null);
+      setResult(null);
+      setRawText('');
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setResult(null);
     setSelectedTasks(new Set());
     setTasksAdded(false);
+    setOfflineSaved(false);
 
     try {
       const res = await fetch('/api/brain-dump', {
@@ -130,12 +145,15 @@ export default function BrainDump({ isOpen, onClose }: BrainDumpProps) {
       // Auto-select all tasks
       setSelectedTasks(new Set(data.data.tasks.map((_, i) => i)));
     } catch (err) {
-      setError('Network error. Check your connection and try again.');
+      await enqueueOfflineBrainDump(rawText.trim());
+      setOfflineSaved(true);
+      setError('Connection dropped. Your dump was saved offline and will sync automatically.');
+      setRawText('');
       console.error('[BrainDump]', err);
     } finally {
       setLoading(false);
     }
-  }, [rawText]);
+  }, [isOnline, rawText]);
 
   // ── Add selected tasks to Convex ──
   const handleAddTasks = useCallback(async () => {
@@ -197,6 +215,7 @@ export default function BrainDump({ isOpen, onClose }: BrainDumpProps) {
     setSelectedTasks(new Set());
     setTasksAdded(false);
     setMeta({});
+    setOfflineSaved(false);
   };
 
   if (!isOpen) return null;
@@ -231,6 +250,15 @@ export default function BrainDump({ isOpen, onClose }: BrainDumpProps) {
                 <label className="font-pixel text-[0.5rem] tracking-widest text-zinc-400">
                   {'>'} DUMP_EVERYTHING
                 </label>
+                {(!isOnline || pendingBrainDumpCount > 0 || syncingCount > 0) && (
+                  <div className="border border-amber-900 bg-amber-950/20 px-3 py-2">
+                    <p className="font-terminal text-xs text-amber-300">
+                      {isOnline
+                        ? `Connection restored — syncing ${pendingBrainDumpCount} queued dump${pendingBrainDumpCount === 1 ? '' : 's'}.`
+                        : 'Offline mode active. Brain dumps will be saved locally and parsed after reconnect.'}
+                    </p>
+                  </div>
+                )}
                 <textarea
                   value={rawText}
                   onChange={(e) => setRawText(e.target.value)}
@@ -249,6 +277,36 @@ export default function BrainDump({ isOpen, onClose }: BrainDumpProps) {
                   </span>
                 </div>
               </div>
+
+              {offlineSaved && (
+                <div className="flex items-start gap-2 border border-emerald-900 bg-emerald-950/30 p-3">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+                  <p className="font-terminal text-sm text-emerald-200">
+                    Saved offline. Resurgo will sync and parse this dump automatically when you&apos;re back online.
+                  </p>
+                </div>
+              )}
+
+              {recentBrainDumpDrafts.length > 0 && (
+                <div className="space-y-2 border border-zinc-800 bg-zinc-900/30 p-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-pixel text-[0.45rem] tracking-widest text-zinc-500">RECENT_OFFLINE_DUMPS</span>
+                    <span className="font-terminal text-xs text-zinc-600">latest {Math.min(recentBrainDumpDrafts.length, 4)}</span>
+                  </div>
+                  <div className="space-y-2">
+                    {recentBrainDumpDrafts.slice(0, 4).map((draft) => (
+                      <div key={draft.id} className="border border-zinc-800 bg-black/40 px-3 py-2">
+                        <div className="flex items-center justify-between gap-3">
+                          <p className="line-clamp-2 font-terminal text-xs text-zinc-400">{draft.preview}</p>
+                          <span className={`shrink-0 font-pixel text-[0.35rem] tracking-widest ${draft.synced ? 'text-emerald-400' : 'text-amber-400'}`}>
+                            {draft.synced ? 'SYNCED' : 'QUEUED'}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {error && (
                 <div className="flex items-start gap-2 border border-red-900 bg-red-950/30 p-3">
@@ -270,7 +328,7 @@ export default function BrainDump({ isOpen, onClose }: BrainDumpProps) {
                 ) : (
                   <>
                     <Sparkles className="h-4 w-4" />
-                    PARSE_MY_MIND
+                    {isOnline ? 'PARSE_MY_MIND' : 'SAVE_OFFLINE_DUMP'}
                   </>
                 )}
               </button>

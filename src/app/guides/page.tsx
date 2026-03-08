@@ -2,11 +2,10 @@
 import Link from 'next/link';
 import { GuideSubscribeForm } from '@/components/GuideSubscribeForm';
 import { GuidesSearchBar } from '@/components/GuidesSearchBar';
+import { MarketingHeader } from '@/components/MarketingHeader';
 import { MarketingFooter } from '@/components/MarketingFooter';
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// SEO METADATA â€” Guides Hub
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// SEO METADATA — Guides Hub
 
 export const metadata: Metadata = {
   title: 'Habit Building Guides & Goal Achievement Resources | RESURGO',
@@ -28,16 +27,14 @@ export const metadata: Metadata = {
   alternates: { canonical: '/guides' },
 };
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // DATA
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const pillarPages = [
   {
     slug: 'atomic-habits-guide',
     title: 'The Complete Atomic Habits Guide',
     subtitle: 'Four laws of behavior change, habit loops, and identity shifts',
-    description: 'Master the system behind Atomic Habits by James Clear â€” habit stacking, the Two-Minute Rule, environment design, and how to build habits that compound.',
+    description: 'Master the system behind Atomic Habits by James Clear — habit stacking, the Two-Minute Rule, environment design, and how to build habits that compound.',
     icon: 'HB',
     readTime: 25,
     category: 'Habits',
@@ -57,7 +54,7 @@ const pillarPages = [
     slug: 'productivity-habits',
     title: 'Productivity Habits for High Performers',
     subtitle: 'Morning rituals, deep work, and time-blocking',
-    description: 'Daily routines used by top performers â€” from CEO morning routines to Navy SEAL recovery protocols. Science-backed and easy to implement.',
+    description: 'Daily routines used by top performers — from CEO morning routines to Navy SEAL recovery protocols. Science-backed and easy to implement.',
     icon: 'PR',
     readTime: 18,
     category: 'Productivity',
@@ -93,7 +90,7 @@ const allGuides = [
 const FAQS = [
   {
     q: 'How long does it take to build a habit?',
-    a: 'Research shows an average of 66 days, ranging 18â€“254 days depending on complexity. Consistent repetition matters more than perfection.',
+    a: 'Research shows an average of 66 days, ranging 18–254 days depending on complexity. Consistent repetition matters more than perfection.',
   },
   {
     q: 'What is the Two-Minute Rule?',
@@ -105,7 +102,7 @@ const FAQS = [
   },
   {
     q: 'How does AI improve habit tracking?',
-    a: 'AI analyses your completion patterns, energy levels, and progress data to adapt your plan weekly â€” so your system evolves as you do.',
+    a: 'AI analyses your completion patterns, energy levels, and progress data to adapt your plan weekly — so your system evolves as you do.',
   },
   {
     q: 'How do I break a bad habit?',
@@ -145,9 +142,7 @@ const faqJsonLd = {
   })),
 };
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // PAGE COMPONENT
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const CAT_COLOR: Record<string, string> = {
   Habits: 'text-orange-400 border-orange-900/50 bg-orange-950/20',
@@ -164,26 +159,18 @@ export default function GuidesPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
 
-      {/* â”€â”€ Nav â”€â”€ */}
-      <header className="border-b-2 border-zinc-800 bg-black px-4 py-4">
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="font-pixel text-[0.55rem] tracking-widest text-orange-600">RESURGO</span>
-          </Link>
-          <nav className="hidden sm:flex items-center gap-6">
-            {[['/', 'Home'], ['/guides', 'Guides'], ['/templates', 'Templates'], ['/pricing', 'Pricing']].map(([href, label]) => (
-              <Link key={href} href={href} className="font-mono text-xs text-zinc-400 hover:text-zinc-100 transition-colors">
-                {label}
-              </Link>
-            ))}
-          </nav>
-          <Link href="/sign-up" className="border-2 border-orange-600 bg-orange-600 px-4 py-1.5 font-pixel text-[0.35rem] tracking-widest text-black transition hover:bg-orange-500">
-            START FREE
-          </Link>
-        </div>
-      </header>
+      <MarketingHeader
+        navLinks={[
+          { href: '/', label: 'Home', icon: 'home' },
+          { href: '/guides', label: 'Guides', icon: 'plan' },
+          { href: '/templates', label: 'Templates', icon: 'grid' },
+          { href: '/pricing', label: 'Pricing', icon: 'star' },
+          { href: '/blog', label: 'Blog', icon: 'terminal' },
+        ]}
+        tickerText="RESURGO.life :: GUIDES_HUB_INDEXED :: ANSWER_FIRST_CONTENT_READY"
+      />
 
-      {/* â”€â”€ Hero â”€â”€ */}
+      {/* Hero */}
       <section className="border-b-2 border-zinc-800 px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           {/* Terminal chrome */}
@@ -191,8 +178,8 @@ export default function GuidesPage() {
             <span className="h-1.5 w-1.5 bg-red-700" />
             <span className="h-1.5 w-1.5 bg-yellow-700" />
             <span className="h-1.5 w-1.5 bg-green-700" />
-            <span className="ml-2 font-pixel text-[0.35rem] tracking-widest text-zinc-500">
-              resurgo :: guides_hub â€” knowledge_base v2026
+              <span className="ml-2 font-pixel text-[0.35rem] tracking-widest text-zinc-500">
+                resurgo :: guides_hub — knowledge_base v2026
             </span>
           </div>
 
@@ -202,7 +189,7 @@ export default function GuidesPage() {
             <span className="text-orange-400">Achieve any goal.</span>
           </h1>
           <p className="mt-4 max-w-2xl font-terminal text-lg text-zinc-400">
-            Free, science-backed guides on habit formation, AI goal planning, focus, and performance â€” built for people who want a system, not just motivation.
+            Free, science-backed guides on habit formation, AI goal planning, focus, and performance — built for people who want a system, not just motivation.
           </p>
 
           <div className="mt-6">
@@ -220,7 +207,7 @@ export default function GuidesPage() {
 
       <main className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
 
-        {/* â”€â”€ Pillar pages â”€â”€ */}
+        {/* Pillar pages */}
         <section className="mb-16">
           <div className="mb-6 flex items-center gap-3">
             <span className="font-mono text-xs text-orange-600">$</span>
@@ -250,7 +237,7 @@ export default function GuidesPage() {
           </div>
         </section>
 
-        {/* â”€â”€ All guides + sidebar â”€â”€ */}
+        {/* All guides + sidebar */}
         <div className="grid gap-8 lg:grid-cols-3">
 
           {/* All guides list */}
@@ -298,7 +285,7 @@ export default function GuidesPage() {
                 {(['All', 'Habits', 'Goals', 'Productivity', 'Wellness', 'Research'] as const).map((cat) => (
                   <div key={cat} className="flex items-center justify-between py-1.5 font-mono text-xs text-zinc-500 border-b border-zinc-900 last:border-0">
                     <span>{cat}</span>
-                    <span className="text-zinc-700">â†’</span>
+                    <span className="text-zinc-700">→</span>
                   </div>
                 ))}
               </div>
@@ -330,14 +317,14 @@ export default function GuidesPage() {
                   href="/sign-up"
                   className="block text-center border-2 border-orange-600 bg-orange-600 py-2.5 font-pixel text-[0.38rem] tracking-widest text-black transition hover:bg-orange-500"
                 >
-                  [ TRY FREE ] â†’
+                  [ TRY FREE ] →
                 </Link>
               </div>
             </div>
           </aside>
         </div>
 
-        {/* â”€â”€ FAQ section â”€â”€ */}
+        {/* FAQ section */}
         <section
           className="mt-20"
           itemScope

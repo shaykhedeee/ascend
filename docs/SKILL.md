@@ -1,5 +1,5 @@
 ---
-name: terminal-ui-design
+name: docs
 description: Create distinctive, production-grade terminal user interfaces with high design quality. Use this skill when the user asks to build CLI tools, TUI applications, or terminal-based interfaces. Generates creative, polished code that avoids generic terminal aesthetics.
 ---
 

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getAllTemplates } from '@/lib/marketing/templates';
+import { getAllTemplates } from '../../../lib/marketing/templates';
 
 export const metadata: Metadata = {
   title: 'Goal Templates — Free AI Planning Blueprints | RESURGO',

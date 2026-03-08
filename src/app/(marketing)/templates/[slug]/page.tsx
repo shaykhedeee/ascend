@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getAllTemplates, getTemplateBySlug } from '@/lib/marketing/templates';
+import { getAllTemplates, getTemplateBySlug } from '../../../../lib/marketing/templates';
 
 interface TemplatePageProps {
   params: Promise<{ slug: string }>;

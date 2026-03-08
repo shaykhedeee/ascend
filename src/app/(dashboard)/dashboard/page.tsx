@@ -29,6 +29,8 @@ import SleepWidget from '@/components/widgets/SleepWidget';
 import QuickActionsWidget from '@/components/widgets/QuickActionsWidget';
 import VisionBoardWidget from '@/components/widgets/VisionBoardWidget';
 import MobileDashboard from '@/components/MobileDashboard';
+import { PixelIcon } from '@/components/PixelIcon';
+import { PixelArt } from '@/components/PixelArt';
 import {
   Target,
   CheckCircle2,
@@ -182,6 +184,8 @@ export default function DashboardPage() {
     : isEvening
       ? `Good evening, ${user.name?.split(' ')[0] ?? 'there'}`
       : `Hey, ${user.name?.split(' ')[0] ?? 'there'}`;
+  const nextTask = openTasks[0];
+  const nextHabit = activeHabits[0];
 
   const handleToggleHabit = async (habitId: string) => {
     setTogglingHabit(habitId);
@@ -215,40 +219,78 @@ export default function DashboardPage() {
       <div className="mx-auto min-h-screen w-full max-w-7xl px-4 py-4 md:px-6 md:py-6">
 
       {/* -- HEADER -- */}
-      <div className="mb-6 border border-zinc-900 bg-zinc-950 shadow-[0_0_0_1px_rgba(39,39,42,0.25)]">
-        <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2.5">
+      <div className="surface-panel mb-6 overflow-hidden">
+        <div className="surface-header">
           <span className="h-2 w-2 animate-pulse rounded-full bg-orange-600" />
-          <span className="font-pixel text-[0.6rem] tracking-widest text-orange-500">COMMAND_CENTER</span>
+          <span className="surface-kicker-accent">Today workspace</span>
           <span className="ml-auto font-terminal text-xs tracking-widest text-zinc-400">
             {today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
           </span>
         </div>
-        <div className="flex flex-col gap-4 px-5 py-5 md:flex-row md:items-end md:justify-between">
+        <div className="grid gap-4 px-5 py-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(360px,0.9fr)]">
           <div>
-            <h1 className="font-terminal text-3xl font-bold tracking-tight text-zinc-100 md:text-4xl">
+            <p className="surface-kicker">Command center</p>
+            <h1 className="surface-title mt-2 text-3xl md:text-4xl">
               {greeting}
             </h1>
-            <div className="mt-2 flex items-center gap-3">
-              <p className="font-terminal text-sm text-zinc-300">
-                {totalHabits > 0 ? `${totalHabits} habits • ${openTasks.length} tasks • ${activeGoals.length} goals` : "Let's set up your system."}
-              </p>
+            <p className="surface-subtitle mt-3 max-w-2xl">
+              {totalHabits > 0
+                ? `Your workspace is organized around ${openTasks.length} active tasks, ${totalHabits} habits, and ${activeGoals.length} goals. Start with the smallest move that keeps momentum alive.`
+                : "Let's set up your system with a simple first move."}
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <span className="surface-chip">{totalHabits} habits</span>
+              <span className="surface-chip">{openTasks.length} open tasks</span>
+              <span className="surface-chip">{activeGoals.length} goals</span>
               {checkInStreak > 0 && (
-                <span className="flex items-center gap-1 border border-amber-900 bg-amber-950/30 px-2 py-0.5">
-                  <Flame className="h-3 w-3 text-amber-500" />
-                  <span className="font-pixel text-[0.35rem] tracking-widest text-amber-400">{checkInStreak}D STREAK</span>
+                <span className="surface-chip-accent">
+                  <Flame className="h-3 w-3" /> {checkInStreak} day streak
                 </span>
               )}
             </div>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <Link href="/coach" className="flex items-center gap-1.5 border border-orange-800 bg-orange-950/30 px-4 py-2 font-terminal text-xs text-orange-400 transition hover:bg-orange-950/50">
-              <MessageSquare className="h-3 w-3" /> AI Coach
-            </Link>
-            {[['Goals', '/goals'], ['Habits', '/habits'], ['Tasks', '/tasks']].map(([label, href]) => (
-              <Link key={label} href={href} className="border border-zinc-800 bg-zinc-900 px-4 py-2 font-terminal text-xs text-zinc-200 transition hover:border-orange-700 hover:text-orange-400">
-                {label}
+            <div className="mt-5 flex flex-wrap gap-2">
+              <Link href="/coach" className="action-tile text-orange-300 hover:text-orange-200">
+                <MessageSquare className="h-4 w-4" />
+                <span className="font-terminal text-sm">Open AI Coach</span>
               </Link>
-            ))}
+              {[['Goals', '/goals'], ['Habits', '/habits'], ['Tasks', '/tasks']].map(([label, href]) => (
+                <Link key={label} href={href} className="action-tile text-zinc-300 hover:text-zinc-100">
+                  <span className="font-terminal text-sm">{label}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div className="surface-panel-muted p-5">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="surface-kicker-accent">Today focus</p>
+                <p className="mt-2 font-terminal text-sm text-zinc-400">Smallest useful move, clearly framed.</p>
+              </div>
+              <PixelArt variant="terminal" className="h-20 w-20 text-orange-400" title="Dashboard terminal artwork" />
+            </div>
+            <div className="mt-4 space-y-4">
+              <div className="border border-zinc-900 bg-black/40 p-3">
+                <div className="mb-2 flex items-center gap-2">
+                  <PixelIcon name="tasks" size={14} className="text-orange-400" />
+                  <p className="surface-kicker">Next task</p>
+                </div>
+                <p className="font-terminal text-sm text-zinc-500">Next task</p>
+                <p className="mt-1 font-terminal text-lg font-semibold text-zinc-100">{nextTask?.title ?? 'Capture one meaningful task'}</p>
+                <p className="mt-1 font-terminal text-sm text-zinc-400">
+                  {nextTask ? `Priority: ${nextTask.priority}${nextTask.dueDate ? ` • due ${nextTask.dueDate}` : ''}` : 'Keep the queue small and obvious.'}
+                </p>
+              </div>
+              <div className="border border-zinc-900 bg-black/40 p-3">
+                <div className="mb-2 flex items-center gap-2">
+                  <PixelIcon name="habits" size={14} className="text-emerald-400" />
+                  <p className="surface-kicker">Stability habit</p>
+                </div>
+                <p className="mt-1 font-terminal text-lg font-semibold text-zinc-100">{nextHabit?.title ?? 'Choose one repeatable habit'}</p>
+                <p className="mt-1 font-terminal text-sm text-zinc-400">
+                  {nextHabit ? `${nextHabit.streakCurrent} day streak in ${nextHabit.category}.` : 'Consistency beats intensity here.'}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -482,11 +524,31 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      <div className="mb-3 flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-2">
+            <PixelIcon name="terminal" size={14} className="text-orange-400" />
+            <p className="surface-kicker">Execution core</p>
+          </div>
+          <p className="font-terminal text-sm text-zinc-400">The main tools for focus, streaks, and guidance.</p>
+        </div>
+      </div>
+
       {/* -- FOCUS / STREAKS / AI COACH ROW -- */}
       <div className="mb-6 grid gap-4 md:grid-cols-3">
         <FocusTimerWidget />
         <HabitStreakWidget />
         <AICoachWidget />
+      </div>
+
+      <div className="mb-3 flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-2">
+            <PixelIcon name="message" size={14} className="text-cyan-400" />
+            <p className="surface-kicker">Capture and reflection</p>
+          </div>
+          <p className="font-terminal text-sm text-zinc-400">Reduce friction for logging, reviewing, and adjusting.</p>
+        </div>
       </div>
 
       {/* -- JOURNAL / GOAL PROGRESS / CALORIE ROW -- */}
@@ -508,6 +570,16 @@ export default function DashboardPage() {
         <SleepWidget />
         <QuickActionsWidget />
         <VisionBoardWidget />
+      </div>
+
+      <div className="mb-3 flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-2">
+            <PixelIcon name="grid" size={14} className="text-violet-400" />
+            <p className="surface-kicker">Context and support</p>
+          </div>
+          <p className="font-terminal text-sm text-zinc-400">Signals that help you pace the day instead of just filling it.</p>
+        </div>
       </div>
 
       {/* -- WEATHER WIDGET -- */}
@@ -808,13 +880,22 @@ function MorningBriefingCard({ briefing, mood, energy }: { briefing: string; moo
 
 // ── Stat Card ──
 function TermStatCard({ label, value, highlight, icon }: { label: string; value: string | number; highlight?: boolean; icon?: React.ReactNode }) {
+  const pixelMap: Record<string, Parameters<typeof PixelIcon>[0]['name']> = {
+    Habits: 'habits',
+    Goals: 'goals',
+    Tasks: 'tasks',
+    Progress: 'analytics',
+    'Best Streak': 'fire',
+    Level: 'star',
+  };
   return (
-    <div className="border border-zinc-900 bg-zinc-950 px-4 py-4 transition hover:border-zinc-700 hover:bg-zinc-900">
+    <div className="metric-tile">
       <div className="flex items-center gap-1.5">
+        <PixelIcon name={pixelMap[label] ?? 'dashboard'} size={13} className={highlight ? 'text-orange-400' : 'text-zinc-500'} />
         {icon}
-        <p className="font-terminal text-xs text-zinc-400">{label}</p>
+        <p className="metric-label">{label}</p>
       </div>
-      <p className={`mt-1.5 font-terminal text-2xl font-bold ${highlight ? 'text-orange-400' : 'text-zinc-100'}`}>{value}</p>
+      <p className={`metric-value ${highlight ? 'text-orange-400' : 'text-zinc-100'}`}>{value}</p>
     </div>
   );
 }

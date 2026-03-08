@@ -348,6 +348,8 @@ export const getUserStats = internalQuery({
   },
 });
 
+const internalEmailAutomation = (internal as any).emailAutomation;
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // MAIN LIFECYCLE ACTION — Called daily by cron
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -356,7 +358,7 @@ export const processLifecycleEmails = internalAction({
   args: {},
   returns: v.null(),
   handler: async (ctx) => {
-    const users = await ctx.runQuery(internal.emailAutomation.getUsersForLifecycleEmails, {});
+    const users = await ctx.runQuery(internalEmailAutomation.getUsersForLifecycleEmails, {});
     const now = Date.now();
     let sent = 0;
     let skipped = 0;
@@ -374,14 +376,14 @@ export const processLifecycleEmails = internalAction({
 
       // ── Day 3: Quick tips email ──
       if (daysSinceSignup >= 3 && daysSinceSignup < 5) {
-        const alreadySent = await ctx.runQuery(internal.emailAutomation.hasEmailBeenSent, {
+        const alreadySent = await ctx.runQuery(internalEmailAutomation.hasEmailBeenSent, {
           userId: user._id,
           emailType: 'day3_tips',
         });
         if (!alreadySent) {
           const email = day3TipsEmail(user.name);
           const result = await sendResendEmail({ to: user.email, ...email });
-          await ctx.runMutation(internal.emailAutomation.logEmail, {
+          await ctx.runMutation(internalEmailAutomation.logEmail, {
             userId: user._id,
             emailType: 'day3_tips',
             success: result.ok,
@@ -395,17 +397,17 @@ export const processLifecycleEmails = internalAction({
 
       // ── Day 7: Streak celebration ──
       if (daysSinceSignup >= 7 && daysSinceSignup < 9) {
-        const alreadySent = await ctx.runQuery(internal.emailAutomation.hasEmailBeenSent, {
+        const alreadySent = await ctx.runQuery(internalEmailAutomation.hasEmailBeenSent, {
           userId: user._id,
           emailType: 'day7_streak',
         });
         if (!alreadySent) {
-          const stats = await ctx.runQuery(internal.emailAutomation.getUserStats, {
+          const stats = await ctx.runQuery(internalEmailAutomation.getUserStats, {
             userId: user._id,
           });
           const email = day7StreakEmail(user.name, stats.currentStreak, stats.habitsCompleted);
           const result = await sendResendEmail({ to: user.email, ...email });
-          await ctx.runMutation(internal.emailAutomation.logEmail, {
+          await ctx.runMutation(internalEmailAutomation.logEmail, {
             userId: user._id,
             emailType: 'day7_streak',
             success: result.ok,
@@ -419,17 +421,17 @@ export const processLifecycleEmails = internalAction({
 
       // ── Day 14: Feature discovery ──
       if (daysSinceSignup >= 14 && daysSinceSignup < 16) {
-        const alreadySent = await ctx.runQuery(internal.emailAutomation.hasEmailBeenSent, {
+        const alreadySent = await ctx.runQuery(internalEmailAutomation.hasEmailBeenSent, {
           userId: user._id,
           emailType: 'day14_checkin',
         });
         if (!alreadySent) {
-          const stats = await ctx.runQuery(internal.emailAutomation.getUserStats, {
+          const stats = await ctx.runQuery(internalEmailAutomation.getUserStats, {
             userId: user._id,
           });
           const email = day14CheckinEmail(user.name, stats.level, stats.totalXp);
           const result = await sendResendEmail({ to: user.email, ...email });
-          await ctx.runMutation(internal.emailAutomation.logEmail, {
+          await ctx.runMutation(internalEmailAutomation.logEmail, {
             userId: user._id,
             emailType: 'day14_checkin',
             success: result.ok,
@@ -443,14 +445,14 @@ export const processLifecycleEmails = internalAction({
 
       // ── Day 21: Habit consolidation ──
       if (daysSinceSignup >= 21 && daysSinceSignup < 23) {
-        const alreadySent = await ctx.runQuery(internal.emailAutomation.hasEmailBeenSent, {
+        const alreadySent = await ctx.runQuery(internalEmailAutomation.hasEmailBeenSent, {
           userId: user._id,
           emailType: 'day21_habit',
         });
         if (!alreadySent) {
           const email = day21HabitEmail(user.name);
           const result = await sendResendEmail({ to: user.email, ...email });
-          await ctx.runMutation(internal.emailAutomation.logEmail, {
+          await ctx.runMutation(internalEmailAutomation.logEmail, {
             userId: user._id,
             emailType: 'day21_habit',
             success: result.ok,
@@ -464,12 +466,12 @@ export const processLifecycleEmails = internalAction({
 
       // ── Day 30: Milestone + upsell ──
       if (daysSinceSignup >= 30 && daysSinceSignup < 33) {
-        const alreadySent = await ctx.runQuery(internal.emailAutomation.hasEmailBeenSent, {
+        const alreadySent = await ctx.runQuery(internalEmailAutomation.hasEmailBeenSent, {
           userId: user._id,
           emailType: 'day30_review',
         });
         if (!alreadySent) {
-          const stats = await ctx.runQuery(internal.emailAutomation.getUserStats, {
+          const stats = await ctx.runQuery(internalEmailAutomation.getUserStats, {
             userId: user._id,
           });
           const email = day30ReviewEmail(user.name, {
@@ -479,7 +481,7 @@ export const processLifecycleEmails = internalAction({
             level: stats.level,
           });
           const result = await sendResendEmail({ to: user.email, ...email });
-          await ctx.runMutation(internal.emailAutomation.logEmail, {
+          await ctx.runMutation(internalEmailAutomation.logEmail, {
             userId: user._id,
             emailType: 'day30_review',
             success: result.ok,
@@ -493,20 +495,20 @@ export const processLifecycleEmails = internalAction({
 
       // ── Streak at risk: Active user who missed yesterday ──
       if (daysSinceActive === 1) {
-        const stats = await ctx.runQuery(internal.emailAutomation.getUserStats, {
+        const stats = await ctx.runQuery(internalEmailAutomation.getUserStats, {
           userId: user._id,
         });
         if (stats.currentStreak >= 3) {
           // Only send streak-at-risk if they have a meaningful streak
           // Check that we haven't sent one in the last 3 days
-          const recentRisk = await ctx.runQuery(internal.emailAutomation.hasEmailBeenSent, {
+          const recentRisk = await ctx.runQuery(internalEmailAutomation.hasEmailBeenSent, {
             userId: user._id,
             emailType: `streak_at_risk_${Math.floor(now / (3 * DAY_MS))}`,
           });
           if (!recentRisk) {
             const email = streakAtRiskEmail(user.name, stats.currentStreak);
             const result = await sendResendEmail({ to: user.email, ...email });
-            await ctx.runMutation(internal.emailAutomation.logEmail, {
+            await ctx.runMutation(internalEmailAutomation.logEmail, {
               userId: user._id,
               emailType: `streak_at_risk_${Math.floor(now / (3 * DAY_MS))}`,
               success: result.ok,
@@ -521,14 +523,14 @@ export const processLifecycleEmails = internalAction({
 
       // ── Win-back: Inactive for 7+ days ──
       if (daysSinceActive >= 7 && daysSinceActive < 10) {
-        const alreadySent = await ctx.runQuery(internal.emailAutomation.hasEmailBeenSent, {
+        const alreadySent = await ctx.runQuery(internalEmailAutomation.hasEmailBeenSent, {
           userId: user._id,
           emailType: 'win_back',
         });
         if (!alreadySent) {
           const email = winBackEmail(user.name, daysSinceActive);
           const result = await sendResendEmail({ to: user.email, ...email });
-          await ctx.runMutation(internal.emailAutomation.logEmail, {
+          await ctx.runMutation(internalEmailAutomation.logEmail, {
             userId: user._id,
             emailType: 'win_back',
             success: result.ok,

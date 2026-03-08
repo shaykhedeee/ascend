@@ -5,9 +5,9 @@ export default function manifest(): MetadataRoute.Manifest {
     // ═══════════════════════════════════════════════════════════════════════════
     // CORE PWA METADATA (App Store Optimized)
     // ═══════════════════════════════════════════════════════════════════════════
-    name: 'Resurgo - AI Habit Tracker & Goal Planner',
+    name: 'Resurgo - AI Productivity Assistant',
     short_name: 'Resurgo',
-    description: 'Build lasting habits with AI-powered goal decomposition. Track daily habits, earn XP, level up, and achieve your goals with gamified progress tracking. Free habit tracker with analytics.',
+    description: 'Turn tasks, goals, habits, and focus into one execution system. Resurgo is an offline-friendly AI productivity assistant for planning, capture, and follow-through.',
     
     // ═══════════════════════════════════════════════════════════════════════════
     // APP CONFIGURATION
@@ -29,8 +29,8 @@ export default function manifest(): MetadataRoute.Manifest {
     categories: [
       'productivity',
       'lifestyle',
-      'health',
-      'fitness',
+      'business',
+      'utilities',
       'education',
     ],
     
@@ -134,29 +134,29 @@ export default function manifest(): MetadataRoute.Manifest {
       {
         name: 'Dashboard',
         short_name: 'Home',
-        description: 'View your progress dashboard',
-        url: '/?tab=dashboard&source=shortcut',
+        description: 'Open your command center',
+        url: '/dashboard?source=shortcut',
         icons: [{ src: '/icons/shortcut-dashboard.png', sizes: '96x96' }],
       },
       {
-        name: 'Track Habits',
-        short_name: 'Habits',
-        description: 'Check off your daily habits',
-        url: '/?tab=habits&source=shortcut',
+        name: 'Open Tasks',
+        short_name: 'Tasks',
+        description: 'Review and capture task queue items',
+        url: '/tasks?source=shortcut',
         icons: [{ src: '/icons/shortcut-habits.png', sizes: '96x96' }],
       },
       {
         name: 'View Goals',
         short_name: 'Goals',
         description: 'Check your goal progress',
-        url: '/?tab=goals&source=shortcut',
+        url: '/goals?source=shortcut',
         icons: [{ src: '/icons/shortcut-goals.png', sizes: '96x96' }],
       },
       {
-        name: 'Quick Add',
-        short_name: 'Add',
-        description: 'Quickly add a new habit',
-        url: '/?action=add-habit&source=shortcut',
+        name: 'Plan Today',
+        short_name: 'Today',
+        description: 'Jump into daily planning and execution',
+        url: '/calendar?source=shortcut',
         icons: [{ src: '/icons/shortcut-add.png', sizes: '96x96' }],
       },
     ],
@@ -183,7 +183,7 @@ export default function manifest(): MetadataRoute.Manifest {
     // ═══════════════════════════════════════════════════════════════════════════
     protocol_handlers: [
       {
-        protocol: 'web+ascend',
+        protocol: 'web+resurgo',
         url: '/share?url=%s',
       },
     ],

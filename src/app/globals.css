@@ -54,8 +54,8 @@
   --text-muted: #3F3F46;           /* zinc-700 */
 
   /* ── Advanced Terminal UI Colors (research-driven) ── */
-  --term-bg: #0a0e27;              /* Deep terminal bg */
-  --term-bg-lighter: #141823;      /* Lighter panel bg */
+  --term-bg: #050505;              /* Pure black terminal bg */
+  --term-bg-lighter: #0d0d0d;      /* Near-black panel bg */
   --term-fg: #e0e6ed;              /* Off-white text */
   --term-fg-dim: #8892a6;          /* Dimmed text */
   --term-fg-dimmer: #5a6270;       /* Very dim */
@@ -69,13 +69,13 @@
   --term-yellow: #FFD700;          /* Warning (ANSI yellow) */
   --term-red: #FF5F57;             /* Error (ANSI red) */
   --term-magenta: #B833FF;         /* Highlight (ANSI magenta) */
-  --term-border: #2a2f4a;          /* Panel borders */
+  --term-border: #1a1a1a;          /* Pure dark panel borders */
   --term-border-active: #FF6B35;
   --term-selection: rgba(255, 107, 53, 0.2);
   --term-hover: rgba(255, 107, 53, 0.1);
-  --term-glow-orange: 0 0 20px rgba(255, 107, 53, 0.4);
+  --term-glow-orange: 0 0 24px rgba(255, 107, 53, 0.5);
   --term-glow-cyan: 0 0 20px rgba(0, 217, 255, 0.4);
-  --term-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --term-shadow: 0 8px 32px rgba(0, 0, 0, 0.9);
   
   /* Glass effect */
   --glass-bg: rgba(255, 255, 255, 0.05);
@@ -469,6 +469,58 @@ h6 { font-size: 1rem; }
    ───────────────────────────────────────────────────────────────────────────────── */
 
 @layer components {
+  .surface-panel {
+    @apply border border-zinc-900 bg-zinc-950/95 shadow-[0_0_0_1px_rgba(39,39,42,0.28)];
+  }
+
+  .surface-panel-muted {
+    @apply border border-zinc-900 bg-black/70 shadow-[0_0_0_1px_rgba(24,24,27,0.32)];
+  }
+
+  .surface-header {
+    @apply flex items-center gap-2 border-b border-zinc-900 px-4 py-3;
+  }
+
+  .surface-kicker {
+    @apply font-pixel text-[0.45rem] uppercase tracking-[0.22em] text-zinc-500;
+  }
+
+  .surface-kicker-accent {
+    @apply font-pixel text-[0.45rem] uppercase tracking-[0.22em] text-orange-500;
+  }
+
+  .surface-title {
+    @apply font-terminal text-2xl font-bold tracking-tight text-zinc-100;
+  }
+
+  .surface-subtitle {
+    @apply font-terminal text-sm leading-relaxed text-zinc-400;
+  }
+
+  .surface-chip {
+    @apply inline-flex items-center gap-1.5 border border-zinc-800 bg-black/70 px-2.5 py-1 font-pixel text-[0.38rem] uppercase tracking-[0.18em] text-zinc-400;
+  }
+
+  .surface-chip-accent {
+    @apply inline-flex items-center gap-1.5 border border-orange-900/70 bg-orange-950/20 px-2.5 py-1 font-pixel text-[0.38rem] uppercase tracking-[0.18em] text-orange-400;
+  }
+
+  .metric-tile {
+    @apply border border-zinc-900 bg-zinc-950 px-4 py-4 transition hover:border-zinc-800 hover:bg-zinc-900/90;
+  }
+
+  .metric-label {
+    @apply font-pixel text-[0.38rem] uppercase tracking-[0.2em] text-zinc-500;
+  }
+
+  .metric-value {
+    @apply mt-2 font-terminal text-2xl font-bold text-zinc-100;
+  }
+
+  .action-tile {
+    @apply flex items-center gap-3 border border-zinc-900 bg-zinc-950 px-4 py-3 transition hover:border-zinc-700 hover:bg-zinc-900;
+  }
+
   /* Glass morphism card - Pixel terminal style */
   .glass-card {
     background: var(--glass-bg);
@@ -2314,10 +2366,10 @@ body.custom-cursor-active .cursor-not-allowed {
   z-index: 2;
   background: repeating-linear-gradient(
     0deg,
-    rgba(0, 217, 255, 0.015) 0px,
+    rgba(0, 0, 0, 0.06) 0px,
     transparent 1px,
     transparent 2px,
-    rgba(0, 217, 255, 0.015) 3px
+    rgba(0, 0, 0, 0.06) 3px
   );
   animation: scanlines-drift 8s linear infinite;
 }
@@ -2345,9 +2397,9 @@ body.custom-cursor-active .cursor-not-allowed {
 .terminal-chrome {
   position: relative;
   overflow: hidden;
-  border: 2px solid var(--term-border, #2a2f4a);
-  background: var(--term-bg, #0a0e27);
-  box-shadow: var(--term-shadow, 0 4px 12px rgba(0, 0, 0, 0.5));
+  border: 1px solid var(--term-border, #1a1a1a);
+  background: linear-gradient(160deg, #080808 0%, #030303 60%, #0a0502 100%);
+  box-shadow: var(--term-shadow, 0 8px 32px rgba(0, 0, 0, 0.9)), inset 0 1px 0 rgba(255,107,53,0.04);
 }
 
 .terminal-chrome.terminal-bordered {
@@ -2359,12 +2411,12 @@ body.custom-cursor-active .cursor-not-allowed {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
+  padding: 8px 16px;
   background: linear-gradient(180deg,
-    rgba(255, 107, 53, 0.12) 0%,
-    rgba(255, 107, 53, 0.04) 100%
+    rgba(20, 20, 20, 0.95) 0%,
+    rgba(10, 10, 10, 0.98) 100%
   );
-  border-bottom: 1px solid var(--term-border, #2a2f4a);
+  border-bottom: 1px solid rgba(255, 107, 53, 0.12);
 }
 
 .terminal-chrome .window-dots {

@@ -49,7 +49,7 @@ export const BILLING_PLANS: BillingPlan[] = [
     key: 'pro_monthly',
     title: 'Pro',
     badge: 'Most Flexible',
-    description: 'Unlimited everything. All 6 AI coaches. Full Telegram power.',
+    description: 'Unlimited everything. All 8 AI coaches. Full Telegram power.',
     cadence: 'monthly',
     priceUsd: 4.99,
     yearlyEquivalentUsd: 59.88,
@@ -59,7 +59,7 @@ export const BILLING_PLANS: BillingPlan[] = [
       'Unlimited goals & habits',
       'Unlimited brain dumps',
       'Unlimited AI coach messages',
-      'All 6 AI coach personas',
+      'All 8 AI coach personas (incl. 6 standard)',
       'Advanced analytics & patterns',
       'Budget & wellness tracking',
       'Weekly AI review (auto-generated)',
@@ -84,6 +84,7 @@ export const BILLING_PLANS: BillingPlan[] = [
     featureBullets: [
       'Everything in Pro Monthly',
       '$2.50/mo effective (vs $4.99 monthly)',
+      'ORACLE & NEXUS premium AI coaches',
       'Priority roadmap voting',
       'Early access to new features',
     ],
@@ -100,6 +101,7 @@ export const BILLING_PLANS: BillingPlan[] = [
     clerkCheckoutUrlEnv: 'NEXT_PUBLIC_DODO_CHECKOUT_LIFETIME',
     featureBullets: [
       'Everything in Pro — forever',
+      'ORACLE & NEXUS premium AI coaches',
       'No recurring charges, ever',
       'Lifetime updates included',
       'Founder badge',

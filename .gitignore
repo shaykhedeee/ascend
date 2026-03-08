@@ -45,3 +45,10 @@ public/downloads/*.apk
 # External/embedded repos
 agentic-ads/
 todo-for-ai-mcp/
+4chan-API/
+API/
+Pixela/
+clime/
+gettyimages-api_nodejs/
+openfoodfacts-server/
+rest-api-doc/

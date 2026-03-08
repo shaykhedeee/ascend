@@ -9,6 +9,8 @@ import { useState } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 
+const apiAny = api as any;
+
 type ActiveForm = 'water' | 'meal' | 'workout' | 'task' | null;
 
 function todayDate(): string {
@@ -23,7 +25,7 @@ export default function QuickActionsWidget() {
   // Mutations
   const addWater = useMutation(api.nutrition.updateWaterAndSteps);
   const logMeal = useMutation(api.nutrition.logMeal);
-  const logWorkout = useMutation(api.fitness.logWorkout);
+  const logWorkout = useMutation(apiAny.fitness.logWorkout);
   const createTask = useMutation(api.tasks.create);
 
   // Form state

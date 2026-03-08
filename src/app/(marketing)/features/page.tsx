@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
+import { TermLinkButton } from '@/components/ui/TermButton';
 
 export const metadata: Metadata = {
   title: 'Features — Resurgo Habit Tracker | AI Coaching, Focus Timers, Wellness & More',
   description:
-    'Explore all Resurgo features: AI goal decomposition, habit tracking with streaks, 6 AI coach personas, Pomodoro and Deep Work timers, mood and sleep tracking, budget planner, Telegram bot, REST API, and more.',
+    'Explore all Resurgo features: AI goal decomposition, habit tracking with streaks, 8 AI coach personas, Pomodoro and Deep Work timers, mood and sleep tracking, budget planner, Telegram bot, REST API, and more.',
   keywords: [
     'Resurgo features', 'habit tracker features', 'AI goal decomposition',
     'habit stacking app', 'focus timer app', 'Pomodoro tracker',
@@ -101,7 +102,7 @@ const FEATURE_FAQS = [
   },
   {
     q: 'What makes Resurgo different from other habit trackers?',
-    a: 'Resurgo combines AI goal decomposition, 6 AI coaching personas, focus timers, habit stacking, sleep and mood tracking, a budget planner, and gamification — all in one app. Most trackers only cover one or two of these areas.',
+    a: 'Resurgo combines AI goal decomposition, 8 AI coaching personas, focus timers, habit stacking, sleep and mood tracking, a budget planner, and gamification — all in one app. Most trackers only cover one or two of these areas.',
   },
   {
     q: 'Can I track business goals alongside personal habits?',
@@ -214,10 +215,9 @@ export default function FeaturesPage() {
         <div className="mt-10 border border-orange-900/50 bg-orange-950/10 p-8 text-center">
           <h2 className="font-mono text-xl font-bold text-zinc-100">Start tracking your habits for free</h2>
           <p className="mt-2 font-mono text-sm text-zinc-400">No credit card needed. Set up in under 2 minutes.</p>
-          <a href="/sign-up"
-            className="mt-4 inline-block border border-orange-900 bg-orange-950/30 px-8 py-3 font-mono text-xs font-bold tracking-widest text-orange-500 transition hover:bg-orange-950/50">
+          <TermLinkButton href="/sign-up" variant="primary" size="lg" className="mt-4">
             [START_FOR_FREE]
-          </a>
+          </TermLinkButton>
         </div>
       </div>
     </main>

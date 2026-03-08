@@ -14,6 +14,8 @@ import {
   X,
   SkipForward,
 } from 'lucide-react';
+import { PixelArt } from '@/components/PixelArt';
+import { PixelIcon } from '@/components/PixelIcon';
 
 const FREQUENCIES = ['daily', 'weekdays', 'weekends', '3x_week', 'weekly', 'custom'] as const;
 const TIMES_OF_DAY = ['morning', 'afternoon', 'evening', 'anytime'] as const;
@@ -68,6 +70,7 @@ export default function HabitsPage() {
   const totalCount = allHabits?.length ?? 0;
   const highestStreak = Math.max(0, ...allHabitItems.map((habit) => habit.streakCurrent || 0));
   const withIdentityCount = allHabitItems.filter((habit) => Boolean(habit.identityLabel)).length;
+  const featuredHabit = displayHabitItems[0];
 
   const handleToggle = async (habitId: string) => {
     setToggling(habitId);
@@ -120,24 +123,44 @@ export default function HabitsPage() {
       <div className="mx-auto max-w-6xl">
 
         {/* -- NODE TRACKER HEADER -- */}
-        <div className="mb-6 border border-zinc-900 bg-zinc-950">
-          <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
+        <div className="surface-panel mb-6 overflow-hidden">
+          <div className="surface-header">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
-            <span className="font-mono text-xs tracking-widest text-orange-600">NODE_TRACKER :: BEHAVIORAL_SUBSYSTEM</span>
+            <span className="surface-kicker-accent">Habit system</span>
           </div>
-          <div className="flex flex-col gap-4 px-5 py-4 md:flex-row md:items-center md:justify-between">
+          <div className="grid gap-4 px-5 py-5 lg:grid-cols-[minmax(0,1.45fr)_320px]">
             <div>
-              <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">Habits</h1>
-              <p className="mt-1 font-mono text-xs tracking-widest text-zinc-400">
-                Build identity-driven routines � Monitor streak integrity
-              </p>
+              <div className="flex items-center gap-2">
+                <PixelIcon name="loop" size={14} className="text-emerald-400" />
+                <p className="surface-kicker">Behavioral subsystem</p>
+              </div>
+              <h1 className="surface-title mt-2">Habits</h1>
+              <p className="surface-subtitle mt-2 max-w-2xl">Build identity-driven routines, keep the streak logic visible, and make every repeat feel like a satisfying little machine click.</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="surface-chip">{activeCount} active nodes</span>
+                <span className="surface-chip">{highestStreak} day peak</span>
+                <span className="surface-chip">{withIdentityCount} identity linked</span>
+              </div>
+              <div className="mt-5 flex flex-wrap gap-2">
+                <button
+                  onClick={() => setShowCreate(true)}
+                  className="action-tile text-orange-300 hover:text-orange-200"
+                >
+                  <PixelIcon name="sparkles" size={14} className="text-orange-400" />
+                  <span className="font-terminal text-sm">Initialize node</span>
+                </button>
+              </div>
             </div>
-            <button
-              onClick={() => setShowCreate(true)}
-              className="inline-flex items-center gap-2 border border-orange-800 bg-orange-950/30 px-4 py-2 font-mono text-xs tracking-widest text-orange-500 transition hover:border-orange-600 hover:bg-orange-950/60"
-            >
-              <Plus className="h-3.5 w-3.5" /> INIT_NODE
-            </button>
+            <div className="surface-panel-muted p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="surface-kicker-accent">Featured node</p>
+                  <p className="mt-2 font-terminal text-lg font-semibold text-zinc-100">{featuredHabit?.title ?? 'Create the habit you want to become known for'}</p>
+                  <p className="mt-2 font-terminal text-sm text-zinc-400">{featuredHabit ? `${featuredHabit.streakCurrent ?? 0} day streak • ${featuredHabit.frequency.replace('_', ' ')}` : 'Small loops build the system faster than heroic bursts.'}</p>
+                </div>
+                <PixelArt variant="habits" className="h-20 w-20" title="Habits pixel art" />
+              </div>
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-px border-t border-zinc-900 sm:grid-cols-4">
             <NodeMetric label="ACTIVE_NODES" value={String(activeCount)} />
@@ -148,7 +171,7 @@ export default function HabitsPage() {
         </div>
 
         {/* -- TABS -- */}
-        <div className="mb-4 flex gap-px border border-zinc-900">
+        <div className="surface-panel-muted mb-4 flex gap-px overflow-hidden p-1">
           {(['active', 'all'] as const).map(t => (
             <button
               key={t}
@@ -156,7 +179,7 @@ export default function HabitsPage() {
               className={`flex-1 border-b-2 px-4 py-2.5 font-mono text-xs tracking-widest transition ${
                 tab === t
                   ? 'border-orange-600 bg-orange-950/20 text-orange-500'
-                  : 'border-transparent bg-zinc-950 text-zinc-400 hover:text-zinc-300'
+                  : 'border-transparent bg-transparent text-zinc-400 hover:text-zinc-300'
               }`}
             >
               {t === 'active' ? `ACTIVE_NODES [${activeCount}]` : `ALL_NODES [${totalCount}]`}
@@ -181,7 +204,7 @@ export default function HabitsPage() {
             {displayHabitItems.map((habit) => (
               <div
                 key={habit._id}
-                className="group border border-zinc-900 bg-zinc-950 p-4 transition hover:border-zinc-700 hover:bg-zinc-900"
+                className="group surface-panel p-4 transition hover:border-zinc-700 hover:bg-zinc-900"
               >
                 <div className="flex items-center gap-4">
                   <button
@@ -261,6 +284,10 @@ export default function HabitsPage() {
             </div>
 
             <form onSubmit={handleCreate} className="max-h-[80vh] overflow-y-auto p-5 space-y-4">
+              <div className="surface-panel-muted p-3">
+                <p className="surface-kicker-accent">Habit guidance</p>
+                <p className="mt-2 font-terminal text-sm text-zinc-300">Name the behavior so it is easy to repeat tomorrow. Dramatic reinventions can wait outside.</p>
+              </div>
               <div>
                 <label className="mb-1 block font-mono text-xs tracking-widest text-zinc-500">NODE_TITLE *</label>
                 <input
@@ -350,9 +377,18 @@ export default function HabitsPage() {
 }
 
 function NodeMetric({ label, value }: { label: string; value: string }) {
+  const iconMap: Record<string, Parameters<typeof PixelIcon>[0]['name']> = {
+    ACTIVE_NODES: 'habits',
+    TOTAL_NODES: 'grid',
+    PEAK_UPTIME: 'fire',
+    ID_LINKED: 'loop',
+  };
   return (
-    <div className="bg-zinc-950 px-4 py-3 transition hover:bg-zinc-900">
-          <p className="font-mono text-xs tracking-widest text-zinc-400">{label}</p>
+    <div className="metric-tile">
+      <div className="flex items-center gap-2">
+        <PixelIcon name={iconMap[label] ?? 'habits'} size={13} className="text-zinc-500" />
+        <p className="metric-label">{label}</p>
+      </div>
       <p className="mt-0.5 font-mono text-lg font-bold text-zinc-100">{value}</p>
     </div>
   );

@@ -7,6 +7,7 @@
 
 import Script from 'next/script';
 import { useEffect } from 'react';
+import { metaPixelEvents, fbqTrack, fbqPageView } from '@/components/MetaPixel';
 
 // Google Analytics Measurement ID - Replace with your actual ID
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-XXXXXXXXXX';
@@ -112,6 +113,7 @@ export const analytics = {
   // User Actions
   signUp: (method: string = 'email') => {
     trackEvent('sign_up', 'engagement', method);
+    metaPixelEvents.signUp(method);
   },
   
   login: (method: string = 'email') => {
@@ -121,6 +123,7 @@ export const analytics = {
   // Onboarding
   completeOnboarding: (step: number) => {
     trackEvent('complete_onboarding', 'engagement', `step_${step}`, step);
+    metaPixelEvents.completeOnboarding(step);
   },
   
   // Habits
@@ -165,16 +168,19 @@ export const analytics = {
   // Conversion
   viewPricing: () => {
     trackEvent('view_pricing', 'conversion');
+    metaPixelEvents.viewPricing();
   },
   
   startTrial: (plan: string) => {
     trackEvent('begin_checkout', 'conversion', plan);
+    metaPixelEvents.startTrial(plan);
   },
   
   completePurchase: (plan: string, value: number) => {
     trackEvent('purchase', 'conversion', plan, value, {
       currency: 'USD',
     });
+    metaPixelEvents.purchase(plan, value);
   },
   
   // Engagement
@@ -184,6 +190,7 @@ export const analytics = {
   
   installPWA: () => {
     trackEvent('install_pwa', 'engagement');
+    metaPixelEvents.appInstall();
   },
   
   useVoiceInput: () => {

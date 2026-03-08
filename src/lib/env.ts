@@ -39,6 +39,12 @@ const ENV_SCHEMA: EnvVar[] = [
     required: false,
     description: 'Google Analytics measurement ID',
   },
+  {
+    key: 'BRAVE_SEARCH_API_KEY',
+    required: false,
+    description: 'Server-side Brave Search API key for researcher mode',
+    serverOnly: true,
+  },
 ];
 
 export interface EnvValidationResult {

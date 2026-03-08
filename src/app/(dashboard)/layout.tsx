@@ -152,7 +152,7 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="relative flex min-h-screen bg-black">
+    <div className="relative flex min-h-screen bg-black text-zinc-100">
       {/* Mobile overlay */}
       {mobileOpen && (
         <div className="fixed inset-0 z-40 bg-black/85 md:hidden" onClick={() => setMobileOpen(false)} />
@@ -161,7 +161,7 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
       {/* ── Sidebar ── */}
       <aside
         className={cn(
-          'fixed top-0 left-0 z-50 flex h-screen flex-col border-r-2 border-zinc-800 bg-black',
+          'fixed top-0 left-0 z-50 flex h-screen flex-col border-r border-zinc-900 bg-zinc-950/95 backdrop-blur-sm',
           'transition-all duration-200',
           collapsed ? 'w-14' : 'w-56',
           mobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
@@ -169,7 +169,7 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
         style={{ borderRadius: 0 }}
       >
         {/* Logo / Header */}
-        <div className="flex h-12 items-center justify-between border-b-2 border-zinc-800 px-3">
+        <div className="flex h-14 items-center justify-between border-b border-zinc-900 px-3">
           {!collapsed && (
             <Link href="/dashboard" className="flex items-center gap-1.5">
               <Logo showText size="sm" />
@@ -196,22 +196,22 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
         </div>
 
         {/* Nav links — ASCII-grouped, collapsible sections */}
-        <nav className="flex-1 overflow-y-auto py-1 scrollbar-thin">
+        <nav className="flex-1 overflow-y-auto py-2 scrollbar-thin">
           {NAV_SECTIONS.map((section) => {
             const isOpen = openSections[section.label] ?? section.defaultOpen;
             return (
-            <div key={section.label} className="mb-1">
+            <div key={section.label} className="mb-2">
               {/* Section header — clickable for collapsible sections */}
               {!collapsed && (
                 <button
                   onClick={() => section.collapsible && toggleSection(section.label)}
                   className={cn(
-                    'w-full flex items-center justify-between px-3 pt-3 pb-1 text-left',
+                    'flex w-full items-center justify-between px-3 pt-3 pb-1.5 text-left',
                     section.collapsible ? 'cursor-pointer hover:opacity-80' : 'cursor-default'
                   )}
                 >
                   <span className={cn(
-                    'font-pixel text-[0.45rem] tracking-[0.15em]',
+                    'font-pixel text-[0.42rem] tracking-[0.22em]',
                     section.label === '★ AI COACH' ? 'text-orange-600' : 'text-zinc-600'
                   )}>
                     ── {section.label} ──
@@ -226,7 +226,7 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
               {collapsed && <div className="mx-2 my-2 h-px bg-zinc-800" />}
               {/* Section items — hide when collapsed */}
               {(isOpen || collapsed) && (
-              <ul className="space-y-px px-1.5">
+              <ul className="space-y-1 px-1.5">
                 {section.items.map((item) => {
                   const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
                   const iconName = NAV_ICON_MAP[item.label] || ('dashboard' as PixelIconName);
@@ -235,7 +235,7 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
                       <Link
                         href={item.href}
                         className={cn(
-                          'group flex items-center gap-2.5 px-3 py-2 font-terminal text-base tracking-wide',
+                          'group flex items-center gap-2.5 px-3 py-2.5 font-terminal text-[15px] tracking-wide',
                           'transition-colors duration-100 border-l-2',
                           isActive
                             ? 'border-orange-500 bg-orange-950/20 text-orange-400'
@@ -268,7 +268,7 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
         </nav>
 
         {/* Bottom section — Settings + User */}
-        <div className="border-t-2 border-zinc-800 py-2 px-1.5 space-y-px">
+        <div className="space-y-1 border-t border-zinc-900 px-1.5 py-2.5">
           {/* Settings link */}
           {(() => {
             const isActive = pathname === '/settings' || pathname.startsWith('/settings/');
@@ -276,7 +276,7 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
               <Link
                 href="/settings"
                 className={cn(
-                  'group flex items-center gap-2.5 px-3 py-2 font-terminal text-base tracking-wide',
+                  'group flex items-center gap-2.5 px-3 py-2.5 font-terminal text-[15px] tracking-wide',
                   'transition-colors duration-100 border-l-2',
                   isActive
                     ? 'border-orange-500 bg-orange-950/20 text-orange-400'
@@ -300,7 +300,7 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
 
           {/* User section */}
           <div className={cn(
-            'flex items-center gap-2 px-2.5 py-2 border-t-2 border-zinc-800 mt-1',
+            'mt-2 flex items-center gap-2 border-t border-zinc-900 px-2.5 py-2.5',
             collapsed && 'justify-center'
           )}>
             <UserButton afterSignOutUrl="/" />
@@ -332,7 +332,7 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
         collapsed ? 'md:ml-14' : 'md:ml-56'
       )}>
         {/* Top bar (mobile) */}
-        <div className="sticky top-0 z-30 flex h-12 items-center gap-4 border-b-2 border-zinc-800 bg-black px-4 md:hidden">
+        <div className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b border-zinc-900 bg-zinc-950/95 px-4 backdrop-blur-sm md:hidden">
           <button onClick={() => setMobileOpen(true)} className="p-1 text-zinc-500 hover:text-orange-400">
             <PixelIcon name="menu" size={16} />
           </button>
@@ -362,10 +362,15 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
         </div>
 
         {/* Command palette hint (desktop) */}
-        <div className="hidden md:flex sticky top-0 z-30 h-10 items-center justify-end gap-2 border-b border-zinc-800/50 bg-black/80 backdrop-blur-sm px-6">
+        <div className="sticky top-0 z-30 hidden h-14 items-center justify-between gap-4 border-b border-zinc-900 bg-zinc-950/80 px-6 backdrop-blur-sm md:flex">
+          <div>
+            <p className="surface-kicker">Workspace</p>
+            <p className="font-terminal text-sm text-zinc-400">Focused execution with less clutter.</p>
+          </div>
+          <div className="flex items-center gap-2">
           <button
             onClick={() => setBrainDumpOpen(true)}
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-purple-800/50 text-purple-400 hover:text-purple-300 hover:border-purple-700 transition-colors"
+            className="flex items-center gap-1.5 rounded-md border border-purple-900/60 bg-purple-950/20 px-3 py-1.5 text-purple-300 transition-colors hover:border-purple-700 hover:text-purple-200"
             title="Brain Dump"
           >
             <Brain className="w-3 h-3" />
@@ -373,19 +378,20 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
           </button>
           <button
             onClick={() => router.push('/settings')}
-            className="relative p-1.5 rounded-md border border-zinc-800 text-zinc-500 hover:text-zinc-300 hover:border-zinc-700 transition-colors"
+            className="relative rounded-md border border-zinc-800 bg-black/40 p-2 text-zinc-500 transition-colors hover:border-zinc-700 hover:text-zinc-300"
             title="Notifications"
           >
             <Bell className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => setSearchOpen(true)}
-            className="flex items-center gap-2 px-3 py-1 rounded-md border border-zinc-800 text-zinc-500 hover:text-zinc-300 hover:border-zinc-700 transition-colors"
+            className="flex items-center gap-2 rounded-md border border-zinc-800 bg-black/40 px-3 py-1.5 text-zinc-500 transition-colors hover:border-zinc-700 hover:text-zinc-300"
           >
             <Search className="w-3 h-3" />
             <span className="font-terminal text-xs">Search</span>
             <kbd className="ml-2 px-1.5 py-0.5 rounded text-[0.6rem] border border-zinc-700 bg-zinc-900 font-terminal text-zinc-500">⌘K</kbd>
           </button>
+          </div>
         </div>
 
         {/* Downgrade notice banner */}
@@ -471,7 +477,7 @@ function DashboardLayoutContent({ children }: { children: ReactNode }) {
       {/* ── Floating Brain Dump Button ── */}
       <button
         onClick={() => setBrainDumpOpen(true)}
-        className="fixed bottom-24 right-4 z-40 flex h-12 w-12 items-center justify-center border border-purple-700 bg-purple-900/80 text-purple-300 shadow-lg backdrop-blur-sm transition hover:bg-purple-800 hover:text-purple-200 md:bottom-6 md:right-6 md:h-14 md:w-14"
+        className="fixed bottom-24 right-4 z-40 flex h-12 w-12 items-center justify-center border border-purple-800 bg-purple-950/85 text-purple-200 shadow-[0_10px_30px_rgba(88,28,135,0.25)] backdrop-blur-sm transition hover:bg-purple-900 hover:text-purple-100 md:bottom-6 md:right-6 md:h-14 md:w-14"
         title="Brain Dump — pour out everything on your mind"
       >
         <Brain className="h-5 w-5 md:h-6 md:w-6" />

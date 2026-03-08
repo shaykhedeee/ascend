@@ -10,6 +10,7 @@ import React from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { LogoMark } from '@/components/Logo';
+import { MARKETING_SOCIAL_LINKS } from '@/lib/marketing/social-links';
 
 const FOOTER_SECTIONS = [
   {
@@ -47,13 +48,6 @@ const FOOTER_SECTIONS = [
       { href: '/security', label: 'Security' },
     ],
   },
-];
-
-const SOCIAL_LINKS = [
-  { icon: '𝕏', label: 'Twitter', href: 'https://twitter.com/resurgolife' },
-  { icon: '✈', label: 'Telegram', href: 'https://t.me/ResurgoApp' },
-  { icon: 'in', label: 'LinkedIn', href: 'https://linkedin.com/company/resurgo' },
-  { icon: '▶', label: 'YouTube', href: 'https://youtube.com/@resurgo' },
 ];
 
 const TECH_STACK = [
@@ -102,18 +96,18 @@ export function MarketingFooter() {
               <LogoMark className="h-10 w-10 transition group-hover:opacity-80" />
               <div>
                 <span className="block font-pixel text-[0.75rem] tracking-[0.25em] text-orange-500">RESURGO</span>
-                <span className="block font-terminal text-xs text-zinc-600">Rise Again. Build Better.</span>
+                <span className="block font-terminal text-xs text-zinc-600">AI assistant for execution, clarity, and follow-through.</span>
               </div>
             </Link>
 
             {/* Tagline */}
             <p className="max-w-xs font-terminal text-sm leading-relaxed text-zinc-500">
-              AI-powered life management for people serious about their goals. One platform for habits, goals, focus sessions, AI coaching, and weekly progress reviews.
+              Your life command center for tasks, planning, focus, habits, reviews, and AI guidance. One system when the rest of your stack feels noisy.
             </p>
 
             {/* Social links */}
             <div className="flex flex-wrap gap-2">
-              {SOCIAL_LINKS.map((s) => (
+              {MARKETING_SOCIAL_LINKS.map((s) => (
                 <a
                   key={s.label}
                   href={s.href}

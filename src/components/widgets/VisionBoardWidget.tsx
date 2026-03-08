@@ -19,6 +19,7 @@ interface VisionBoardImage {
 }
 
 interface VisionBoardConfig {
+  title?: string;
   images?: VisionBoardImage[];
   items?: VisionBoardImage[];
 }
@@ -69,12 +70,15 @@ export default function VisionBoardWidget() {
 
   const active = boards?.[0];
   let items: VisionBoardImage[] = [];
+  let boardTitle = '';
   if (active?.config) {
     try {
       const cfg = JSON.parse(active.config) as VisionBoardConfig;
+      boardTitle = cfg.title ?? '';
       items = (cfg.images || cfg.items || []).slice(0, 3);
     } catch {
       items = [];
+      boardTitle = '';
     }
   }
 
@@ -109,8 +113,8 @@ export default function VisionBoardWidget() {
           </div>
         ) : (
           <>
-            {active.title && (
-              <p className="font-pixel text-[0.38rem] tracking-widest text-zinc-500 truncate">{active.title}</p>
+            {boardTitle && (
+              <p className="font-pixel text-[0.38rem] tracking-widest text-zinc-500 truncate">{boardTitle}</p>
             )}
 
             {hasItems ? (

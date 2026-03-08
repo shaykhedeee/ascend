@@ -82,24 +82,24 @@ export function Sidebar({
       title: 'Main',
       items: [
         { id: 'today', label: 'Today', icon: CalendarCheck, color: 'text-ascend-500' },
-        { id: 'habits', label: 'Habits', icon: Target, color: 'text-purple-400' },
-        { id: 'tasks', label: 'Tasks', icon: CheckCircle2, color: 'text-blue-400' },
-        { id: 'goals', label: 'Goals', icon: Sparkles, color: 'text-gold-400' },
+        { id: 'habits', label: 'Habits', icon: Target, color: 'text-ascend-500' },
+        { id: 'tasks', label: 'Tasks', icon: CheckCircle2, color: 'text-ascend-500' },
+        { id: 'goals', label: 'Goals', icon: Sparkles, color: 'text-ascend-500' },
       ]
     },
     {
       title: 'Tools',
       items: [
-        { id: 'focus', label: 'Focus Mode', icon: Timer, color: 'text-orange-400' },
-        { id: 'calendar', label: 'Calendar', icon: Calendar, color: 'text-pink-400' },
-        { id: 'progress', label: 'Analytics', icon: TrendingUp, color: 'text-green-400' },
-        { id: 'wellness', label: 'Wellness', icon: Heart, color: 'text-rose-400' },
+        { id: 'focus', label: 'Focus Mode', icon: Timer, color: 'text-ascend-500' },
+        { id: 'calendar', label: 'Calendar', icon: Calendar, color: 'text-ascend-500' },
+        { id: 'progress', label: 'Analytics', icon: TrendingUp, color: 'text-ascend-500' },
+        { id: 'wellness', label: 'Wellness', icon: Heart, color: 'text-ascend-500' },
       ]
     },
     {
       title: 'Review',
       items: [
-        { id: 'weekly-review', label: 'Weekly Review', icon: BookOpen, color: 'text-indigo-400' },
+        { id: 'weekly-review', label: 'Weekly Review', icon: BookOpen, color: 'text-ascend-500' },
       ]
     }
   ];
@@ -177,11 +177,11 @@ export function Sidebar({
             <div className="space-y-1">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-themed-muted flex items-center gap-1">
-                  <Zap className="w-3 h-3 text-gold-400" />
+                  <Zap className="w-3 h-3 text-ascend-500" />
                   {totalXP} XP
                 </span>
                 <span className="text-themed-muted flex items-center gap-1">
-                  <Flame className="w-3 h-3 text-orange-400" />
+                  <Flame className="w-3 h-3 text-ascend-500" />
                   {currentStreak} day streak
                 </span>
               </div>
@@ -210,9 +210,9 @@ export function Sidebar({
               </div>
             ) : (
               <div className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg
-                           bg-gradient-to-r from-ascend-500/20 to-gold-400/20 border border-gold-400/30">
-                <Crown className="w-3.5 h-3.5 text-gold-400" />
-                <span className="text-xs font-semibold text-gold-400">
+                           bg-ascend-500/10 border border-ascend-500/30">
+                <Crown className="w-3.5 h-3.5 text-ascend-500" />
+                <span className="text-xs font-semibold text-ascend-500">
                   {user.plan === 'lifetime' ? 'Lifetime' : 'Pro'} Member
                 </span>
               </div>

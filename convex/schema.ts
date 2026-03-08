@@ -40,6 +40,7 @@ export default defineSchema({
     name: v.string(),
     imageUrl: v.optional(v.string()),
     plan: v.union(v.literal('free'), v.literal('pro'), v.literal('lifetime')),
+    billingPeriod: v.optional(v.union(v.literal('month'), v.literal('year'), v.literal('lifetime'))),
     timezone: v.optional(v.string()),
     theme: v.optional(v.union(v.literal('light'), v.literal('dark'), v.literal('system'))),
     onboardingComplete: v.boolean(),
@@ -143,6 +144,8 @@ export default defineSchema({
       v.literal('SAGE'),
       v.literal('PHOENIX'),
       v.literal('NOVA'),
+      v.literal('ORACLE'),
+      v.literal('NEXUS'),
     )),
     // ── Emergency mode (AI-triggered) ──
     emergencyMode: v.optional(v.boolean()),
@@ -1040,6 +1043,8 @@ export default defineSchema({
       v.literal('SAGE'),
       v.literal('PHOENIX'),
       v.literal('NOVA'),
+      v.literal('ORACLE'),
+      v.literal('NEXUS'),
     ),
     insights: v.array(v.string()),       // inferred behavioral patterns
     patterns: v.array(v.string()),       // recurring themes from history
@@ -1276,6 +1281,53 @@ export default defineSchema({
   })
     .index('by_event', ['event'])
     .index('by_createdAt', ['createdAt']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // META CAMPAIGNS — Cached Meta Marketing API campaign data
+  // Synced periodically from Meta API to avoid hitting rate limits
+  // ─────────────────────────────────────────────────────────────────────────────
+  metaCampaigns: defineTable({
+    metaCampaignId: v.string(),         // Meta campaign ID (e.g. "23856...")
+    name: v.string(),
+    status: v.string(),                  // ACTIVE, PAUSED, DELETED, ARCHIVED
+    objective: v.string(),
+    dailyBudget: v.optional(v.string()),
+    lifetimeBudget: v.optional(v.string()),
+    startTime: v.optional(v.string()),
+    stopTime: v.optional(v.string()),
+    // Latest insight snapshot
+    impressions: v.optional(v.number()),
+    clicks: v.optional(v.number()),
+    spend: v.optional(v.number()),
+    cpc: v.optional(v.number()),
+    ctr: v.optional(v.number()),
+    conversions: v.optional(v.number()),
+    costPerConversion: v.optional(v.number()),
+    reach: v.optional(v.number()),
+    // Metadata
+    lastSyncedAt: v.number(),
+    createdAt: v.number(),
+  })
+    .index('by_metaCampaignId', ['metaCampaignId'])
+    .index('by_status', ['status'])
+    .index('by_lastSyncedAt', ['lastSyncedAt']),
+
+  // ─────────────────────────────────────────────────────────────────────────────
+  // META CONVERSION EVENTS — Server-side conversion event log
+  // ─────────────────────────────────────────────────────────────────────────────
+  metaConversionEvents: defineTable({
+    eventName: v.string(),              // e.g. CompleteRegistration, Purchase, Lead
+    eventId: v.string(),                // Dedup ID shared with pixel
+    userId: v.optional(v.string()),     // Clerk user ID if authenticated
+    sourceUrl: v.optional(v.string()),
+    customData: v.optional(v.any()),    // Event params
+    sentToMeta: v.boolean(),
+    metaResponse: v.optional(v.string()), // JSON stringified response
+    createdAt: v.number(),
+  })
+    .index('by_eventName', ['eventName'])
+    .index('by_createdAt', ['createdAt'])
+    .index('by_eventId', ['eventId']),
 
   // ─────────────────────────────────────────────────────────────────────────────
   // PARTNER ACTION LEDGER — Idempotency tracker for Partner Engine clientRefs

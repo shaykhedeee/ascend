@@ -1,7 +1,7 @@
 'use client';
 
 // -----------------------------------------------------------------------------
-// Resurgo � Goals Command Center
+// Resurgo - Goals Command Center
 // -----------------------------------------------------------------------------
 
 import { useQuery, useMutation } from 'convex/react';
@@ -9,6 +9,8 @@ import { api } from '../../../../convex/_generated/api';
 import { useState } from 'react';
 import Link from 'next/link';
 import { Plus, Clock, X } from 'lucide-react';
+import { PixelArt } from '@/components/PixelArt';
+import { PixelIcon } from '@/components/PixelIcon';
 
 const LIFE_DOMAINS = [
   'health', 'career', 'finance', 'learning',
@@ -64,6 +66,7 @@ export default function GoalsPage() {
   );
   const activeGoals = filteredGoals.filter((g) => g.status === 'in_progress');
   const completedGoals = filteredGoals.filter((g) => g.status === 'completed');
+  const nextGoal = activeGoals[0];
 
   const domainBreakdown = LIFE_DOMAINS.map((d) => ({
     domain: d,
@@ -105,22 +108,44 @@ export default function GoalsPage() {
       <div className="mx-auto max-w-6xl">
 
         {/* -- CORE OBJECTIVES HEADER -- */}
-        <div className="mb-6 border border-zinc-900 bg-zinc-950">
-          <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
+        <div className="surface-panel mb-6 overflow-hidden">
+          <div className="surface-header">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
-            <span className="font-mono text-xs tracking-widest text-orange-600">CORE_OBJECTIVES :: STRATEGIC_PLANNING</span>
+            <span className="surface-kicker-accent">Core objectives</span>
           </div>
-          <div className="flex flex-col gap-4 px-5 py-4 md:flex-row md:items-center md:justify-between">
+          <div className="grid gap-4 px-5 py-5 lg:grid-cols-[minmax(0,1.45fr)_320px]">
             <div>
-              <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">Goals</h1>
-              <p className="mt-1 font-mono text-xs tracking-widest text-zinc-400">Define what matters � Track your progress toward each goal</p>
+              <div className="flex items-center gap-2">
+                <PixelIcon name="goals" size={14} className="text-orange-400" />
+                <p className="surface-kicker">Strategic planning</p>
+              </div>
+              <h1 className="surface-title mt-2">Goals</h1>
+              <p className="surface-subtitle mt-2 max-w-2xl">Define what matters, keep progress visible, and reduce the odds of drifting into busywork with impressive typography.</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="surface-chip">{activeGoals.length} active</span>
+                <span className="surface-chip">{completedGoals.length} completed</span>
+                <span className="surface-chip">{avgProgress}% average progress</span>
+              </div>
+              <div className="mt-5 flex flex-wrap gap-2">
+                <button
+                  onClick={() => setShowCreate(true)}
+                  className="action-tile text-orange-300 hover:text-orange-200"
+                >
+                  <PixelIcon name="sparkles" size={14} className="text-orange-400" />
+                  <span className="font-terminal text-sm">Define objective</span>
+                </button>
+              </div>
             </div>
-            <button
-              onClick={() => setShowCreate(true)}
-              className="inline-flex items-center gap-2 border border-orange-800 bg-orange-950/30 px-4 py-2 font-mono text-xs tracking-widest text-orange-500 transition hover:border-orange-600 hover:bg-orange-950/60"
-            >
-              <Plus className="h-3.5 w-3.5" /> DEFINE_OBJECTIVE
-            </button>
+            <div className="surface-panel-muted p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="surface-kicker-accent">Priority objective</p>
+                  <p className="mt-2 font-terminal text-lg font-semibold text-zinc-100">{nextGoal?.title ?? 'Create the first goal that changes your week'}</p>
+                  <p className="mt-2 font-terminal text-sm text-zinc-400">{nextGoal ? `${nextGoal.progress ?? 0}% complete${nextGoal.targetDate ? ` • target ${formatDate(nextGoal.targetDate)}` : ''}` : 'One clear objective beats twelve noble vibes.'}</p>
+                </div>
+                <PixelArt variant="goals" className="h-20 w-20" title="Goals pixel art" />
+              </div>
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-px border-t border-zinc-900 sm:grid-cols-4">
             <ObjMetric label="ACTIVE" value={String(activeGoals.length)} />
@@ -131,11 +156,11 @@ export default function GoalsPage() {
         </div>
 
         {/* -- DOMAIN FILTERS -- */}
-        <div className="mb-4 flex flex-wrap gap-px">
+        <div className="surface-panel-muted mb-4 flex flex-wrap gap-2 p-2">
           <button
             onClick={() => setFilterDomain(null)}
             className={`border px-3 py-1.5 font-mono text-xs tracking-widest transition ${
-              !filterDomain ? 'border-orange-800 bg-orange-950/20 text-orange-500' : 'border-zinc-900 bg-zinc-950 text-zinc-400 hover:text-zinc-300'
+              !filterDomain ? 'border-orange-800 bg-orange-950/20 text-orange-500' : 'border-zinc-900 bg-transparent text-zinc-400 hover:text-zinc-300'
             }`}
           >
             ALL [{allGoals.length}]
@@ -148,7 +173,7 @@ export default function GoalsPage() {
                 key={domain}
                 onClick={() => setFilterDomain(filterDomain === domain ? null : domain)}
                 className={`border px-3 py-1.5 font-mono text-xs tracking-widest transition ${
-                  filterDomain === domain ? 'border-orange-800 bg-orange-950/20 text-orange-500' : 'border-zinc-900 bg-zinc-950 text-zinc-400 hover:text-zinc-300'
+                  filterDomain === domain ? 'border-orange-800 bg-orange-950/20 text-orange-500' : 'border-zinc-900 bg-transparent text-zinc-400 hover:text-zinc-300'
                 }`}
               >
                 {domain.replace('_', '_').toUpperCase()} [{count}]
@@ -210,6 +235,10 @@ export default function GoalsPage() {
               </button>
             </div>
             <form onSubmit={handleCreate} className="max-h-[80vh] overflow-y-auto p-5 space-y-4">
+              <div className="surface-panel-muted p-3">
+                <p className="surface-kicker-accent">Goal guidance</p>
+                <p className="mt-2 font-terminal text-sm text-zinc-300">Write a goal you can review weekly and act on daily. Grandiosity is optional; clarity is not.</p>
+              </div>
               <div>
                 <label className="mb-1 block font-mono text-xs tracking-widest text-zinc-500">OBJECTIVE_TITLE *</label>
                 <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g., Run a marathon, Learn Spanish..." className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-400 focus:border-orange-800 focus:outline-none" required autoFocus />
@@ -255,9 +284,18 @@ export default function GoalsPage() {
 }
 
 function ObjMetric({ label, value }: { label: string; value: string }) {
+  const iconMap: Record<string, Parameters<typeof PixelIcon>[0]['name']> = {
+    ACTIVE: 'goals',
+    COMPLETED: 'check',
+    AVG_INTEGRITY: 'analytics',
+    DOMAINS: 'grid',
+  };
   return (
-    <div className="bg-zinc-950 px-4 py-3 transition hover:bg-zinc-900">
-          <p className="font-mono text-xs tracking-widest text-zinc-400">{label}</p>
+    <div className="metric-tile">
+      <div className="flex items-center gap-2">
+        <PixelIcon name={iconMap[label] ?? 'goals'} size={13} className="text-zinc-500" />
+        <p className="metric-label">{label}</p>
+      </div>
       <p className="mt-0.5 font-mono text-lg font-bold text-zinc-100">{value}</p>
     </div>
   );
@@ -278,7 +316,7 @@ function GoalCard({ goal }: { goal: GoalItem }) {
   return (
     <Link
       href={`/goals/${goal._id}`}
-      className="flex flex-col border border-zinc-900 bg-zinc-950 p-4 transition hover:border-zinc-700 hover:bg-zinc-900"
+      className="surface-panel flex flex-col p-4 transition hover:border-zinc-700 hover:bg-zinc-900"
     >
       <div className="mb-3 flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">

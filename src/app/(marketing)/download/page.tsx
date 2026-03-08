@@ -1,23 +1,19 @@
-﻿// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// RESURGO.life â€” /download â€” PWA Installation Guide
-// No app store required â€” install directly from the browser.
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 import Link from 'next/link';
+import { TermLinkButton } from '@/components/ui/TermButton';
 
 export const metadata: Metadata = {
-  title: 'Install Resurgo â€” Free PWA App | AI Habit Tracker',
+  title: 'Install Resurgo - PWA and Android access',
   description:
-    'Install Resurgo on your phone or desktop in seconds â€” no app store needed. Add it to your home screen for a full native-app experience on any device.',
+    'Install Resurgo on mobile or desktop in seconds. Use the PWA on any device, or grab the latest Android package when a release is published.',
   keywords: [
-    'Resurgo install', 'Resurgo app', 'habit tracker PWA', 'add to home screen',
-    'AI habit tracker mobile', 'progressive web app habit tracker',
+    'Resurgo install', 'Resurgo app', 'productivity PWA', 'add to home screen',
+    'AI productivity app mobile', 'progressive web app planner',
   ],
   alternates: { canonical: '/download' },
   openGraph: {
-    title: 'Install Resurgo â€” PWA App',
-    description: 'Add to your home screen in seconds. Works on Android, iPhone, and desktop. No app store needed.',
+    title: 'Install Resurgo - PWA and Android access',
+    description: 'Add Resurgo to your home screen in seconds. Works on Android, iPhone, desktop, and tablet.',
     type: 'website',
     url: '/download',
   },
@@ -25,47 +21,41 @@ export const metadata: Metadata = {
 
 const FEATURES = [
   {
-    icon: 'ðŸ””',
-    title: 'Push Notifications',
-    description: 'Morning digests, habit reminders, and AI coaching nudges â€” enabled from your browser settings after installing.',
+    title: 'Fast launch',
+    description: 'Open Resurgo from your home screen or desktop dock without dealing with browser tabs every time.',
   },
   {
-    icon: 'âš¡',
-    title: 'Instant Launch',
-    description: 'Tap the icon and you\'re in. No browser tabs, no URL bar â€” a full-screen dedicated experience from your home screen.',
+    title: 'Offline-friendly',
+    description: 'Installed sessions cache key screens and queue supported actions until your connection returns.',
   },
   {
-    icon: 'ðŸ“Š',
-    title: 'Full Dashboard Access',
-    description: 'Every feature from the web app: habits, goals, tasks, AI coach, vision board, analytics â€” always in your pocket.',
+    title: 'Full dashboard access',
+    description: 'Use the same habits, tasks, goals, reviews, and AI planning workflows you see on the web app.',
   },
   {
-    icon: 'ðŸ”’',
-    title: 'Secure Authentication',
-    description: 'Same Clerk-powered account across all devices. Your data syncs in real-time via Convex â€” zero setup needed.',
+    title: 'Secure account sync',
+    description: 'Sign in once and your data stays synced across devices through the same Resurgo account.',
   },
   {
-    icon: 'ðŸ“¶',
-    title: 'Works Offline',
-    description: 'Your cached data is available even when your connection drops. Changes sync when you\'re back online.',
+    title: 'No app store required',
+    description: 'The PWA installs directly from the browser on desktop, Android, iPhone, and iPad.',
   },
   {
-    icon: 'ðŸŒ™',
-    title: 'Smart Quiet Hours',
-    description: 'Set quiet hours in Settings and Resurgo batches notifications intelligently â€” no buzzing at 2 AM.',
+    title: 'Android package option',
+    description: 'If you prefer a packaged install, use the latest Android release when one has been published.',
   },
 ];
 
 const INSTALL_ANDROID = [
   { step: 1, title: 'Open resurgo.life in Chrome', description: 'Use Chrome or Samsung Internet on your Android device.' },
-  { step: 2, title: 'Tap the menu (â‹®) â†’ "Add to Home screen"', description: 'Or look for the install icon (âŠ•) that appears in the address bar.' },
+  { step: 2, title: 'Tap the menu (...) then "Add to Home screen"', description: 'If Chrome shows an install button in the address bar, you can use that too.' },
   { step: 3, title: 'Tap "Add"', description: 'Android adds the Resurgo icon to your home screen instantly.' },
   { step: 4, title: 'Launch & allow notifications', description: 'Open Resurgo from your home screen and allow push notifications when prompted.' },
 ];
 
 const INSTALL_IOS = [
-  { step: 1, title: 'Open resurgo.life in Safari', description: 'Must use Safari â€” Chrome on iOS cannot install PWAs.' },
-  { step: 2, title: 'Tap the Share button (â–¡â†‘)', description: 'Found at the bottom of the screen on iPhone.' },
+  { step: 1, title: 'Open resurgo.life in Safari', description: 'Use Safari on iPhone or iPad for installation.' },
+  { step: 2, title: 'Tap the Share button', description: 'You will find it in Safari\'s toolbar.' },
   { step: 3, title: 'Tap "Add to Home Screen"', description: 'Scroll down the share sheet if needed.' },
   { step: 4, title: 'Tap "Add"', description: 'Safari adds Resurgo to your home screen like a native app.' },
 ];
@@ -78,37 +68,39 @@ export default function DownloadPage() {
       <section className="border-b border-zinc-900">
         <div className="mx-auto max-w-4xl px-6 pb-16 pt-20">
           <div className="mb-4 font-mono text-xs tracking-widest text-orange-400">
-            GET_RESURGO :: NATIVE_APK + HOME_SCREEN
+            GET_RESURGO :: PWA + OPTIONAL_ANDROID_PACKAGE
           </div>
           <h1 className="font-mono text-4xl font-bold tracking-tight text-zinc-100 md:text-5xl">
             Download Resurgo
           </h1>
-          {/* APK primary download */}
+          <p className="mt-4 max-w-2xl font-mono text-sm leading-relaxed text-zinc-400">
+            The fastest path is the browser install. Add Resurgo to your home screen or desktop, then sign in and pick up exactly where you left off.
+          </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href="https://github.com/ShaykhedeE/ascend/releases/latest/download/resurgo.apk"
-              className="flex items-center gap-2 border-2 border-orange-600 bg-orange-600 px-6 py-3 font-mono text-sm font-bold tracking-widest text-black transition hover:bg-orange-500">
-              ↓ Download APK (Android)
-            </a>
-            <Link href="/sign-up"
-              className="border border-orange-800 bg-orange-950/30 px-5 py-3 font-mono text-sm tracking-widest text-orange-400 transition hover:bg-orange-950/60">
-              [GET_STARTED_FREE]
-            </Link>
+            <TermLinkButton
+              href="https://github.com/ShaykhedeE/ascend/releases/latest/download/resurgo.apk"
+              variant="primary"
+              size="lg"
+            >
+              DOWNLOAD ANDROID PACKAGE
+            </TermLinkButton>
+            <TermLinkButton href="/sign-up" variant="secondary" size="lg">
+              INSTALL VIA BROWSER
+            </TermLinkButton>
           </div>
           <div className="mt-3 flex flex-wrap items-center gap-4 font-mono text-xs text-zinc-600">
-            <span>✓ Android 7.0+</span>
-            <span>✓ ~15MB</span>
-            <span>✓ Signed release build</span>
-            <span>✓ v1.0.0</span>
+            <span>PWA on desktop + mobile</span>
+            <span>Android package link available</span>
+            <span>Uses your live cloud account</span>
           </div>
           <div className="mt-5 max-w-xl border border-yellow-900/40 bg-yellow-950/10 px-4 py-3">
             <p className="font-mono text-xs leading-relaxed text-yellow-400">
-              <strong>Android sideload note:</strong> Allow &quot;Install from unknown sources&quot; in
-              Settings → Security → Install unknown apps. This is standard for APKs outside the Play Store.
+              <strong>Android package note:</strong> If you install the APK, Android may ask you to allow installs from your browser or file manager because it is outside the Play Store.
             </p>
           </div>
           <h2 className="mt-10 font-mono text-xl text-zinc-400">Or install as a home screen app on any device</h2>
           <p className="mt-2 font-mono text-xs text-zinc-500">
-            No app store needed — works on iPhone, iPad, and any desktop browser.
+            No app store needed - works on iPhone, iPad, Android, and modern desktop browsers.
           </p>
         </div>
       </section>
@@ -170,11 +162,10 @@ export default function DownloadPage() {
       {/* Features Grid */}
       <section className="border-t border-zinc-900 mx-auto max-w-5xl px-6 py-20">
         <h2 className="mb-2 font-mono text-2xl font-bold text-zinc-100">What You Get</h2>
-        <p className="mb-12 font-mono text-sm text-zinc-400">Everything the web app offers â€” delivered to your home screen.</p>
+        <p className="mb-12 font-mono text-sm text-zinc-400">Everything the web app offers, delivered in an installable format.</p>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {FEATURES.map((f) => (
             <div key={f.title} className="border border-zinc-800 bg-zinc-950 p-5">
-              <div className="mb-3 text-2xl">{f.icon}</div>
               <h3 className="font-mono text-sm font-semibold text-zinc-200 mb-1">{f.title}</h3>
               <p className="font-mono text-xs text-zinc-500 leading-relaxed">{f.description}</p>
             </div>
@@ -189,19 +180,19 @@ export default function DownloadPage() {
           {[
             {
               q: 'Do I need to create an account?',
-              a: 'Yes. Sign up free at resurgo.life â€” takes about 30 seconds. Your data is stored in the cloud and syncs across all your devices.',
+              a: 'Yes. Sign up free at resurgo.life - it takes about 30 seconds. Your data is stored in the cloud and syncs across all your devices.',
             },
             {
               q: 'Is this a real app or just a bookmark?',
-              a: 'It\'s a Progressive Web App (PWA) â€” it launches in standalone mode (no browser UI), has its own icon, can receive push notifications, caches data, and works offline. It behaves like a native app on your device.',
+              a: 'It is a Progressive Web App. Installed PWAs launch in a standalone window, keep their own icon, support notifications on supported platforms, and feel close to a native app for most daily use.',
             },
             {
               q: 'Why not the Play Store or App Store?',
-              a: 'PWAs install instantly without any store approval process. Your app always runs the latest version automatically â€” no manual updates needed. For most use cases, the PWA experience is identical to a native app.',
+              a: 'The PWA installs instantly, updates faster, and avoids store review delays. It is the fastest way for most users to get the full Resurgo experience.',
             },
             {
               q: 'Does it work on desktop?',
-              a: 'Yes. Chrome and Edge on Windows/Mac/Linux support PWA installation. Click the install icon (âŠ•) in the browser address bar, or go to Settings â†’ Cast, Save, and Share â†’ Install page as app.',
+              a: 'Yes. Chrome and Edge on Windows, macOS, and Linux support installation. Use the browser install prompt or the install option in the browser menu.',
             },
             {
               q: 'Will I lose my data if I uninstall the PWA?',
@@ -230,7 +221,7 @@ export default function DownloadPage() {
         <p className="font-mono text-xs tracking-widest text-orange-400 mb-3">READY_TO_BEGIN</p>
         <h2 className="font-mono text-3xl font-bold text-zinc-100">Start building better habits today.</h2>
         <p className="mt-3 font-mono text-sm text-zinc-400 max-w-md mx-auto">
-          Open resurgo.life in your browser, sign up free, then install it to your home screen.
+          Open resurgo.life in your browser, sign up free, then install it to your home screen or desktop.
         </p>
         <Link
           href="/sign-up"
@@ -255,7 +246,7 @@ export default function DownloadPage() {
               price: '0',
               priceCurrency: 'USD',
             },
-            description: 'AI-powered habit tracker with goal decomposition, push notifications, and gamified progress tracking. Install as a PWA on any device.',
+            description: 'AI-powered productivity assistant with planning, habits, tasks, coaching, and installable PWA access on any device.',
             url: 'https://resurgo.life',
             author: {
               '@type': 'Organization',

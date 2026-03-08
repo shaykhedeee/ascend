@@ -5,12 +5,15 @@ import './globals.css';
 import '@/lib/env'; // Env validation — runs at startup (server-side)
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { GoogleAnalytics } from '@/lib/analytics';
+import { MetaPixel } from '@/components/MetaPixel';
 import { CustomCursor } from '@/components/Cursor';
 import { ErrorTrackingInit } from '@/components/ErrorTrackingInit';
 import { AccessibilityProvider } from '@/components/AccessibilityProvider';
 import ConvexClientProvider from '@/components/ConvexClientProvider';
 import ClerkProviderWrapper from '@/components/ClerkProviderWrapper';
 import { CookieConsent } from '@/components/CookieConsent';
+import OfflineSyncProvider from '@/components/OfflineSyncProvider';
+import { MARKETING_SOCIAL_URLS } from '@/lib/marketing/social-links';
 
 
 // Base URL for the application (update for production)
@@ -43,21 +46,21 @@ export const metadata: Metadata = {
   // PRIMARY SEO METADATA
   // ═══════════════════════════════════════════════════════════════════════════
   title: {
-    default: 'Resurgo | AI-Powered Habit Tracker & Goal Achievement App',
-    template: '%s | Resurgo - Smart Habit Tracker',
+    default: 'Resurgo | AI Productivity Assistant & Life Command Center',
+    template: '%s | Resurgo',
   },
-  description: 'Resurgo is a free AI habit tracker and goal planner. Break big goals into daily tasks, build streaks, track wellness, and get AI coaching. Start in under 2 minutes.',
+  description: 'Resurgo is an AI productivity assistant for tasks, planning, focus, habits, and reviews. Capture what matters, stay organized offline, and keep execution in one command center.',
   keywords: [
     // Primary Keywords
-    'habit tracker', 'habit tracking app', 'goal tracker', 'habit builder',
-    'AI habit tracker', 'smart goal setting app', 'gamified habit tracker',
+    'AI productivity assistant', 'life command center', 'goal tracker', 'task planning assistant',
+    'offline productivity app', 'smart goal setting app', 'gamified habit tracker',
     // Long-tail Keywords
-    'daily habit tracker free', 'best habit tracking app 2026',
+    'daily planner free', 'best productivity app 2026',
     'habit tracker with streaks', 'goal decomposition tool',
-    'free habit tracker app', 'habit tracker with AI coaching',
+    'brain dump app', 'AI assistant for planning',
     'goal planner app', 'daily routine tracker', 'streak tracker app',
     // Brand
-    'resurgo', 'resurgo.life', 'resurgo app', 'resurgo habit tracker',
+    'resurgo', 'resurgo.life', 'resurgo app', 'resurgo productivity assistant',
     // Feature Keywords
     'life operating system', 'goal decomposition engine',
     'focus timer app', 'pomodoro tracker', 'deep work timer',
@@ -71,7 +74,7 @@ export const metadata: Metadata = {
     'journaling app', 'mindfulness app', 'accountability app',
     // Voice Search / AEO Queries
     'how to build good habits', 'track my daily habits',
-    'app to help achieve goals', 'free habit tracker',
+    'app to help achieve goals', 'free productivity assistant',
     'best app for building habits', 'how to stick to habits',
     'how to track goals with AI', 'what is the best habit tracker',
     'how to build a morning routine', 'how to stay consistent with habits',
@@ -116,14 +119,14 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: siteUrl,
     siteName: 'Resurgo',
-    title: 'Resurgo | AI-Powered Habit Tracker & Goal Achievement',
-    description: 'Build lasting habits with AI goal decomposition. Track progress, earn XP, and level up your life. Join 50K+ users achieving their goals.',
+    title: 'Resurgo | AI Productivity Assistant & Life Command Center',
+    description: 'Capture tasks, plan your day, focus deeply, and stay consistent with one AI-powered operating system for work and life.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Resurgo - AI-Powered Habit Tracker with gamified progress tracking',
+        alt: 'Resurgo dashboard for planning, tasks, focus sessions, and AI guidance',
         type: 'image/png',
       },
       {
@@ -143,8 +146,8 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     site: '@resurgolife',
     creator: '@resurgolife',
-    title: 'Resurgo | AI Habit Tracker That Makes Goals Achievable',
-    description: 'Transform big goals into daily wins. AI-powered decomposition + gamified tracking = unstoppable progress. Try free!',
+    title: 'Resurgo | AI Productivity Assistant That Keeps You Moving',
+    description: 'Transform mental clutter into clear execution. Tasks, focus, habits, reviews, and AI guidance in one place.',
     images: {
       url: '/twitter-image.png',
       alt: 'Resurgo - Build Better Habits with AI',
@@ -288,11 +291,8 @@ const jsonLd = {
       'name': 'Resurgo',
       'url': siteUrl,
       'logo': `${siteUrl}/icons/icon.svg`,
-      'description': 'Resurgo builds AI-powered productivity tools that help people build better habits, achieve goals, and stay consistent.',
-      'sameAs': [
-        'https://twitter.com/ResurgoApp',
-        'https://t.me/ResurgoApp',
-      ],
+      'description': 'Resurgo builds AI-powered productivity tools that help people plan clearly, execute consistently, and recover momentum faster.',
+      'sameAs': MARKETING_SOCIAL_URLS,
       'contactPoint': {
         '@type': 'ContactPoint',
         'contactType': 'customer support',
@@ -315,15 +315,15 @@ const jsonLd = {
     // Web Page Schema for answer engines
     {
       '@type': 'WebPage',
-      'name': 'Resurgo Habit Tracker',
+      'name': 'Resurgo Productivity Assistant',
       'url': siteUrl,
-      'description': 'AI-powered habit tracker with guided goal decomposition, streak support, and actionable coaching.',
+      'description': 'AI-powered productivity assistant with guided planning, task capture, focus support, offline sync, and actionable coaching.',
       'isPartOf': {
         '@type': 'WebSite',
         'url': siteUrl,
       },
       'about': [
-        'Habit tracking',
+        'Task management',
         'Goal setting',
         'Behavior change',
         'Productivity',
@@ -345,7 +345,7 @@ const jsonLd = {
           'name': 'What is Resurgo?',
           'acceptedAnswer': {
             '@type': 'Answer',
-            'text': 'Resurgo is a free AI-powered habit tracker and goal planner. It breaks big goals into daily tasks, tracks your streaks, offers AI coaching from 6 coach personas, and includes focus timers, wellness tracking, and gamified progress with XP and levels.',
+            'text': 'Resurgo is a free AI-powered habit tracker and goal planner. It breaks big goals into daily tasks, tracks your streaks, offers AI coaching from 8 coach personas, and includes focus timers, wellness tracking, and gamified progress with XP and levels.',
           },
         },
         {
@@ -462,7 +462,7 @@ export default function RootLayout({
 
                   // On all hosts: clear old (non-current) SW caches to prevent stale pages
                   if (!isLocal && 'caches' in window) {
-                    var CURRENT_CACHE = 'ascend-v7';
+                    var CURRENT_CACHE = 'resurgo-v9';
                     caches.keys().then(function(keys) {
                       return Promise.all(keys.filter(function(k) { return k !== CURRENT_CACHE; }).map(function(k) { return caches.delete(k); }));
                     }).catch(function() {});
@@ -510,6 +510,9 @@ export default function RootLayout({
         {/* Google Analytics */}
         <GoogleAnalytics />
 
+        {/* Meta Pixel (Facebook) — Conversion Tracking */}
+        <MetaPixel />
+
         {/* Custom Cursor - Desktop Only */}
         <CustomCursor />
 
@@ -517,6 +520,7 @@ export default function RootLayout({
           <ConvexClientProvider>
             <ThemeProvider>
               <AccessibilityProvider>
+                <OfflineSyncProvider />
                 {children}
                 <CookieConsent />
               </AccessibilityProvider>

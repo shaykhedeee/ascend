@@ -1,7 +1,7 @@
 'use client';
 
 // -------------------------------------------------------------------------------
-// RESURGO � AI Coach Interface (Terminal Robot UI)
+// RESURGO - AI Coach Interface (Terminal Robot UI)
 // Six distinct AI personas with memory, real-time streaming, typing animation
 // -------------------------------------------------------------------------------
 
@@ -11,8 +11,10 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { Send, Brain, Zap, Dumbbell, TrendingUp, Flame, Sparkles, Lock, CheckCircle2, XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useStoreUser } from '@/hooks/useStoreUser';
+import { PixelArt } from '@/components/PixelArt';
+import { PixelIcon } from '@/components/PixelIcon';
 
-type CoachId = 'MARCUS' | 'AURORA' | 'TITAN' | 'SAGE' | 'PHOENIX' | 'NOVA';
+type CoachId = 'MARCUS' | 'AURORA' | 'TITAN' | 'SAGE' | 'PHOENIX' | 'NOVA' | 'ORACLE' | 'NEXUS';
 
 interface CoachDef {
   id: CoachId;
@@ -23,6 +25,7 @@ interface CoachDef {
   domain: string;
   shortBio: string;
   Icon: React.ElementType;
+  premium?: boolean; // requires yearly or lifetime plan
 }
 
 const COACHES: CoachDef[] = [
@@ -32,6 +35,9 @@ const COACHES: CoachDef[] = [
   { id: 'SAGE',   name: 'SAGE',   title: 'Financial Alchemist',    avatar: '💰', color: '#22c55e', domain: 'finance · wealth · career strategy',        shortBio: 'Every dollar is a soldier. Deploy capital with precision.', Icon: TrendingUp },
   { id: 'PHOENIX',name: 'PHOENIX',title: 'Comeback Specialist',    avatar: '🔥', color: '#f97316', domain: 'resilience · recovery · setbacks',          shortBio: 'Built for rock bottom. The ashes are the fuel.',           Icon: Flame },
   { id: 'NOVA',   name: 'NOVA',   title: 'Creative Systems',       avatar: '⚡', color: '#06b6d4', domain: 'creativity · learning · systems',           shortBio: 'Connects dots across disciplines to unlock breakthroughs.', Icon: Zap },
+  // ── PREMIUM AGENTS (Yearly / Lifetime only) ──────────────────────────────────
+  { id: 'ORACLE', name: 'ORACLE', title: 'Omniscient Life Architect', avatar: '👁', color: '#FF6B35', domain: 'strategy · psychology · full-spectrum life OS',   shortBio: 'Synthesises all coach wisdom. Sees your entire system, rewrites what isn\'t working.', Icon: Brain, premium: true },
+  { id: 'NEXUS',  name: 'NEXUS',  title: 'Neural Integration Engine', avatar: '∞', color: '#e879f9', domain: 'neural hacking · deep learning · mastery systems', shortBio: 'Merges mind, body, finance & creativity into one adaptive engine. No limits.', Icon: Zap, premium: true },
 ];
 
 // Static fallback prompts (used only while smart prompts load)
@@ -42,6 +48,8 @@ const FALLBACK_PROMPTS: Record<CoachId, string[]> = {
   SAGE:    ['How do I build a savings system?', 'Help me create a monthly budget', 'How do I grow my income?'],
   PHOENIX: ['I failed at my goals again', 'I\'m in a deep slump — help me restart', 'How do I build resilience?'],
   NOVA:    ['I\'m stuck on a creative problem', 'How do I learn faster?', 'Help me build a second brain system'],
+  ORACLE:  ['Audit my entire life system right now', 'What is the single highest-leverage change I can make?', 'Map out my full 90-day transformation protocol'],
+  NEXUS:   ['Build me a custom neural mastery stack', 'Integrate my fitness, work, and mental health into one system', 'What cognitive upgrades should I prioritize first?'],
 };
 
 // ── Render action badges from action summary blocks ──
@@ -96,6 +104,8 @@ export default function CoachPage() {
 
   const { user } = useStoreUser();
   const isPro = user?.plan === 'pro' || user?.plan === 'lifetime';
+  // Premium agents require yearly Pro or Lifetime — billingPeriod is set by billing webhook
+  const isYearly = user?.plan === 'lifetime' || ((user as any)?.billingPeriod === 'year' && user?.plan === 'pro');
   const FREE_COACHES: CoachId[] = ['MARCUS', 'AURORA'];
 
   const history = useQuery(api.coachMessages.getHistory, { limit: 100 });
@@ -155,7 +165,9 @@ export default function CoachPage() {
   const handleSubmit = (e: FormEvent) => { e.preventDefault(); handleSend(message); };
 
   const handleSwitchCoach = async (id: CoachId) => {
-    if (!isPro && !FREE_COACHES.includes(id)) return; // blocked for free users
+    const def = COACHES.find(c => c.id === id);
+    if (def?.premium && !isYearly) return; // premium agents require yearly/lifetime
+    if (!isPro && !FREE_COACHES.includes(id) && !def?.premium) return; // blocked for free users
     setSelectedCoach(id);
     await setCoachMutation({ coachId: id }).catch(() => {});
   };
@@ -165,20 +177,20 @@ export default function CoachPage() {
   return (
     <div className="flex min-h-screen flex-col bg-black">
       {/* -- HEADER -- */}
-      <div className="border-b border-zinc-900 bg-zinc-950 px-4 py-2 md:px-6">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
+      <div className="border-b border-zinc-900 bg-zinc-950 px-4 py-3 md:px-6">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
             <span className="font-mono text-[9px] tracking-widest text-orange-600">RESURGO :: AI_COACH</span>
           </div>
-          <span className="font-mono text-[9px] tracking-widest text-zinc-400">ACTIVE: {selectedCoach}</span>
+          <span className="surface-chip-accent">ACTIVE: {selectedCoach}</span>
         </div>
       </div>
 
       <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-4 p-4 md:flex-row md:p-6">
         {/* -- AGENT SELECTOR -- */}
         <aside className="w-full md:w-64 shrink-0 space-y-3">
-          <div className="border border-zinc-900 bg-zinc-950">
+          <div className="surface-panel overflow-hidden">
             <div className="border-b border-zinc-900 px-3 py-2">
               <p className="font-mono text-[9px] tracking-widest text-zinc-400">SELECT_AGENT</p>
             </div>
@@ -186,35 +198,53 @@ export default function CoachPage() {
               {COACHES.map((c) => {
                 const Icon = c.Icon;
                 const isActive = c.id === selectedCoach;
-                const isLocked = !isPro && !FREE_COACHES.includes(c.id);
+                const isPremiumLocked = !!c.premium && !isYearly;
+                const isProLocked = !c.premium && !isPro && !FREE_COACHES.includes(c.id);
+                const isLocked = isPremiumLocked || isProLocked;
+                const isSeparator = c.id === 'ORACLE'; // visual divider before premium block
                 return (
-                  <button key={c.id} onClick={() => handleSwitchCoach(c.id)}
-                    className={cn('group w-full border px-3 py-2.5 text-left transition',
-                      isLocked ? 'cursor-not-allowed opacity-50 border-transparent' :
-                      isActive ? 'border-zinc-700 bg-zinc-900' : 'border-transparent hover:border-zinc-800 hover:bg-zinc-900/50'
-                    )}>
-                    <div className="flex items-center gap-2">
-                      <Icon className="h-3.5 w-3.5 shrink-0" style={{ color: isActive && !isLocked ? c.color : '#52525b' }} />
-                      <div className="min-w-0 flex-1">
-                        <p className="font-mono text-[10px] font-bold tracking-widest" style={{ color: isActive && !isLocked ? c.color : '#71717a' }}>{c.name}</p>
-                        <p className="truncate font-mono text-[8px] tracking-wider text-zinc-400">{c.title}</p>
+                  <div key={c.id}>
+                    {isSeparator && (
+                      <div className="my-1 border-t border-zinc-800 px-3 py-1">
+                        <p className="font-mono text-[7px] tracking-widest" style={{ color: '#FF6B35' }}>── PREMIUM_AGENTS ──</p>
                       </div>
-                      {isLocked ? (
-                        <Lock className="h-3 w-3 shrink-0 text-zinc-400" />
-                      ) : isActive ? (
-                        <span className="h-1 w-1 rounded-full" style={{ backgroundColor: c.color }} />
-                      ) : null}
-                    </div>
-                    {isLocked && (
-                      <p className="mt-1 font-mono text-[7px] tracking-widest text-amber-600/70">PRO ONLY</p>
                     )}
-                  </button>
+                    <button onClick={() => handleSwitchCoach(c.id)}
+                      className={cn('group w-full border px-3 py-2.5 text-left transition',
+                        isLocked ? 'cursor-not-allowed opacity-50 border-transparent' :
+                        isActive ? 'border-zinc-700 bg-zinc-900' : 'border-transparent hover:border-zinc-800 hover:bg-zinc-900/50'
+                      )}
+                      style={isActive && !isLocked && c.premium ? { borderColor: `${c.color}60`, background: `${c.color}10` } : {}}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Icon className="h-3.5 w-3.5 shrink-0" style={{ color: isActive && !isLocked ? c.color : '#52525b' }} />
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-1.5">
+                            <p className="font-mono text-[10px] font-bold tracking-widest" style={{ color: isActive && !isLocked ? c.color : '#71717a' }}>{c.name}</p>
+                            {c.premium && !isLocked && <span className="font-mono text-[6px] tracking-widest" style={{ color: c.color }}>★</span>}
+                          </div>
+                          <p className="truncate font-mono text-[8px] tracking-wider text-zinc-400">{c.title}</p>
+                        </div>
+                        {isLocked ? (
+                          <Lock className="h-3 w-3 shrink-0 text-zinc-400" />
+                        ) : isActive ? (
+                          <span className="h-1 w-1 rounded-full" style={{ backgroundColor: c.color }} />
+                        ) : null}
+                      </div>
+                      {isPremiumLocked && (
+                        <p className="mt-1 font-mono text-[7px] tracking-widest" style={{ color: '#FF6B35' }}>YEARLY / LIFETIME ONLY</p>
+                      )}
+                      {isProLocked && (
+                        <p className="mt-1 font-mono text-[7px] tracking-widest text-amber-600/70">PRO ONLY</p>
+                      )}
+                    </button>
+                  </div>
                 );
               })}
             </div>
           </div>
 
-          <div className="border border-zinc-900 bg-zinc-950">
+          <div className="surface-panel overflow-hidden">
             <div className="border-b border-zinc-900 px-3 py-2">
               <p className="font-mono text-[9px] tracking-widest text-zinc-400">SMART_PROMPTS</p>
             </div>
@@ -232,19 +262,22 @@ export default function CoachPage() {
         {/* -- CHAT TERMINAL -- */}
         <div className="flex min-w-0 flex-1 flex-col gap-3">
           {/* Coach card */}
-          <div className="border px-4 py-3" style={{ borderColor: `${coach.color}33`, backgroundColor: `${coach.color}08` }}>
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">{coach.avatar}</span>
-              <div>
-                <p className="font-mono text-xs font-bold tracking-widest" style={{ color: coach.color }}>{coach.name} � {coach.title}</p>
-                <p className="font-mono text-[9px] tracking-wider text-zinc-500">{coach.domain}</p>
-                <p className="mt-0.5 font-mono text-[10px] text-zinc-400">{coach.shortBio}</p>
+          <div className="surface-panel-muted border px-4 py-4" style={{ borderColor: `${coach.color}33`, backgroundColor: `${coach.color}08` }}>
+            <div className="flex items-start gap-3">
+              <PixelArt variant="coach" className="h-16 w-16 shrink-0" title="Coach pixel art" />
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <PixelIcon name="robot" size={14} className="text-violet-300" />
+                  <p className="font-mono text-xs font-bold tracking-widest" style={{ color: coach.color }}>{coach.name} - {coach.title}</p>
+                </div>
+                <p className="mt-1 font-mono text-[9px] tracking-wider text-zinc-500">{coach.domain}</p>
+                <p className="mt-1 font-mono text-[10px] text-zinc-400">{coach.shortBio}</p>
               </div>
             </div>
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto border border-zinc-900 bg-black" style={{ minHeight: '280px', maxHeight: 'calc(100vh - 400px)' }}>
+          <div className="surface-panel flex-1 overflow-y-auto bg-black" style={{ minHeight: '280px', maxHeight: 'calc(100vh - 400px)' }}>
             <div className="space-y-px p-2">
               {coachMessages.length === 0 && !isGreeting && (
                 <div className="flex flex-col items-center justify-center py-16 text-center">
@@ -287,7 +320,7 @@ export default function CoachPage() {
           </div>
 
           {/* Input */}
-          <form onSubmit={handleSubmit} className="flex items-center gap-2 border border-zinc-900 bg-zinc-950 p-3">
+          <form onSubmit={handleSubmit} className="surface-panel flex items-center gap-2 p-3">
             <span className="hidden font-mono text-[9px] tracking-widest text-zinc-400 md:block">TRANSMIT&gt;</span>
             <input ref={inputRef} value={message} onChange={(e) => setMessage(e.target.value)}
               placeholder={`Message ${coach.name}... (press / to focus)`} disabled={isSending}

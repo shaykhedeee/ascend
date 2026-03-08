@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { LogoMark } from '@/components/Logo';
+import { PixelIcon, type PixelIconName } from '@/components/PixelIcon';
+import { MarketingHeader } from '@/components/MarketingHeader';
 import { ScrollToTop } from '@/components/ScrollToTop';
 import { TerminalDemo } from '@/components/TerminalDemo';
 import { MarketingFooter } from '@/components/MarketingFooter';
@@ -15,6 +16,7 @@ import LandingChatWidget from '@/components/marketing/LandingChatWidget';
 import ExitIntent from '@/components/marketing/ExitIntent';
 import StickyCTA from '@/components/marketing/StickyCTA';
 import { CookieConsent } from '@/components/CookieConsent';
+import { TermLinkButton } from '@/components/ui/TermButton';
 import { captureUtmParams, trackMarketingEvent } from '@/lib/marketing/analytics';
 import { getExperimentVariant, trackExperimentExposure } from '@/lib/marketing/experiments';
 import {
@@ -40,7 +42,7 @@ const CORE_FEATURES = [
       'Enter any goal. The AI generates milestones, weekly targets, and daily tasks in seconds — no planning expertise needed.',
     status: 'Live',
     category: 'Planning',
-    icon: '🎯',
+    icon: 'goals' as PixelIconName,
     terminalCmd: '> plan --goal "launch startup"',
   },
   {
@@ -50,7 +52,7 @@ const CORE_FEATURES = [
       'Build habits that stick. Track streaks, completion rates, consistency patterns, and chain habits into stacks.',
     status: 'Live',
     category: 'Habits',
-    icon: '🔁',
+    icon: 'loop' as PixelIconName,
     terminalCmd: '> track --habits --streak',
   },
   {
@@ -60,7 +62,7 @@ const CORE_FEATURES = [
       'Run Pomodoro, Deep Work, or Flowtime sessions. Log distractions, play ambient sounds, and track total focus hours.',
     status: 'Live',
     category: 'Focus',
-    icon: '⏱️',
+    icon: 'timer' as PixelIconName,
     terminalCmd: '> focus --mode deepwork --90min',
   },
   {
@@ -70,7 +72,7 @@ const CORE_FEATURES = [
       'Chat with NOVA (Systems), TITAN (Performance), SAGE (Wealth), PHOENIX (Resilience), ATLAS (Strategy), or EMBER (Creativity). Each coach has a distinct strategy. Advice personalized to your goals, 24/7.',
     status: 'Live',
     category: 'AI',
-    icon: '🤖',
+    icon: 'robot' as PixelIconName,
     terminalCmd: '> coach --ask @TITAN "next step"',
   },
   {
@@ -80,7 +82,7 @@ const CORE_FEATURES = [
       'Plan your day with AI-assisted task prioritization. See habits, tasks, and sessions in one clear timeline.',
     status: 'Live',
     category: 'Planning',
-    icon: '📋',
+    icon: 'plan' as PixelIconName,
     terminalCmd: '> plan --today --prioritize',
   },
   {
@@ -90,7 +92,7 @@ const CORE_FEATURES = [
       'Goals, habits, tasks, wellness, budget, and planning — one clean interface. No more switching between apps.',
     status: 'Live',
     category: 'Core',
-    icon: '📊',
+    icon: 'dashboard' as PixelIconName,
     terminalCmd: '> dash --overview --all',
   },
   {
@@ -100,7 +102,7 @@ const CORE_FEATURES = [
       'Track mood, energy, sleep quality, and recovery. See how your lifestyle patterns affect productivity over time.',
     status: 'Live',
     category: 'Wellness',
-    icon: '💤',
+    icon: 'moon' as PixelIconName,
     terminalCmd: '> wellness --log mood energy sleep',
   },
   {
@@ -110,7 +112,7 @@ const CORE_FEATURES = [
       'Earn XP for completing habits and tasks. Level up, unlock badges, and maintain streaks that keep you motivated.',
     status: 'Live',
     category: 'Motivation',
-    icon: '🏆',
+    icon: 'trophy' as PixelIconName,
     terminalCmd: '> xp --leaderboard --badges',
   },
   {
@@ -120,7 +122,7 @@ const CORE_FEATURES = [
       'Get AI-generated weekly summaries. See what worked, what didn\'t, and receive personalized focus recommendations.',
     status: 'Live',
     category: 'Analytics',
-    icon: '📈',
+    icon: 'analytics' as PixelIconName,
     terminalCmd: '> review --weekly --insights',
   },
   {
@@ -130,7 +132,7 @@ const CORE_FEATURES = [
       'Log meals and track macros. Connect nutrition data to energy levels and correlate with performance goals.',
     status: 'Live',
     category: 'Wellness',
-    icon: '🥗',
+    icon: 'heart' as PixelIconName,
     terminalCmd: '> nutrition --log --macros',
   },
   {
@@ -140,7 +142,7 @@ const CORE_FEATURES = [
       'Check in on habits, receive reminders, and log progress from Telegram. Stay consistent without opening the app.',
     status: 'Live',
     category: 'Integration',
-    icon: '✈️',
+    icon: 'message' as PixelIconName,
     terminalCmd: '> telegram --checkin --notify',
   },
   {
@@ -150,7 +152,7 @@ const CORE_FEATURES = [
       'Your data is encrypted, synced in real-time, and preserved across plan changes. Privacy-first — no data selling.',
     status: 'Secure',
     category: 'Security',
-    icon: '🔒',
+    icon: 'check' as PixelIconName,
     terminalCmd: '> security --encrypt --private',
   },
 ];
@@ -214,7 +216,7 @@ const FAQS = [
   {
     question: 'What is Resurgo and how does it work?',
     answer:
-      'Resurgo is an AI-powered habit tracker and goal planner. You set a goal, the AI breaks it into milestones and daily tasks, and you track progress with habits, focus sessions, and AI coaching. It works on desktop and mobile as a Progressive Web App, and is also available as an Android APK.',
+      'Resurgo is an AI productivity assistant and life command center. You capture a goal, task list, or messy brain dump, and Resurgo turns it into milestones, daily tasks, habits, focus blocks, and guided reviews. It works on desktop and mobile as a Progressive Web App, and is also available as an Android APK.',
   },
   {
     question: 'How long does it take to get started?',
@@ -259,12 +261,12 @@ const FAQS = [
   {
     question: 'What is the best free AI habit tracker in 2026?',
     answer:
-      'Resurgo is one of the top free AI habit trackers available in 2026. Unlike basic trackers, Resurgo uses AI to automatically break your goals into milestones and daily habits, offers Pomodoro and Deep Work focus timers, provides AI coaching via six distinct personas, and has a gamification system with XP and levels — all on the free plan with no time limit.',
+      'Resurgo is one of the top free AI productivity assistants available in 2026. Unlike basic trackers, Resurgo combines AI task planning, daily execution support, focus timers, review loops, and habit tracking in one workflow — all on the free plan with no time limit.',
   },
   {
     question: 'Does Resurgo work offline?',
     answer:
-      'Yes. When installed as a Progressive Web App, Resurgo works offline. Your habits, tasks, and recent data are cached locally so you can continue logging progress without an internet connection. Changes sync automatically when you reconnect.',
+      'Yes. When installed as a Progressive Web App, Resurgo works offline. New tasks and brain dumps can be captured locally and sync automatically when you reconnect, alongside your recent app data.',
   },
   {
     question: 'Can AI really help me build habits?',
@@ -293,7 +295,7 @@ const TICKER_ITEMS = [
   'AI-POWERED GOAL PLANNING',
   'HABIT STREAKS & STACKING',
   'FOCUS TIMER (POMODORO / DEEP WORK)',
-  '6 AI COACHING PERSONAS',
+  '8 AI COACHING PERSONAS',
   'DAILY & WEEKLY PLANNING',
   'GAMIFICATION & XP SYSTEM',
   'TELEGRAM BOT INTEGRATION',
@@ -347,7 +349,7 @@ const ACCESS_TIERS = [
     savings: 'SAVE $29.88/yr',
     specs: [
       'Everything in Free',
-      'All 6 AI coaches unlocked',
+      'All 8 AI coaches unlocked',
       'Advanced analytics & insights',
       'Weekly AI reviews',
       'Priority support',
@@ -548,56 +550,17 @@ function LandingPageV2() {
 
   return (
     <div className="min-h-screen bg-black text-zinc-100 selection:bg-orange-600/40 selection:text-white">
-      {/* ────────────────────── HEADER ────────────────────── */}
-      <header className="sticky top-0 z-50 border-b-2 border-zinc-800 bg-black/95">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-0 min-h-[56px] sm:px-6 lg:px-8">
-          <Link href="/" className="flex items-center gap-2.5">
-            <LogoMark className="w-8 h-8" />
-            <span className="font-pixel text-base tracking-[0.2em] text-orange-500 hidden sm:inline">RESURGO</span>
-          </Link>
-
-          <nav className="hidden items-center gap-6 md:flex">
-            {[
-              { label: 'Features', href: '#features' },
-              { label: 'How It Works', href: '#how-it-works' },
-              { label: 'Coaches', href: '#coaches' },
-              { label: 'Pricing', href: '/pricing' },
-              { label: 'Blog', href: '/learn' },
-              { label: 'FAQ', href: '#faq' },
-            ].map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                className="font-terminal text-sm font-medium tracking-wide text-zinc-400 transition-colors duration-100 hover:text-orange-400"
-              >
-                {l.label}
-              </a>
-            ))}
-          </nav>
-
-          <div className="flex items-center gap-3">
-            <Link
-              href="/sign-in"
-              className="font-terminal text-sm font-medium text-zinc-400 transition-colors hover:text-zinc-100"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/sign-up"
-              className="border-2 border-orange-600 bg-orange-950/40 px-5 py-2 font-terminal text-sm font-semibold text-orange-400 shadow-[2px_2px_0px_rgba(0,0,0,0.7)] transition-all hover:bg-orange-600 hover:text-black active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_rgba(0,0,0,0.7)]"
-            >
-              Get Started
-            </Link>
-          </div>
-        </div>
-
-        {/* Ticker bar */}
-        <div className="overflow-hidden border-t-2 border-zinc-800 bg-black py-1.5 text-center">
-          <p className="truncate px-4 font-terminal text-sm tracking-widest text-zinc-500 transition-all duration-500">
-            &gt; {TICKER_ITEMS[tickerIdx]}
-          </p>
-        </div>
-      </header>
+      <MarketingHeader
+        navLinks={[
+          { label: 'Features', href: '#features', icon: 'grid' },
+          { label: 'How It Works', href: '#how-it-works', icon: 'terminal' },
+          { label: 'Coaches', href: '#coaches', icon: 'robot' },
+          { label: 'Pricing', href: '/pricing', icon: 'star' },
+          { label: 'Blog', href: '/blog', icon: 'plan' },
+          { label: 'FAQ', href: '#faq', icon: 'sparkles' },
+        ]}
+        tickerText={`RESURGO.life :: ${TICKER_ITEMS[tickerIdx]}`}
+      />
 
       <main>
         {/* PWA INSTALL BANNER — removed per UX decision; CTAs are sufficient */}
@@ -648,7 +611,7 @@ function LandingPageV2() {
             <div className="mb-6 inline-flex max-w-full flex-wrap items-center gap-2 border-2 border-zinc-800 bg-black px-3 py-1.5 shadow-[2px_2px_0px_rgba(0,0,0,0.6)]">
               <span className="h-2 w-2 shrink-0 animate-pulse bg-orange-600" />
               <span className="font-pixel text-[0.55rem] leading-relaxed tracking-widest text-zinc-500 sm:text-[0.6rem]">
-                FREE AI HABIT TRACKER · GOAL PLANNER · FOCUS TIMER · AI COACHING
+                AI PRODUCTIVITY ASSISTANT · DAILY PLANNER · FOCUS SYSTEM · AI COACHING
               </span>
             </div>
 
@@ -681,21 +644,19 @@ function LandingPageV2() {
 
                 {/* CTAs */}
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                  <Link
-                    href="/sign-up"
-                    className="inline-flex min-h-[56px] items-center justify-center border-2 border-orange-600 bg-orange-600 px-8 font-mono text-sm font-bold tracking-wider text-black shadow-[3px_3px_0px_rgba(0,0,0,0.8)] transition-all duration-100 hover:bg-orange-500 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_rgba(0,0,0,0.8)]"
-                  >
+                  <TermLinkButton href="/sign-up" variant="primary" size="lg">
                     Start Free — No Credit Card
-                  </Link>
-                  <a
+                  </TermLinkButton>
+                  <TermLinkButton
                     href="https://github.com/ShaykhedeE/ascend/releases/latest/download/resurgo.apk"
-                    className="inline-flex min-h-[56px] items-center justify-center gap-2 border-2 border-green-800 bg-green-950/40 px-8 font-mono text-sm tracking-wider text-green-400 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] transition-all duration-100 hover:border-green-600 hover:bg-green-950/70 hover:text-green-300 active:translate-x-[1px] active:translate-y-[1px] active:shadow-[1px_1px_0px_rgba(0,0,0,0.5)]"
+                    variant="success"
+                    size="lg"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
                     Download APK
-                  </a>
+                  </TermLinkButton>
 
                 </div>
 
@@ -778,19 +739,19 @@ function LandingPageV2() {
           <div className="mx-auto max-w-4xl text-center">
             <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">OUR_STORY</p>
             <h2 className="mt-3 font-pixel text-lg text-zinc-100 sm:text-xl">
-              Why we built the Resurgo AI habit tracker
+              Why we built the Resurgo life command center
             </h2>
 
             <div className="mt-8 space-y-6 text-left">
               <p className="font-terminal text-lg leading-relaxed text-zinc-300">
-                We were tired of switching between five different apps just to stay organized. One for goals, one for
-                habits, one for focus timers, one for journaling, one for wellness. None of them talked to each other.
-                None of them understood the full picture of what you&apos;re trying to achieve.
+                We were tired of switching between five different apps just to stay organized. One for tasks, one for
+                goals, one for focus timers, one for journaling, one for wellness. None of them talked to each other.
+                None of them understood the full picture of what you&apos;re trying to execute.
               </p>
               <p className="font-terminal text-lg leading-relaxed text-zinc-300">
                 So we built <span className="font-bold text-orange-400">Resurgo</span> —{' '}
                 <span className="italic text-zinc-200">Latin for &ldquo;to rise again&rdquo;</span>. A single platform
-                where you set one clear goal, break it down with AI, execute daily with habits and focus sessions, and
+                where you capture what matters, break it down with AI, execute daily with habits and focus sessions, and
                 review your progress weekly with an AI coach that actually knows your journey.
               </p>
               <p className="font-terminal text-lg leading-relaxed text-zinc-300">
@@ -832,10 +793,10 @@ function LandingPageV2() {
             <div className="mb-10 text-center">
               <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">THE_FRAMEWORK</p>
               <h2 className="mt-2 font-pixel text-lg text-zinc-100 sm:text-xl">
-                How to achieve any goal: the Resurgo framework
+                How to execute with clarity: the Resurgo framework
               </h2>
               <p className="mx-auto mt-3 max-w-2xl font-terminal text-lg leading-relaxed text-zinc-300">
-                Goals fail because of vague intentions, inconsistent execution, and no feedback loop. The Resurgo AI habit tracker solves all three.
+                Plans fail because of vague intentions, inconsistent execution, and no feedback loop. Resurgo solves all three inside one system.
               </p>
             </div>
 
@@ -946,11 +907,11 @@ function LandingPageV2() {
               <div>
                 <p className="font-pixel text-[0.6rem] tracking-widest text-orange-600">CORE_CAPABILITIES</p>
                 <h2 className="mt-2 font-pixel text-lg text-zinc-100 sm:text-xl">
-                  Every habit tracking tool you need — in one app
+                  Every execution tool you need — in one app
                 </h2>
               </div>
               <p className="max-w-md font-terminal text-lg leading-relaxed text-zinc-300">
-                12 integrated tools — goal planner, habit tracker, focus timer, AI coach, wellness log, and more. Stop paying for five separate apps.
+                12 integrated tools — task planning, habits, focus, coaching, wellness, and reviews. Stop paying for five separate apps.
               </p>
             </div>
 
@@ -963,7 +924,7 @@ function LandingPageV2() {
                   <div className="flex-1 p-4 sm:p-5">
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex h-12 w-12 items-center justify-center border-2 border-zinc-700 bg-zinc-900/60 text-xl transition-colors group-hover:border-orange-800 group-hover:bg-orange-950/20">
-                        {spec.icon}
+                        <PixelIcon name={spec.icon} size={20} className="text-orange-400" />
                       </div>
                       <span
                         className={cn(
@@ -997,10 +958,10 @@ function LandingPageV2() {
             <div className="mb-10 text-center">
               <p className="font-pixel text-[0.55rem] tracking-widest text-orange-500">AI_COACHING_ENGINE</p>
               <h2 className="mt-2 font-pixel text-lg text-zinc-100 sm:text-xl">
-                6 AI coaches. One for every domain.
+                8 AI coaches. One for every domain.
               </h2>
               <p className="mx-auto mt-3 max-w-2xl font-terminal text-lg leading-relaxed text-zinc-300">
-                Each coach has a distinct personality, philosophy, and area of expertise. Marcus &amp; Aurora are free forever. Unlock all six with Pro.
+                Each coach has a distinct personality, philosophy, and area of expertise. Marcus &amp; Aurora are free forever. Unlock all eight with Pro.
               </p>
             </div>
 
@@ -1165,30 +1126,26 @@ function LandingPageV2() {
                       </li>
                     ))}
                   </ul>
-                  <Link
+                  <TermLinkButton
                     href="/sign-up"
-                    className={cn(
-                      'mt-5 inline-flex min-h-[44px] w-full items-center justify-center px-3 font-pixel text-[0.45rem] tracking-widest transition active:translate-x-[2px] active:translate-y-[2px]',
-                      plan.highlight
-                        ? 'border-2 border-orange-600 bg-orange-600 text-black shadow-[3px_3px_0px_rgba(0,0,0,0.7)] hover:bg-orange-500'
-                        : plan.earlyAccess
-                          ? 'border-2 border-yellow-700 bg-yellow-950/40 text-yellow-400 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] hover:border-yellow-500 hover:bg-yellow-900/30'
-                          : 'border-2 border-zinc-700 text-zinc-300 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] hover:border-orange-600 hover:text-orange-500',
-                    )}
+                    variant={plan.highlight ? 'primary' : plan.earlyAccess ? 'gold' : 'secondary'}
+                    size="md"
+                    fullWidth
+                    className="mt-5"
                   >
                     {plan.cta}
-                  </Link>
+                  </TermLinkButton>
                 </article>
               ))}
             </div>
 
             {/* Trust badges */}
             <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 font-pixel text-[0.5rem] tracking-widest text-zinc-500">
-              <span className="flex items-center gap-1.5">🔒 DATA_ENCRYPTED_AT_REST</span>
-              <span className="flex items-center gap-1.5">💳 CANCEL_ANYTIME</span>
-              <span className="flex items-center gap-1.5">✓ 30-DAY_MONEY_BACK</span>
-              <span className="flex items-center gap-1.5">📱 WORKS_ON_ANY_DEVICE</span>
-              <span className="flex items-center gap-1.5">∞ FREE_TIER_FOREVER</span>
+              <span className="flex items-center gap-1.5"><PixelIcon name="check" size={12} className="text-orange-500" />DATA_ENCRYPTED_AT_REST</span>
+              <span className="flex items-center gap-1.5"><PixelIcon name="star" size={12} className="text-orange-500" />CANCEL_ANYTIME</span>
+              <span className="flex items-center gap-1.5"><PixelIcon name="sparkles" size={12} className="text-orange-500" />30-DAY_MONEY_BACK</span>
+              <span className="flex items-center gap-1.5"><PixelIcon name="grid" size={12} className="text-orange-500" />WORKS_ON_ANY_DEVICE</span>
+              <span className="flex items-center gap-1.5"><PixelIcon name="loop" size={12} className="text-orange-500" />FREE_TIER_FOREVER</span>
             </div>
           </div>
         </section>
@@ -1199,10 +1156,10 @@ function LandingPageV2() {
             <div className="mb-8 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
               <div>
                 <h2 className="font-pixel text-lg text-zinc-100 sm:text-xl">
-                  What users achieve with Resurgo
+                  Real outcomes from people using Resurgo
                 </h2>
                 <p className="mt-1 font-terminal text-lg text-zinc-400">
-                  Real outcomes from people using Resurgo to track habits and hit goals daily
+                  Real outcomes from people using Resurgo to plan clearly and follow through daily
                 </p>
               </div>
               <p className="font-pixel text-[0.35rem] tracking-widest text-zinc-500">
@@ -1276,7 +1233,7 @@ function LandingPageV2() {
           <div className="mx-auto max-w-4xl">
             <div className="text-center">
               <p className="font-pixel text-[0.55rem] tracking-widest text-orange-600">FAQ_DATABASE</p>
-              <h2 className="mt-3 font-pixel text-lg text-zinc-100 sm:text-xl">Frequently asked questions about AI habit tracking</h2>
+              <h2 className="mt-3 font-pixel text-lg text-zinc-100 sm:text-xl">Frequently asked questions about AI planning and execution</h2>
               <p className="mt-2 font-terminal text-lg text-zinc-400">
                 Everything you need to know about Resurgo — free plan, AI coaching, PWA install, privacy, and more.
               </p>
@@ -1550,24 +1507,19 @@ function LandingPageV2() {
               </div>
 
               <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row sm:flex-wrap">
-                <Link
-                  href="/sign-up"
-                  className="inline-flex min-h-[48px] items-center justify-center border-2 border-orange-600 bg-orange-600 px-8 font-pixel text-[0.45rem] tracking-widest text-black shadow-[3px_3px_0px_rgba(0,0,0,0.7)] transition hover:bg-orange-500 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
-                >
+                <TermLinkButton href="/sign-up" variant="primary" size="lg">
                   [ START FREE — NO CREDIT CARD ]
-                </Link>
-                <a
+                </TermLinkButton>
+                <TermLinkButton
                   href="https://github.com/ShaykhedeE/ascend/releases/latest/download/resurgo.apk"
-                  className="inline-flex min-h-[48px] items-center justify-center gap-2 border-2 border-green-700 bg-green-950/40 px-8 font-pixel text-[0.6rem] tracking-widest text-green-400 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] transition hover:border-green-500 hover:bg-green-900/30 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
+                  variant="success"
+                  size="md"
                 >
                   [ DOWNLOAD_APK ]
-                </a>
-                <Link
-                  href="/pricing"
-                  className="inline-flex min-h-[48px] items-center justify-center border-2 border-zinc-800 px-8 font-pixel text-[0.6rem] tracking-widest text-zinc-500 shadow-[2px_2px_0px_rgba(0,0,0,0.5)] transition hover:border-zinc-600 hover:text-zinc-300 active:translate-x-[2px] active:translate-y-[2px] active:shadow-none"
-                >
+                </TermLinkButton>
+                <TermLinkButton href="/pricing" variant="ghost" size="md">
                   [ VIEW_ACCESS_TIERS ]
-                </Link>
+                </TermLinkButton>
               </div>
               <div className="mt-6 flex flex-wrap items-center justify-center gap-4 font-pixel text-[0.55rem] tracking-widest text-zinc-400">
                 <span>&gt; FREE_PLAN_FOREVER</span>

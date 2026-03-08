@@ -1,29 +1,28 @@
-// ═══════════════════════════════════════════════════════════════════════════════
-// RESURGOIFY - Support & FAQ Page
-// ═══════════════════════════════════════════════════════════════════════════════
-
 'use client';
 
 import { useState } from 'react';
-import { Mountain, ArrowLeft, ChevronDown, Mail, MessageCircle, Book, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { PixelIcon } from '@/components/PixelIcon';
+import { MarketingHeader } from '@/components/MarketingHeader';
+import { MarketingFooter } from '@/components/MarketingFooter';
+import { TermLinkButton } from '@/components/ui/TermButton';
 
 const faqs = [
   {
     category: 'Getting Started',
     questions: [
       {
-        q: 'How does AI Goal Decomposition work?',
-        a: 'When you enter your ultimate goal, our AI analyzes it and breaks it down into achievable milestones, weekly objectives, and daily tasks. This process considers your timeline, category, and available time to create a personalized action plan.',
+        q: 'What does Resurgo actually help me do?',
+        a: 'Resurgo helps you turn messy goals, tasks, and brain dumps into a clear execution system. You can plan with AI, track habits and tasks, review progress, and keep everything synced in one place.',
       },
       {
         q: 'Is my data stored online or locally?',
-        a: 'RESURGO uses a local-first approach. All your habits, goals, and progress data are stored locally on your device. This means your data never leaves your device unless you explicitly choose to export it.',
+        a: 'Your account data is stored in the cloud and syncs across devices when you sign into the same account. Installed PWA sessions can still cache key screens and queue supported actions while you are offline.',
       },
       {
         q: 'Can I use RESURGO offline?',
-        a: 'Yes! RESURGO is a Progressive Web App (PWA) that works offline. Install it to your home screen for the best experience. Your progress will sync when you come back online.',
+        a: 'Yes. Install Resurgo as a PWA for the best experience. Key screens stay available offline, and supported actions such as queued planning updates sync when your connection comes back.',
       },
     ],
   },
@@ -31,20 +30,20 @@ const faqs = [
     category: 'Features',
     questions: [
       {
-        q: 'What is Habit Stacking?',
-        a: 'Habit Stacking is a technique from Atomic Habits where you link a new habit to an existing one. For example: "After I pour my morning coffee (existing), I will meditate for 2 minutes (new)." This creates powerful habit chains.',
+        q: 'How do the AI coaches work?',
+        a: 'Resurgo includes multiple AI coaching personas for planning, focus, wellness, finances, resilience, and systems thinking. Free users get limited daily usage, while paid plans unlock the full coaching roster and higher-volume workflows.',
       },
       {
-        q: 'How does the XP and leveling system work?',
-        a: 'You earn XP by completing habits, finishing tasks, maintaining streaks, and reaching milestones. As you accumulate XP, you level up and unlock achievements. The system is designed to keep you motivated with regular rewards.',
+        q: 'What is included on the Free plan?',
+        a: 'The Free plan includes up to 3 active goals, 5 brain dumps per day, 10 AI coach messages per day, basic habit tracking, basic Telegram notifications, and Emergency Mode.',
       },
       {
-        q: 'What is the Identity System?',
-        a: 'Based on Atomic Habits, the Identity System helps you define who you want to become (e.g., "I am an athlete"). Every completed habit becomes a "vote" for that identity, reinforcing your new self-image.',
+        q: 'What do paid plans unlock?',
+        a: 'Paid plans unlock unlimited goals, habits, and brain dumps, the full set of AI coaches, advanced analytics, wellness and budget tracking, weekly AI reviews, and premium integrations like richer Telegram workflows.',
       },
       {
-        q: 'Can I import data from other apps?',
-        a: 'Currently, RESURGO supports importing data in JSON format. If you have exported data from another habit tracker, contact us and we may be able to help with conversion.',
+        q: 'Can I install it like an app?',
+        a: 'Yes. Resurgo is installable as a Progressive Web App on desktop and mobile, and Android users can also use the packaged release when one is published.',
       },
     ],
   },
@@ -53,11 +52,11 @@ const faqs = [
     questions: [
       {
         q: 'What\'s included in the Free plan?',
-        a: 'Free plan includes up to 5 habits, 2 goals, 14-day history, basic analytics, Pomodoro timer, and all core tracking features. It\'s fully functional for most users getting started.',
+        a: 'The Free plan includes up to 3 active goals, 5 brain dumps per day, 10 AI coach messages per day, basic habit tracking, basic Telegram notifications, and Emergency Mode.',
       },
       {
         q: 'What extra features do Pro users get?',
-        a: 'Pro unlocks unlimited habits & goals, AI Goal Decomposition, advanced analytics with charts, full history access, data export, Identity System, and Habit Stacking features.',
+        a: 'Pro unlocks unlimited goals, habits, and brain dumps, all AI coaches, advanced analytics, export tools, premium planning workflows, and faster support.',
       },
       {
         q: 'Can I cancel my subscription anytime?',
@@ -65,7 +64,7 @@ const faqs = [
       },
       {
         q: 'Do you offer refunds?',
-        a: 'Yes! We offer a 14-day refund for Pro subscriptions and 30-day refund for Lifetime purchases if you haven\'t extensively used premium features. Contact support for assistance.',
+        a: 'Yes. We offer a 14-day refund window for Pro subscriptions and a 30-day refund window for Lifetime purchases. Contact support and we will help quickly.',
       },
     ],
   },
@@ -73,16 +72,16 @@ const faqs = [
     category: 'Troubleshooting',
     questions: [
       {
-        q: 'My data disappeared. How do I recover it?',
-        a: 'RESURGO stores data in your browser\'s local storage. If you cleared your browser data, the information may be lost. We recommend regularly exporting your data as a backup. Check if you\'re logged into the same browser/device.',
+        q: 'My dashboard looks empty. How do I recover it?',
+        a: 'First confirm you are signed into the correct account. Because data syncs through the cloud, logging into the same account on another device is the fastest way to verify whether the issue is local cache or account related.',
       },
       {
         q: 'The app isn\'t loading properly.',
-        a: 'Try these steps: 1) Refresh the page, 2) Clear your browser cache, 3) Try a different browser, 4) Disable browser extensions that might interfere. If issues persist, contact support.',
+        a: 'Try these steps: 1) hard refresh the page, 2) sign out and back in, 3) update your browser, 4) reinstall the PWA if you use it, and 5) disable conflicting extensions. If that still fails, email support with screenshots and device details.',
       },
       {
-        q: 'How do I reset my progress?',
-        a: 'Go to Settings > Account > Reset Data. This will clear all your habits, goals, and progress. This action cannot be undone, so export your data first if you want a backup.',
+        q: 'How do I export or delete my data?',
+        a: 'Use Settings for export and account-management actions. If you want help before deleting anything, contact support and we can point you to the safest path first.',
       },
     ],
   },
@@ -100,11 +99,13 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
         <span className="font-medium text-white/90 group-hover:text-white transition-colors pr-4">
           {question}
         </span>
-        <ChevronDown 
+        <PixelIcon
+          name="chevron-right"
+          size={16}
           className={cn(
-            "w-5 h-5 text-white/50 flex-shrink-0 transition-transform",
+            'text-white/50 flex-shrink-0 transition-transform',
             isOpen && "rotate-180"
-          )} 
+          )}
         />
       </button>
       {isOpen && (
@@ -119,22 +120,16 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 export default function SupportPage() {
   return (
     <div className="min-h-screen bg-[#0A0A0B] text-white">
-      {/* Header */}
-      <header className="border-b border-white/5">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6">
-          <Link href="/" className="inline-flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-ascend-500 to-ascend-600 
-                          flex items-center justify-center">
-              <Mountain className="w-5 h-5 text-white" />
-            </div>
-            <span className="font-bold text-lg">RESURGO</span>
-            <span className="text-white/50 group-hover:text-white transition-colors flex items-center gap-1">
-              <ArrowLeft className="w-4 h-4" />
-              Back
-            </span>
-          </Link>
-        </div>
-      </header>
+      <MarketingHeader
+        navLinks={[
+          { href: '/features', label: 'Features', icon: 'grid' },
+          { href: '/pricing', label: 'Pricing', icon: 'star' },
+          { href: '/guides', label: 'Guides', icon: 'plan' },
+          { href: '/blog', label: 'Blog', icon: 'terminal' },
+          { href: '/support', label: 'Support', icon: 'message' },
+        ]}
+        tickerText="RESURGO.life :: SUPPORT_TERMINAL_READY :: HUMAN_REPLY_WINDOW_24H"
+      />
 
       {/* Hero */}
       <section className="py-12 px-4 sm:px-6 text-center border-b border-white/5">
@@ -152,40 +147,53 @@ export default function SupportPage() {
           <div className="grid sm:grid-cols-3 gap-4">
             <a 
               href="mailto:support@resurgo.life"
-              className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 hover:bg-white/[0.04] transition-all"
+              className="flex items-center gap-4 p-4 border border-zinc-800 bg-zinc-950 hover:border-zinc-600 hover:bg-zinc-900 transition-all"
             >
-              <div className="w-10 h-10 rounded-lg bg-ascend-500/20 flex items-center justify-center">
-                <Mail className="w-5 h-5 text-ascend-400" />
+              <div className="w-10 h-10 border border-orange-900 bg-orange-950/30 flex items-center justify-center">
+                <PixelIcon name="message" size={18} className="text-orange-400" />
               </div>
               <div>
-                <p className="font-medium">Email Support</p>
-                <p className="text-sm text-white/50">support@resurgo.life</p>
+                <p className="font-mono text-sm font-bold text-zinc-200">Email Support</p>
+                <p className="font-mono text-xs text-zinc-500">support@resurgo.life</p>
               </div>
             </a>
             
             <a 
               href="#faq"
-              className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 hover:bg-white/[0.04] transition-all"
+              className="flex items-center gap-4 p-4 border border-zinc-800 bg-zinc-950 hover:border-zinc-600 hover:bg-zinc-900 transition-all"
             >
-              <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                <MessageCircle className="w-5 h-5 text-purple-400" />
+              <div className="w-10 h-10 border border-purple-900 bg-purple-950/30 flex items-center justify-center">
+                <PixelIcon name="terminal" size={18} className="text-purple-400" />
               </div>
               <div>
-                <p className="font-medium">FAQ</p>
-                <p className="text-sm text-white/50">Quick answers</p>
+                <p className="font-mono text-sm font-bold text-zinc-200">FAQ</p>
+                <p className="font-mono text-xs text-zinc-500">Quick answers</p>
               </div>
             </a>
             
             <a 
-              href="#getting-started"
-              className="flex items-center gap-4 p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 hover:bg-white/[0.04] transition-all"
+              href="/download"
+              className="flex items-center gap-4 p-4 border border-zinc-800 bg-zinc-950 hover:border-zinc-600 hover:bg-zinc-900 transition-all"
             >
-              <div className="w-10 h-10 rounded-lg bg-gold-400/20 flex items-center justify-center">
-                <Book className="w-5 h-5 text-gold-400" />
+              <div className="w-10 h-10 border border-amber-900 bg-amber-950/30 flex items-center justify-center">
+                <PixelIcon name="arrow-down" size={18} className="text-amber-400" />
               </div>
               <div>
-                <p className="font-medium">Getting Started</p>
-                <p className="text-sm text-white/50">New user guide</p>
+                <p className="font-mono text-sm font-bold text-zinc-200">Install Guide</p>
+                <p className="font-mono text-xs text-zinc-500">PWA and Android setup</p>
+              </div>
+            </a>
+
+            <a 
+              href="/pricing"
+              className="flex items-center gap-4 p-4 border border-zinc-800 bg-zinc-950 hover:border-zinc-600 hover:bg-zinc-900 transition-all sm:col-span-3"
+            >
+              <div className="w-10 h-10 border border-green-900 bg-green-950/30 flex items-center justify-center">
+                <PixelIcon name="star" size={18} className="text-green-400" />
+              </div>
+              <div>
+                <p className="font-mono text-sm font-bold text-zinc-200">Billing and plan options</p>
+                <p className="font-mono text-xs text-zinc-500">Compare Free, Pro, Yearly, and Lifetime</p>
               </div>
             </a>
           </div>
@@ -194,17 +202,17 @@ export default function SupportPage() {
 
       {/* FAQ Section */}
       <main id="faq" className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
-        <h2 className="text-2xl font-bold mb-8">Frequently Asked Questions</h2>
+        <h2 className="font-mono text-2xl font-bold text-zinc-100 mb-8">Frequently Asked Questions</h2>
         
         <div className="space-y-8">
           {faqs.map((section) => (
             <div key={section.category}>
-              <h3 className="text-lg font-semibold text-ascend-400 mb-4 flex items-center gap-2">
-                <Zap className="w-5 h-5" />
+              <h3 className="font-mono text-lg font-semibold text-orange-400 mb-4 flex items-center gap-2">
+                <PixelIcon name="zap" size={16} />
                 {section.category}
               </h3>
-              <div className="bg-white/[0.02] rounded-xl border border-white/5 overflow-hidden">
-                <div className="divide-y divide-white/5">
+              <div className="border border-zinc-800 bg-zinc-950 overflow-hidden">
+                <div className="divide-y divide-zinc-800">
                   {section.questions.map((faq, index) => (
                     <div key={index} className="px-6">
                       <FAQItem question={faq.q} answer={faq.a} />
@@ -217,29 +225,23 @@ export default function SupportPage() {
         </div>
 
         {/* Contact Section */}
-        <div className="mt-12 p-8 rounded-2xl bg-gradient-to-br from-ascend-500/10 to-purple-500/10 border border-ascend-500/20 text-center">
-          <h3 className="text-xl font-bold mb-2">Still need help?</h3>
-          <p className="text-white/60 mb-6">
-            Our support team typically responds within 24 hours.
+        <div className="mt-12 border border-orange-900/40 bg-orange-950/10 p-8 text-center">
+          <h3 className="font-mono text-xl font-bold text-zinc-100 mb-2">Still need help?</h3>
+          <p className="font-mono text-sm text-zinc-400 mb-6">
+            Our support team typically replies within one business day.
           </p>
-          <a 
+          <TermLinkButton
             href="mailto:support@resurgo.life"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold
-                     bg-gradient-to-r from-ascend-500 to-ascend-600 hover:from-ascend-400 hover:to-ascend-500
-                     transition-all"
+            variant="primary"
+            size="lg"
+            icon={<PixelIcon name="message" size={16} />}
           >
-            <Mail className="w-5 h-5" />
             Contact Support
-          </a>
+          </TermLinkButton>
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-white/5 py-8 px-4 sm:px-6">
-        <div className="max-w-4xl mx-auto text-center text-white/40 text-sm">
-          © 2026 RESURGO. All rights reserved.
-        </div>
-      </footer>
+      <MarketingFooter />
     </div>
   );
 }

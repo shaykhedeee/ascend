@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { getAllUseCases } from '@/lib/marketing/useCases';
+import { TermLinkButton } from '@/components/ui/TermButton';
 
 export const metadata: Metadata = {
   title: 'Use Cases — The Best Habit Tracker for Your Situation | RESURGO',
@@ -19,9 +19,9 @@ export default async function UseCasesIndexPage() {
             <article key={page.slug} className="border border-zinc-900 bg-zinc-950 p-5">
               <h2 className="font-mono text-base font-semibold text-zinc-100">Best Habit Tracker for {page.persona}</h2>
               <p className="mt-2 font-mono text-xs text-zinc-400">{page.summary}</p>
-              <Link href={`/use-cases/${page.slug}`} className="mt-4 inline-block border border-orange-900 bg-orange-950/30 px-3 py-2 font-mono text-xs tracking-widest text-orange-500">
+              <TermLinkButton href={`/use-cases/${page.slug}`} variant="secondary" size="sm" className="mt-4">
                 READ_USE_CASE
-              </Link>
+              </TermLinkButton>
             </article>
           ))}
         </div>

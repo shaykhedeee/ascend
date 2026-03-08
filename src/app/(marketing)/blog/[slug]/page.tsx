@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import { PixelIcon } from '@/components/PixelIcon';
 import { BLOG_TOPIC_CLUSTERS, getPostsForCluster } from '@/lib/blog/post-index';
 
 // Import charts dynamically (client components)
@@ -1137,13 +1138,15 @@ And that's a good thing.
 
 ## Try It Yourself
 
-Resurgo gives you 6 AI coaches, each with a different lens:  
+Resurgo gives you 8 AI coaches, each with a different lens:  
 - **MARCUS:** Stoic strategist (discipline, obstacles, execution)  
 - **AURORA:** Mindful catalyst (wellness, nervous system optimization)  
 - **TITAN:** Physical performance (fitness, energy, optimization)  
 - **SAGE:** Financial alchemist (wealth building, career strategy)  
 - **PHOENIX:** Comeback specialist (resilience, recovery, setbacks)  
-- **NOVA:** Creative systems (mental models, learning, connections)
+- **NOVA:** Creative systems (mental models, learning, connections)  
+- **ORACLE:** Data-driven analyst (patterns, metrics, predictive insights)  
+- **NEXUS:** Relationship architect (networking, communication, influence)
 
 Start free. See which persona resonates. Track your progress for 30 days.
 
@@ -1577,7 +1580,7 @@ In 2026, the bar is higher than streaks and reminders. A great habit tracker nee
 
 **Best for:** Anyone who wants AI-powered habit coaching, unlimited habits, and goal tracking in one platform.
 
-Resurgo combines everything: unlimited habit tracking with streaks and XP, 6 AI coaches that break your goals into daily actions, wellness tracking (sleep, mood, nutrition), focus timers (Pomodoro, Deep Work, Flowtime), and a generous free plan.
+Resurgo combines everything: unlimited habit tracking with streaks and XP, 8 AI coaches that break your goals into daily actions, wellness tracking (sleep, mood, nutrition), focus timers (Pomodoro, Deep Work, Flowtime), and a generous free plan.
 
 **Standout feature:** Instead of manually creating habits, you tell Resurgo your goal and it suggests the specific habits — with frequency, timing, and stacking recommendations. It's the difference between a tracker and a system.
 
@@ -1637,7 +1640,7 @@ For most people, the question is: do you want an app that tracks habits, or one 
 Resurgo offers the most generous free tier — unlimited habits, 2 AI coaches, all focus timer modes, and XP gamification with no time limit or credit card required.
 
 ### Is there a habit tracker with AI coaching?
-Yes. Resurgo has 6 AI coaching personas (Marcus, Aurora, Titan, Sage, Phoenix, Nova) that each take a different approach to accountability and goal planning. They can break down any goal into specific habits and adjust your plan based on your progress data.
+Yes. Resurgo has 8 AI coaching personas (Marcus, Aurora, Titan, Sage, Phoenix, Nova, Oracle, Nexus) that each take a different approach to accountability and goal planning. They can break down any goal into specific habits and adjust your plan based on your progress data.
 
 ### What habit tracker works on Android and iOS?
 Resurgo, TickTick, Habitica, Todoist, and Habitify are all cross-platform. Streaks and Things 3 are iOS/macOS only.
@@ -1717,7 +1720,7 @@ If you want habit tracking that is:
 - Gamified (XP, levels, streak badges)
 - Immediately usable (no template setup)
 
-Resurgo was built for this. You get unlimited habits, 6 AI coaches, focus timers, wellness tracking, and an XP system — all in one app without building a Notion database from scratch.
+Resurgo was built for this. You get unlimited habits, 8 AI coaches, focus timers, wellness tracking, and an XP system — all in one app without building a Notion database from scratch.
 
 **Free plan:** Unlimited habits, 2 coaches, all focus modes, XP — no credit card.
 
@@ -1945,7 +1948,7 @@ Start free at resurgo.life.
 Resurgo offers better AI coaching, goal decomposition, wellness tracking, and focus timers while maintaining gamification (XP, levels, badges). For pure RPG social gaming mechanics, Habitica is still unique.
 
 ### Is there a Habitica alternative with AI coaching?
-Yes — Resurgo has 6 AI coaching personas with behavioral strategy, goal decomposition, and weekly AI reviews. No other gamified habit app has this depth of AI coaching in 2026.
+Yes — Resurgo has 8 AI coaching personas with behavioral strategy, goal decomposition, and weekly AI reviews. No other gamified habit app has this depth of AI coaching in 2026.
 
 ### Does any app have Habitica's social features plus AI?
 Currently, no app perfectly combines Habitica's guild/party social system with AI coaching. Resurgo focuses on individual performance with AI. If social guild accountability is critical, Habitica still leads there.
@@ -2440,15 +2443,16 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
       <div className="mx-auto max-w-2xl px-4 py-16">
         {/* Back */}
-        <Link href="/blog" className="mb-8 flex items-center gap-2 font-mono text-xs text-zinc-400 hover:text-zinc-300">
-          ← BACK_TO_BLOG
+        <Link href="/blog" className="mb-8 inline-flex items-center gap-2 font-mono text-xs text-zinc-400 hover:text-zinc-300">
+          <PixelIcon name="arrow-left" size={11} className="text-orange-500" />
+          BACK_TO_BLOG
         </Link>
 
         {/* Header */}
         <div className="mb-8 border border-zinc-900 bg-zinc-950">
           <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
             <span className="h-1.5 w-1.5 rounded-full bg-orange-600" />
-            <span className="font-mono text-[9px] tracking-widest text-orange-600">RESURGO :: BLOG</span>
+            <span className="inline-flex items-center gap-2 font-mono text-[9px] tracking-widest text-orange-600"><PixelIcon name="terminal" size={10} />RESURGO :: BLOG</span>
           </div>
           <div className="p-6 space-y-3">
             <Image
@@ -2461,16 +2465,17 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             />
             <div className="flex flex-wrap gap-2">
               {post.tags.map((tag) => (
-                <span key={tag} className="border border-orange-900/50 px-2 py-0.5 font-mono text-[8px] tracking-widest text-orange-600">
+                <span key={tag} className="inline-flex items-center gap-1 border border-orange-900/50 px-2 py-0.5 font-mono text-[8px] tracking-widest text-orange-600">
+                  <PixelIcon name="sparkles" size={9} />
                   {tag.toUpperCase()}
                 </span>
               ))}
             </div>
             <h1 className="font-mono text-xl font-bold leading-snug text-zinc-100">{post.title}</h1>
             <div className="flex items-center gap-3 font-mono text-[9px] text-zinc-400">
-              <span>{post.date}</span>
+              <span className="inline-flex items-center gap-1"><PixelIcon name="calendar" size={10} className="text-orange-500" />{post.date}</span>
               <span>·</span>
-              <span>{post.readTime} read</span>
+              <span className="inline-flex items-center gap-1"><PixelIcon name="timer" size={10} className="text-orange-500" />{post.readTime} read</span>
             </div>
           </div>
         </div>
@@ -2478,7 +2483,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         {/* Content with Charts */}
         {toc.length > 0 && (
           <div className="mb-6 border border-zinc-800 bg-zinc-950 p-4">
-            <p className="font-mono text-[10px] tracking-widest text-orange-500">ARTICLE_MAP</p>
+            <p className="inline-flex items-center gap-2 font-mono text-[10px] tracking-widest text-orange-500"><PixelIcon name="grid" size={10} />ARTICLE_MAP</p>
             <ul className="mt-2 space-y-1">
               {toc.map((item) => (
                 <li key={item.id}>
@@ -2492,7 +2497,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         )}
 
         <div className="mb-6 border border-zinc-800 bg-zinc-950 p-4">
-          <p className="font-mono text-[10px] tracking-widest text-orange-500">KEY_TAKEAWAYS</p>
+          <p className="inline-flex items-center gap-2 font-mono text-[10px] tracking-widest text-orange-500"><PixelIcon name="check" size={10} />KEY_TAKEAWAYS</p>
           <ul className="mt-2 space-y-1">
             {keyTakeaways.map((takeaway) => (
               <li key={takeaway} className="font-mono text-xs text-zinc-400">• {takeaway}</li>
@@ -2511,7 +2516,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         </div>
 
         <div className="mt-10 border border-zinc-800 bg-zinc-950 p-5">
-          <p className="font-mono text-[10px] tracking-widest text-orange-500">ABOUT_THE_AUTHOR</p>
+          <p className="inline-flex items-center gap-2 font-mono text-[10px] tracking-widest text-orange-500"><PixelIcon name="robot" size={10} />ABOUT_THE_AUTHOR</p>
           <div className="mt-3 flex items-start gap-4">
             <Image
               src={AUTHOR.image}
@@ -2529,7 +2534,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         </div>
 
         <div className="mt-8 border border-zinc-800 bg-zinc-950 p-5">
-          <p className="font-mono text-[10px] tracking-widest text-orange-500">RELATED_ARTICLES</p>
+          <p className="inline-flex items-center gap-2 font-mono text-[10px] tracking-widest text-orange-500"><PixelIcon name="loop" size={10} />RELATED_ARTICLES</p>
           <div className="mt-3 space-y-3">
             {relatedPosts.map((item) => (
               <Link
@@ -2547,7 +2552,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
         {primaryCluster && (prevInSeries || nextInSeries) && (
           <div className="mt-8 border border-zinc-800 bg-zinc-950 p-5">
-            <p className="font-mono text-[10px] tracking-widest text-orange-500">ARTICLE_SERIES_NAV</p>
+            <p className="inline-flex items-center gap-2 font-mono text-[10px] tracking-widest text-orange-500"><PixelIcon name="arrow-right" size={10} />ARTICLE_SERIES_NAV</p>
             <p className="mt-1 font-mono text-[10px] text-zinc-500">Series: {primaryCluster.title}</p>
             <div className="mt-3 grid gap-3 md:grid-cols-2">
               <div className="border border-zinc-800 bg-black/40 p-3">
@@ -2576,7 +2581,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
         {nextBestRead && (
           <div className="mt-8 border border-orange-900/50 bg-orange-950/10 p-6 text-center">
-            <p className="font-mono text-[10px] tracking-widest text-orange-500">{ctaConfig.label}</p>
+            <p className="inline-flex items-center gap-2 font-mono text-[10px] tracking-widest text-orange-500"><PixelIcon name="sparkles" size={10} />{ctaConfig.label}</p>
             <p className="mt-2 font-mono text-base font-bold text-zinc-100">{ctaConfig.headline}</p>
             <p className="mt-1 font-mono text-xs text-zinc-500">{ctaConfig.sub}</p>
             <div className="mt-4 flex flex-col items-center justify-center gap-2 sm:flex-row">
@@ -2598,7 +2603,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
         {/* CTA */}
         <div className="mt-12 border border-orange-900/40 bg-orange-950/10 p-6 text-center">
-          <p className="font-mono text-sm font-bold text-zinc-200">Ready to apply this?</p>
+          <p className="inline-flex items-center gap-2 font-mono text-sm font-bold text-zinc-200"><PixelIcon name="terminal" size={12} className="text-orange-500" />Ready to apply this?</p>
           <p className="mt-1 font-mono text-xs text-zinc-500">Resurgo makes it systematic.</p>
           <a href="/sign-up"
             className="mt-4 inline-block border border-orange-900 bg-orange-950/30 px-6 py-2 font-mono text-xs font-bold tracking-widest text-orange-500 transition hover:bg-orange-950/60">

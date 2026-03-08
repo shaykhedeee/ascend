@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { TermLinkButton } from '@/components/ui/TermButton';
 
 export const metadata: Metadata = {
   title: 'About Resurgo — The Story Behind the Habit Tracker',
@@ -153,10 +154,9 @@ export default function AboutPage() {
             <p className="mt-2 font-mono text-sm text-zinc-400">
               Create your free account in under 2 minutes. No credit card needed.
             </p>
-            <a href="/sign-up"
-              className="mt-4 inline-block border border-orange-900 bg-orange-950/30 px-8 py-3 font-mono text-xs font-bold tracking-widest text-orange-500 transition hover:bg-orange-950/50">
+            <TermLinkButton href="/sign-up" variant="primary" size="lg" className="mt-4">
               [START_FREE]
-            </a>
+            </TermLinkButton>
           </div>
         </div>
       </div>

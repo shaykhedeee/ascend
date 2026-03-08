@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { getAllComparisons } from '@/lib/marketing/compare';
+import { TermLinkButton } from '@/components/ui/TermButton';
 
 export const metadata: Metadata = {
   title: 'RESURGO Comparisons — Resurgo vs Alternatives',
@@ -20,9 +20,9 @@ export default async function CompareIndexPage() {
             <article key={page.slug} className="border border-zinc-900 bg-zinc-950 p-5">
               <h2 className="font-mono text-base font-semibold text-zinc-100">RESURGO vs {page.competitor}</h2>
               <p className="mt-2 font-mono text-xs text-zinc-400">{page.summary}</p>
-              <Link href={`/compare/${page.slug}`} className="mt-4 inline-block border border-orange-900 bg-orange-950/30 px-3 py-2 font-mono text-xs tracking-widest text-orange-500">
+              <TermLinkButton href={`/compare/${page.slug}`} variant="secondary" size="sm" className="mt-4">
                 VIEW_COMPARISON
-              </Link>
+              </TermLinkButton>
             </article>
           ))}
         </div>

@@ -31,7 +31,7 @@ const FAQs = [
   },
   {
     q: 'What is included in the Pro plan?',
-    a: 'Pro unlocks unlimited habits, goals, and tasks. You also get all 6 AI coach personas, advanced analytics with charts, the business goal planner, all focus timer modes, sleep and nutrition tracking, Telegram bot integration, API access with webhooks, and priority email support.',
+    a: 'Pro unlocks unlimited habits, goals, and tasks. You also get all 8 AI coach personas, advanced analytics with charts, the business goal planner, all focus timer modes, sleep and nutrition tracking, Telegram bot integration, API access with webhooks, and priority email support.',
   },
   {
     q: 'How much does Resurgo Pro cost?',

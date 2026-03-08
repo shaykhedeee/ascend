@@ -4,6 +4,7 @@ import { auth, currentUser } from '@clerk/nextjs/server';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { BILLING_PLANS } from '@/lib/billing/plans';
+import { TermLinkButton } from '@/components/ui/TermButton';
 import {
   Check,
   X,
@@ -182,7 +183,7 @@ export default async function BillingPage() {
                 </span>
                 <Link
                   href="/dashboard"
-                  className="text-sm px-4 py-2 rounded-xl bg-[var(--surface)] border border-[var(--border)] hover:bg-[var(--surface-hover)] font-medium"
+                  className="text-sm px-4 py-2 border border-zinc-700 bg-zinc-950 hover:border-zinc-500 hover:bg-zinc-900 font-mono tracking-wider uppercase transition"
                 >
                   Dashboard
                 </Link>
@@ -190,7 +191,7 @@ export default async function BillingPage() {
             ) : (
               <Link
                 href="/sign-in"
-                className="text-sm px-4 py-2 rounded-xl bg-gradient-to-r from-ascend-500 to-ascend-600 text-white font-semibold"
+                className="text-sm px-4 py-2 border-2 border-orange-600 bg-orange-600 text-black font-mono font-bold tracking-wider uppercase shadow-[2px_2px_0px_rgba(0,0,0,0.7)] hover:bg-orange-500 transition"
               >
                 Sign in
               </Link>
@@ -335,19 +336,13 @@ export default async function BillingPage() {
                   {/* CTA Button */}
                   {isFree ? (
                     user ? (
-                      <Link
-                        href="/dashboard"
-                        className="block w-full text-center rounded-xl px-4 py-3 font-semibold border border-[var(--border)] bg-[var(--background)] hover:bg-[var(--surface-hover)] transition-colors mb-6"
-                      >
+                      <TermLinkButton href="/dashboard" variant="secondary" size="md" fullWidth className="mb-6">
                         Go to Dashboard
-                      </Link>
+                      </TermLinkButton>
                     ) : (
-                      <Link
-                        href="/sign-up"
-                        className="block w-full text-center rounded-xl px-4 py-3 font-semibold border border-[var(--border)] bg-[var(--background)] hover:bg-[var(--surface-hover)] transition-colors mb-6"
-                      >
+                      <TermLinkButton href="/sign-up" variant="secondary" size="md" fullWidth className="mb-6">
                         Get Started Free
-                      </Link>
+                      </TermLinkButton>
                     )
                   ) : user ? (
                     <BillingCheckoutCTA
@@ -357,18 +352,15 @@ export default async function BillingPage() {
                       isLifetime={isLifetime}
                     />
                   ) : (
-                    <Link
+                    <TermLinkButton
                       href="/sign-up"
-                      className={`block w-full text-center rounded-xl px-4 py-3 font-semibold transition-all mb-6 ${
-                        isHighlighted
-                          ? 'bg-gradient-to-r from-ascend-500 to-ascend-600 text-white hover:shadow-lg hover:shadow-ascend-500/25'
-                          : isLifetime
-                          ? 'bg-gradient-to-r from-gold-400 to-orange-500 text-white hover:shadow-lg hover:shadow-gold-400/25'
-                          : 'bg-ascend-500/10 text-ascend-400 hover:bg-ascend-500/20 border border-ascend-500/30'
-                      }`}
+                      variant={isHighlighted ? 'primary' : isLifetime ? 'gold' : 'secondary'}
+                      size="md"
+                      fullWidth
+                      className="mb-6"
                     >
                       {plan.ctaLabel}
-                    </Link>
+                    </TermLinkButton>
                   )}
 
                   {/* Feature list */}
@@ -531,26 +523,20 @@ export default async function BillingPage() {
 
         {/* ═══════════════════════ BOTTOM CTA ═══════════════════════ */}
         <section className="max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-24 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <h2 className="font-mono text-3xl sm:text-4xl font-bold text-zinc-100 mb-4">
             Ready to build habits that stick?
           </h2>
-          <p className="text-[var(--text-secondary)] mb-8 max-w-xl mx-auto">
+          <p className="font-mono text-sm text-zinc-400 mb-8 max-w-xl mx-auto">
             Join thousands of people using Resurgo to track habits, achieve goals, and
             transform their routines — starting today.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/sign-up"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg bg-gradient-to-r from-ascend-500 to-ascend-600 text-white shadow-xl shadow-ascend-500/20 hover:shadow-ascend-500/40 transition-all"
-            >
+            <TermLinkButton href="/sign-up" variant="primary" size="xl">
               Get Started Free <ArrowRight className="w-5 h-5" />
-            </Link>
-            <Link
-              href="/features"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg border border-[var(--border)] bg-[var(--surface)] hover:bg-[var(--surface-hover)] transition-colors"
-            >
+            </TermLinkButton>
+            <TermLinkButton href="/features" variant="secondary" size="lg">
               Explore features
-            </Link>
+            </TermLinkButton>
           </div>
           <p className="text-xs text-[var(--text-muted)] mt-4">
             No credit card required · Free forever plan available

@@ -5,7 +5,7 @@
 
 import { MetadataRoute } from 'next';
 import { BLOG_POST_INDEX, BLOG_TOPIC_CLUSTERS } from '@/lib/blog/post-index';
-import { getAllTemplates } from '@/lib/marketing/templates';
+import { getAllTemplates } from '../lib/marketing/templates';
 import { getAllComparisons } from '@/lib/marketing/compare';
 import { getAllUseCases } from '@/lib/marketing/useCases';
 import { getAllLearnTerms } from '@/lib/marketing/learn';

@@ -10,6 +10,8 @@ import { api } from '../../../../convex/_generated/api';
 import { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, CheckCircle2, Circle, Download } from 'lucide-react';
 import { downloadIcs, generateTasksIcs } from '@/lib/ics';
+import { PixelArt } from '@/components/PixelArt';
+import { PixelIcon } from '@/components/PixelIcon';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = [
@@ -113,33 +115,48 @@ export default function CalendarPage() {
       <div className="mx-auto max-w-4xl">
 
         {/* -- MISSION_TIMELINE HEADER -- */}
-        <div className="mb-6 border border-zinc-900 bg-zinc-950">
-          <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
+        <div className="surface-panel mb-6 overflow-hidden">
+          <div className="surface-header">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
-            <span className="font-mono text-xs tracking-widest text-orange-600">
-              MISSION_TIMELINE :: TEMPORAL_VIEW
-            </span>
+            <span className="surface-kicker-accent">Mission timeline</span>
           </div>
-          <div className="flex items-center justify-between px-5 py-4">
+          <div className="grid gap-4 px-5 py-5 lg:grid-cols-[minmax(0,1.45fr)_300px]">
             <div>
-              <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">Schedule</h1>
-              <p className="mt-1 font-mono text-xs tracking-widest text-zinc-400">
-                Habits � Tasks � Monthly overview
-              </p>
+              <div className="flex items-center gap-2">
+                <PixelIcon name="calendar" size={14} className="text-cyan-400" />
+                <p className="surface-kicker">Temporal view</p>
+              </div>
+              <h1 className="surface-title mt-2">Schedule</h1>
+              <p className="surface-subtitle mt-2 max-w-2xl">See tasks and habits as a real monthly system instead of a pile of disconnected promises. Delightfully severe, in a good way.</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="surface-chip">{MONTHS[month]} {year}</span>
+                <span className="surface-chip">{tasks?.length ?? 0} completed tasks</span>
+                <span className="surface-chip">{habitLogs?.length ?? 0} habit logs</span>
+              </div>
             </div>
-            <button
-              onClick={handleExportIcs}
-              disabled={!allTasks || allTasks.length === 0}
-              className="flex items-center gap-2 border border-zinc-800 px-3 py-2 font-mono text-xs tracking-widest text-zinc-500 transition hover:border-orange-800 hover:text-orange-500 disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              <Download className="h-3 w-3" />
-              [EXPORT_.ICS]
-            </button>
+            <div className="surface-panel-muted p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="surface-kicker-accent">Calendar export</p>
+                  <p className="mt-2 font-terminal text-lg font-semibold text-zinc-100">Sync your schedule outside the bunker</p>
+                  <p className="mt-2 font-terminal text-sm text-zinc-400">Export an `.ics` snapshot whenever you want your timeline elsewhere.</p>
+                </div>
+                <PixelArt variant="calendar" className="h-20 w-20" title="Calendar pixel art" />
+              </div>
+              <button
+                onClick={handleExportIcs}
+                disabled={!allTasks || allTasks.length === 0}
+                className="action-tile mt-4 w-full justify-center text-cyan-300 hover:text-cyan-200 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                <PixelIcon name="calendar" size={14} className="text-cyan-400" />
+                <span className="font-terminal text-sm">Export .ics</span>
+              </button>
+            </div>
           </div>
         </div>
 
         {/* -- CALENDAR PANEL -- */}
-        <div className="border border-zinc-900 bg-zinc-950">
+        <div className="surface-panel overflow-hidden">
           {/* Month navigation */}
           <div className="flex items-center justify-between border-b border-zinc-900 px-4 py-3">
             <button
@@ -204,7 +221,7 @@ export default function CalendarPage() {
                     {hasActivity && !isSelected && (
                       <div className="mt-0.5 flex gap-0.5">
                         {data.habits > 0 && <div className="h-1 w-1 bg-green-500" />}
-                        {data.tasks  > 0 && <div className="h-1 w-1 bg-blue-500" />}
+                        {data.tasks  > 0 && <div className="h-1 w-1 bg-cyan-500" />}
                       </div>
                     )}
                   </button>
@@ -218,7 +235,7 @@ export default function CalendarPage() {
                 <div className="h-1.5 w-1.5 bg-green-500" /> NODES_COMPLETED
               </span>
               <span className="flex items-center gap-1.5 font-mono text-xs tracking-widest text-zinc-400">
-                <div className="h-1.5 w-1.5 bg-blue-500" /> TASKS_COMPLETED
+                <div className="h-1.5 w-1.5 bg-cyan-500" /> TASKS_COMPLETED
               </span>
             </div>
           </div>
@@ -226,7 +243,7 @@ export default function CalendarPage() {
 
         {/* -- SELECTED DAY DETAIL -- */}
         {selectedDate && (
-          <div className="mt-4 border border-zinc-900 bg-zinc-950">
+          <div className="surface-panel mt-4">
             <div className="border-b border-zinc-900 px-4 py-2.5">
               <span className="font-mono text-xs font-bold tracking-widest text-zinc-300">
                 DATE_{selectedDate}

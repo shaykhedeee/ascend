@@ -39,8 +39,10 @@ export default function Error({ error, reset }: ErrorProps) {
   const handleClearAndReload = () => {
     // Clear localStorage and reload
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('ascend-storage');
-      localStorage.removeItem('ascend-user');
+      localStorage.removeItem('resurgo-storage');
+      localStorage.removeItem('resurgo-user');
+      localStorage.removeItem('ascend-storage');  // legacy cleanup
+      localStorage.removeItem('ascend-user');      // legacy cleanup
       window.location.href = '/';
     }
   };

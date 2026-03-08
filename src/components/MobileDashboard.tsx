@@ -128,7 +128,7 @@ function TodayTab() {
   return (
     <div className="space-y-4 pb-24">
       {/* — Greeting card — */}
-      <div className="border border-zinc-900 bg-zinc-950 px-4 py-4">
+      <div className="surface-panel px-4 py-4">
         <p className="font-terminal text-xs text-zinc-500">
           {new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })}
         </p>
@@ -436,19 +436,25 @@ export default function MobileDashboard() {
   return (
     <div className="flex min-h-screen flex-col bg-black">
       {/* Tab bar */}
-      <div className="sticky top-0 z-20 flex border-b-2 border-zinc-900 bg-black">
-        {TABS.map(({ id, label, icon: Icon }) => (
-          <button key={id} onClick={() => setActiveTab(id)}
-            className={cn(
-              'flex flex-1 flex-col items-center gap-0.5 px-0.5 py-2.5 transition-colors',
-              activeTab === id
-                ? 'border-b-2 border-orange-500 text-orange-400'
-                : 'border-b-2 border-transparent text-zinc-600 active:text-zinc-400',
-            )}>
-            <Icon className="h-4 w-4" />
-            <span className="font-pixel text-[0.33rem] tracking-widest">{label}</span>
-          </button>
-        ))}
+      <div className="sticky top-0 z-20 border-b border-zinc-900 bg-zinc-950/95 backdrop-blur-sm">
+        <div className="px-3 pb-3 pt-3">
+          <p className="surface-kicker">Mobile workspace</p>
+          <p className="mt-1 font-terminal text-sm text-zinc-400">Cleaner focus, same system.</p>
+        </div>
+        <div className="flex border-t border-zinc-900 bg-black/40">
+          {TABS.map(({ id, label, icon: Icon }) => (
+            <button key={id} onClick={() => setActiveTab(id)}
+              className={cn(
+                'flex flex-1 flex-col items-center gap-0.5 px-0.5 py-2.5 transition-colors',
+                activeTab === id
+                  ? 'border-b-2 border-orange-500 text-orange-400'
+                  : 'border-b-2 border-transparent text-zinc-600 active:text-zinc-400',
+              )}>
+              <Icon className="h-4 w-4" />
+              <span className="font-pixel text-[0.33rem] tracking-widest">{label}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Content */}

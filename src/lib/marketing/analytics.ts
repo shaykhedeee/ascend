@@ -71,6 +71,7 @@ export function trackMarketingEvent(event: string, properties?: Record<string, u
     },
   };
 
+  // 1. Send to Convex backend
   fetch('/api/analytics/event', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -79,4 +80,19 @@ export function trackMarketingEvent(event: string, properties?: Record<string, u
   }).catch(() => {
     // Fire-and-forget on purpose.
   });
+
+  // 2. Mirror conversion-relevant events to Meta CAPI for server-side deduplication
+  const metaConversionEvents = ['signup_assist', 'pricing_click', 'lead', 'email_capture', 'cta_click'];
+  if (metaConversionEvents.includes(event)) {
+    fetch('/api/marketing/meta/conversions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        event_name: event === 'pricing_click' ? 'ViewContent' : event === 'lead' || event === 'email_capture' ? 'Lead' : 'CTAClick',
+        params: { content_name: event, content_category: 'marketing', ...properties },
+        source_url: window.location.href,
+      }),
+      keepalive: true,
+    }).catch(() => {});
+  }
 }

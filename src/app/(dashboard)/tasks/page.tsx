@@ -8,7 +8,9 @@
 import { useQuery, useMutation } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
 import { Id } from '../../../../convex/_generated/dataModel';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { enqueueOfflineTask } from '@/lib/offline/queue';
+import { useOfflineQueue } from '@/hooks/useOfflineQueue';
 import {
   Plus,
   Circle,
@@ -50,6 +52,7 @@ export default function TasksPage() {
   const createTask = useMutation(api.tasks.create);
   const toggleTask = useMutation(api.tasks.toggleComplete);
   const removeTask = useMutation(api.tasks.remove);
+  const { isOnline, pendingTaskCount, recentTaskDrafts, syncingCount } = useOfflineQueue();
 
   // Form state
   const [title, setTitle] = useState('');
@@ -64,6 +67,25 @@ export default function TasksPage() {
     if (!title.trim()) return;
     setCreating(true);
     try {
+      if (!isOnline) {
+        await enqueueOfflineTask({
+          title: title.trim(),
+          description: description || undefined,
+          priority,
+          dueDate: dueDate || undefined,
+          eisenhowerQuadrant: eisenhower || undefined,
+          estimatedMinutes: estimatedMinutes ? parseInt(estimatedMinutes) : undefined,
+          source: 'manual',
+        });
+        setTitle('');
+        setDescription('');
+        setDueDate('');
+        setEisenhower('');
+        setEstimatedMinutes('');
+        setShowCreate(false);
+        return;
+      }
+
       await createTask({
         title: title.trim(),
         description: description || undefined,
@@ -81,8 +103,9 @@ export default function TasksPage() {
       setShowCreate(false);
     } catch (e) {
       console.error('Failed to create task:', e);
+    } finally {
+      setCreating(false);
     }
-    setCreating(false);
   };
 
   const handleToggle = async (taskId: string) => {
@@ -105,22 +128,54 @@ export default function TasksPage() {
   const inProgressCount = (allTasks ?? []).filter((task) => task.status === 'in_progress').length;
   const doneCount = (allTasks ?? []).filter((task) => task.status === 'done').length;
   const urgentCount = (allTasks ?? []).filter((task) => task.priority === 'urgent').length;
+  const nextTaskSuggestion = useMemo(() => {
+    const source = allTasks ?? [];
+    return source.find((task) => task.status === 'todo' && task.priority === 'urgent')
+      ?? source.find((task) => task.status === 'todo' && task.priority === 'high')
+      ?? source.find((task) => task.status === 'in_progress')
+      ?? source.find((task) => task.status !== 'done');
+  }, [allTasks]);
+  const queueHealth = useMemo(() => {
+    if (urgentCount > 0) return 'Pressure is building. Clear one urgent task first.';
+    if (inProgressCount > 2) return 'Too many active items. Finish before adding more.';
+    if (todoCount === 0) return 'Queue is calm. Capture the next meaningful step.';
+    return 'Queue looks manageable. Keep the next move obvious.';
+  }, [urgentCount, inProgressCount, todoCount]);
 
   return (
     <div className="min-h-screen bg-black p-4 md:p-6">
       <div className="mx-auto max-w-6xl">
 
         {/* -- TASK QUEUE HEADER -- */}
-        <div className="mb-6 border border-zinc-900 bg-zinc-950">
-          <div className="flex items-center gap-2 border-b border-zinc-900 px-5 py-2">
+        <div className="surface-panel mb-6 overflow-hidden">
+          <div className="surface-header">
             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-600" />
-            <span className="font-mono text-xs tracking-widest text-orange-600">TASK_QUEUE :: EXECUTION_SUBSYSTEM</span>
+            <span className="surface-kicker-accent">Task queue</span>
           </div>
-          <div className="flex flex-col gap-4 px-5 py-4 md:flex-row md:items-center md:justify-between">
+          <div className="grid gap-4 px-5 py-5 lg:grid-cols-[minmax(0,1.3fr)_minmax(300px,0.8fr)]">
             <div>
-              <h1 className="font-mono text-2xl font-bold tracking-tight text-zinc-100">Tasks</h1>
-              <p className="mt-1 font-mono text-xs tracking-widest text-zinc-400">Prioritise and execute � Eisenhower matrix available</p>
+              <p className="surface-kicker">Execution subsystem</p>
+              <h1 className="surface-title mt-2">Tasks</h1>
+              <p className="surface-subtitle mt-2 max-w-2xl">Prioritise the next few actions, keep the queue visible, and use the matrix when everything starts yelling at once.</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="surface-chip">{todoCount} pending</span>
+                <span className="surface-chip">{inProgressCount} active</span>
+                <span className="surface-chip">{doneCount} done</span>
+                {urgentCount > 0 && <span className="surface-chip-accent">{urgentCount} urgent</span>}
+              </div>
+              <p className="mt-4 font-terminal text-sm text-zinc-400">{queueHealth}</p>
             </div>
+            <div className="surface-panel-muted p-4">
+              <p className="surface-kicker-accent">Recommended next move</p>
+              <p className="mt-3 font-terminal text-lg font-semibold text-zinc-100">{nextTaskSuggestion?.title ?? 'Capture one task worth doing today'}</p>
+              <p className="mt-2 font-terminal text-sm text-zinc-400">
+                {nextTaskSuggestion
+                  ? `${nextTaskSuggestion.priority.toUpperCase()} priority${nextTaskSuggestion.dueDate ? ` • due ${nextTaskSuggestion.dueDate}` : ''}`
+                  : 'A smaller queue is easier to trust.'}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-col gap-4 border-t border-zinc-900 px-5 py-4 md:flex-row md:items-center md:justify-between">
             <div className="flex items-center gap-px">
               <button onClick={() => setViewMode('list')} className={`border p-2.5 transition ${viewMode === 'list' ? 'border-orange-800 bg-orange-950/30 text-orange-500' : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-zinc-300'}`} aria-label="List view">
                 <List className="h-4 w-4" />
@@ -141,9 +196,40 @@ export default function TasksPage() {
           </div>
         </div>
 
+        {(!isOnline || pendingTaskCount > 0 || syncingCount > 0) && (
+          <div className="mb-4 border border-amber-900 bg-amber-950/20 px-4 py-3 font-mono text-xs text-amber-200">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="tracking-widest text-amber-400">OFFLINE_CAPTURE</span>
+              <span>{isOnline ? 'Connection restored — syncing queued items.' : 'You are offline. New tasks will be queued locally.'}</span>
+              {pendingTaskCount > 0 && <span className="text-amber-300">Queued tasks: {pendingTaskCount}</span>}
+            </div>
+          </div>
+        )}
+
+        {recentTaskDrafts.some((draft) => !draft.synced) && (
+          <div className="mb-6 border border-zinc-900 bg-zinc-950">
+            <div className="border-b border-zinc-900 px-4 py-2">
+              <span className="font-mono text-xs tracking-widest text-orange-500">OFFLINE_QUEUE</span>
+            </div>
+            <div className="space-y-px p-0">
+              {recentTaskDrafts.filter((draft) => !draft.synced).slice(0, 5).map((draft) => (
+                <div key={draft.id} className="flex items-center justify-between border-t border-zinc-900 px-4 py-3 first:border-t-0">
+                  <div>
+                    <p className="font-mono text-sm text-zinc-100">{draft.title.toUpperCase()}</p>
+                    <p className="mt-1 font-mono text-xs text-zinc-500">
+                      queued {new Date(draft.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </p>
+                  </div>
+                  <span className="font-mono text-xs tracking-widest text-amber-400">PENDING_SYNC</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* -- STATUS FILTERS (list view) -- */}
         {viewMode === 'list' && (
-          <div className="mb-4 flex gap-px border border-zinc-900">
+          <div className="surface-panel-muted mb-4 flex gap-px overflow-hidden p-1">
             {[
               { key: 'todo' as const, label: 'PENDING' },
               { key: 'in_progress' as const, label: 'IN_PROGRESS' },
@@ -156,7 +242,7 @@ export default function TasksPage() {
                 className={`flex-1 py-2.5 font-mono text-xs tracking-widest transition border-b-2 ${
                   statusFilter === key
                     ? 'border-orange-600 bg-orange-950/20 text-orange-500'
-                    : 'border-transparent bg-zinc-950 text-zinc-400 hover:text-zinc-300'
+                    : 'border-transparent bg-transparent text-zinc-400 hover:text-zinc-300'
                 }`}
               >
                 {label}
@@ -190,7 +276,7 @@ export default function TasksPage() {
             {QUADRANT_OPTIONS.map((quad) => {
               const quadTasks = (allTasks ?? []).filter(t => t.eisenhowerQuadrant === quad);
               return (
-                <div key={quad} className={`min-h-[200px] border p-4 ${QUADRANT_COLORS[quad]}`}>
+                <div key={quad} className={`min-h-[260px] border p-4 ${QUADRANT_COLORS[quad]}`}>
                   <div className="mb-3 flex items-center gap-2">
                     <span className="font-mono text-xs tracking-widest text-orange-500">{quad.toUpperCase()}</span>
                     <span className="font-mono text-xs text-zinc-400">:: {QUADRANT_LABELS[quad].toUpperCase()}</span>
@@ -220,7 +306,11 @@ export default function TasksPage() {
                 <X className="h-4 w-4" />
               </button>
             </div>
-            <form onSubmit={handleCreate} className="max-h-[80vh] overflow-y-auto p-5 space-y-4">
+            <form onSubmit={handleCreate} className="max-h-[80vh] space-y-4 overflow-y-auto p-5">
+              <div className="surface-panel-muted p-3">
+                <p className="surface-kicker-accent">Queue guidance</p>
+                <p className="mt-2 font-terminal text-sm text-zinc-300">Write the next visible action, not the whole saga. Future-you says thanks.</p>
+              </div>
               <div>
                 <label className="mb-1 block font-mono text-xs tracking-widest text-zinc-500">TASK_TITLE *</label>
                 <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="What needs to be done?" className="w-full border border-zinc-800 bg-black px-3 py-2 font-mono text-sm text-zinc-200 placeholder:text-zinc-400 focus:border-orange-800 focus:outline-none" required autoFocus />
@@ -257,7 +347,7 @@ export default function TasksPage() {
               <div className="flex gap-px pt-1">
                 <button type="button" onClick={() => setShowCreate(false)} className="flex-1 border border-zinc-800 bg-zinc-900 py-2.5 font-mono text-xs tracking-widest text-zinc-500 transition hover:text-zinc-300">[CANCEL]</button>
                 <button type="submit" disabled={creating || !title.trim()} className="flex-1 border border-orange-800 bg-orange-950/40 py-2.5 font-mono text-xs tracking-widest text-orange-500 transition hover:bg-orange-950/70 disabled:opacity-40">
-                  {creating ? 'QUEUING...' : '[QUEUE_TASK]'}
+                  {creating ? 'QUEUING...' : isOnline ? '[QUEUE_TASK]' : '[SAVE_OFFLINE]'}
                 </button>
               </div>
             </form>

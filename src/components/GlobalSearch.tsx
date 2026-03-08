@@ -77,7 +77,7 @@ export function GlobalSearch({ isOpen, onClose, onNavigate }: GlobalSearchProps)
 
   // Load recent searches from localStorage
   useEffect(() => {
-    const saved = localStorage.getItem('ascend-recent-searches');
+    const saved = localStorage.getItem('resurgo-recent-searches');
     if (saved) {
       try {
         setRecentSearches(JSON.parse(saved).slice(0, 5));
@@ -321,7 +321,7 @@ export function GlobalSearch({ isOpen, onClose, onNavigate }: GlobalSearchProps)
           if (query.trim()) {
             const newRecent = [query, ...recentSearches.filter(s => s !== query)].slice(0, 5);
             setRecentSearches(newRecent);
-            localStorage.setItem('ascend-recent-searches', JSON.stringify(newRecent));
+            localStorage.setItem('resurgo-recent-searches', JSON.stringify(newRecent));
           }
           filteredResults[selectedIndex].action();
         }

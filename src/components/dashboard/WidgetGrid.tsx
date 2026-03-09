@@ -36,6 +36,10 @@ import QuickNoteWidget from '@/components/widgets/QuickNoteWidget';
 import SleepWidget from '@/components/widgets/SleepWidget';
 import QuickActionsWidget from '@/components/widgets/QuickActionsWidget';
 import VisionBoardWidget from '@/components/widgets/VisionBoardWidget';
+import WaterTrackingWidget from '@/components/widgets/WaterTrackingWidget';
+import XPStatusWidget from '@/components/widgets/XPStatusWidget';
+import ActivityFeedWidget from '@/components/widgets/ActivityFeedWidget';
+import StreakHeatmapWidget from '@/components/widgets/StreakHeatmapWidget';
 
 const WIDGET_COMPONENTS: Record<string, () => ReactElement> = {
   'focus-timer':     () => <FocusTimerWidget />,
@@ -50,6 +54,10 @@ const WIDGET_COMPONENTS: Record<string, () => ReactElement> = {
   'sleep':           () => <SleepWidget />,
   'quick-actions':   () => <QuickActionsWidget />,
   'vision-board':    () => <VisionBoardWidget />,
+  'water-tracker':   () => <WaterTrackingWidget />,
+  'xp-status':       () => <XPStatusWidget />,
+  'activity-feed':   () => <ActivityFeedWidget />,
+  'streak-heatmap':  () => <StreakHeatmapWidget />,
 };
 
 interface WidgetGridProps {

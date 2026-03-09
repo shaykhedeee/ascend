@@ -38,10 +38,16 @@ export const WIDGET_REGISTRY: WidgetDef[] = [
   { id: 'quick-task',     label: 'Quick Task',        icon: 'CheckSquare',  section: 'utility', defaultOrder: 7,  defaultVisible: true },
   { id: 'quick-note',     label: 'Quick Note',        icon: 'StickyNote',   section: 'utility', defaultOrder: 8,  defaultVisible: true },
 
+  // ── Status & Tracking ──
+  { id: 'water-tracker',  label: 'Hydration',         icon: 'Droplets',     section: 'core',    defaultOrder: 6,  defaultVisible: true },
+  { id: 'xp-status',      label: 'XP & Level',        icon: 'Trophy',       section: 'core',    defaultOrder: 7,  defaultVisible: true },
+  { id: 'activity-feed',  label: 'Activity Feed',     icon: 'TrendingUp',   section: 'core',    defaultOrder: 8,  defaultVisible: true },
+  { id: 'streak-heatmap', label: 'Streak Heatmap',    icon: 'CalendarDays', section: 'core',    defaultOrder: 9,  defaultVisible: true },
+
   // ── Context & Support ──
-  { id: 'sleep',          label: 'Sleep Tracker',     icon: 'Moon',         section: 'context', defaultOrder: 9,  defaultVisible: true },
-  { id: 'quick-actions',  label: 'Quick Actions',     icon: 'Zap',          section: 'context', defaultOrder: 10, defaultVisible: true },
-  { id: 'vision-board',   label: 'Vision Board',      icon: 'Image',        section: 'context', defaultOrder: 11, defaultVisible: true },
+  { id: 'sleep',          label: 'Sleep Tracker',     icon: 'Moon',         section: 'context', defaultOrder: 10, defaultVisible: true },
+  { id: 'quick-actions',  label: 'Quick Actions',     icon: 'Zap',          section: 'context', defaultOrder: 11, defaultVisible: true },
+  { id: 'vision-board',   label: 'Vision Board',      icon: 'Image',        section: 'context', defaultOrder: 12, defaultVisible: true },
 ];
 
 /** Map of widget id → WidgetDef for O(1) lookups */

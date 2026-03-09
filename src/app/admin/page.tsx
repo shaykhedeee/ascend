@@ -27,7 +27,9 @@ async function getSystemMetrics() {
   }
 }
 
-const NAV_SECTIONS = [
+type NavItem = { href: string; label: string; desc: string; current?: boolean; external?: boolean };
+
+const NAV_SECTIONS: { label: string; items: NavItem[] }[] = [
   {
     label: 'OPERATIONS',
     items: [

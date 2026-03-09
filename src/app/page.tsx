@@ -1,10 +1,7 @@
 // =============================================================================
 // RESURGO - Root Page
 // Public landing page — all navigation via native <Link> tags.
-// force-dynamic prevents Next.js from statically caching this page.
 // =============================================================================
-
-export const dynamic = 'force-dynamic';
 
 import type { Metadata } from 'next';
 import LandingPageV2 from '@/components/LandingPageV2';
@@ -76,8 +73,8 @@ export const metadata: Metadata = {
     description:
       'Turn mental clutter into a clear plan. Tasks, focus, habits, AI guidance, and reviews in one system.',
     images: [`${APP_URL}/og-image.png`],
-    creator: '@resurgoapp',
-    site: '@resurgoapp',
+    creator: '@resurgolife',
+    site: '@resurgolife',
   },
   authors: [{ name: 'Resurgo', url: APP_URL }],
   creator: 'Resurgo',

@@ -44,7 +44,7 @@ const DEMOS: DemoFeature[] = [
     id: 'ai_coaches',
     label: 'AI Coaches',
     title: 'Your expert team, always available',
-    subtitle: 'Six specialized AI coaches — each a master of their domain',
+    subtitle: 'Eight specialized AI coaches — each a master of their domain',
     accent: 'text-cyan-400',
     lines: [
       { type: 'input', text: '> coach --connect @TITAN' },

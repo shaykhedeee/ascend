@@ -31,7 +31,8 @@ export interface FoodItem {
 function parseOFFProduct(p: any): FoodItem | null {
   if (!p?.product_name) return null;
   const n = p.nutriments ?? {};
-  const calories = n['energy-kcal_100g'] ?? n['energy-kcal'] ?? n['energy_100g'] / 4.184 ?? 0;
+  const rawKcal = n['energy-kcal_100g'] ?? n['energy-kcal'] ?? (n['energy_100g'] != null ? n['energy_100g'] / 4.184 : 0);
+  const calories = rawKcal ?? 0;
   if (!calories && calories !== 0) return null;
 
   return {

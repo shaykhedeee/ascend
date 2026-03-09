@@ -12,7 +12,7 @@ type MarketingNavLink = {
 const DEFAULT_NAV_LINKS: Array<MarketingNavLink> = [
 	{ href: '/features', label: 'Features', icon: 'grid' },
 	{ href: '/pricing', label: 'Pricing', icon: 'star' },
-	{ href: '/about', label: 'About', icon: 'sparkles' },
+	{ href: '/download', label: 'Download', icon: 'dashboard' },
 	{ href: '/blog', label: 'Blog', icon: 'terminal' },
 	{ href: '/docs', label: 'Docs', icon: 'plan' },
 ];

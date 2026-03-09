@@ -2,7 +2,8 @@ import { Metadata } from 'next';
 import { Fragment } from 'react';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import Link from 'next/link';
-import dynamic from 'next/dynamic';
+import { BillingCheckoutCTA, BillingPortalCTA } from '@/components/BillingCTA';
+import RestoreArchivedCTA from '@/components/RestoreArchivedCTA';
 import { BILLING_PLANS } from '@/lib/billing/plans';
 import { TermLinkButton } from '@/components/ui/TermButton';
 import {
@@ -29,19 +30,10 @@ import {
   Users,
 } from 'lucide-react';
 
-const BillingCheckoutCTA = dynamic(
-  () => import('@/components/BillingCTA').then((m) => m.BillingCheckoutCTA),
-  { ssr: false }
-);
-const BillingPortalCTA = dynamic(
-  () => import('@/components/BillingCTA').then((m) => m.BillingPortalCTA),
-  { ssr: false }
-);
-
 export const metadata: Metadata = {
   title: 'Pricing & Billing — Plans That Grow With You',
   description:
-    'Choose the perfect Resurgo plan. Free with 10 habits & AI insights, or go Pro for unlimited everything. 30-day money-back guarantee.',
+    'Choose the perfect Resurgo plan. Start free, upgrade to Pro for $4.99/mo with a 14-day money-back guarantee.',
   robots: { index: false, follow: false },
 };
 
@@ -161,8 +153,6 @@ export default async function BillingPage() {
       : null;
     return { ...plan, checkoutUrl };
   });
-
-  const RestoreArchivedCTA = dynamic(() => import('@/components/RestoreArchivedCTA'), { ssr: false });
 
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--text-primary)]">

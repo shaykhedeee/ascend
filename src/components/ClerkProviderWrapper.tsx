@@ -12,8 +12,10 @@ import { ReactNode } from 'react';
 const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 const signInUrl = process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL || '/sign-in';
 const signUpUrl = process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL || '/sign-up';
-const afterSignInUrl = process.env.NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL || '/dashboard';
-const afterSignUpUrl = process.env.NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL || '/dashboard';
+const signInFallbackRedirectUrl =
+  process.env.NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL || '/dashboard';
+const signUpFallbackRedirectUrl =
+  process.env.NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL || '/dashboard';
 const hasValidKey =
   publishableKey &&
   publishableKey !== 'YOUR_PUBLISHABLE_KEY' &&
@@ -34,8 +36,8 @@ export default function ClerkProviderWrapper({
       publishableKey={publishableKey}
       signInUrl={signInUrl}
       signUpUrl={signUpUrl}
-      signInFallbackRedirectUrl={afterSignInUrl}
-      signUpFallbackRedirectUrl={afterSignUpUrl}
+      signInFallbackRedirectUrl={signInFallbackRedirectUrl}
+      signUpFallbackRedirectUrl={signUpFallbackRedirectUrl}
       afterSignOutUrl="/"
     >
       {children}

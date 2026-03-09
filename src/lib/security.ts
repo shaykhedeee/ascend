@@ -472,11 +472,11 @@ export const SECURITY_HEADERS: Record<string, string> = {
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
   'Content-Security-Policy': [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline'",
+    "script-src 'self' 'unsafe-inline' https://js.puter.com https://www.googletagmanager.com https://www.google-analytics.com",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: https:",
     "font-src 'self' data:",
-    "connect-src 'self' https://api.openai.com https://api.puter.com https://api.groq.com https://generativelanguage.googleapis.com https://openrouter.ai https://*.convex.cloud wss://*.convex.cloud",
+    "connect-src 'self' https://api.openai.com https://api.puter.com https://*.puter.com https://api.groq.com https://generativelanguage.googleapis.com https://openrouter.ai https://www.google-analytics.com https://region1.google-analytics.com https://*.convex.cloud wss://*.convex.cloud",
     "frame-ancestors 'none'",
   ].join('; '),
 };

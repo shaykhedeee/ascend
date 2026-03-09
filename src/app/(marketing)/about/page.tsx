@@ -38,7 +38,7 @@ const aboutJsonLd = {
       'description': 'Resurgo builds AI-powered productivity tools that help people build better habits, achieve goals, and stay consistent.',
       'foundingDate': '2025',
       'sameAs': [
-        'https://twitter.com/ResurgoApp',
+        'https://twitter.com/resurgolife',
         'https://t.me/ResurgoApp',
       ],
       'contactPoint': {

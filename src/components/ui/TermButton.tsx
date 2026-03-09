@@ -40,16 +40,16 @@ export interface TermLinkButtonProps extends TermButtonBaseProps {
 // ─── Variant classes ─────────────────────────────────────────────────────────
 const variantClasses: Record<TermVariant, string> = {
   primary:
-    'border-2 border-orange-600 bg-orange-600 text-black font-bold ' +
-    'shadow-[3px_3px_0px_rgba(0,0,0,0.8)] ' +
-    'hover:bg-orange-500 hover:border-orange-500 hover:shadow-[4px_4px_0px_rgba(0,0,0,0.9)] ' +
+    'border-2 border-orange-600 bg-orange-600 text-white font-bold ' +
+    'shadow-[3px_3px_0px_rgba(154,52,18,1)] ' +
+    'hover:bg-orange-500 hover:border-orange-500 hover:shadow-[4px_4px_0px_rgba(124,45,18,1)] ' +
     'active:translate-x-px active:translate-y-px active:shadow-[1px_1px_0px_rgba(0,0,0,0.8)] ' +
     'disabled:border-zinc-700 disabled:bg-zinc-800 disabled:text-zinc-500 disabled:shadow-none disabled:cursor-not-allowed',
 
   secondary:
-    'border-2 border-zinc-700 bg-zinc-950 text-zinc-300 ' +
-    'shadow-[2px_2px_0px_rgba(0,0,0,0.6)] ' +
-    'hover:border-orange-600 hover:text-orange-400 hover:shadow-[3px_3px_0px_rgba(0,0,0,0.7)] ' +
+    'border-2 border-orange-600 bg-transparent text-orange-400 ' +
+    'shadow-[3px_3px_0px_rgba(154,52,18,0.8)] ' +
+    'hover:bg-orange-950/30 hover:text-orange-300 hover:shadow-[4px_4px_0px_rgba(124,45,18,0.9)] ' +
     'active:translate-x-px active:translate-y-px active:shadow-[1px_1px_0px_rgba(0,0,0,0.6)] ' +
     'disabled:border-zinc-800 disabled:text-zinc-600 disabled:shadow-none disabled:cursor-not-allowed',
 
@@ -83,16 +83,16 @@ const variantClasses: Record<TermVariant, string> = {
 
 // ─── Size classes (INCREASED font sizes per user request) ────────────────────
 const sizeClasses: Record<TermSize, string> = {
-  sm: 'px-4 py-2 text-sm min-h-[40px] gap-1.5',
-  md: 'px-6 py-2.5 text-base min-h-[48px] gap-2',
-  lg: 'px-8 py-3.5 text-lg min-h-[56px] gap-2.5',
-  xl: 'px-10 py-4 text-xl min-h-[64px] gap-3',
+  sm: 'px-4 py-2 text-base min-h-[40px] gap-1.5',
+  md: 'px-6 py-2.5 text-[1.125rem] min-h-[48px] gap-2',
+  lg: 'px-7 py-3 text-[1.125rem] min-h-[52px] gap-2',
+  xl: 'px-10 py-4 text-[1.5rem] min-h-[64px] gap-3',
 };
 
 // ─── Shared base classes ─────────────────────────────────────────────────────
 const baseClasses =
   'inline-flex items-center justify-center ' +
-  'font-mono tracking-wider uppercase ' +
+  'font-terminal leading-none tracking-[0.16em] uppercase ' +
   'transition-all duration-100 ' +
   'cursor-pointer select-none ' +
   'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black';

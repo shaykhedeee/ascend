@@ -16,18 +16,9 @@ import { EveningDebrief } from '@/components/EveningDebrief';
 import AdaptiveDifficultyWidget from '@/components/AdaptiveDifficultyWidget';
 import WeatherWidget from '@/components/WeatherWidget';
 import DailyQuote from '@/components/DailyQuote';
-import FocusTimerWidget from '@/components/widgets/FocusTimerWidget';
-import HabitStreakWidget from '@/components/widgets/HabitStreakWidget';
-import QuickJournalWidget from '@/components/widgets/QuickJournalWidget';
-import GoalProgressWidget from '@/components/widgets/GoalProgressWidget';
-import AICoachWidget from '@/components/widgets/AICoachWidget';
-import CalorieTrackerWidget from '@/components/widgets/CalorieTrackerWidget';
-import DigitalClockWidget from '@/components/widgets/DigitalClockWidget';
-import QuickTaskWidget from '@/components/widgets/QuickTaskWidget';
-import QuickNoteWidget from '@/components/widgets/QuickNoteWidget';
-import SleepWidget from '@/components/widgets/SleepWidget';
-import QuickActionsWidget from '@/components/widgets/QuickActionsWidget';
-import VisionBoardWidget from '@/components/widgets/VisionBoardWidget';
+import WidgetGrid from '@/components/dashboard/WidgetGrid';
+import WidgetPanel from '@/components/dashboard/WidgetPanel';
+import { resolveLayout, WIDGET_REGISTRY, type LayoutEntry } from '@/lib/dashboard/widgetRegistry';
 import MobileDashboard from '@/components/MobileDashboard';
 import { PixelIcon } from '@/components/PixelIcon';
 import { PixelArt } from '@/components/PixelArt';
@@ -50,6 +41,7 @@ import {
   Star,
   TrendingUp,
   Award,
+  Settings,
 } from 'lucide-react';
 
 type HabitView = {
@@ -96,6 +88,45 @@ export default function DashboardPage() {
   const [checkInJustCompleted, setCheckInJustCompleted] = useState(false);
   const [debriefJustCompleted, setDebriefJustCompleted] = useState(false);
   const [waterLoading, setWaterLoading] = useState(false);
+
+  // ── Dashboard customisation state ──
+  const [editMode, setEditMode] = useState(false);
+  const [panelOpen, setPanelOpen] = useState(false);
+  const savedLayout = useQuery(api.users.getDashboardLayout);
+  const saveLayoutMutation = useMutation(api.users.saveDashboardLayout);
+  const layout = useMemo(() => resolveLayout(savedLayout ?? null), [savedLayout]);
+
+  const handleReorder = useCallback(
+    (newLayout: LayoutEntry[]) => {
+      void saveLayoutMutation({ layout: newLayout });
+    },
+    [saveLayoutMutation],
+  );
+
+  const handleHideWidget = useCallback(
+    (id: string) => {
+      const next = layout.map((e) => (e.id === id ? { ...e, visible: false } : e));
+      void saveLayoutMutation({ layout: next });
+    },
+    [layout, saveLayoutMutation],
+  );
+
+  const handleToggleWidget = useCallback(
+    (id: string) => {
+      const next = layout.map((e) => (e.id === id ? { ...e, visible: !e.visible } : e));
+      void saveLayoutMutation({ layout: next });
+    },
+    [layout, saveLayoutMutation],
+  );
+
+  const handleResetLayout = useCallback(() => {
+    const defaults = WIDGET_REGISTRY.map((w) => ({
+      id: w.id,
+      visible: w.defaultVisible,
+      order: w.defaultOrder,
+    }));
+    void saveLayoutMutation({ layout: defaults });
+  }, [saveLayoutMutation]);
 
   // Water tracking
   const currentWater = (todayNutrition as any)?.waterMl ?? 0;
@@ -528,49 +559,52 @@ export default function DashboardPage() {
         <div>
           <div className="flex items-center gap-2">
             <PixelIcon name="terminal" size={14} className="text-orange-400" />
-            <p className="surface-kicker">Execution core</p>
+            <p className="surface-kicker">Your widgets</p>
           </div>
-          <p className="font-terminal text-sm text-zinc-400">The main tools for focus, streaks, and guidance.</p>
+          <p className="font-terminal text-sm text-zinc-400">Drag to reorder, toggle visibility in the panel.</p>
+        </div>
+        <div className="flex items-center gap-2">
+          {editMode && (
+            <button
+              onClick={() => setPanelOpen(true)}
+              className="flex items-center gap-1.5 rounded border border-zinc-700 bg-zinc-900 px-3 py-1.5 font-terminal text-xs text-zinc-300 hover:border-orange-600 hover:text-orange-400 transition"
+            >
+              <Settings className="h-3.5 w-3.5" />
+              <span>Widgets</span>
+            </button>
+          )}
+          <button
+            onClick={() => setEditMode((v) => !v)}
+            className={`flex items-center gap-1.5 rounded border px-3 py-1.5 font-terminal text-xs transition ${
+              editMode
+                ? 'border-orange-600 bg-orange-600 text-black hover:bg-orange-500'
+                : 'border-zinc-700 bg-zinc-900 text-zinc-300 hover:border-orange-600 hover:text-orange-400'
+            }`}
+          >
+            <Settings className="h-3.5 w-3.5" />
+            <span>{editMode ? 'Done' : 'Customise'}</span>
+          </button>
         </div>
       </div>
 
-      {/* -- FOCUS / STREAKS / AI COACH ROW -- */}
-      <div className="mb-6 grid gap-4 md:grid-cols-3">
-        <FocusTimerWidget />
-        <HabitStreakWidget />
-        <AICoachWidget />
+      {/* -- CUSTOMISABLE WIDGET GRID -- */}
+      <div className="mb-6">
+        <WidgetGrid
+          layout={layout}
+          editMode={editMode}
+          onReorder={handleReorder}
+          onHide={handleHideWidget}
+        />
       </div>
 
-      <div className="mb-3 flex items-center justify-between">
-        <div>
-          <div className="flex items-center gap-2">
-            <PixelIcon name="message" size={14} className="text-cyan-400" />
-            <p className="surface-kicker">Capture and reflection</p>
-          </div>
-          <p className="font-terminal text-sm text-zinc-400">Reduce friction for logging, reviewing, and adjusting.</p>
-        </div>
-      </div>
-
-      {/* -- JOURNAL / GOAL PROGRESS / CALORIE ROW -- */}
-      <div className="mb-6 grid gap-4 md:grid-cols-3">
-        <QuickJournalWidget />
-        <GoalProgressWidget />
-        <CalorieTrackerWidget />
-      </div>
-
-      {/* -- CLOCK / QUICK-TASK / QUICK-NOTE ROW -- */}
-      <div className="mb-6 grid gap-4 md:grid-cols-3">
-        <DigitalClockWidget />
-        <QuickTaskWidget />
-        <QuickNoteWidget />
-      </div>
-
-      {/* -- SLEEP / QUICK-ACTIONS / VISION-BOARD ROW -- */}
-      <div className="mb-6 grid gap-4 md:grid-cols-3">
-        <SleepWidget />
-        <QuickActionsWidget />
-        <VisionBoardWidget />
-      </div>
+      {/* Widget customisation panel */}
+      <WidgetPanel
+        open={panelOpen}
+        layout={layout}
+        onToggle={handleToggleWidget}
+        onReset={handleResetLayout}
+        onClose={() => setPanelOpen(false)}
+      />
 
       <div className="mb-3 flex items-center justify-between">
         <div>

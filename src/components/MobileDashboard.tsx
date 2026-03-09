@@ -2,7 +2,7 @@
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // RESURGO — Mobile Dashboard (Full Native-Like Experience)
-// 5-tab mobile-first UI: TODAY | AI | HEALTH | GOALS | WEALTH
+// 4-tab bottom-nav + AI arc FAB: TODAY | HEALTH | ⚡AI | GOALS | WEALTH
 // ═══════════════════════════════════════════════════════════════════════════════
 
 import { useState, useCallback } from 'react';
@@ -14,30 +14,33 @@ import { useStoreUser } from '@/hooks/useStoreUser';
 import FocusTimerWidget from '@/components/widgets/FocusTimerWidget';
 import HabitStreakWidget from '@/components/widgets/HabitStreakWidget';
 import GoalProgressWidget from '@/components/widgets/GoalProgressWidget';
-import AICoachWidget from '@/components/widgets/AICoachWidget';
 import CalorieTrackerWidget from '@/components/widgets/CalorieTrackerWidget';
 import SleepWidget from '@/components/widgets/SleepWidget';
+import BrainDump from '@/components/BrainDump';
+import MobileAIArcMenu from '@/components/MobileAIArcMenu';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Brain, Target, Activity, Flame, Heart,
   ChevronRight, Plus, DollarSign, BookOpen,
   Zap, BarChart3, Moon, Dumbbell, Trophy, Star,
-  MessageSquare, Droplets,
+  MessageSquare, Droplets, Sparkles,
 } from 'lucide-react';
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Tab config
+// Tab config  (AI is now the center FAB — not a regular tab)
 // ─────────────────────────────────────────────────────────────────────────────
-const TABS = [
-  { id: 'today',   label: 'TODAY',   icon: Activity   },
-  { id: 'ai',      label: 'AI',      icon: Brain      },
-  { id: 'health',  label: 'HEALTH',  icon: Heart      },
-  { id: 'goals',   label: 'GOALS',   icon: Target     },
-  { id: 'wealth',  label: 'WEALTH',  icon: DollarSign },
+const LEFT_TABS = [
+  { id: 'today',  label: 'TODAY',  icon: Activity  },
+  { id: 'health', label: 'HEALTH', icon: Heart     },
 ] as const;
 
-type TabId = (typeof TABS)[number]['id'];
+const RIGHT_TABS = [
+  { id: 'goals',  label: 'GOALS',  icon: Target    },
+  { id: 'wealth', label: 'WEALTH', icon: DollarSign },
+] as const;
+
+type TabId = 'today' | 'health' | 'goals' | 'wealth';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Shared helpers
@@ -269,33 +272,6 @@ function TodayTab() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// TAB: AI
-// ─────────────────────────────────────────────────────────────────────────────
-function AITab() {
-  return (
-    <div className="space-y-4 pb-24">
-      <div className="border border-zinc-900 bg-zinc-950 px-4 py-4 text-center">
-        <p className="font-pixel text-[0.45rem] tracking-widest text-orange-500">★_AI_COMMAND_CENTER</p>
-        <h2 className="mt-1 font-terminal text-xl font-bold text-zinc-100">Your AI Coaches</h2>
-        <p className="mt-0.5 font-terminal text-xs text-zinc-500">6 specialist coaches — available 24/7</p>
-      </div>
-
-      <AICoachWidget />
-
-      <div>
-        <SectionHeader label="AI_TOOLS" />
-        <div className="grid grid-cols-2 gap-2">
-          <QuickLink href="/coach"        icon={Brain}    label="AI_COACH"     accent="border-orange-900/40 bg-orange-950/15 text-orange-400" />
-          <QuickLink href="/plan-builder" icon={BookOpen}  label="PLAN_BUILDER" accent="border-blue-900/40 bg-blue-950/15 text-blue-400" />
-          <QuickLink href="/orchestrator" icon={Zap}       label="ORCHESTRATOR" accent="border-yellow-900/40 bg-yellow-950/15 text-yellow-400" />
-          <QuickLink href="/analytics"    icon={BarChart3}  label="ANALYTICS"    accent="border-green-900/40 bg-green-950/15 text-green-400" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
 // TAB: HEALTH
 // ─────────────────────────────────────────────────────────────────────────────
 function HealthTab() {
@@ -432,33 +408,19 @@ function WealthTab() {
 // ─────────────────────────────────────────────────────────────────────────────
 export default function MobileDashboard() {
   const [activeTab, setActiveTab] = useState<TabId>('today');
+  const [arcOpen, setArcOpen]     = useState(false);
+  const [brainDumpOpen, setBrainDumpOpen] = useState(false);
 
   return (
     <div className="flex min-h-screen flex-col bg-black">
-      {/* Tab bar */}
-      <div className="sticky top-0 z-20 border-b border-zinc-900 bg-zinc-950/95 backdrop-blur-sm">
-        <div className="px-3 pb-3 pt-3">
-          <p className="surface-kicker">Mobile workspace</p>
-          <p className="mt-1 font-terminal text-sm text-zinc-400">Cleaner focus, same system.</p>
-        </div>
-        <div className="flex border-t border-zinc-900 bg-black/40">
-          {TABS.map(({ id, label, icon: Icon }) => (
-            <button key={id} onClick={() => setActiveTab(id)}
-              className={cn(
-                'flex flex-1 flex-col items-center gap-0.5 px-0.5 py-2.5 transition-colors',
-                activeTab === id
-                  ? 'border-b-2 border-orange-500 text-orange-400'
-                  : 'border-b-2 border-transparent text-zinc-600 active:text-zinc-400',
-              )}>
-              <Icon className="h-4 w-4" />
-              <span className="font-pixel text-[0.33rem] tracking-widest">{label}</span>
-            </button>
-          ))}
-        </div>
+      {/* ── Top header ───────────────────────────────────── */}
+      <div className="sticky top-0 z-20 border-b border-zinc-900 bg-zinc-950/95 backdrop-blur-sm px-3 py-3">
+        <p className="surface-kicker">Mobile workspace</p>
+        <p className="mt-0.5 font-terminal text-xs text-zinc-500">Cleaner focus, same system.</p>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 overflow-y-auto px-3 pt-3">
+      {/* ── Scrollable content ───────────────────────────── */}
+      <div className="flex-1 overflow-y-auto px-3 pt-3 pb-24">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -468,12 +430,100 @@ export default function MobileDashboard() {
             transition={{ duration: 0.2, ease: 'easeOut' }}
           >
             {activeTab === 'today'  && <TodayTab />}
-            {activeTab === 'ai'     && <AITab />}
             {activeTab === 'health' && <HealthTab />}
             {activeTab === 'goals'  && <GoalsTab />}
             {activeTab === 'wealth' && <WealthTab />}
           </motion.div>
         </AnimatePresence>
+      </div>
+
+      {/* ── AI Arc Menu (renders above everything) ────────── */}
+      <MobileAIArcMenu
+        isOpen={arcOpen}
+        onClose={() => setArcOpen(false)}
+        onBrainDump={() => setBrainDumpOpen(true)}
+      />
+
+      {/* ── Brain Dump modal ─────────────────────────────── */}
+      <BrainDump isOpen={brainDumpOpen} onClose={() => setBrainDumpOpen(false)} />
+
+      {/* ── Fixed bottom nav ─────────────────────────────── */}
+      <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-zinc-900 bg-zinc-950/98 backdrop-blur-md">
+        <div className="flex h-16 items-end">
+
+          {/* Left tabs */}
+          {LEFT_TABS.map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              onClick={() => { setArcOpen(false); setActiveTab(id); }}
+              className={cn(
+                'flex flex-1 flex-col items-center justify-center gap-0.5 h-full transition-colors',
+                activeTab === id
+                  ? 'text-orange-400'
+                  : 'text-zinc-600 active:text-zinc-400',
+              )}
+            >
+              <Icon className="h-4 w-4" />
+              <span className="font-pixel text-[0.3rem] tracking-widest">{label}</span>
+            </button>
+          ))}
+
+          {/* ── AI centre FAB ───────────────────────────────── */}
+          <div className="relative flex flex-1 flex-col items-center justify-end pb-2">
+            <motion.button
+              onClick={() => setArcOpen((v) => !v)}
+              whileTap={{ scale: 0.92 }}
+              className={cn(
+                'relative flex h-[52px] w-[52px] flex-col items-center justify-center gap-0.5',
+                'border-2 border-orange-600 bg-orange-600',
+                'shadow-[0_0_20px_rgba(234,88,12,0.55),0_-2px_8px_rgba(234,88,12,0.3)]',
+                // lifted above bar
+                '-translate-y-3',
+                arcOpen ? 'bg-orange-500 border-orange-400' : '',
+                'transition-colors duration-150',
+              )}
+              aria-label="Open AI menu"
+              aria-expanded={arcOpen}
+            >
+              <motion.div
+                animate={{ rotate: arcOpen ? 45 : 0 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+              >
+                {arcOpen ? (
+                  <Sparkles className="h-5 w-5 text-white" strokeWidth={2} />
+                ) : (
+                  <Brain className="h-5 w-5 text-white" strokeWidth={2} />
+                )}
+              </motion.div>
+              <span className="font-pixel text-[0.28rem] tracking-widest text-white/90">AI</span>
+
+              {/* Pulse ring when closed */}
+              {!arcOpen && (
+                <span className="absolute inset-0 border-2 border-orange-400/40 animate-ping" />
+              )}
+            </motion.button>
+          </div>
+
+          {/* Right tabs */}
+          {RIGHT_TABS.map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              onClick={() => { setArcOpen(false); setActiveTab(id); }}
+              className={cn(
+                'flex flex-1 flex-col items-center justify-center gap-0.5 h-full transition-colors',
+                activeTab === id
+                  ? 'text-orange-400'
+                  : 'text-zinc-600 active:text-zinc-400',
+              )}
+            >
+              <Icon className="h-4 w-4" />
+              <span className="font-pixel text-[0.3rem] tracking-widest">{label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Safe-area spacer for iPhone home indicator */}
+        <div className="h-[env(safe-area-inset-bottom,0px)]" />
       </div>
     </div>
   );

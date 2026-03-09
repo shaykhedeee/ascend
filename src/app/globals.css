@@ -609,11 +609,11 @@ h6 { font-size: 1rem; }
     border: 2px solid var(--ascend-primary-dark);
     box-shadow: 3px 3px 0px var(--ascend-primary-dark);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-family: var(--font-inter, 'Inter'), system-ui, sans-serif;
-    font-size: 1rem;
+    letter-spacing: 0.16em;
+    font-family: var(--font-vt323, 'VT323'), ui-monospace, monospace;
+    font-size: 1.125rem;
     font-weight: 700;
-    line-height: 1.25;
+    line-height: 1;
   }
   
   .btn-primary:hover:not(:disabled) {
@@ -634,24 +634,24 @@ h6 { font-size: 1rem; }
            focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]
            disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100;
     border-radius: 2px;
-    background: var(--surface);
-    border: 2px solid var(--border);
-    color: var(--text-primary);
-    box-shadow: 3px 3px 0px var(--border);
+    background: transparent;
+    border: 2px solid var(--ascend-primary);
+    color: var(--ascend-primary);
+    box-shadow: 3px 3px 0px var(--ascend-primary-dark);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-family: var(--font-inter, 'Inter'), system-ui, sans-serif;
-    font-size: 1rem;
+    letter-spacing: 0.16em;
+    font-family: var(--font-vt323, 'VT323'), ui-monospace, monospace;
+    font-size: 1.125rem;
     font-weight: 700;
-    line-height: 1.25;
+    line-height: 1;
   }
   
   .btn-secondary:hover:not(:disabled) {
-    background: var(--surface-hover);
-    border-color: var(--ascend-primary);
-    color: var(--ascend-primary);
+    background: color-mix(in srgb, var(--ascend-primary) 16%, transparent);
+    border-color: var(--ascend-primary-light);
+    color: #fed7aa;
     transform: translate(1px, 1px);
-    box-shadow: 2px 2px 0px var(--border);
+    box-shadow: 2px 2px 0px var(--ascend-primary-dark);
   }
   
   .btn-secondary:active:not(:disabled) {
@@ -667,6 +667,10 @@ h6 { font-size: 1rem; }
     color: var(--text-secondary);
     border-radius: 2px;
     border: 1px solid transparent;
+    font-family: var(--font-vt323, 'VT323'), ui-monospace, monospace;
+    font-size: 1.05rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
   
   .btn-ghost:hover:not(:disabled) {
@@ -691,11 +695,11 @@ h6 { font-size: 1rem; }
     border: 2px solid #DC2626;
     box-shadow: 3px 3px 0px #991B1B;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-family: var(--font-inter, 'Inter'), system-ui, sans-serif;
-    font-size: 1rem;
+    letter-spacing: 0.16em;
+    font-family: var(--font-vt323, 'VT323'), ui-monospace, monospace;
+    font-size: 1.125rem;
     font-weight: 700;
-    line-height: 1.25;
+    line-height: 1;
   }
   
   .btn-danger:hover:not(:disabled) {
@@ -721,16 +725,16 @@ h6 { font-size: 1rem; }
     color: var(--ascend-primary);
     box-shadow: 3px 3px 0px var(--ascend-primary-dark);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-family: var(--font-inter, 'Inter'), system-ui, sans-serif;
-    font-size: 1rem;
+    letter-spacing: 0.16em;
+    font-family: var(--font-vt323, 'VT323'), ui-monospace, monospace;
+    font-size: 1.125rem;
     font-weight: 700;
-    line-height: 1.25;
+    line-height: 1;
   }
   
   .btn-outline:hover:not(:disabled) {
-    background: var(--ascend-primary);
-    color: white;
+    background: color-mix(in srgb, var(--ascend-primary) 16%, transparent);
+    color: #fed7aa;
     transform: translate(1px, 1px);
     box-shadow: 2px 2px 0px var(--ascend-primary-dark);
   }

@@ -71,7 +71,7 @@ const FAQs = [
   },
   {
     q: 'Do you offer refunds?',
-    a: 'Yes. Resurgo offers a 7-day money-back guarantee on all paid plans. Email support@resurgo.life within 7 days of your first charge for a full refund — no questions asked.',
+    a: 'Yes. Resurgo offers a 14-day money-back guarantee on Pro subscriptions and a 30-day money-back guarantee on Lifetime purchases. Email support@resurgo.life for a full refund — no questions asked.',
   },
   {
     q: 'Is there a REST API?',

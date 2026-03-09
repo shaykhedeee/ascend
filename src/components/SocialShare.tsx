@@ -62,7 +62,7 @@ const generateShareText = (props: SocialShareProps): string => {
     return "I'm building better habits with RESURGO! Join me on the journey.";
   }
   
-  return `${parts.join(' | ')}\n\nBuilding better habits with @RESURGOApp`;
+  return `${parts.join(' | ')}\n\nBuilding better habits with @resurgolife`;
 };
 
 const shareUrls = {
@@ -374,7 +374,7 @@ export function StreakShareCard({ streakDays, habitName }: { streakDays: number;
         </div>
         <SocialShare 
           streakDays={streakDays} 
-          customMessage={`Just hit a ${streakDays}-day streak on "${habitName}".\n\nBuilding better habits with @RESURGOApp`}
+          customMessage={`Just hit a ${streakDays}-day streak on "${habitName}".\n\nBuilding better habits with @resurgolife`}
           variant="button" 
         />
       </div>

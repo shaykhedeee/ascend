@@ -7,7 +7,7 @@ const STICKY_DISMISSED_KEY = 'resurgo_sticky_cta_dismissed';
 
 const MESSAGES = [
   { headline: 'Turn your goals into a daily plan — AI does the work.', sub: 'Free forever. No credit card.' },
-  { headline: 'Set one goal. AI builds your entire system.', sub: '15+ AI models working for you.' },
+  { headline: 'Set one goal. AI builds your entire system.', sub: '8 specialized AI coaches working for you.' },
   { headline: 'Your AI coach is waiting. Start in 30 seconds.', sub: 'Brain Dump → Plan → Execute → Win.' },
 ];
 

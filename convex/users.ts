@@ -81,137 +81,6 @@ export const store = mutation({
 // ─────────────────────────────────────────────────────────────────────────────
 export const current = query({
   args: {},
-  returns: v.union(
-    v.object({
-      _id: v.id('users'),
-      _creationTime: v.number(),
-      clerkId: v.string(),
-      email: v.string(),
-      name: v.string(),
-      imageUrl: v.optional(v.string()),
-      plan: v.union(v.literal('free'), v.literal('pro'), v.literal('lifetime')),
-      timezone: v.optional(v.string()),
-      theme: v.optional(v.union(v.literal('light'), v.literal('dark'), v.literal('system'))),
-      onboardingComplete: v.boolean(),
-      streakFreezeCount: v.number(),
-      // Onboarding preferences
-      focusAreas: v.optional(v.array(v.string())),
-      selectedHabitTemplates: v.optional(v.array(v.string())),
-      preferredTime: v.optional(v.string()),
-      primaryGoal: v.optional(v.string()),
-      primaryGoalReason: v.optional(v.string()),
-      primaryGoalDeadline: v.optional(v.string()),
-      // Vision & Life Design
-      lifeWheelScores: v.optional(v.object({
-        health: v.number(),
-        career: v.number(),
-        finance: v.number(),
-        learning: v.number(),
-        relationships: v.number(),
-        creativity: v.number(),
-        mindfulness: v.number(),
-        personal_growth: v.number(),
-      })),
-      coreValues: v.optional(v.array(v.string())),
-      lifeVision: v.optional(v.string()),
-      visionBoard: v.optional(v.array(v.object({
-        id: v.string(),
-        imageUrl: v.string(),
-        caption: v.optional(v.string()),
-        domain: v.optional(v.string()),
-      }))),
-      // Schedule preferences
-      wakeTime: v.optional(v.string()),
-      sleepTime: v.optional(v.string()),
-      peakProductivityTime: v.optional(v.string()),
-      workSchedule: v.optional(v.object({
-        startTime: v.string(),
-        endTime: v.string(),
-        lunchStart: v.optional(v.string()),
-        lunchEnd: v.optional(v.string()),
-        workDays: v.array(v.number()),
-      })),
-      // Notification preferences
-      notificationPrefs: v.optional(v.object({
-        morningMotivation: v.boolean(),
-        middayCheckin: v.boolean(),
-        eveningWinddown: v.boolean(),
-        taskReminders: v.boolean(),
-        hydrationReminders: v.boolean(),
-        focusSessionReminders: v.boolean(),
-        sleepReminders: v.boolean(),
-        weeklyReviewReminders: v.boolean(),
-        quietHoursEnabled: v.boolean(),
-        quietHoursStart: v.string(),
-        quietHoursEnd: v.string(),
-        reminderStyle: v.union(
-          v.literal('gentle'),
-          v.literal('supportive'),
-          v.literal('persistent'),
-          v.literal('minimal')
-        ),
-        coachingFrequency: v.union(
-          v.literal('daily'),
-          v.literal('weekly'),
-          v.literal('struggling_only'),
-          v.literal('manual')
-        ),
-      })),
-      // Coach personality
-      coachPersonality: v.optional(v.union(
-        v.literal('supportive'),
-        v.literal('challenging'),
-        v.literal('analytical'),
-        v.literal('humorous')
-      )),
-      // Recovery state
-      lastActiveAt: v.optional(v.number()),
-      recoveryStatus: v.optional(v.union(
-        v.literal('active'),
-        v.literal('at_risk'),
-        v.literal('inactive'),
-        v.literal('recovering')
-      )),
-      // Billing concurrency guard (new fields)
-      planVersion: v.optional(v.number()),
-      planUpdatedAt: v.optional(v.number()),
-      lastBillingEventId: v.optional(v.string()),
-      // Telegram integration
-      telegramChatId: v.optional(v.string()),
-      telegramLinked: v.optional(v.boolean()),
-      // Native push (FCM)
-      fcmToken: v.optional(v.string()),
-      fcmTokenUpdatedAt: v.optional(v.number()),
-      pushEnabled: v.optional(v.boolean()),
-      // Referral
-      referralCode: v.optional(v.string()),
-      // Coach selection
-      selectedCoach: v.optional(v.union(
-        v.literal('MARCUS'),
-        v.literal('AURORA'),
-        v.literal('TITAN'),
-        v.literal('SAGE'),
-        v.literal('PHOENIX'),
-        v.literal('NOVA'),
-      )),
-      // Emergency mode
-      emergencyMode: v.optional(v.boolean()),
-      emergencyModeReason: v.optional(v.string()),
-      emergencyModeActivatedAt: v.optional(v.number()),
-      // AI coach memory
-      summaryMemory: v.optional(v.string()),
-      // User archetype
-      archetype: v.optional(v.string()),
-      archetypeConfidence: v.optional(v.number()),
-      secondaryArchetype: v.optional(v.string()),
-      onboardingData: v.optional(v.string()),
-      // Dodo Payments
-      dodoCustomerId: v.optional(v.string()),
-      createdAt: v.number(),
-      updatedAt: v.number(),
-    }),
-    v.null()
-  ),
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) return null;
@@ -1165,6 +1034,59 @@ export const updatePlanFromWebhookInternal = internalMutation({
     console.log(`[updatePlanFromWebhookInternal] ${clerkId}: ${prevPlan} → ${plan} (event=${eventId})`);
 
     return { applied: true, reason: 'ok' };
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DASHBOARD LAYOUT — GET
+// ─────────────────────────────────────────────────────────────────────────────
+export const getDashboardLayout = query({
+  args: {},
+  returns: v.union(
+    v.array(v.object({ id: v.string(), visible: v.boolean(), order: v.number() })),
+    v.null(),
+  ),
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) return null;
+
+    const user = await ctx.db
+      .query('users')
+      .withIndex('by_clerkId', (q) => q.eq('clerkId', identity.subject))
+      .unique();
+
+    return user?.dashboardLayout ?? null;
+  },
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// DASHBOARD LAYOUT — SAVE
+// ─────────────────────────────────────────────────────────────────────────────
+export const saveDashboardLayout = mutation({
+  args: {
+    layout: v.array(v.object({
+      id: v.string(),
+      visible: v.boolean(),
+      order: v.number(),
+    })),
+  },
+  returns: v.null(),
+  handler: async (ctx, { layout }) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error('Not authenticated');
+
+    const user = await ctx.db
+      .query('users')
+      .withIndex('by_clerkId', (q) => q.eq('clerkId', identity.subject))
+      .unique();
+    if (!user) throw new Error('User not found');
+
+    await ctx.db.patch(user._id, {
+      dashboardLayout: layout,
+      updatedAt: Date.now(),
+    });
+
+    return null;
   },
 });
 

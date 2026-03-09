@@ -228,7 +228,7 @@ export function SmartPurchasePrompt({
 
           {/* Trust Badge */}
           <p className="text-center text-xs text-themed-muted mt-4">
-            Cancel anytime • No questions asked • 7-day money-back guarantee
+            Cancel anytime • No questions asked • 14-day money-back guarantee
           </p>
         </div>
       </div>

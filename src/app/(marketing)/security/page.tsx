@@ -81,7 +81,7 @@ const SECTIONS: SecuritySection[] = [
       { label: 'Vercel Edge Network', detail: 'Global CDN with automatic DDoS mitigation' },
       { label: 'Convex cloud', detail: 'SOC 2 Type II certified real-time database infrastructure' },
       { label: 'Zero-downtime deploys', detail: 'Atomic deployments — no maintenance windows' },
-      { label: 'Uptime SLA', detail: '99.9% uptime target; real-time status at status.resurgo.life' },
+      { label: 'Uptime SLA', detail: '99.9% uptime target with automated monitoring and alerting' },
       { label: 'Disaster recovery', detail: 'Automated backups; point-in-time recovery available' },
     ],
   },
@@ -161,14 +161,6 @@ export default function SecurityPage() {
           <Link href="/terms" className="font-terminal text-sm text-zinc-600 hover:text-orange-500 transition-colors">
             Terms of Service →
           </Link>
-          <a
-            href="https://status.resurgo.life"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-terminal text-sm text-zinc-600 hover:text-orange-500 transition-colors"
-          >
-            System Status ↗
-          </a>
         </div>
       </div>
     </main>

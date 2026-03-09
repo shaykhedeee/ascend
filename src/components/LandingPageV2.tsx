@@ -12,7 +12,7 @@ import { MarketingFooter } from '@/components/MarketingFooter';
 import InteractiveDemoCarousel from '@/components/marketing/InteractiveDemoCarousel';
 import SocialProof from '@/components/marketing/SocialProof';
 import EmailCapture from '@/components/marketing/EmailCapture';
-import LandingChatWidget from '@/components/marketing/LandingChatWidget';
+
 import ExitIntent from '@/components/marketing/ExitIntent';
 import StickyCTA from '@/components/marketing/StickyCTA';
 import { CookieConsent } from '@/components/CookieConsent';
@@ -67,9 +67,9 @@ const CORE_FEATURES = [
   },
   {
     id: 'AI_COACHING',
-    title: '6 Specialized AI Coaches',
+    title: '8 Specialized AI Coaches',
     description:
-      'Chat with NOVA (Systems), TITAN (Performance), SAGE (Wealth), PHOENIX (Resilience), ATLAS (Strategy), or EMBER (Creativity). Each coach has a distinct strategy. Advice personalized to your goals, 24/7.',
+      'Chat with MARCUS (Strategy), AURORA (Wellness), TITAN (Performance), SAGE (Wealth), PHOENIX (Resilience), NOVA (Systems), ORACLE (Life Architect), or NEXUS (Integration). Each coach has a distinct approach. Advice personalized to your goals, 24/7.',
     status: 'Live',
     category: 'AI',
     icon: 'robot' as PixelIconName,
@@ -159,10 +159,10 @@ const CORE_FEATURES = [
 
 // ─── METRICS ────────────────────────────────────────────────────────────────
 const METRICS = [
-  { value: '50K+', label: 'people started' },
-  { value: '2M+', label: 'habits completed' },
-  { value: '99.9%', label: 'platform uptime' },
-  { value: '<2 min', label: 'to start onboarding' },
+  { value: '8', label: 'AI coaches available' },
+  { value: '28', label: 'goal templates' },
+  { value: '100%', label: 'free to start' },
+  { value: '<2 min', label: 'to first plan' },
 ];
 
 // ─── TESTIMONIALS (6 reviews) ───────────────────────────────────────────────
@@ -216,7 +216,7 @@ const FAQS = [
   {
     question: 'What is Resurgo and how does it work?',
     answer:
-      'Resurgo is an AI productivity assistant and life command center. You capture a goal, task list, or messy brain dump, and Resurgo turns it into milestones, daily tasks, habits, focus blocks, and guided reviews. It works on desktop and mobile as a Progressive Web App, and is also available as an Android APK.',
+      'Resurgo is an AI productivity assistant and life command center. You capture a goal, task list, or messy brain dump, and Resurgo turns it into milestones, daily tasks, habits, focus blocks, and guided reviews. It works on desktop and mobile as a Progressive Web App — no download required.',
   },
   {
     question: 'How long does it take to get started?',
@@ -246,7 +246,7 @@ const FAQS = [
   {
     question: 'How does AI coaching work?',
     answer:
-      'You choose from 6 specialized AI coaches, each with a unique personality and approach — from Stoic philosophy to creative energy. Coaches respond based on your goals, habits, and recent progress. Two coaches are free; the rest unlock with a Pro plan.',
+      'You choose from 8 specialized AI coaches, each with a unique personality and approach — from Stoic philosophy to creative energy. Coaches respond based on your goals, habits, and recent progress. Two coaches are free; the rest unlock with a Pro plan. ORACLE and NEXUS are premium agents for Yearly/Lifetime members.',
   },
   {
     question: 'Is my data private and secure?',
@@ -421,6 +421,20 @@ const AI_COACHES = [
     desc: 'Thinks in systems, leverage points, and second-order effects. Nova designs complete plans for learning, creativity, and innovation.',
     free: false,
     accent: 'cyan',
+  },
+  {
+    name: 'ORACLE',
+    style: 'Life Architect',
+    desc: 'Synthesises all coach wisdom. Oracle sees your entire system, audits what isn\'t working, and rewrites your full strategy.',
+    free: false,
+    accent: 'orange',
+  },
+  {
+    name: 'NEXUS',
+    style: 'Integration Engine',
+    desc: 'Merges mind, body, finance, and creativity into one adaptive engine. Nexus builds custom neural mastery stacks with no limits.',
+    free: false,
+    accent: 'pink',
   },
 ];
 
@@ -632,7 +646,7 @@ function LandingPageV2() {
                   </span>
                 </div>
 
-                <h1 className="font-pixel text-4xl leading-[1.1] tracking-tight text-zinc-100 sm:text-5xl lg:text-6xl xl:text-7xl">
+                <h1 className="font-pixel text-3xl leading-[1.1] tracking-tight text-zinc-100 sm:text-4xl lg:text-5xl xl:text-6xl">
                   {heroContent.headingMain}
                   <span className="block text-orange-500">
                     {heroContent.headingAccent}
@@ -647,17 +661,9 @@ function LandingPageV2() {
                   <TermLinkButton href="/sign-up" variant="primary" size="lg">
                     Start Free — No Credit Card
                   </TermLinkButton>
-                  <TermLinkButton
-                    href="https://github.com/ShaykhedeE/ascend/releases/latest/download/resurgo.apk"
-                    variant="success"
-                    size="lg"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                    </svg>
-                    Download APK
+                  <TermLinkButton href="/download" variant="secondary" size="lg">
+                    Install on Device ↓
                   </TermLinkButton>
-
                 </div>
 
                 {/* Metrics bar */}
@@ -1143,7 +1149,7 @@ function LandingPageV2() {
             <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 font-pixel text-[0.5rem] tracking-widest text-zinc-500">
               <span className="flex items-center gap-1.5"><PixelIcon name="check" size={12} className="text-orange-500" />DATA_ENCRYPTED_AT_REST</span>
               <span className="flex items-center gap-1.5"><PixelIcon name="star" size={12} className="text-orange-500" />CANCEL_ANYTIME</span>
-              <span className="flex items-center gap-1.5"><PixelIcon name="sparkles" size={12} className="text-orange-500" />30-DAY_MONEY_BACK</span>
+              <span className="flex items-center gap-1.5"><PixelIcon name="sparkles" size={12} className="text-orange-500" />14-DAY_MONEY_BACK</span>
               <span className="flex items-center gap-1.5"><PixelIcon name="grid" size={12} className="text-orange-500" />WORKS_ON_ANY_DEVICE</span>
               <span className="flex items-center gap-1.5"><PixelIcon name="loop" size={12} className="text-orange-500" />FREE_TIER_FOREVER</span>
             </div>
@@ -1391,9 +1397,7 @@ function LandingPageV2() {
               />
             </div>
 
-            <div className="mt-8">
-              <LandingChatWidget />
-            </div>
+
           </div>
         </section>
 
@@ -1496,10 +1500,10 @@ function LandingPageV2() {
               {/* Stats badges */}
               <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
                 <span className="border-2 border-zinc-800 bg-zinc-900/50 px-4 py-2 font-pixel text-[0.45rem] tracking-widest text-zinc-300">
-                  50K+ USERS
+                  8 AI COACHES
                 </span>
                 <span className="border-2 border-zinc-800 bg-zinc-900/50 px-4 py-2 font-pixel text-[0.45rem] tracking-widest text-zinc-300">
-                  ★ 4.8 RATING
+                  28 GOAL TEMPLATES
                 </span>
                 <span className="border-2 border-green-900 bg-green-950/30 px-4 py-2 font-pixel text-[0.45rem] tracking-widest text-green-500">
                   FREE PLAN FOREVER
@@ -1510,13 +1514,6 @@ function LandingPageV2() {
                 <TermLinkButton href="/sign-up" variant="primary" size="lg">
                   [ START FREE — NO CREDIT CARD ]
                 </TermLinkButton>
-                <TermLinkButton
-                  href="https://github.com/ShaykhedeE/ascend/releases/latest/download/resurgo.apk"
-                  variant="success"
-                  size="md"
-                >
-                  [ DOWNLOAD_APK ]
-                </TermLinkButton>
                 <TermLinkButton href="/pricing" variant="ghost" size="md">
                   [ VIEW_ACCESS_TIERS ]
                 </TermLinkButton>
@@ -1524,7 +1521,7 @@ function LandingPageV2() {
               <div className="mt-6 flex flex-wrap items-center justify-center gap-4 font-pixel text-[0.55rem] tracking-widest text-zinc-400">
                 <span>&gt; FREE_PLAN_FOREVER</span>
                 <span>&gt; NO_CREDIT_CARD_REQUIRED</span>
-                <span>&gt; 30_DAY_MONEY_BACK_GUARANTEE</span>
+                <span>&gt; 14_DAY_MONEY_BACK_GUARANTEE</span>
                 <span>&gt; PRIVATE_ENCRYPTED_DATA</span>
               </div>
             </div>

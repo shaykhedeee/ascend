@@ -6,7 +6,7 @@
 
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { LogoMark } from '@/components/Logo';
@@ -19,6 +19,7 @@ const FOOTER_SECTIONS = [
     links: [
       { href: '/features', label: 'Features' },
       { href: '/pricing', label: 'Pricing' },
+      { href: '/download', label: 'Download App' },
       { href: '/templates', label: 'Goal Templates' },
       { href: '/changelog', label: 'Changelog' },
       { href: '/roadmap', label: 'Roadmap' },
@@ -59,30 +60,30 @@ const TECH_STACK = [
 ];
 
 export function MarketingFooter() {
+  const [footerEmail, setFooterEmail] = useState('');
+  const [footerStatus, setFooterStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
+
+  async function handleFooterSubscribe() {
+    const email = footerEmail.trim();
+    if (!email || footerStatus === 'loading') return;
+    setFooterStatus('loading');
+    try {
+      const res = await fetch('/api/leads/capture', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source: 'footer_newsletter', offer: 'newsletter' }),
+      });
+      setFooterStatus(res.ok ? 'done' : 'error');
+    } catch {
+      setFooterStatus('error');
+    }
+  }
   return (
     <footer className="border-t-2 border-zinc-800 bg-black">
-      {/* ── System status bar ── */}
+      {/* ── Version bar ── */}
       <div className="border-b border-zinc-900 bg-zinc-950">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2.5 sm:px-6">
-          <div className="flex items-center gap-3">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-500 opacity-60" />
-              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500" />
-            </span>
-            <span className="font-pixel text-[0.45rem] tracking-widest text-zinc-400">ALL_SYSTEMS_OPERATIONAL</span>
-            <span className="hidden font-pixel text-[0.4rem] tracking-widest text-zinc-600 sm:inline">· 99.9% UPTIME</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="font-pixel text-[0.4rem] tracking-widest text-zinc-700">v1.4.0</span>
-            <a
-              href="https://status.resurgo.life"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-pixel text-[0.4rem] tracking-widest text-zinc-600 transition hover:text-orange-500"
-            >
-              STATUS_PAGE ↗
-            </a>
-          </div>
+        <div className="mx-auto flex max-w-7xl items-center justify-end px-4 py-2.5 sm:px-6">
+          <span className="font-pixel text-[0.4rem] tracking-widest text-zinc-700">v1.4.0</span>
         </div>
       </div>
 
@@ -126,19 +127,32 @@ export function MarketingFooter() {
               <p className="mb-2.5 font-pixel text-[0.45rem] tracking-widest text-zinc-500">
                 SYSTEM_UPDATES → YOUR_INBOX
               </p>
-              <div className="flex">
-                <input
-                  type="email"
-                  placeholder="your@email.com"
-                  className="flex-1 border-2 border-zinc-800 bg-black px-3 py-2 font-terminal text-sm text-zinc-300 placeholder-zinc-700 focus:border-orange-600 focus:outline-none"
-                />
-                <button
-                  type="button"
-                  className="border-2 border-l-0 border-orange-600 bg-orange-600 px-4 py-2 font-pixel text-[0.45rem] tracking-widest text-black transition hover:bg-orange-500 active:translate-y-[1px]"
-                >
-                  SUBSCRIBE
-                </button>
-              </div>
+              {footerStatus === 'done' ? (
+                <p className="font-terminal text-sm text-green-500">✓ Subscribed — watch your inbox.</p>
+              ) : (
+                <div className="flex">
+                  <input
+                    type="email"
+                    value={footerEmail}
+                    onChange={(e) => setFooterEmail(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleFooterSubscribe()}
+                    placeholder="your@email.com"
+                    disabled={footerStatus === 'loading'}
+                    className="flex-1 border-2 border-zinc-800 bg-black px-3 py-2 font-terminal text-sm text-zinc-300 placeholder-zinc-700 focus:border-orange-600 focus:outline-none disabled:opacity-50"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleFooterSubscribe}
+                    disabled={footerStatus === 'loading'}
+                    className="border-2 border-l-0 border-orange-600 bg-orange-600 px-4 py-2 font-pixel text-[0.45rem] tracking-widest text-black transition hover:bg-orange-500 active:translate-y-[1px] disabled:opacity-50"
+                  >
+                    {footerStatus === 'loading' ? '...' : 'SUBSCRIBE'}
+                  </button>
+                </div>
+              )}
+              {footerStatus === 'error' && (
+                <p className="mt-1 font-terminal text-xs text-red-500">Something went wrong. Try again.</p>
+              )}
               <p className="mt-1.5 font-terminal text-xs text-zinc-700">No spam. Unsubscribe any time.</p>
             </div>
           </div>

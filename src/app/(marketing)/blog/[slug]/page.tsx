@@ -1,17 +1,16 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { PixelIcon } from '@/components/PixelIcon';
+import {
+  CoachingComparisonChart,
+  DeepWorkProgressChart,
+  GoalFrameworkRadar,
+  HabitFormationChart,
+  ProcrastinationLoopChart,
+} from '@/components/blog/PixelatedCharts';
 import { BLOG_TOPIC_CLUSTERS, getPostsForCluster } from '@/lib/blog/post-index';
-
-// Import charts dynamically (client components)
-const HabitFormationChart = dynamic(() => import('@/components/blog/PixelatedCharts').then(mod => ({ default: mod.HabitFormationChart })), { ssr: false });
-const ProcrastinationLoopChart = dynamic(() => import('@/components/blog/PixelatedCharts').then(mod => ({ default: mod.ProcrastinationLoopChart })), { ssr: false });
-const CoachingComparisonChart = dynamic(() => import('@/components/blog/PixelatedCharts').then(mod => ({ default: mod.CoachingComparisonChart })), { ssr: false });
-const DeepWorkProgressChart = dynamic(() => import('@/components/blog/PixelatedCharts').then(mod => ({ default: mod.DeepWorkProgressChart })), { ssr: false });
-const GoalFrameworkRadar = dynamic(() => import('@/components/blog/PixelatedCharts').then(mod => ({ default: mod.GoalFrameworkRadar })), { ssr: false });
 
 type FaqItem = {
   question: string;

@@ -158,6 +158,12 @@ export default defineSchema({
     archetypeConfidence: v.optional(v.number()),
     secondaryArchetype: v.optional(v.string()),
     onboardingData: v.optional(v.string()),     // JSON of onboarding answers
+    // ── Dashboard layout ──
+    dashboardLayout: v.optional(v.array(v.object({
+      id: v.string(),
+      visible: v.boolean(),
+      order: v.number(),
+    }))),
     // ── Dodo Payments ──
     dodoCustomerId: v.optional(v.string()), // Dodo Payments customer ID for checkout/portal
     createdAt: v.number(),

@@ -914,7 +914,7 @@ export function LandingPage({ onGetStarted, onLogin }: LandingPageProps) {
               },
               {
                 question: "is RESURGO free to use?",
-                answer: "Yes! RESURGO offers a generous free plan that includes up to 3 habits, 1 active goal, basic analytics, 7-day history, and both light and dark themes. For unlimited habits, AI goal decomposition, advanced analytics, and full history access, you can upgrade to Pro at $5/month or get lifetime access for a one-time payment of $99."
+                answer: "Yes! RESURGO offers a generous free plan that includes up to 3 habits, 1 active goal, basic analytics, 7-day history, and both light and dark themes. For unlimited habits, AI goal decomposition, advanced analytics, and full history access, you can upgrade to Pro at $4.99/month or get lifetime access for a one-time payment of $49.99."
               },
               {
                 question: "How does AI goal decomposition work?",

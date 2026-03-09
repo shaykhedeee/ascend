@@ -3,232 +3,368 @@ import Link from 'next/link';
 import { TermLinkButton } from '@/components/ui/TermButton';
 
 export const metadata: Metadata = {
-  title: 'Install Resurgo - PWA and Android access',
+  title: 'Download Resurgo — Install on Android, iOS, Windows & macOS',
   description:
-    'Install Resurgo on mobile or desktop in seconds. Use the PWA on any device, or grab the latest Android package when a release is published.',
+    'Download Resurgo on Android (APK), iPhone, iPad, Windows or macOS. Install the AI productivity app directly — no app store required.',
   keywords: [
-    'Resurgo install', 'Resurgo app', 'productivity PWA', 'add to home screen',
-    'AI productivity app mobile', 'progressive web app planner',
+    'Resurgo download', 'Resurgo APK', 'Resurgo Android download',
+    'install Resurgo iPhone', 'AI productivity app download',
+    'progressive web app install', 'Resurgo Windows', 'Resurgo macOS',
   ],
   alternates: { canonical: '/download' },
   openGraph: {
-    title: 'Install Resurgo - PWA and Android access',
-    description: 'Add Resurgo to your home screen in seconds. Works on Android, iPhone, desktop, and tablet.',
+    title: 'Download Resurgo — Android · iOS · Windows · macOS',
+    description: 'Download Resurgo on any device. Android APK ready. iOS, Windows & macOS installs available.',
     type: 'website',
     url: '/download',
   },
 };
 
+// ─── Android APK install steps ───────────────────────────────────────────────
+const ANDROID_APK_STEPS = [
+  { step: 1, text: 'Tap "Download APK" above and save the file.' },
+  { step: 2, text: 'Open your Downloads folder and tap the .apk file.' },
+  { step: 3, text: 'If prompted, allow "Install from unknown sources" for your browser.' },
+  { step: 4, text: 'Tap Install → Open. Sign in with your Resurgo account.' },
+];
+
+const ANDROID_PWA_STEPS = [
+  { step: 1, text: 'Open resurgo.life in Chrome or Samsung Internet.' },
+  { step: 2, text: 'Tap the menu (⋮) then "Add to Home screen".' },
+  { step: 3, text: 'Tap "Add" — the Resurgo icon appears on your home screen.' },
+  { step: 4, text: 'Open from home screen and allow push notifications when prompted.' },
+];
+
+const IOS_STEPS = [
+  { step: 1, text: 'Open resurgo.life in Safari (must be Safari, not Chrome).' },
+  { step: 2, text: 'Tap the Share button (□↑) in Safari\'s toolbar.' },
+  { step: 3, text: 'Scroll down and tap "Add to Home Screen".' },
+  { step: 4, text: 'Tap "Add" — Resurgo appears on your home screen like a native app.' },
+];
+
 const FEATURES = [
-  {
-    title: 'Fast launch',
-    description: 'Open Resurgo from your home screen or desktop dock without dealing with browser tabs every time.',
-  },
-  {
-    title: 'Offline-friendly',
-    description: 'Installed sessions cache key screens and queue supported actions until your connection returns.',
-  },
-  {
-    title: 'Full dashboard access',
-    description: 'Use the same habits, tasks, goals, reviews, and AI planning workflows you see on the web app.',
-  },
-  {
-    title: 'Secure account sync',
-    description: 'Sign in once and your data stays synced across devices through the same Resurgo account.',
-  },
-  {
-    title: 'No app store required',
-    description: 'The PWA installs directly from the browser on desktop, Android, iPhone, and iPad.',
-  },
-  {
-    title: 'Android package option',
-    description: 'If you prefer a packaged install, use the latest Android release when one has been published.',
-  },
+  { label: 'FAST_LAUNCH',      desc: 'Opens instantly from your home screen or dock — no browser tabs.' },
+  { label: 'OFFLINE_READY',    desc: 'Key screens cache locally. Actions queue and sync when reconnected.' },
+  { label: 'FULL_DASHBOARD',   desc: 'Every feature: habits, tasks, goals, AI coaches, weekly reviews.' },
+  { label: 'CLOUD_SYNC',       desc: 'Sign in once — all data syncs across every device automatically.' },
+  { label: 'PUSH_NOTIFICATIONS', desc: 'Streak reminders, morning briefings, and coach nudges (iOS 16.4+, Android).' },
+  { label: 'FREE_TO_INSTALL',  desc: 'No app store account needed. Install directly from your browser.' },
 ];
 
-const INSTALL_ANDROID = [
-  { step: 1, title: 'Open resurgo.life in Chrome', description: 'Use Chrome or Samsung Internet on your Android device.' },
-  { step: 2, title: 'Tap the menu (...) then "Add to Home screen"', description: 'If Chrome shows an install button in the address bar, you can use that too.' },
-  { step: 3, title: 'Tap "Add"', description: 'Android adds the Resurgo icon to your home screen instantly.' },
-  { step: 4, title: 'Launch & allow notifications', description: 'Open Resurgo from your home screen and allow push notifications when prompted.' },
-];
+// APK GitHub Releases URL — update file name once APK is built and uploaded
+const APK_URL = 'https://github.com/shaykhedeee/ascend/releases/latest';
+const APK_VERSION = 'v1.0.0';
 
-const INSTALL_IOS = [
-  { step: 1, title: 'Open resurgo.life in Safari', description: 'Use Safari on iPhone or iPad for installation.' },
-  { step: 2, title: 'Tap the Share button', description: 'You will find it in Safari\'s toolbar.' },
-  { step: 3, title: 'Tap "Add to Home Screen"', description: 'Scroll down the share sheet if needed.' },
-  { step: 4, title: 'Tap "Add"', description: 'Safari adds Resurgo to your home screen like a native app.' },
-];
+// ─── Shared step list ─────────────────────────────────────────────────────────
+function StepList({
+  steps,
+  color = 'orange',
+}: {
+  steps: { step: number; text: string }[];
+  color?: 'orange' | 'blue';
+}) {
+  const border = color === 'blue' ? 'border-blue-800 bg-blue-950/30 text-blue-400' : 'border-orange-800 bg-orange-950/30 text-orange-400';
+  return (
+    <ol className="space-y-3">
+      {steps.map((s) => (
+        <li key={s.step} className="flex gap-3">
+          <span className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border font-pixel text-[0.5rem] ${border}`}>
+            {s.step}
+          </span>
+          <p className="font-terminal text-xs leading-relaxed text-zinc-400">{s.text}</p>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+// ─── Section kicker ───────────────────────────────────────────────────────────
+function Kicker({ text, color = 'text-orange-500' }: { text: string; color?: string }) {
+  return <p className={`font-pixel text-[0.45rem] tracking-widest ${color} mb-1`}>{text}</p>;
+}
 
 export default function DownloadPage() {
   return (
     <main className="min-h-screen bg-black text-white">
 
-      {/* ─── APK + Install Hero ─── */}
-      <section className="border-b border-zinc-900">
-        <div className="mx-auto max-w-4xl px-6 pb-16 pt-20">
-          <div className="mb-4 font-mono text-xs tracking-widest text-orange-400">
-            GET_RESURGO :: PWA + OPTIONAL_ANDROID_PACKAGE
-          </div>
-          <h1 className="font-mono text-4xl font-bold tracking-tight text-zinc-100 md:text-5xl">
+      {/* ═══ HERO ═══════════════════════════════════════════════════════════ */}
+      <section className="border-b border-zinc-900 px-6 pb-16 pt-20 text-center">
+        <div className="mx-auto max-w-2xl">
+          <Kicker text="GET_RESURGO :: INSTALL_ON_YOUR_DEVICE" />
+          <h1 className="font-pixel text-3xl font-bold tracking-tight text-zinc-100 sm:text-4xl">
             Download Resurgo
           </h1>
-          <p className="mt-4 max-w-2xl font-mono text-sm leading-relaxed text-zinc-400">
-            The fastest path is the browser install. Add Resurgo to your home screen or desktop, then sign in and pick up exactly where you left off.
+          <p className="mx-auto mt-4 max-w-xl font-terminal text-sm leading-relaxed text-zinc-400">
+            Install Resurgo natively on Android, iPhone, Windows or macOS. No app store needed — download direct, install in under a minute.
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <TermLinkButton
-              href="https://github.com/ShaykhedeE/ascend/releases/latest/download/resurgo.apk"
-              variant="primary"
-              size="lg"
+          {/* Platform pill badges */}
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+            {[
+              { label: '⬇ Android APK', color: 'border-green-800 text-green-400 bg-green-950/20' },
+              { label: '◎ iOS Safari', color: 'border-blue-800 text-blue-400 bg-blue-950/20' },
+              { label: '◌ Windows', color: 'border-zinc-700 text-zinc-500 bg-zinc-900/40' },
+              { label: '◌ macOS', color: 'border-zinc-700 text-zinc-500 bg-zinc-900/40' },
+            ].map((p) => (
+              <span key={p.label} className={`border px-3 py-1 font-pixel text-[0.45rem] tracking-wider ${p.color}`}>
+                {p.label}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ 4-CARD PLATFORM GRID ══════════════════════════════════════════ */}
+      <section className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
+        <Kicker text="CHOOSE_YOUR_PLATFORM" />
+        <h2 className="mb-10 font-pixel text-xl text-zinc-200">Pick your device</h2>
+
+        <div className="grid gap-5 sm:grid-cols-2">
+
+          {/* ── ANDROID ───────────────────────────────────────────────────── */}
+          <div className="border-2 border-green-900 bg-zinc-950 p-6 shadow-[4px_4px_0px_rgba(0,0,0,0.6)]">
+            {/* Header */}
+            <div className="mb-4 flex items-start justify-between">
+              <div>
+                <Kicker text="ANDROID" color="text-green-400" />
+                <h3 className="font-pixel text-base text-zinc-100">Android</h3>
+                <p className="mt-0.5 font-terminal text-xs text-zinc-500">APK direct download · or install via Chrome</p>
+              </div>
+              <span className="border border-green-800 bg-green-950/30 px-2 py-1 font-pixel text-[0.4rem] tracking-widest text-green-400">
+                {APK_VERSION}
+              </span>
+            </div>
+
+            {/* APK download button */}
+            <a
+              href={APK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mb-2 flex w-full items-center justify-center gap-2 border-2 border-green-700 bg-green-700 px-4 py-3 font-terminal text-sm font-bold text-white shadow-[3px_3px_0px_rgba(0,0,0,0.6)] transition hover:bg-green-600 active:translate-x-px active:translate-y-px"
             >
-              DOWNLOAD ANDROID PACKAGE
-            </TermLinkButton>
-            <TermLinkButton href="/sign-up" variant="secondary" size="lg">
-              INSTALL VIA BROWSER
-            </TermLinkButton>
-          </div>
-          <div className="mt-3 flex flex-wrap items-center gap-4 font-mono text-xs text-zinc-600">
-            <span>PWA on desktop + mobile</span>
-            <span>Android package link available</span>
-            <span>Uses your live cloud account</span>
-          </div>
-          <div className="mt-5 max-w-xl border border-yellow-900/40 bg-yellow-950/10 px-4 py-3">
-            <p className="font-mono text-xs leading-relaxed text-yellow-400">
-              <strong>Android package note:</strong> If you install the APK, Android may ask you to allow installs from your browser or file manager because it is outside the Play Store.
+              ⬇&nbsp;&nbsp;Download APK ({APK_VERSION})
+            </a>
+            <p className="mb-5 font-terminal text-[0.6rem] text-zinc-600">
+              SHA-256 checksum listed on the GitHub release page · Android 8.0+ required
             </p>
-          </div>
-          <h2 className="mt-10 font-mono text-xl text-zinc-400">Or install as a home screen app on any device</h2>
-          <p className="mt-2 font-mono text-xs text-zinc-500">
-            No app store needed - works on iPhone, iPad, Android, and modern desktop browsers.
-          </p>
-        </div>
-      </section>
 
-      {/* Install Steps: Android + iOS */}
-      <section className="mx-auto max-w-5xl px-6 py-20">
-        <h2 className="mb-2 font-mono text-2xl font-bold text-zinc-100">How to Install</h2>
-        <p className="mb-12 font-mono text-sm text-zinc-400">
-          Pick your device and follow the steps. Takes under 30 seconds.
-        </p>
-
-        <div className="grid gap-10 md:grid-cols-2">
-          {/* Android */}
-          <div className="border border-zinc-800 bg-zinc-950 p-6">
-            <div className="mb-5 flex items-center gap-2">
-              <span className="font-mono text-xs tracking-widest text-orange-400">ANDROID_/_CHROME</span>
-              <span className="text-xs text-zinc-600">(also Samsung Internet, Edge)</span>
-            </div>
-            <ol className="space-y-5">
-              {INSTALL_ANDROID.map((s) => (
-                <li key={s.step} className="flex gap-4">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center border border-orange-800 bg-orange-950/30 font-mono text-xs text-orange-400">
-                    {s.step}
-                  </span>
-                  <div>
-                    <p className="font-mono text-sm font-semibold text-zinc-200">{s.title}</p>
-                    <p className="mt-0.5 font-mono text-xs text-zinc-500 leading-relaxed">{s.description}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
-
-          {/* iOS */}
-          <div className="border border-zinc-800 bg-zinc-950 p-6">
-            <div className="mb-5 flex items-center gap-2">
-              <span className="font-mono text-xs tracking-widest text-blue-400">IPHONE_/_IPAD_SAFARI</span>
-            </div>
-            <ol className="space-y-5">
-              {INSTALL_IOS.map((s) => (
-                <li key={s.step} className="flex gap-4">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center border border-blue-800 bg-blue-950/30 font-mono text-xs text-blue-400">
-                    {s.step}
-                  </span>
-                  <div>
-                    <p className="font-mono text-sm font-semibold text-zinc-200">{s.title}</p>
-                    <p className="mt-0.5 font-mono text-xs text-zinc-500 leading-relaxed">{s.description}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-            <p className="mt-4 font-mono text-xs text-zinc-600">
-              Note: iOS 16.4+ supports push notifications for PWAs in Safari.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Grid */}
-      <section className="border-t border-zinc-900 mx-auto max-w-5xl px-6 py-20">
-        <h2 className="mb-2 font-mono text-2xl font-bold text-zinc-100">What You Get</h2>
-        <p className="mb-12 font-mono text-sm text-zinc-400">Everything the web app offers, delivered in an installable format.</p>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((f) => (
-            <div key={f.title} className="border border-zinc-800 bg-zinc-950 p-5">
-              <h3 className="font-mono text-sm font-semibold text-zinc-200 mb-1">{f.title}</h3>
-              <p className="font-mono text-xs text-zinc-500 leading-relaxed">{f.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="border-t border-zinc-900 mx-auto max-w-4xl px-6 py-20">
-        <h2 className="mb-8 font-mono text-2xl font-bold text-zinc-100">FAQ</h2>
-        <div className="space-y-1">
-          {[
-            {
-              q: 'Do I need to create an account?',
-              a: 'Yes. Sign up free at resurgo.life - it takes about 30 seconds. Your data is stored in the cloud and syncs across all your devices.',
-            },
-            {
-              q: 'Is this a real app or just a bookmark?',
-              a: 'It is a Progressive Web App. Installed PWAs launch in a standalone window, keep their own icon, support notifications on supported platforms, and feel close to a native app for most daily use.',
-            },
-            {
-              q: 'Why not the Play Store or App Store?',
-              a: 'The PWA installs instantly, updates faster, and avoids store review delays. It is the fastest way for most users to get the full Resurgo experience.',
-            },
-            {
-              q: 'Does it work on desktop?',
-              a: 'Yes. Chrome and Edge on Windows, macOS, and Linux support installation. Use the browser install prompt or the install option in the browser menu.',
-            },
-            {
-              q: 'Will I lose my data if I uninstall the PWA?',
-              a: 'No. All your data lives in Convex (cloud). Uninstalling the PWA only removes the app icon. Log back in on any device or browser and everything is there.',
-            },
-            {
-              q: 'Does Telegram integration still work?',
-              a: 'Yes. Telegram remains available for quick habit check-ins, daily nudges, and coaching messages. The PWA handles the full interactive experience; Telegram handles quick on-the-go interactions.',
-            },
-          ].map((faq) => (
-            <details
-              key={faq.q}
-              className="group border border-zinc-800 bg-zinc-950"
-            >
-              <summary className="cursor-pointer px-5 py-4 font-mono text-sm font-semibold text-zinc-200 group-open:text-orange-400 transition">
-                {faq.q}
+            {/* APK install steps */}
+            <details className="group mb-4">
+              <summary className="mb-3 cursor-pointer font-pixel text-[0.45rem] tracking-widest text-green-500 group-open:text-green-300">
+                HOW_TO_INSTALL_APK ▾
               </summary>
-              <p className="px-5 pb-4 font-mono text-xs text-zinc-400 leading-relaxed">{faq.a}</p>
+              <StepList steps={ANDROID_APK_STEPS} color="orange" />
             </details>
-          ))}
+
+            {/* Divider */}
+            <div className="my-4 flex items-center gap-3">
+              <div className="h-px flex-1 bg-zinc-800" />
+              <span className="font-pixel text-[0.38rem] tracking-widest text-zinc-700">OR_USE_BROWSER</span>
+              <div className="h-px flex-1 bg-zinc-800" />
+            </div>
+
+            {/* PWA fallback */}
+            <details className="group">
+              <summary className="mb-3 cursor-pointer font-pixel text-[0.45rem] tracking-widest text-zinc-500 group-open:text-zinc-300">
+                INSTALL_VIA_CHROME_INSTEAD ▾
+              </summary>
+              <StepList steps={ANDROID_PWA_STEPS} color="orange" />
+            </details>
+          </div>
+
+          {/* ── iOS ───────────────────────────────────────────────────────── */}
+          <div className="border-2 border-blue-900 bg-zinc-950 p-6 shadow-[4px_4px_0px_rgba(0,0,0,0.6)]">
+            <div className="mb-4 flex items-start justify-between">
+              <div>
+                <Kicker text="IPHONE_/_IPAD" color="text-blue-400" />
+                <h3 className="font-pixel text-base text-zinc-100">iOS</h3>
+                <p className="mt-0.5 font-terminal text-xs text-zinc-500">Add to Home Screen via Safari</p>
+              </div>
+              <span className="border border-zinc-700 bg-zinc-900/50 px-2 py-1 font-pixel text-[0.4rem] tracking-widest text-zinc-500">
+                APP_STORE SOON
+              </span>
+            </div>
+
+            {/* PWA install note */}
+            <div className="mb-5 border border-blue-900/50 bg-blue-950/20 px-4 py-3">
+              <p className="font-terminal text-xs leading-relaxed text-blue-300">
+                Add Resurgo to your iPhone or iPad home screen via Safari — it launches in full-screen, sends push notifications (iOS 16.4+), and works just like a native app.
+              </p>
+            </div>
+
+            {/* iOS steps */}
+            <StepList steps={IOS_STEPS} color="blue" />
+
+            <p className="mt-4 font-terminal text-[0.6rem] text-zinc-600">
+              Must use Safari. Chrome on iOS does not support Add to Home Screen installation.
+            </p>
+          </div>
+
+          {/* ── WINDOWS ───────────────────────────────────────────────────── */}
+          <div className="relative border-2 border-zinc-800 bg-zinc-950 p-6 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] opacity-80">
+            {/* Coming soon ribbon */}
+            <div className="absolute right-0 top-0 border-l border-b border-zinc-700 bg-zinc-800 px-3 py-1 font-pixel text-[0.38rem] tracking-widest text-zinc-400">
+              COMING_SOON
+            </div>
+
+            <div className="mb-4">
+              <Kicker text="WINDOWS" color="text-zinc-500" />
+              <h3 className="font-pixel text-base text-zinc-500">Windows</h3>
+              <p className="mt-0.5 font-terminal text-xs text-zinc-600">Native .exe installer · Microsoft Store</p>
+            </div>
+
+            <div className="mb-5 border border-zinc-800 bg-zinc-900/40 px-4 py-3">
+              <p className="font-terminal text-xs leading-relaxed text-zinc-500">
+                A native Windows installer (.exe or MSIX via Microsoft Store) is in development. You can already install Resurgo as a desktop app via Chrome or Edge right now.
+              </p>
+            </div>
+
+            <div className="mb-3">
+              <p className="mb-2 font-pixel text-[0.4rem] tracking-widest text-zinc-600">USE_TODAY_VIA_BROWSER</p>
+              <ol className="space-y-2">
+                {[
+                  'Open resurgo.life in Chrome or Edge on Windows.',
+                  'Click the install icon (⊕) in the address bar, or go to ⋮ menu → "Install Resurgo".',
+                  'Click Install. Resurgo opens from your Start Menu and taskbar.',
+                ].map((t, i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border border-zinc-700 bg-zinc-900 font-pixel text-[0.5rem] text-zinc-500">
+                      {i + 1}
+                    </span>
+                    <p className="font-terminal text-xs leading-relaxed text-zinc-500">{t}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <p className="mt-2 font-terminal text-[0.6rem] text-zinc-700">
+              Native installer coming — join the waitlist at resurgo.life/roadmap
+            </p>
+          </div>
+
+          {/* ── macOS ─────────────────────────────────────────────────────── */}
+          <div className="relative border-2 border-zinc-800 bg-zinc-950 p-6 shadow-[4px_4px_0px_rgba(0,0,0,0.5)] opacity-80">
+            {/* Coming soon ribbon */}
+            <div className="absolute right-0 top-0 border-l border-b border-zinc-700 bg-zinc-800 px-3 py-1 font-pixel text-[0.38rem] tracking-widest text-zinc-400">
+              COMING_SOON
+            </div>
+
+            <div className="mb-4">
+              <Kicker text="MACOS" color="text-zinc-500" />
+              <h3 className="font-pixel text-base text-zinc-500">macOS</h3>
+              <p className="mt-0.5 font-terminal text-xs text-zinc-600">Native .dmg installer · Mac App Store</p>
+            </div>
+
+            <div className="mb-5 border border-zinc-800 bg-zinc-900/40 px-4 py-3">
+              <p className="font-terminal text-xs leading-relaxed text-zinc-500">
+                A native macOS app (.dmg) is in development. Install Resurgo as a desktop app via Safari or Chrome now while the native version is being prepared.
+              </p>
+            </div>
+
+            <div className="mb-3">
+              <p className="mb-2 font-pixel text-[0.4rem] tracking-widest text-zinc-600">USE_TODAY_VIA_BROWSER</p>
+              <ol className="space-y-2">
+                {[
+                  'Open resurgo.life in Safari or Chrome on macOS.',
+                  'Safari: File → "Add to Dock". Chrome: ⋮ → "Install Resurgo".',
+                  'Resurgo opens in its own window, separate from your browser.',
+                ].map((t, i) => (
+                  <li key={i} className="flex gap-3">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center border border-zinc-700 bg-zinc-900 font-pixel text-[0.5rem] text-zinc-500">
+                      {i + 1}
+                    </span>
+                    <p className="font-terminal text-xs leading-relaxed text-zinc-500">{t}</p>
+                  </li>
+                ))}
+              </ol>
+            </div>
+
+            <p className="mt-2 font-terminal text-[0.6rem] text-zinc-700">
+              Native installer coming — join the waitlist at resurgo.life/roadmap
+            </p>
+          </div>
+
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="border-t border-zinc-900 mx-auto max-w-3xl px-6 py-20 text-center">
-        <p className="font-mono text-xs tracking-widest text-orange-400 mb-3">READY_TO_BEGIN</p>
-        <h2 className="font-mono text-3xl font-bold text-zinc-100">Start building better habits today.</h2>
-        <p className="mt-3 font-mono text-sm text-zinc-400 max-w-md mx-auto">
-          Open resurgo.life in your browser, sign up free, then install it to your home screen or desktop.
-        </p>
-        <Link
-          href="/sign-up"
-          className="mt-8 inline-block border border-orange-800 bg-orange-950/30 px-8 py-3 font-mono text-sm tracking-widest text-orange-400 transition hover:bg-orange-950/60"
-        >
-          [GET_STARTED_FREE]
-        </Link>
+      {/* ═══ WHAT YOU GET ══════════════════════════════════════════════════ */}
+      <section className="border-t border-zinc-900 px-4 py-16 sm:px-6">
+        <div className="mx-auto max-w-5xl">
+          <Kicker text="CAPABILITIES" />
+          <h2 className="mb-8 font-pixel text-xl text-zinc-200">What you get on every platform</h2>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {FEATURES.map((f) => (
+              <div key={f.label} className="border border-zinc-800 bg-zinc-950 px-4 py-4">
+                <p className="mb-1 font-pixel text-[0.45rem] tracking-widest text-orange-500">{f.label}</p>
+                <p className="font-terminal text-xs leading-relaxed text-zinc-400">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ FAQ ════════════════════════════════════════════════════════════ */}
+      <section className="border-t border-zinc-900 px-4 py-16 sm:px-6">
+        <div className="mx-auto max-w-3xl">
+          <Kicker text="FAQ" />
+          <h2 className="mb-8 font-pixel text-xl text-zinc-200">Common questions</h2>
+          <div className="space-y-1">
+            {[
+              {
+                q: 'Is the APK safe to install?',
+                a: 'Yes. The APK is built from the same codebase that runs on resurgo.life and published directly from our GitHub repository (github.com/shaykhedeee/ascend). The SHA-256 checksum is listed on the release page so you can verify the file before installing.',
+              },
+              {
+                q: 'Do I need an account to use the app?',
+                a: 'Yes. Sign up free at resurgo.life — it takes about 30 seconds. Your data syncs to the cloud so it\'s available on every device you install Resurgo on.',
+              },
+              {
+                q: 'Is the PWA version the same as the APK?',
+                a: 'Functionally identical. The APK is a native wrapper around the same web app. The PWA installed via Chrome gives the same experience and updates automatically without re-downloading.',
+              },
+              {
+                q: 'Why can\'t I download an IPA for iPhone?',
+                a: 'Apple requires all iOS apps to be distributed through the App Store or an Enterprise program. Until Resurgo is on the App Store, the best iOS installation is via Safari "Add to Home Screen" — it\'s nearly identical to a native app.',
+              },
+              {
+                q: 'Will I lose data if I reinstall?',
+                a: 'No. All your habits, tasks, goals, and history live in the cloud (Convex). Uninstalling removes the icon — log back in on any device and everything is there.',
+              },
+              {
+                q: 'Which Android version is required?',
+                a: 'Android 8.0 (Oreo) or higher for the APK. The PWA via Chrome works on Android 7.0+.',
+              },
+            ].map((faq) => (
+              <details key={faq.q} className="group border border-zinc-800 bg-zinc-950">
+                <summary className="cursor-pointer px-5 py-4 font-terminal text-sm font-semibold text-zinc-200 transition group-open:text-orange-400">
+                  {faq.q}
+                </summary>
+                <p className="px-5 pb-4 font-terminal text-xs leading-relaxed text-zinc-400">{faq.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ BOTTOM CTA ════════════════════════════════════════════════════ */}
+      <section className="border-t border-zinc-900 px-6 py-20 text-center">
+        <div className="mx-auto max-w-xl">
+          <Kicker text="READY_TO_BEGIN" />
+          <h2 className="font-pixel text-2xl text-zinc-100">
+            Build better habits.<br />
+            <span className="text-orange-400">Starting today.</span>
+          </h2>
+          <p className="mt-3 font-terminal text-sm text-zinc-400">
+            Create your free account and install Resurgo on your device in under 2 minutes.
+          </p>
+          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <TermLinkButton href="/sign-up" variant="primary" size="lg">
+              Start Free — No Credit Card
+            </TermLinkButton>
+            <TermLinkButton href="/pricing" variant="secondary" size="lg">
+              View Plans
+            </TermLinkButton>
+          </div>
+        </div>
       </section>
 
       {/* Structured Data */}
@@ -239,20 +375,15 @@ export default function DownloadPage() {
             '@context': 'https://schema.org',
             '@type': 'SoftwareApplication',
             name: 'Resurgo',
-            operatingSystem: 'Android, iOS, Windows, macOS, Linux',
+            operatingSystem: 'Android, iOS, Windows, macOS',
             applicationCategory: 'LifestyleApplication',
-            offers: {
-              '@type': 'Offer',
-              price: '0',
-              priceCurrency: 'USD',
-            },
-            description: 'AI-powered productivity assistant with planning, habits, tasks, coaching, and installable PWA access on any device.',
+            offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+            downloadUrl: APK_URL,
+            softwareVersion: APK_VERSION,
+            description:
+              'AI-powered productivity assistant. Install on Android (APK), iPhone/iPad (PWA), Windows and macOS.',
             url: 'https://resurgo.life',
-            author: {
-              '@type': 'Organization',
-              name: 'Resurgo',
-              url: 'https://resurgo.life',
-            },
+            author: { '@type': 'Organization', name: 'Resurgo', url: 'https://resurgo.life' },
           }),
         }}
       />

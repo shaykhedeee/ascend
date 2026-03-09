@@ -39,44 +39,8 @@ export default function manifest(): MetadataRoute.Manifest {
     // ═══════════════════════════════════════════════════════════════════════════
     icons: [
       {
-        src: '/icons/icon-72x72.png',
-        sizes: '72x72',
-        type: 'image/png',
-        purpose: 'any',
-      },
-      {
-        src: '/icons/icon-96x96.png',
-        sizes: '96x96',
-        type: 'image/png',
-        purpose: 'any',
-      },
-      {
-        src: '/icons/icon-128x128.png',
-        sizes: '128x128',
-        type: 'image/png',
-        purpose: 'any',
-      },
-      {
-        src: '/icons/icon-144x144.png',
-        sizes: '144x144',
-        type: 'image/png',
-        purpose: 'any',
-      },
-      {
-        src: '/icons/icon-152x152.png',
-        sizes: '152x152',
-        type: 'image/png',
-        purpose: 'any',
-      },
-      {
         src: '/icons/icon-192x192.png',
         sizes: '192x192',
-        type: 'image/png',
-        purpose: 'any',
-      },
-      {
-        src: '/icons/icon-384x384.png',
-        sizes: '384x384',
         type: 'image/png',
         purpose: 'any',
       },
@@ -85,12 +49,6 @@ export default function manifest(): MetadataRoute.Manifest {
         sizes: '512x512',
         type: 'image/png',
         purpose: 'any',
-      },
-      {
-        src: '/icons/icon-maskable-512x512.png',
-        sizes: '512x512',
-        type: 'image/png',
-        purpose: 'maskable',
       },
       {
         src: '/icons/icon.svg',
@@ -136,28 +94,28 @@ export default function manifest(): MetadataRoute.Manifest {
         short_name: 'Home',
         description: 'Open your command center',
         url: '/dashboard?source=shortcut',
-        icons: [{ src: '/icons/shortcut-dashboard.png', sizes: '96x96' }],
+        icons: [{ src: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' }],
       },
       {
         name: 'Open Tasks',
         short_name: 'Tasks',
         description: 'Review and capture task queue items',
         url: '/tasks?source=shortcut',
-        icons: [{ src: '/icons/shortcut-habits.png', sizes: '96x96' }],
+        icons: [{ src: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' }],
       },
       {
         name: 'View Goals',
         short_name: 'Goals',
         description: 'Check your goal progress',
         url: '/goals?source=shortcut',
-        icons: [{ src: '/icons/shortcut-goals.png', sizes: '96x96' }],
+        icons: [{ src: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' }],
       },
       {
         name: 'Plan Today',
         short_name: 'Today',
         description: 'Jump into daily planning and execution',
         url: '/calendar?source=shortcut',
-        icons: [{ src: '/icons/shortcut-add.png', sizes: '96x96' }],
+        icons: [{ src: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' }],
       },
     ],
     

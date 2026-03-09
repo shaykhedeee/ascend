@@ -263,7 +263,7 @@ const jsonLd = {
         'Advanced Analytics Dashboard',
         'Calendar View',
         'Focus Timer (Pomodoro, Deep Work, Flowtime)',
-        'AI Coaching with 6 Personas',
+        'AI Coaching with 8 Personas',
         'Habit Stacking',
         'Sleep and Mood Tracking',
         'Nutrition Tracker',
@@ -393,7 +393,7 @@ const jsonLd = {
           'name': 'What AI coaches are available?',
           'acceptedAnswer': {
             '@type': 'Answer',
-            'text': 'Resurgo offers 4 elite action-capable AI coaches: Nova (systems architect), Titan (performance engine), Sage (wealth architect), and Phoenix (resilience forge). Each coach can create tasks, goals, habits, and full plans directly from conversation.',
+            'text': 'Resurgo offers 8 AI coaches: Marcus (stoic strategist), Aurora (mindful catalyst), Titan (physical performance), Sage (financial alchemist), Phoenix (comeback specialist), Nova (creative systems), Oracle (life architect), and Nexus (integration engine). Each coach can create tasks, goals, habits, and full plans directly from conversation.',
           },
         },
         {
@@ -423,7 +423,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <link rel="icon" type="image/svg+xml" href="/icons/icon.svg" />
-        <link rel="apple-touch-icon" href="/icons/icon.svg" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
         {/* Font loaded via next/font - no render-blocking link needed */}
         {/* Puter.js for FREE AI - No API key needed! */}
         <Script src="https://js.puter.com/v2/" strategy="afterInteractive" />
@@ -472,8 +472,6 @@ export default function RootLayout({
             `,
           }}
         />
-        {/* Google Analytics */}
-        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-F1VLMSS8FB" strategy="afterInteractive" />
         <Script id="pwa-sw-registration" strategy="afterInteractive">
           {`
             (function() {
@@ -492,14 +490,6 @@ export default function RootLayout({
                 }
               } catch (e) {}
             })();
-          `}
-        </Script>
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-F1VLMSS8FB');
           `}
         </Script>
       </head>

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import MarketingPageBeacon from '@/components/marketing/MarketingPageBeacon';
-import LandingChatWidget from '@/components/marketing/LandingChatWidget';
+
 import EmailCapture from '@/components/marketing/EmailCapture';
 import { BILLING_PLANS } from '@/lib/billing/plans';
 import { TermLinkButton } from '@/components/ui/TermButton';
@@ -246,14 +246,7 @@ export default function PricingPage() {
           ))}
         </div>
 
-        <div className="mt-12 grid gap-4 md:grid-cols-2">
-          <section className="border border-zinc-900 bg-zinc-950 p-6">
-            <h3 className="mb-4 font-mono text-sm font-bold tracking-widest text-zinc-200">
-              Need help choosing?
-            </h3>
-            <LandingChatWidget />
-          </section>
-
+        <div className="mt-12">
           <section className="border border-zinc-900 bg-zinc-950 p-6">
             <h3 className="mb-4 font-mono text-sm font-bold tracking-widest text-zinc-200">
               Get pricing updates

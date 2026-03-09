@@ -79,7 +79,7 @@ export default function ContactPage() {
             <span className="text-lg">✈️</span>
             <span>TELEGRAM</span>
           </a>
-          <a href="https://twitter.com/ResurgoApp" target="_blank" rel="noopener noreferrer"
+          <a href="https://twitter.com/resurgolife" target="_blank" rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 border border-zinc-800 bg-zinc-950 py-4 font-mono text-xs text-zinc-400 transition hover:bg-zinc-900 hover:text-zinc-200">
             <span className="text-lg">𝕏</span>
             <span>TWITTER</span>
